@@ -1,0 +1,4201 @@
+{
+  "scheduling": [
+    {
+      "instance_id": "scheduling_001",
+      "task_type": "scheduling",
+      "subtype": "team_meeting",
+      "world_state": {
+        "available_slots": [
+          "Mon 09:00",
+          "Mon 14:00",
+          "Tue 11:00",
+          "Wed 15:00"
+        ],
+        "locations": [
+          "Room A",
+          "Room B",
+          "Zoom"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule team meeting. day preference: Mon. time preference: afternoon. avoid days: ['Wed']. location: Zoom.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_team_meeting",
+              "day_preference": "Mon",
+              "time_preference": "afternoon",
+              "avoid_days": [
+                "Wed"
+              ],
+              "location": "Zoom"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_team_meeting",
+            "day_preference": "Mon",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Wed"
+            ],
+            "location": "Zoom",
+            "priority": [
+              "avoid_days",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "I just realized there is a time conflict. Actually, Room A instead for location.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "location": "Room A"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_team_meeting",
+            "day_preference": "Mon",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Wed"
+            ],
+            "location": "Room A",
+            "priority": [
+              "avoid_days",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "I have one more preference to add. Please update the priority order to: location, avoid_days, time_preference.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "new_optional_preference",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "location",
+                "avoid_days",
+                "time_preference"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_team_meeting",
+            "day_preference": "Mon",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Wed"
+            ],
+            "location": "Room A",
+            "priority": [
+              "location",
+              "avoid_days",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "That setup is less feasible from a logistics standpoint. That part can be more flexible.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "time_preference": "any_time"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_team_meeting",
+            "day_preference": "Mon",
+            "time_preference": "any_time",
+            "avoid_days": [
+              "Wed"
+            ],
+            "location": "Room A",
+            "priority": [
+              "location",
+              "avoid_days",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "requery_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_002",
+      "task_type": "scheduling",
+      "subtype": "advisor_meeting",
+      "world_state": {
+        "available_slots": [
+          "Tue 10:00",
+          "Tue 16:00",
+          "Thu 13:00",
+          "Fri 09:00"
+        ],
+        "locations": [
+          "Office",
+          "Zoom"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule advisor meeting. day preference: Thu. time preference: afternoon. avoid days: ['Fri']. location: Office.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_advisor_meeting",
+              "day_preference": "Thu",
+              "time_preference": "afternoon",
+              "avoid_days": [
+                "Fri"
+              ],
+              "location": "Office"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_advisor_meeting",
+            "day_preference": "Thu",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Office",
+            "priority": [
+              "location",
+              "day_preference",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Please change the day preference to Mon.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "day_preference": "Mon"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_advisor_meeting",
+            "day_preference": "Mon",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Office",
+            "priority": [
+              "location",
+              "day_preference",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Convenience matters more to me now. Priorities changed — optimize differently.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "time_preference",
+                "day_preference",
+                "location"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_advisor_meeting",
+            "day_preference": "Mon",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Office",
+            "priority": [
+              "time_preference",
+              "day_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Convenience matters more to me now. Actually, Tue instead for day preference.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "day_preference": "Tue"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_advisor_meeting",
+            "day_preference": "Tue",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Office",
+            "priority": [
+              "time_preference",
+              "day_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "requery_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_003",
+      "task_type": "scheduling",
+      "subtype": "doctor_visit",
+      "world_state": {
+        "available_slots": [
+          "Mon 08:30",
+          "Tue 09:30",
+          "Thu 15:30",
+          "Fri 14:00"
+        ],
+        "locations": [
+          "Clinic East",
+          "Clinic West"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule doctor visit. day preference: Fri. time preference: afternoon. avoid days: ['Mon']. location: Clinic East.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_doctor_visit",
+              "day_preference": "Fri",
+              "time_preference": "afternoon",
+              "avoid_days": [
+                "Mon"
+              ],
+              "location": "Clinic East"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_doctor_visit",
+            "day_preference": "Fri",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Clinic East",
+            "priority": [
+              "day_preference",
+              "location",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "It looks like the original option may not be available. Actually, Sat instead for day preference.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "day_preference": "Sat"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_doctor_visit",
+            "day_preference": "Sat",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Clinic East",
+            "priority": [
+              "day_preference",
+              "location",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Actually, evening instead for time preference.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "time_preference": "evening"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_doctor_visit",
+            "day_preference": "Sat",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Clinic East",
+            "priority": [
+              "day_preference",
+              "location",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Clinic West instead.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "location": "Clinic West"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_doctor_visit",
+            "day_preference": "Sat",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Clinic West",
+            "priority": [
+              "day_preference",
+              "location",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_004",
+      "task_type": "scheduling",
+      "subtype": "interview_slot",
+      "world_state": {
+        "available_slots": [
+          "Wed 10:00",
+          "Wed 14:30",
+          "Thu 11:00",
+          "Fri 16:00"
+        ],
+        "locations": [
+          "Virtual",
+          "HQ"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule interview. day preference: Wed. time preference: morning. avoid days: ['Fri']. location: Virtual.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_interview",
+              "day_preference": "Wed",
+              "time_preference": "morning",
+              "avoid_days": [
+                "Fri"
+              ],
+              "location": "Virtual"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_interview",
+            "day_preference": "Wed",
+            "time_preference": "morning",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Virtual",
+            "priority": [
+              "time_preference",
+              "location",
+              "avoid_days"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Please change the day preference to Fri.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "day_preference": "Fri"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_interview",
+            "day_preference": "Fri",
+            "time_preference": "morning",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Virtual",
+            "priority": [
+              "time_preference",
+              "location",
+              "avoid_days"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Please update the priority order to: time_preference, avoid_days, location.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "time_preference",
+                "avoid_days",
+                "location"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_interview",
+            "day_preference": "Fri",
+            "time_preference": "morning",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Virtual",
+            "priority": [
+              "time_preference",
+              "avoid_days",
+              "location"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Actually, afternoon instead for time preference.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "time_preference": "afternoon"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_interview",
+            "day_preference": "Fri",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Virtual",
+            "priority": [
+              "time_preference",
+              "avoid_days",
+              "location"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "requery_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_005",
+      "task_type": "scheduling",
+      "subtype": "study_group",
+      "world_state": {
+        "available_slots": [
+          "Tue 18:00",
+          "Wed 18:30",
+          "Thu 17:00",
+          "Sun 13:00"
+        ],
+        "locations": [
+          "Library",
+          "Cafe",
+          "Zoom"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule study group. day preference: Thu. time preference: evening. avoid days: ['Sun']. location: Library.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_study_group",
+              "day_preference": "Thu",
+              "time_preference": "evening",
+              "avoid_days": [
+                "Sun"
+              ],
+              "location": "Library"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_study_group",
+            "day_preference": "Thu",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Sun"
+            ],
+            "location": "Library",
+            "priority": [
+              "location",
+              "day_preference",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Also, make location Cafe.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "new_optional_preference",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "add": {
+              "location": "Cafe"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_study_group",
+            "day_preference": "Thu",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Sun"
+            ],
+            "location": "Cafe",
+            "priority": [
+              "location",
+              "day_preference",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "It looks like the original option may not be available. And Sun, Sat too.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "avoid_days": [
+                "Sun",
+                "Sat"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_study_group",
+            "day_preference": "Thu",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Sun",
+              "Sat"
+            ],
+            "location": "Cafe",
+            "priority": [
+              "location",
+              "day_preference",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I care more about quality now. Please change the location to Zoom.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "location": "Zoom"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_study_group",
+            "day_preference": "Thu",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Sun",
+              "Sat"
+            ],
+            "location": "Zoom",
+            "priority": [
+              "location",
+              "day_preference",
+              "time_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_006",
+      "task_type": "scheduling",
+      "subtype": "project_sync",
+      "world_state": {
+        "available_slots": [
+          "Mon 12:00",
+          "Tue 14:00",
+          "Thu 12:30",
+          "Fri 15:00"
+        ],
+        "locations": [
+          "Room C",
+          "Zoom"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule project sync. day preference: Tue. time preference: afternoon. avoid days: ['Mon']. location: Room C.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_project_sync",
+              "day_preference": "Tue",
+              "time_preference": "afternoon",
+              "avoid_days": [
+                "Mon"
+              ],
+              "location": "Room C"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_project_sync",
+            "day_preference": "Tue",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Room C",
+            "priority": [
+              "day_preference",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "I care more about quality now. I care more about time_preference now.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "time_preference",
+                "location",
+                "day_preference"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_project_sync",
+            "day_preference": "Tue",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Room C",
+            "priority": [
+              "time_preference",
+              "location",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "I just realized there is a time conflict. Please update the priority order to: day_preference, time_preference, location.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "day_preference",
+                "time_preference",
+                "location"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_project_sync",
+            "day_preference": "Tue",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Room C",
+            "priority": [
+              "day_preference",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "It looks like the original option may not be available. evening instead.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "time_preference": "evening"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_project_sync",
+            "day_preference": "Tue",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Room C",
+            "priority": [
+              "day_preference",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "requery_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_007",
+      "task_type": "scheduling",
+      "subtype": "lunch_meeting",
+      "world_state": {
+        "available_slots": [
+          "Mon 12:00",
+          "Tue 12:30",
+          "Wed 13:00",
+          "Thu 11:30"
+        ],
+        "locations": [
+          "Cafe 1",
+          "Cafe 2"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule lunch meeting. day preference: Tue. time preference: midday. avoid days: ['Wed']. location: Cafe 1.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_lunch_meeting",
+              "day_preference": "Tue",
+              "time_preference": "midday",
+              "avoid_days": [
+                "Wed"
+              ],
+              "location": "Cafe 1"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_lunch_meeting",
+            "day_preference": "Tue",
+            "time_preference": "midday",
+            "avoid_days": [
+              "Wed"
+            ],
+            "location": "Cafe 1",
+            "priority": [
+              "location",
+              "avoid_days",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "We can relax the location constraint. It can be Cafe 2.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "relax": {
+              "location": "Cafe 2"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_lunch_meeting",
+            "day_preference": "Tue",
+            "time_preference": "midday",
+            "avoid_days": [
+              "Wed"
+            ],
+            "location": "Cafe 2",
+            "priority": [
+              "location",
+              "avoid_days",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "I just realized there is a time conflict. evening instead.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "time_preference": "evening"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_lunch_meeting",
+            "day_preference": "Tue",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Wed"
+            ],
+            "location": "Cafe 2",
+            "priority": [
+              "location",
+              "avoid_days",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "That setup is less feasible from a logistics standpoint. We can relax the location constraint. It can be Cafe 1.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "location": "Cafe 1"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_lunch_meeting",
+            "day_preference": "Tue",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Wed"
+            ],
+            "location": "Cafe 1",
+            "priority": [
+              "location",
+              "avoid_days",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_008",
+      "task_type": "scheduling",
+      "subtype": "campus_tour",
+      "world_state": {
+        "available_slots": [
+          "Fri 10:00",
+          "Fri 14:00",
+          "Sat 09:00",
+          "Sat 13:30"
+        ],
+        "locations": [
+          "North Gate",
+          "Main Lobby"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule campus tour. day preference: Sat. time preference: morning. avoid days: ['Fri']. location: North Gate.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_campus_tour",
+              "day_preference": "Sat",
+              "time_preference": "morning",
+              "avoid_days": [
+                "Fri"
+              ],
+              "location": "North Gate"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_campus_tour",
+            "day_preference": "Sat",
+            "time_preference": "morning",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "North Gate",
+            "priority": [
+              "day_preference",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "And Main Lobby too.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "new_optional_preference",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "add": {
+              "location": "Main Lobby"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_campus_tour",
+            "day_preference": "Sat",
+            "time_preference": "morning",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Main Lobby",
+            "priority": [
+              "day_preference",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "I care more about quality now. afternoon instead.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "time_preference": "afternoon"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_campus_tour",
+            "day_preference": "Sat",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Main Lobby",
+            "priority": [
+              "day_preference",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I just realized there is a time conflict. Please change the day preference to Sun.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "day_preference": "Sun"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_campus_tour",
+            "day_preference": "Sun",
+            "time_preference": "afternoon",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Main Lobby",
+            "priority": [
+              "day_preference",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "requery_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_009",
+      "task_type": "scheduling",
+      "subtype": "fitness_class",
+      "world_state": {
+        "available_slots": [
+          "Mon 07:00",
+          "Tue 18:00",
+          "Thu 19:00",
+          "Sat 10:00"
+        ],
+        "locations": [
+          "Gym A",
+          "Gym B"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule fitness class. day preference: Thu. time preference: evening. avoid days: ['Mon']. location: Gym A.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_fitness_class",
+              "day_preference": "Thu",
+              "time_preference": "evening",
+              "avoid_days": [
+                "Mon"
+              ],
+              "location": "Gym A"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_fitness_class",
+            "day_preference": "Thu",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Gym A",
+            "priority": [
+              "time_preference",
+              "location",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "I just realized there is a time conflict. Actually, time preference can be more flexible — any_time is fine.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "time_preference": "any_time"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_fitness_class",
+            "day_preference": "Thu",
+            "time_preference": "any_time",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Gym A",
+            "priority": [
+              "time_preference",
+              "location",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Mon instead.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "day_preference": "Mon"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_fitness_class",
+            "day_preference": "Mon",
+            "time_preference": "any_time",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Gym A",
+            "priority": [
+              "time_preference",
+              "location",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "That setup is less feasible from a logistics standpoint. Actually, time preference can be more flexible — more_flexible_any_time is fine.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "time_preference": "more_flexible_any_time"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_fitness_class",
+            "day_preference": "Mon",
+            "time_preference": "more_flexible_any_time",
+            "avoid_days": [
+              "Mon"
+            ],
+            "location": "Gym A",
+            "priority": [
+              "time_preference",
+              "location",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "requery_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "scheduling_010",
+      "task_type": "scheduling",
+      "subtype": "parent_call",
+      "world_state": {
+        "available_slots": [
+          "Sun 09:00",
+          "Sun 20:00",
+          "Sat 21:00",
+          "Fri 19:30"
+        ],
+        "locations": [
+          "Phone",
+          "Zoom"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to schedule parent call. day preference: Sun. time preference: evening. avoid days: ['Fri']. location: Phone.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "schedule_parent_call",
+              "day_preference": "Sun",
+              "time_preference": "evening",
+              "avoid_days": [
+                "Fri"
+              ],
+              "location": "Phone"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_parent_call",
+            "day_preference": "Sun",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Phone",
+            "priority": [
+              "day_preference",
+              "time_preference",
+              "location"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Priorities changed — optimize differently.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "time_preference",
+                "location",
+                "day_preference"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_parent_call",
+            "day_preference": "Sun",
+            "time_preference": "evening",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Phone",
+            "priority": [
+              "time_preference",
+              "location",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "That setup is less feasible from a logistics standpoint. We can relax the time preference constraint. It can be any_time.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "time_preference": "any_time"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_parent_call",
+            "day_preference": "Sun",
+            "time_preference": "any_time",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Phone",
+            "priority": [
+              "time_preference",
+              "location",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I have one more preference to add. And Zoom too.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "new_optional_preference",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "location": "Zoom"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "schedule_parent_call",
+            "day_preference": "Sun",
+            "time_preference": "any_time",
+            "avoid_days": [
+              "Fri"
+            ],
+            "location": "Zoom",
+            "priority": [
+              "time_preference",
+              "location",
+              "day_preference"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        }
+      ]
+    }
+  ],
+  "retrieval_ranking": [
+    {
+      "instance_id": "retrieval_001",
+      "task_type": "retrieval_ranking",
+      "subtype": "hotel_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "h1",
+            "area": "downtown",
+            "price": 220,
+            "rating": 4.2,
+            "pet_friendly": false
+          },
+          {
+            "id": "h2",
+            "area": "midtown",
+            "price": 245,
+            "rating": 4.7,
+            "pet_friendly": true
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find hotel. city: Boston. budget max: 250. area: downtown. pet friendly: False.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_hotel",
+              "city": "Boston",
+              "budget_max": 250,
+              "area": "downtown",
+              "pet_friendly": false
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_hotel",
+            "city": "Boston",
+            "budget_max": 250,
+            "area": "downtown",
+            "pet_friendly": false,
+            "priority": [
+              "area",
+              "budget_max",
+              "rating"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Actually, midtown instead for area.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "area": "midtown"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_hotel",
+            "city": "Boston",
+            "budget_max": 250,
+            "area": "midtown",
+            "pet_friendly": false,
+            "priority": [
+              "area",
+              "budget_max",
+              "rating"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "downtown instead.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "area": "downtown"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_hotel",
+            "city": "Boston",
+            "budget_max": 250,
+            "area": "downtown",
+            "pet_friendly": false,
+            "priority": [
+              "area",
+              "budget_max",
+              "rating"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Please also add this requirement: remote should be True.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "add": {
+              "remote": true
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_hotel",
+            "city": "Boston",
+            "budget_max": 250,
+            "area": "downtown",
+            "pet_friendly": false,
+            "priority": [
+              "area",
+              "budget_max",
+              "rating"
+            ],
+            "remote": true
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_002",
+      "task_type": "retrieval_ranking",
+      "subtype": "flight_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "f1",
+            "stops": 0,
+            "price": 380,
+            "airline": "Delta",
+            "arrival_time": "morning"
+          },
+          {
+            "id": "f2",
+            "stops": 1,
+            "price": 290,
+            "airline": "United",
+            "arrival_time": "evening"
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find flight. origin: ATL. destination: SFO. budget max: 400. nonstop: True. arrival time: morning.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_flight",
+              "origin": "ATL",
+              "destination": "SFO",
+              "budget_max": 400,
+              "nonstop": true,
+              "arrival_time": "morning"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_flight",
+            "origin": "ATL",
+            "destination": "SFO",
+            "budget_max": 400,
+            "nonstop": true,
+            "arrival_time": "morning",
+            "priority": [
+              "nonstop",
+              "arrival_time",
+              "budget_max"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Actually, budget max can be more flexible — 480.0 is fine.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "relax": {
+              "budget_max": 480.0
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_flight",
+            "origin": "ATL",
+            "destination": "SFO",
+            "budget_max": 480.0,
+            "nonstop": true,
+            "arrival_time": "morning",
+            "priority": [
+              "nonstop",
+              "arrival_time",
+              "budget_max"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "That setup is less feasible from a logistics standpoint. Actually, LAX instead for destination.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "destination": "LAX"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_flight",
+            "origin": "ATL",
+            "destination": "LAX",
+            "budget_max": 480.0,
+            "nonstop": true,
+            "arrival_time": "morning",
+            "priority": [
+              "nonstop",
+              "arrival_time",
+              "budget_max"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "It looks like the original option may not be available. Actually, afternoon instead for arrival time.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "arrival_time": "afternoon"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_flight",
+            "origin": "ATL",
+            "destination": "LAX",
+            "budget_max": 480.0,
+            "nonstop": true,
+            "arrival_time": "afternoon",
+            "priority": [
+              "nonstop",
+              "arrival_time",
+              "budget_max"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "requery_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_003",
+      "task_type": "retrieval_ranking",
+      "subtype": "restaurant_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "r1",
+            "cuisine": "Italian",
+            "distance": 1.2,
+            "price_level": 2,
+            "rating": 4.4
+          },
+          {
+            "id": "r2",
+            "cuisine": "Japanese",
+            "distance": 3.5,
+            "price_level": 3,
+            "rating": 4.8
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find restaurant. cuisine: Italian. distance max: 2.0. price level max: 2.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_restaurant",
+              "cuisine": "Italian",
+              "distance_max": 2.0,
+              "price_level_max": 2
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_restaurant",
+            "cuisine": "Italian",
+            "distance_max": 2.0,
+            "price_level_max": 2,
+            "priority": [
+              "cuisine",
+              "distance_max",
+              "rating"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Japanese instead.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "cuisine": "Japanese"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_restaurant",
+            "cuisine": "Japanese",
+            "distance_max": 2.0,
+            "price_level_max": 2,
+            "priority": [
+              "cuisine",
+              "distance_max",
+              "rating"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "That setup is less feasible from a logistics standpoint. Actually, alternative_Japanese instead for cuisine.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "cuisine": "alternative_Japanese"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_restaurant",
+            "cuisine": "alternative_Japanese",
+            "distance_max": 2.0,
+            "price_level_max": 2,
+            "priority": [
+              "cuisine",
+              "distance_max",
+              "rating"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I care more about cuisine now.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "cuisine",
+                "distance_max",
+                "rating"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_restaurant",
+            "cuisine": "alternative_Japanese",
+            "distance_max": 2.0,
+            "price_level_max": 2,
+            "priority": [
+              "cuisine",
+              "distance_max",
+              "rating"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rerank_only"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_004",
+      "task_type": "retrieval_ranking",
+      "subtype": "paper_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "p1",
+            "venue": "CHI",
+            "year": 2024,
+            "topic": "AI agents",
+            "citations": 12
+          },
+          {
+            "id": "p2",
+            "venue": "UIST",
+            "year": 2025,
+            "topic": "interactive systems",
+            "citations": 4
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find paper. topic: AI agents. venue: CHI. year min: 2023.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_paper",
+              "topic": "AI agents",
+              "venue": "CHI",
+              "year_min": 2023
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_paper",
+            "topic": "AI agents",
+            "venue": "CHI",
+            "year_min": 2023,
+            "priority": [
+              "topic",
+              "venue",
+              "year_min"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Please change the venue to UIST.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "venue": "UIST"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_paper",
+            "topic": "AI agents",
+            "venue": "UIST",
+            "year_min": 2023,
+            "priority": [
+              "topic",
+              "venue",
+              "year_min"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "alternative_UIST instead.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "budget_issue",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "venue": "alternative_UIST"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_paper",
+            "topic": "AI agents",
+            "venue": "alternative_UIST",
+            "year_min": 2023,
+            "priority": [
+              "topic",
+              "venue",
+              "year_min"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Priorities changed — optimize differently.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "venue",
+                "year_min",
+                "topic"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_paper",
+            "topic": "AI agents",
+            "venue": "alternative_UIST",
+            "year_min": 2023,
+            "priority": [
+              "venue",
+              "year_min",
+              "topic"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "rerank_only"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_005",
+      "task_type": "retrieval_ranking",
+      "subtype": "job_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "j1",
+            "location": "New York",
+            "salary": 150000,
+            "remote": false,
+            "level": "intern"
+          },
+          {
+            "id": "j2",
+            "location": "Remote",
+            "salary": 135000,
+            "remote": true,
+            "level": "intern"
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find job. role: ML Engineer Intern. location: New York. remote: False.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_job",
+              "role": "ML Engineer Intern",
+              "location": "New York",
+              "remote": false
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_job",
+            "role": "ML Engineer Intern",
+            "location": "New York",
+            "remote": false,
+            "priority": [
+              "role",
+              "location",
+              "salary"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "I am leaning more toward saving money now. Please also add this requirement: remote should be True.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "remote": true
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_job",
+            "role": "ML Engineer Intern",
+            "location": "New York",
+            "remote": true,
+            "priority": [
+              "role",
+              "location",
+              "salary"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "The original plan is pushing the budget too much. Also, make distance max new_requirement.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "budget_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "distance_max": "new_requirement"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_job",
+            "role": "ML Engineer Intern",
+            "location": "New York",
+            "remote": true,
+            "priority": [
+              "role",
+              "location",
+              "salary"
+            ],
+            "distance_max": "new_requirement"
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I am leaning more toward saving money now. And online too.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "mode": "online"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_job",
+            "role": "ML Engineer Intern",
+            "location": "New York",
+            "remote": true,
+            "priority": [
+              "role",
+              "location",
+              "salary"
+            ],
+            "distance_max": "new_requirement",
+            "mode": "online"
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_006",
+      "task_type": "retrieval_ranking",
+      "subtype": "apartment_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "a1",
+            "area": "Midtown",
+            "rent": 1800,
+            "pets": true,
+            "laundry": true
+          },
+          {
+            "id": "a2",
+            "area": "Downtown",
+            "rent": 1600,
+            "pets": false,
+            "laundry": true
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find apartment. area: Midtown. rent max: 1900. pets: True.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_apartment",
+              "area": "Midtown",
+              "rent_max": 1900,
+              "pets": true
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_apartment",
+            "area": "Midtown",
+            "rent_max": 1900,
+            "pets": true,
+            "priority": [
+              "area",
+              "pets",
+              "rent_max"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Convenience matters more to me now. That part can be more flexible.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "area": "any"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_apartment",
+            "area": "any",
+            "rent_max": 1900,
+            "pets": true,
+            "priority": [
+              "area",
+              "pets",
+              "rent_max"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "That setup is less feasible from a logistics standpoint. That part can be more flexible.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "area": "more_flexible_any"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_apartment",
+            "area": "more_flexible_any",
+            "rent_max": 1900,
+            "pets": true,
+            "priority": [
+              "area",
+              "pets",
+              "rent_max"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "It looks like the original option may not be available. We can relax the pets constraint. It can be True.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "pets": true
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_apartment",
+            "area": "more_flexible_any",
+            "rent_max": 1900,
+            "pets": true,
+            "priority": [
+              "area",
+              "pets",
+              "rent_max"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_007",
+      "task_type": "retrieval_ranking",
+      "subtype": "laptop_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "l1",
+            "brand": "Lenovo",
+            "weight_lb": 3.1,
+            "price": 1100,
+            "ram_gb": 16
+          },
+          {
+            "id": "l2",
+            "brand": "Dell",
+            "weight_lb": 4.3,
+            "price": 900,
+            "ram_gb": 16
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find laptop. ram gb min: 16. weight lb max: 3.5. budget max: 1200.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_laptop",
+              "ram_gb_min": 16,
+              "weight_lb_max": 3.5,
+              "budget_max": 1200
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_laptop",
+            "ram_gb_min": 16,
+            "weight_lb_max": 3.5,
+            "budget_max": 1200,
+            "priority": [
+              "weight_lb_max",
+              "ram_gb_min",
+              "budget_max"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Please change the weight lb max to 3.85.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "weight_lb_max": 3.85
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_laptop",
+            "ram_gb_min": 16,
+            "weight_lb_max": 3.85,
+            "budget_max": 1200,
+            "priority": [
+              "weight_lb_max",
+              "ram_gb_min",
+              "budget_max"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "I am leaning more toward saving money now. Priorities changed — optimize differently.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "budget_max",
+                "ram_gb_min",
+                "weight_lb_max"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_laptop",
+            "ram_gb_min": 16,
+            "weight_lb_max": 3.85,
+            "budget_max": 1200,
+            "priority": [
+              "budget_max",
+              "ram_gb_min",
+              "weight_lb_max"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "It looks like the original option may not be available. That part can be more flexible.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "budget_max": 1440.0
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_laptop",
+            "ram_gb_min": 16,
+            "weight_lb_max": 3.85,
+            "budget_max": 1440.0,
+            "priority": [
+              "budget_max",
+              "ram_gb_min",
+              "weight_lb_max"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_008",
+      "task_type": "retrieval_ranking",
+      "subtype": "scholarship_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "s1",
+            "field": "CS",
+            "amount": 5000,
+            "international_ok": true
+          },
+          {
+            "id": "s2",
+            "field": "Design",
+            "amount": 7000,
+            "international_ok": false
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find scholarship. field: CS. international ok: True.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_scholarship",
+              "field": "CS",
+              "international_ok": true
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_scholarship",
+            "field": "CS",
+            "international_ok": true,
+            "priority": [
+              "international_ok",
+              "amount",
+              "field"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "That setup is less feasible from a logistics standpoint. That part can be more flexible.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "location_constraint",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "field": "more_flexible_CS"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_scholarship",
+            "field": "more_flexible_CS",
+            "international_ok": true,
+            "priority": [
+              "international_ok",
+              "amount",
+              "field"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Also, make remote True.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "add": {
+              "remote": true
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_scholarship",
+            "field": "more_flexible_CS",
+            "international_ok": true,
+            "priority": [
+              "international_ok",
+              "amount",
+              "field"
+            ],
+            "remote": true
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "It looks like the original option may not be available. Please change the remote to False.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "remote": false
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_scholarship",
+            "field": "more_flexible_CS",
+            "international_ok": true,
+            "priority": [
+              "international_ok",
+              "amount",
+              "field"
+            ],
+            "remote": false
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_009",
+      "task_type": "retrieval_ranking",
+      "subtype": "conference_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "c1",
+            "field": "HCI",
+            "location": "US",
+            "deadline_month": "Apr"
+          },
+          {
+            "id": "c2",
+            "field": "AI",
+            "location": "Europe",
+            "deadline_month": "May"
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find conference. field: HCI. location: US.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_conference",
+              "field": "HCI",
+              "location": "US"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_conference",
+            "field": "HCI",
+            "location": "US",
+            "priority": [
+              "field",
+              "deadline_month",
+              "location"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "And new_requirement too.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "add": {
+              "budget_max": "new_requirement"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_conference",
+            "field": "HCI",
+            "location": "US",
+            "priority": [
+              "field",
+              "deadline_month",
+              "location"
+            ],
+            "budget_max": "new_requirement"
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "I care more about quality now. Please also add this requirement: mode should be online.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "mode": "online"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_conference",
+            "field": "HCI",
+            "location": "US",
+            "priority": [
+              "field",
+              "deadline_month",
+              "location"
+            ],
+            "budget_max": "new_requirement",
+            "mode": "online"
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I am leaning more toward saving money now. Please change the mode to alternative_online.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "mode": "alternative_online"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_conference",
+            "field": "HCI",
+            "location": "US",
+            "priority": [
+              "field",
+              "deadline_month",
+              "location"
+            ],
+            "budget_max": "new_requirement",
+            "mode": "alternative_online"
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "retrieval_010",
+      "task_type": "retrieval_ranking",
+      "subtype": "course_search",
+      "world_state": {
+        "candidate_items": [
+          {
+            "id": "c101",
+            "topic": "NLP",
+            "time": "morning",
+            "mode": "in-person"
+          },
+          {
+            "id": "c102",
+            "topic": "ML systems",
+            "time": "afternoon",
+            "mode": "online"
+          }
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to find course. topic: NLP. time: afternoon. mode: in-person.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "find_course",
+              "topic": "NLP",
+              "time": "afternoon",
+              "mode": "in-person"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_course",
+            "topic": "NLP",
+            "time": "afternoon",
+            "mode": "in-person",
+            "priority": [
+              "topic",
+              "time",
+              "mode"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "We can relax the time constraint. It can be any_time.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "budget_issue",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "relax": {
+              "time": "any_time"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_course",
+            "topic": "NLP",
+            "time": "any_time",
+            "mode": "in-person",
+            "priority": [
+              "topic",
+              "time",
+              "mode"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Actually, online instead for mode.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "mode": "online"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_course",
+            "topic": "NLP",
+            "time": "any_time",
+            "mode": "online",
+            "priority": [
+              "topic",
+              "time",
+              "mode"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I care more about quality now. Please change the time to alternative_any_time.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "quality_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "time": "alternative_any_time"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "find_course",
+            "topic": "NLP",
+            "time": "alternative_any_time",
+            "mode": "online",
+            "priority": [
+              "topic",
+              "time",
+              "mode"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        }
+      ]
+    }
+  ],
+  "transaction": [
+    {
+      "instance_id": "transaction_001",
+      "task_type": "transaction",
+      "subtype": "book_flight",
+      "world_state": {
+        "payment_methods": [
+          "Visa",
+          "Amex"
+        ],
+        "seat_options": [
+          "aisle",
+          "window"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to book flight. destination: San Francisco. date: 2026-05-12. seat: window. payment method: Visa.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "book_flight",
+              "destination": "San Francisco",
+              "date": "2026-05-12",
+              "seat": "window",
+              "payment_method": "Visa"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_flight",
+            "destination": "San Francisco",
+            "date": "2026-05-12",
+            "seat": "window",
+            "payment_method": "Visa",
+            "priority": [
+              "date",
+              "seat",
+              "payment_method"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Please change the seat to aisle.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "seat": "aisle"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_flight",
+            "destination": "San Francisco",
+            "date": "2026-05-12",
+            "seat": "aisle",
+            "payment_method": "Visa",
+            "priority": [
+              "date",
+              "seat",
+              "payment_method"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rebook_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "I am leaning more toward saving money now. I care more about date now.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "date",
+                "payment_method",
+                "seat"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_flight",
+            "destination": "San Francisco",
+            "date": "2026-05-12",
+            "seat": "aisle",
+            "payment_method": "Visa",
+            "priority": [
+              "date",
+              "payment_method",
+              "seat"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I just realized there is a time conflict. Also, make insurance full.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "insurance": "full"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_flight",
+            "destination": "San Francisco",
+            "date": "2026-05-12",
+            "seat": "aisle",
+            "payment_method": "Visa",
+            "priority": [
+              "date",
+              "payment_method",
+              "seat"
+            ],
+            "insurance": "full"
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rebook_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_002",
+      "task_type": "transaction",
+      "subtype": "book_hotel",
+      "world_state": {
+        "room_types": [
+          "queen",
+          "king"
+        ],
+        "payment_methods": [
+          "Visa",
+          "Mastercard"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to book hotel. city: Chicago. check in: 2026-06-10. room type: king. payment method: Mastercard.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "book_hotel",
+              "city": "Chicago",
+              "check_in": "2026-06-10",
+              "room_type": "king",
+              "payment_method": "Mastercard"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_hotel",
+            "city": "Chicago",
+            "check_in": "2026-06-10",
+            "room_type": "king",
+            "payment_method": "Mastercard",
+            "priority": [
+              "check_in",
+              "room_type",
+              "payment_method"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "I just realized there is a time conflict. Please also add this requirement: delivery should be email.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "delivery": "email"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_hotel",
+            "city": "Chicago",
+            "check_in": "2026-06-10",
+            "room_type": "king",
+            "payment_method": "Mastercard",
+            "priority": [
+              "check_in",
+              "room_type",
+              "payment_method"
+            ],
+            "delivery": "email"
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rebook_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Convenience matters more to me now. Also, make insurance full.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "insurance": "full"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_hotel",
+            "city": "Chicago",
+            "check_in": "2026-06-10",
+            "room_type": "king",
+            "payment_method": "Mastercard",
+            "priority": [
+              "check_in",
+              "room_type",
+              "payment_method"
+            ],
+            "delivery": "email",
+            "insurance": "full"
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rebook_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Convenience matters more to me now. That part can be more flexible.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "payment_method": "Visa"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_hotel",
+            "city": "Chicago",
+            "check_in": "2026-06-10",
+            "room_type": "king",
+            "payment_method": "Visa",
+            "priority": [
+              "check_in",
+              "room_type",
+              "payment_method"
+            ],
+            "delivery": "email",
+            "insurance": "full"
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "rebook_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_003",
+      "task_type": "transaction",
+      "subtype": "order_laptop",
+      "world_state": {
+        "colors": [
+          "silver",
+          "black"
+        ],
+        "shipping": [
+          "standard",
+          "express"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to order laptop. model: ThinkPad X1. color: black. shipping: standard.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "order_laptop",
+              "model": "ThinkPad X1",
+              "color": "black",
+              "shipping": "standard"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "order_laptop",
+            "model": "ThinkPad X1",
+            "color": "black",
+            "shipping": "standard",
+            "priority": [
+              "model",
+              "shipping",
+              "color"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Please update the priority order to: color, shipping, model.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "color",
+                "shipping",
+                "model"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "order_laptop",
+            "model": "ThinkPad X1",
+            "color": "black",
+            "shipping": "standard",
+            "priority": [
+              "color",
+              "shipping",
+              "model"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "The system seems to require a different setup. Actually, shipping can be more flexible — express is fine.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "system_requirement",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "shipping": "express"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "order_laptop",
+            "model": "ThinkPad X1",
+            "color": "black",
+            "shipping": "express",
+            "priority": [
+              "color",
+              "shipping",
+              "model"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rebook_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I am leaning more toward saving money now. Please also add this requirement: delivery should be email.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "delivery": "email"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "order_laptop",
+            "model": "ThinkPad X1",
+            "color": "black",
+            "shipping": "express",
+            "priority": [
+              "color",
+              "shipping",
+              "model"
+            ],
+            "delivery": "email"
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rebook_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_004",
+      "task_type": "transaction",
+      "subtype": "register_workshop",
+      "world_state": {
+        "ticket_types": [
+          "student",
+          "general"
+        ],
+        "delivery": [
+          "email",
+          "sms"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to register workshop. workshop: Agent Evaluation. ticket type: student. delivery: email.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "register_workshop",
+              "workshop": "Agent Evaluation",
+              "ticket_type": "student",
+              "delivery": "email"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "register_workshop",
+            "workshop": "Agent Evaluation",
+            "ticket_type": "student",
+            "delivery": "email",
+            "priority": [
+              "ticket_type",
+              "delivery"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "I just realized there is a time conflict. Please update the priority order to: ticket_type, delivery.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "ticket_type",
+                "delivery"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "register_workshop",
+            "workshop": "Agent Evaluation",
+            "ticket_type": "student",
+            "delivery": "email",
+            "priority": [
+              "ticket_type",
+              "delivery"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Also, make color silver.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "add": {
+              "color": "silver"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "register_workshop",
+            "workshop": "Agent Evaluation",
+            "ticket_type": "student",
+            "delivery": "email",
+            "priority": [
+              "ticket_type",
+              "delivery"
+            ],
+            "color": "silver"
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Please update the priority order to: delivery, ticket_type.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "delivery",
+                "ticket_type"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "register_workshop",
+            "workshop": "Agent Evaluation",
+            "ticket_type": "student",
+            "delivery": "email",
+            "priority": [
+              "delivery",
+              "ticket_type"
+            ],
+            "color": "silver"
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rerank_only"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_005",
+      "task_type": "transaction",
+      "subtype": "order_food",
+      "world_state": {
+        "sizes": [
+          "small",
+          "medium",
+          "large"
+        ],
+        "delivery_modes": [
+          "pickup",
+          "delivery"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to order food. item: pepperoni pizza. size: medium. delivery mode: delivery.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "order_food",
+              "item": "pepperoni pizza",
+              "size": "medium",
+              "delivery_mode": "delivery"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "order_food",
+            "item": "pepperoni pizza",
+            "size": "medium",
+            "delivery_mode": "delivery",
+            "priority": [
+              "delivery_mode",
+              "size"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Please change the size to alternative_medium.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "size": "alternative_medium"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "order_food",
+            "item": "pepperoni pizza",
+            "size": "alternative_medium",
+            "delivery_mode": "delivery",
+            "priority": [
+              "delivery_mode",
+              "size"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "I am leaning more toward saving money now. Please also add this requirement: delivery should be delivery.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "cost_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "delivery": "delivery"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "order_food",
+            "item": "pepperoni pizza",
+            "size": "alternative_medium",
+            "delivery_mode": "delivery",
+            "priority": [
+              "delivery_mode",
+              "size"
+            ],
+            "delivery": "delivery"
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rebook_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Also, make shipping express.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "add": {
+              "shipping": "express"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "order_food",
+            "item": "pepperoni pizza",
+            "size": "alternative_medium",
+            "delivery_mode": "delivery",
+            "priority": [
+              "delivery_mode",
+              "size"
+            ],
+            "delivery": "delivery",
+            "shipping": "express"
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rebook_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_006",
+      "task_type": "transaction",
+      "subtype": "book_train",
+      "world_state": {
+        "seat_options": [
+          "window",
+          "aisle"
+        ],
+        "classes": [
+          "economy",
+          "business"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to book train. route: Boston to NYC. date: 2026-04-18. class: economy. seat: aisle.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "book_train",
+              "route": "Boston to NYC",
+              "date": "2026-04-18",
+              "class": "economy",
+              "seat": "aisle"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_train",
+            "route": "Boston to NYC",
+            "date": "2026-04-18",
+            "class": "economy",
+            "seat": "aisle",
+            "priority": [
+              "date",
+              "class",
+              "seat"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "I would rather go with a different option now. Actually, window instead for seat.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "entity_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "seat": "window"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_train",
+            "route": "Boston to NYC",
+            "date": "2026-04-18",
+            "class": "economy",
+            "seat": "window",
+            "priority": [
+              "date",
+              "class",
+              "seat"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rebook_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "Please update the priority order to: date, class, seat.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "system_requirement",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "date",
+                "class",
+                "seat"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_train",
+            "route": "Boston to NYC",
+            "date": "2026-04-18",
+            "class": "economy",
+            "seat": "window",
+            "priority": [
+              "date",
+              "class",
+              "seat"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "The system seems to require a different setup. Please change the seat to aisle.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "system_requirement",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "seat": "aisle"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_train",
+            "route": "Boston to NYC",
+            "date": "2026-04-18",
+            "class": "economy",
+            "seat": "aisle",
+            "priority": [
+              "date",
+              "class",
+              "seat"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rebook_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_007",
+      "task_type": "transaction",
+      "subtype": "submit_application",
+      "world_state": {
+        "document_options": [
+          "resume_v1",
+          "resume_v2"
+        ],
+        "contact_methods": [
+          "email",
+          "phone"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to submit application. position: Research Intern. resume: resume_v1. contact method: email.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "submit_application",
+              "position": "Research Intern",
+              "resume": "resume_v1",
+              "contact_method": "email"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "submit_application",
+            "position": "Research Intern",
+            "resume": "resume_v1",
+            "contact_method": "email",
+            "priority": [
+              "position",
+              "resume",
+              "contact_method"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Please change the position to alternative_Research Intern.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "override": {
+              "position": "alternative_Research Intern"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "submit_application",
+            "position": "alternative_Research Intern",
+            "resume": "resume_v1",
+            "contact_method": "email",
+            "priority": [
+              "position",
+              "resume",
+              "contact_method"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "It looks like the original option may not be available. Actually, resume can be more flexible — resume_v2 is fine.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "resume": "resume_v2"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "submit_application",
+            "position": "alternative_Research Intern",
+            "resume": "resume_v2",
+            "contact_method": "email",
+            "priority": [
+              "position",
+              "resume",
+              "contact_method"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "It looks like the original option may not be available. I care more about contact_method now.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "contact_method",
+                "resume",
+                "position"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "submit_application",
+            "position": "alternative_Research Intern",
+            "resume": "resume_v2",
+            "contact_method": "email",
+            "priority": [
+              "contact_method",
+              "resume",
+              "position"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rerank_only"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_008",
+      "task_type": "transaction",
+      "subtype": "book_saloon",
+      "world_state": {
+        "service_types": [
+          "haircut",
+          "color"
+        ],
+        "payment_methods": [
+          "cash",
+          "card"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to book salon. service: haircut. date: 2026-04-02. payment method: card.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "book_salon",
+              "service": "haircut",
+              "date": "2026-04-02",
+              "payment_method": "card"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_salon",
+            "service": "haircut",
+            "date": "2026-04-02",
+            "payment_method": "card",
+            "priority": [
+              "date",
+              "service",
+              "payment_method"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "Convenience matters more to me now. Please also add this requirement: color should be silver.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "convenience_preference_change",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "color": "silver"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_salon",
+            "service": "haircut",
+            "date": "2026-04-02",
+            "payment_method": "card",
+            "priority": [
+              "date",
+              "service",
+              "payment_method"
+            ],
+            "color": "silver"
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "replan_required"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "That part can be more flexible.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "relax": {
+              "date": "2026-04-01"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_salon",
+            "service": "haircut",
+            "date": "2026-04-01",
+            "payment_method": "card",
+            "priority": [
+              "date",
+              "service",
+              "payment_method"
+            ],
+            "color": "silver"
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "requery_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "Please also add this requirement: insurance should be full.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "entity_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "add": {
+              "insurance": "full"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "book_salon",
+            "service": "haircut",
+            "date": "2026-04-01",
+            "payment_method": "card",
+            "priority": [
+              "date",
+              "service",
+              "payment_method"
+            ],
+            "color": "silver",
+            "insurance": "full"
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rebook_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_009",
+      "task_type": "transaction",
+      "subtype": "reserve_rental_car",
+      "world_state": {
+        "car_types": [
+          "sedan",
+          "SUV"
+        ],
+        "insurance_options": [
+          "basic",
+          "full"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to reserve rental car. pickup date: 2026-07-01. car type: sedan. insurance: basic.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "reserve_rental_car",
+              "pickup_date": "2026-07-01",
+              "car_type": "sedan",
+              "insurance": "basic"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "reserve_rental_car",
+            "pickup_date": "2026-07-01",
+            "car_type": "sedan",
+            "insurance": "basic",
+            "priority": [
+              "pickup_date",
+              "car_type",
+              "insurance"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "It looks like the original option may not be available. Priorities changed — optimize differently.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "pickup_date",
+                "insurance",
+                "car_type"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "reserve_rental_car",
+            "pickup_date": "2026-07-01",
+            "car_type": "sedan",
+            "insurance": "basic",
+            "priority": [
+              "pickup_date",
+              "insurance",
+              "car_type"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "It looks like the original option may not be available. We can relax the car type constraint. It can be SUV.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "car_type": "SUV"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "reserve_rental_car",
+            "pickup_date": "2026-07-01",
+            "car_type": "SUV",
+            "insurance": "basic",
+            "priority": [
+              "pickup_date",
+              "insurance",
+              "car_type"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "rebook_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "That part can be more flexible.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "relax": {
+              "insurance": "full"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "reserve_rental_car",
+            "pickup_date": "2026-07-01",
+            "car_type": "SUV",
+            "insurance": "full",
+            "priority": [
+              "pickup_date",
+              "insurance",
+              "car_type"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "rebook_required"
+        }
+      ]
+    },
+    {
+      "instance_id": "transaction_010",
+      "task_type": "transaction",
+      "subtype": "purchase_ticket",
+      "world_state": {
+        "sections": [
+          "front",
+          "middle",
+          "back"
+        ],
+        "delivery": [
+          "mobile",
+          "print"
+        ]
+      },
+      "turns": [
+        {
+          "turn_id": 1,
+          "user_utterance": "I need help to purchase ticket. event: concert. section: middle. delivery: mobile.",
+          "shift_condition": {
+            "type": "initial_request",
+            "reason": "initial_goal_specification",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "add": {
+              "goal": "purchase_ticket",
+              "event": "concert",
+              "section": "middle",
+              "delivery": "mobile"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "purchase_ticket",
+            "event": "concert",
+            "section": "middle",
+            "delivery": "mobile",
+            "priority": [
+              "section",
+              "delivery"
+            ]
+          },
+          "linguistic_style": "explicit",
+          "action_implication": "initial_query"
+        },
+        {
+          "turn_id": 2,
+          "user_utterance": "I care more about delivery now.",
+          "shift_condition": {
+            "type": "user_preference",
+            "reason": "entity_preference_change",
+            "explicitly_mentioned": false
+          },
+          "gold_delta": {
+            "reprioritize": {
+              "priority": [
+                "delivery",
+                "section"
+              ]
+            }
+          },
+          "gold_current_intention": {
+            "goal": "purchase_ticket",
+            "event": "concert",
+            "section": "middle",
+            "delivery": "mobile",
+            "priority": [
+              "delivery",
+              "section"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rerank_only"
+        },
+        {
+          "turn_id": 3,
+          "user_utterance": "It looks like the original option may not be available. Actually, section can be more flexible — back is fine.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "availability_issue",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "relax": {
+              "section": "back"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "purchase_ticket",
+            "event": "concert",
+            "section": "back",
+            "delivery": "mobile",
+            "priority": [
+              "delivery",
+              "section"
+            ]
+          },
+          "linguistic_style": "partial",
+          "action_implication": "rebook_required"
+        },
+        {
+          "turn_id": 4,
+          "user_utterance": "I just realized there is a time conflict. print instead.",
+          "shift_condition": {
+            "type": "real_world_feasibility",
+            "reason": "time_conflict",
+            "explicitly_mentioned": true
+          },
+          "gold_delta": {
+            "override": {
+              "delivery": "print"
+            }
+          },
+          "gold_current_intention": {
+            "goal": "purchase_ticket",
+            "event": "concert",
+            "section": "back",
+            "delivery": "print",
+            "priority": [
+              "delivery",
+              "section"
+            ]
+          },
+          "linguistic_style": "elliptical",
+          "action_implication": "rebook_required"
+        }
+      ]
+    }
+  ]
+}
