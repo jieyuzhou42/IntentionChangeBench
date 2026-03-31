@@ -1,0 +1,393 @@
+[
+  {
+    "instance_id": "webshop_demo_001",
+    "task_type": "transaction",
+    "subtype": "shopping",
+    "world_state": {
+      "domain": "webshop",
+      "catalog_subset": "demo"
+    },
+    "turns": [
+      {
+        "turn_id": 0,
+        "user_utterance": "Find me a black office chair under 120 dollars.",
+        "agent_action": null,
+        "env_feedback": null,
+        "trigger_evidence": null,
+        "shift_condition": null,
+        "gold_delta": {},
+        "gold_current_intention": {
+          "request": "Find me a black office chair under 120 dollars.",
+          "constraints": {
+            "category": "office chair",
+            "color": "black",
+            "budget_max": 120,
+            "brand": null
+          },
+          "priority": [
+            "category",
+            "budget_max",
+            "color",
+            "brand"
+          ]
+        },
+        "linguistic_style": "explicit",
+        "action_implication": "start_search"
+      },
+      {
+        "turn_id": 1,
+        "user_utterance": "Okay, the brand can be a bit more flexible.",
+        "agent_action": {
+          "action_type": "search",
+          "action_payload": {
+            "query": "black office chair"
+          }
+        },
+        "env_feedback": {
+          "status": "failed",
+          "feasible": false,
+          "reason": "no_matching_results",
+          "observation": {
+            "page_type": "results",
+            "instruction": "Instruction:Find me slim fit, machine wash women's jumpsuits, rompers & overalls with short sleeve, high waist, polyester spandex for daily wear with color: green stripe, and size: large, and price lower than 50.00 dollars",
+            "raw_text": "Instruction: [SEP] Find me slim fit, machine wash women's jumpsuits, rompers & overalls with short sleeve, high waist, polyester spandex for daily wear with color: green stripe, and size: large, and price lower than 50.00 dollars [SEP] Back to Search [SEP] Page 1 (Total results: 50) [SEP] Next > [SEP] B01N4QB5WP [SEP] MADISON & PARK Office Desk Chair Leather Computer Executive Conference Task Study Chair Adjustable Swivel Chair with Adjustable Arms (CAPPUCCINO) [SEP] $249.0 [SEP] B08P8LRFZ4 [SEP] MTFY Cute Faux Fur Desk Chair for Girls Women, Comfy Fluffy Modern Home Office Chair with Wheels, Elegant Swivel Fuzzy Vanity Chair Makeup Arm Chair for Living Room, Bedroom [SEP] $95.99 [SEP] B09L44298X [SEP] Velvet Desk Chair Home Office Chairs Swivel Vanity Chair with Wheels Tufted Accent Armchair Adjustable Computer Task Chair for Bedroom Living Room Study Room (Pink) [SEP] $170.99 [SEP] B08MQF4FV1 [SEP] Wahson Cute Faux Fur Task Chair with Wheels, Comfy Sherpa Fuzzy Swivel Desk Chair Armless, for Adults and Kids, Living Room, Bedroom, Vanity, Home Office, Grey [SEP] $139.99 [SEP] B06XG74CXC [SEP] Porthos Home Delilah Office Chair [SEP] $154.99 [SEP] B08LNFNXSD [SEP] Armchair Makeup Stool Lounge Stools Home Office Desk Chair Dining Chair Home Office Chair Floor Chair Computer Chair Ergonomic Learning Back Desk [SEP] $381.81 [SEP] B09GY58GDH [SEP] Set of 2 Velvet Upholstered Dining Chairs Soft Padded Button Tufted Wingback Chairs with Nailhead Trim and Wooden Legs,Easy Assembly(Black) [SEP] $238.99 [SEP] B09B7G7P58 [SEP] 3-Piece Dining Table Set, Farmhouse Counter Height Dining Table Set, Wood Dining Table Set with Drop Leaf Table/2 Cross Back Padded Chairs/One Shelf [SEP] $319.0 [SEP] B08FQTMCNM [SEP] Yaheetech Swivel Accent Chair Height Adjustable Modern Round Back Tilt Chair with Chrome Frame for Lounge, Pub, Bar - Dark Grey [SEP] $109.99 [SEP] B09N8SLFRJ [SEP] Patio Furniture Set of 3 Rocking Bistro Set Wicker Patio Furniture Sets Rattan Chair with Glass Coffee Table for Porch Yard Backyard or Bistro [SEP] $149.99",
+            "clickables": [],
+            "visible_items": [],
+            "selected_item": null,
+            "info": {},
+            "executed_action": "search[black office chair]"
+          },
+          "result": {
+            "price": 249.0,
+            "category": "office chair",
+            "color": "black"
+          },
+          "satisfied_constraints": [
+            "category",
+            "color"
+          ],
+          "violated_constraints": [
+            "budget_max"
+          ]
+        },
+        "trigger_evidence": {
+          "trigger_type": "infeasible",
+          "source": "environment",
+          "details": {
+            "reason": "no_matching_results",
+            "violated_constraints": [
+              "budget_max"
+            ]
+          }
+        },
+        "shift_condition": {
+          "type": "real_world_feasibility",
+          "reason": "no_matching_results",
+          "source": "environment",
+          "details": {
+            "violated_constraints": [
+              "budget_max"
+            ],
+            "result": {
+              "price": 249.0,
+              "category": "office chair",
+              "color": "black"
+            }
+          }
+        },
+        "gold_delta": {
+          "brand": {
+            "op": "relax",
+            "old": null,
+            "new": null,
+            "rationale": "drop strict brand requirement"
+          }
+        },
+        "gold_current_intention": {
+          "request": "Find me a black office chair under 120 dollars.",
+          "constraints": {
+            "category": "office chair",
+            "color": "black",
+            "budget_max": 120,
+            "brand": null
+          },
+          "priority": [
+            "category",
+            "budget_max",
+            "color",
+            "brand"
+          ]
+        },
+        "linguistic_style": "partial",
+        "action_implication": "requery"
+      },
+      {
+        "turn_id": 2,
+        "user_utterance": "That constraint may be too strict. You can relax the brand requirement to None.",
+        "agent_action": {
+          "action_type": "refine",
+          "action_payload": {
+            "query": "Find me a black office chair under 120 dollars."
+          }
+        },
+        "env_feedback": {
+          "status": "failed",
+          "feasible": false,
+          "reason": "no_matching_results",
+          "observation": {
+            "page_type": "results",
+            "instruction": "Instruction:Find me slim fit, machine wash women's jumpsuits, rompers & overalls with short sleeve, high waist, polyester spandex for daily wear with color: green stripe, and size: large, and price lower than 50.00 dollars",
+            "raw_text": "Instruction: [SEP] Find me slim fit, machine wash women's jumpsuits, rompers & overalls with short sleeve, high waist, polyester spandex for daily wear with color: green stripe, and size: large, and price lower than 50.00 dollars [SEP] Back to Search [SEP] Page 1 (Total results: 50) [SEP] Next > [SEP] B01N4QB5WP [SEP] MADISON & PARK Office Desk Chair Leather Computer Executive Conference Task Study Chair Adjustable Swivel Chair with Adjustable Arms (CAPPUCCINO) [SEP] $249.0 [SEP] B08P8LRFZ4 [SEP] MTFY Cute Faux Fur Desk Chair for Girls Women, Comfy Fluffy Modern Home Office Chair with Wheels, Elegant Swivel Fuzzy Vanity Chair Makeup Arm Chair for Living Room, Bedroom [SEP] $95.99 [SEP] B09L44298X [SEP] Velvet Desk Chair Home Office Chairs Swivel Vanity Chair with Wheels Tufted Accent Armchair Adjustable Computer Task Chair for Bedroom Living Room Study Room (Pink) [SEP] $170.99 [SEP] B08MQF4FV1 [SEP] Wahson Cute Faux Fur Task Chair with Wheels, Comfy Sherpa Fuzzy Swivel Desk Chair Armless, for Adults and Kids, Living Room, Bedroom, Vanity, Home Office, Grey [SEP] $139.99 [SEP] B06XG74CXC [SEP] Porthos Home Delilah Office Chair [SEP] $154.99 [SEP] B08LNFNXSD [SEP] Armchair Makeup Stool Lounge Stools Home Office Desk Chair Dining Chair Home Office Chair Floor Chair Computer Chair Ergonomic Learning Back Desk [SEP] $381.81 [SEP] B09QXG3BM2 [SEP] Women Lingerie Sexy Sets - Cage Bra + Corset Bandage Hollow G String Thong Panties Racy Muslin Sleepwear Underwear [SEP] $10.3 [SEP] B07FDJYBVW [SEP] Seacrest White Kitchen Cart by Linon [SEP] $331.77 [SEP] B09PZZJ2XG [SEP] WSSBK Portable Speaker Bar Computer Speaker 4D Stereo HiFi Sound Wired Computer Sound Bar USB Powered Soundbar Speaker for PC TV [SEP] $297.39 [SEP] B09PTQFBNT [SEP] Mulyyds Computer Desk with Drawers and Open Shelves, Modern Writing Desk Student Study Table Gaming Workstations PC Laptop Corner Desk for Small Spaces Home Office Dormitory (White, 43x19x27in) [SEP] $159.99",
+            "clickables": [],
+            "visible_items": [],
+            "selected_item": null,
+            "info": {},
+            "executed_action": "search[Find me a black office chair under 120 dollars.]"
+          },
+          "result": {
+            "price": 249.0,
+            "category": "office chair",
+            "color": "white"
+          },
+          "satisfied_constraints": [
+            "category"
+          ],
+          "violated_constraints": [
+            "color",
+            "budget_max"
+          ]
+        },
+        "trigger_evidence": {
+          "trigger_type": "infeasible",
+          "source": "environment",
+          "details": {
+            "reason": "no_matching_results",
+            "violated_constraints": [
+              "color",
+              "budget_max"
+            ]
+          }
+        },
+        "shift_condition": {
+          "type": "real_world_feasibility",
+          "reason": "no_matching_results",
+          "source": "environment",
+          "details": {
+            "violated_constraints": [
+              "color",
+              "budget_max"
+            ],
+            "result": {
+              "price": 249.0,
+              "category": "office chair",
+              "color": "white"
+            }
+          }
+        },
+        "gold_delta": {
+          "brand": {
+            "op": "relax",
+            "old": null,
+            "new": null,
+            "rationale": "drop strict brand requirement"
+          }
+        },
+        "gold_current_intention": {
+          "request": "Find me a black office chair under 120 dollars.",
+          "constraints": {
+            "category": "office chair",
+            "color": "black",
+            "budget_max": 120,
+            "brand": null
+          },
+          "priority": [
+            "category",
+            "budget_max",
+            "color",
+            "brand"
+          ]
+        },
+        "linguistic_style": "explicit",
+        "action_implication": "requery"
+      },
+      {
+        "turn_id": 3,
+        "user_utterance": "Okay, the brand can be a bit more flexible.",
+        "agent_action": {
+          "action_type": "refine",
+          "action_payload": {
+            "query": "Find me a black office chair under 120 dollars."
+          }
+        },
+        "env_feedback": {
+          "status": "failed",
+          "feasible": false,
+          "reason": "no_matching_results",
+          "observation": {
+            "page_type": "results",
+            "instruction": "Instruction:Find me slim fit, machine wash women's jumpsuits, rompers & overalls with short sleeve, high waist, polyester spandex for daily wear with color: green stripe, and size: large, and price lower than 50.00 dollars",
+            "raw_text": "Instruction: [SEP] Find me slim fit, machine wash women's jumpsuits, rompers & overalls with short sleeve, high waist, polyester spandex for daily wear with color: green stripe, and size: large, and price lower than 50.00 dollars [SEP] Back to Search [SEP] Page 1 (Total results: 50) [SEP] Next > [SEP] B01N4QB5WP [SEP] MADISON & PARK Office Desk Chair Leather Computer Executive Conference Task Study Chair Adjustable Swivel Chair with Adjustable Arms (CAPPUCCINO) [SEP] $249.0 [SEP] B08P8LRFZ4 [SEP] MTFY Cute Faux Fur Desk Chair for Girls Women, Comfy Fluffy Modern Home Office Chair with Wheels, Elegant Swivel Fuzzy Vanity Chair Makeup Arm Chair for Living Room, Bedroom [SEP] $95.99 [SEP] B09L44298X [SEP] Velvet Desk Chair Home Office Chairs Swivel Vanity Chair with Wheels Tufted Accent Armchair Adjustable Computer Task Chair for Bedroom Living Room Study Room (Pink) [SEP] $170.99 [SEP] B08MQF4FV1 [SEP] Wahson Cute Faux Fur Task Chair with Wheels, Comfy Sherpa Fuzzy Swivel Desk Chair Armless, for Adults and Kids, Living Room, Bedroom, Vanity, Home Office, Grey [SEP] $139.99 [SEP] B06XG74CXC [SEP] Porthos Home Delilah Office Chair [SEP] $154.99 [SEP] B08LNFNXSD [SEP] Armchair Makeup Stool Lounge Stools Home Office Desk Chair Dining Chair Home Office Chair Floor Chair Computer Chair Ergonomic Learning Back Desk [SEP] $381.81 [SEP] B09QXG3BM2 [SEP] Women Lingerie Sexy Sets - Cage Bra + Corset Bandage Hollow G String Thong Panties Racy Muslin Sleepwear Underwear [SEP] $10.3 [SEP] B07FDJYBVW [SEP] Seacrest White Kitchen Cart by Linon [SEP] $331.77 [SEP] B09PZZJ2XG [SEP] WSSBK Portable Speaker Bar Computer Speaker 4D Stereo HiFi Sound Wired Computer Sound Bar USB Powered Soundbar Speaker for PC TV [SEP] $297.39 [SEP] B09PTQFBNT [SEP] Mulyyds Computer Desk with Drawers and Open Shelves, Modern Writing Desk Student Study Table Gaming Workstations PC Laptop Corner Desk for Small Spaces Home Office Dormitory (White, 43x19x27in) [SEP] $159.99",
+            "clickables": [],
+            "visible_items": [],
+            "selected_item": null,
+            "info": {},
+            "executed_action": "search[Find me a black office chair under 120 dollars.]"
+          },
+          "result": {
+            "price": 249.0,
+            "category": "office chair",
+            "color": "white"
+          },
+          "satisfied_constraints": [
+            "category"
+          ],
+          "violated_constraints": [
+            "color",
+            "budget_max"
+          ]
+        },
+        "trigger_evidence": {
+          "trigger_type": "infeasible",
+          "source": "environment",
+          "details": {
+            "reason": "no_matching_results",
+            "violated_constraints": [
+              "color",
+              "budget_max"
+            ]
+          }
+        },
+        "shift_condition": {
+          "type": "real_world_feasibility",
+          "reason": "no_matching_results",
+          "source": "environment",
+          "details": {
+            "violated_constraints": [
+              "color",
+              "budget_max"
+            ],
+            "result": {
+              "price": 249.0,
+              "category": "office chair",
+              "color": "white"
+            }
+          }
+        },
+        "gold_delta": {
+          "brand": {
+            "op": "relax",
+            "old": null,
+            "new": null,
+            "rationale": "drop strict brand requirement"
+          }
+        },
+        "gold_current_intention": {
+          "request": "Find me a black office chair under 120 dollars.",
+          "constraints": {
+            "category": "office chair",
+            "color": "black",
+            "budget_max": 120,
+            "brand": null
+          },
+          "priority": [
+            "category",
+            "budget_max",
+            "color",
+            "brand"
+          ]
+        },
+        "linguistic_style": "partial",
+        "action_implication": "requery"
+      },
+      {
+        "turn_id": 4,
+        "user_utterance": "That part can be more flexible.",
+        "agent_action": {
+          "action_type": "refine",
+          "action_payload": {
+            "query": "Find me a black office chair under 120 dollars."
+          }
+        },
+        "env_feedback": {
+          "status": "failed",
+          "feasible": false,
+          "reason": "no_matching_results",
+          "observation": {
+            "page_type": "results",
+            "instruction": "Instruction:Find me slim fit, machine wash women's jumpsuits, rompers & overalls with short sleeve, high waist, polyester spandex for daily wear with color: green stripe, and size: large, and price lower than 50.00 dollars",
+            "raw_text": "Instruction: [SEP] Find me slim fit, machine wash women's jumpsuits, rompers & overalls with short sleeve, high waist, polyester spandex for daily wear with color: green stripe, and size: large, and price lower than 50.00 dollars [SEP] Back to Search [SEP] Page 1 (Total results: 50) [SEP] Next > [SEP] B01N4QB5WP [SEP] MADISON & PARK Office Desk Chair Leather Computer Executive Conference Task Study Chair Adjustable Swivel Chair with Adjustable Arms (CAPPUCCINO) [SEP] $249.0 [SEP] B08P8LRFZ4 [SEP] MTFY Cute Faux Fur Desk Chair for Girls Women, Comfy Fluffy Modern Home Office Chair with Wheels, Elegant Swivel Fuzzy Vanity Chair Makeup Arm Chair for Living Room, Bedroom [SEP] $95.99 [SEP] B09L44298X [SEP] Velvet Desk Chair Home Office Chairs Swivel Vanity Chair with Wheels Tufted Accent Armchair Adjustable Computer Task Chair for Bedroom Living Room Study Room (Pink) [SEP] $170.99 [SEP] B08MQF4FV1 [SEP] Wahson Cute Faux Fur Task Chair with Wheels, Comfy Sherpa Fuzzy Swivel Desk Chair Armless, for Adults and Kids, Living Room, Bedroom, Vanity, Home Office, Grey [SEP] $139.99 [SEP] B06XG74CXC [SEP] Porthos Home Delilah Office Chair [SEP] $154.99 [SEP] B08LNFNXSD [SEP] Armchair Makeup Stool Lounge Stools Home Office Desk Chair Dining Chair Home Office Chair Floor Chair Computer Chair Ergonomic Learning Back Desk [SEP] $381.81 [SEP] B09QXG3BM2 [SEP] Women Lingerie Sexy Sets - Cage Bra + Corset Bandage Hollow G String Thong Panties Racy Muslin Sleepwear Underwear [SEP] $10.3 [SEP] B07FDJYBVW [SEP] Seacrest White Kitchen Cart by Linon [SEP] $331.77 [SEP] B09PZZJ2XG [SEP] WSSBK Portable Speaker Bar Computer Speaker 4D Stereo HiFi Sound Wired Computer Sound Bar USB Powered Soundbar Speaker for PC TV [SEP] $297.39 [SEP] B09PTQFBNT [SEP] Mulyyds Computer Desk with Drawers and Open Shelves, Modern Writing Desk Student Study Table Gaming Workstations PC Laptop Corner Desk for Small Spaces Home Office Dormitory (White, 43x19x27in) [SEP] $159.99",
+            "clickables": [],
+            "visible_items": [],
+            "selected_item": null,
+            "info": {},
+            "executed_action": "search[Find me a black office chair under 120 dollars.]"
+          },
+          "result": {
+            "price": 249.0,
+            "category": "office chair",
+            "color": "white"
+          },
+          "satisfied_constraints": [
+            "category"
+          ],
+          "violated_constraints": [
+            "color",
+            "budget_max"
+          ]
+        },
+        "trigger_evidence": {
+          "trigger_type": "infeasible",
+          "source": "environment",
+          "details": {
+            "reason": "no_matching_results",
+            "violated_constraints": [
+              "color",
+              "budget_max"
+            ]
+          }
+        },
+        "shift_condition": {
+          "type": "real_world_feasibility",
+          "reason": "no_matching_results",
+          "source": "environment",
+          "details": {
+            "violated_constraints": [
+              "color",
+              "budget_max"
+            ],
+            "result": {
+              "price": 249.0,
+              "category": "office chair",
+              "color": "white"
+            }
+          }
+        },
+        "gold_delta": {
+          "brand": {
+            "op": "relax",
+            "old": null,
+            "new": null,
+            "rationale": "drop strict brand requirement"
+          }
+        },
+        "gold_current_intention": {
+          "request": "Find me a black office chair under 120 dollars.",
+          "constraints": {
+            "category": "office chair",
+            "color": "black",
+            "budget_max": 120,
+            "brand": null
+          },
+          "priority": [
+            "category",
+            "budget_max",
+            "color",
+            "brand"
+          ]
+        },
+        "linguistic_style": "elliptical",
+        "action_implication": "requery"
+      }
+    ]
+  }
+]
