@@ -2,13 +2,16 @@ from __future__ import annotations
 
 import argparse
 import copy
+import os
 import random
 from typing import Any, Dict, List
+from pathlib import Path
 
 from agents.oracle_executor import OracleWebShopExecutor
 from evaluators.runtime_logger import RuntimeLogger
-from models import BaseTask, DialogueInstance, TurnRecord
+from models import BaseTask, DialogueInstance, ShiftOp, TurnRecord
 from simulators.human_simulator import HumanSimulator
+from simulators.llm_clients import AzureOpenAIChatClient
 from simulators.trigger_detector import detect_trigger
 import gym
 from web_agent_site.envs import WebAgentTextEnv
@@ -17,9 +20,59 @@ from envs.webshop_env import WebShopEnvAdapter
 STYLE_POOL = ["explicit", "partial", "elliptical"]
 
 
-def make_demo_webshop_task() -> BaseTask:
+def load_local_dotenv(dotenv_path: str | None = None, override: bool = False) -> None:
+    """
+    Load simple KEY=VALUE pairs from a local `.env` file.
+
+    This keeps the project dependency-free while still supporting local secret
+    configuration for the simulator. Existing environment variables are
+    preserved by default.
+    """
+
+    candidate_paths = []
+    if dotenv_path:
+        candidate_paths.append(Path(dotenv_path))
+    else:
+        repo_root = Path(__file__).resolve().parent.parent
+        candidate_paths.extend(
+            [
+                Path.cwd() / ".env",
+                repo_root / ".env",
+            ]
+        )
+
+    seen = set()
+    for path in candidate_paths:
+        resolved = path.resolve()
+        if resolved in seen or not resolved.is_file():
+            continue
+        seen.add(resolved)
+
+        for raw_line in resolved.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip()
+            if not key:
+                continue
+
+            if (
+                len(value) >= 2
+                and value[0] == value[-1]
+                and value[0] in {"'", '"'}
+            ):
+                value = value[1:-1]
+
+            if override or key not in os.environ:
+                os.environ[key] = value
+
+
+def make_demo_webshop_task(instance_index: int = 1) -> BaseTask:
     return BaseTask(
-        instance_id="webshop_demo_001",
+        instance_id=f"webshop_demo_{instance_index:03d}",
         task_type="transaction",
         subtype="shopping",
         world_state={
@@ -104,7 +157,11 @@ def simulate_dialogue_instance(
             action_implication = "requery" if shift.op in {"relax", "override"} else "continue"
         else:
             delta = {}
-            user_utt = "Looks good, continue."
+            user_utt = human_simulator.realize_shift(
+                ShiftOp(op="none", rationale="no_trigger"),
+                current_intention,
+                style,
+            )
             shift_condition = None
             action_implication = "continue"
 
@@ -164,13 +221,28 @@ def simulate_dialogue_instance(
 
 
 def main():
+    load_local_dotenv()
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=str, default="../data/webshop_simulated_dataset.json")
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--max_turns", type=int, default=4)
+    parser.add_argument("--num_instances", type=int, default=1)
+    parser.add_argument(
+        "--human_llm_backend",
+        type=str,
+        choices=["mock", "azure"],
+        default=os.getenv("HUMAN_SIMULATOR_LLM_BACKEND", "mock"),
+    )
+    parser.add_argument(
+        "--azure_api_version",
+        type=str,
+        default=os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21"),
+    )
     args = parser.parse_args()
 
-    task = make_demo_webshop_task()
+    if args.num_instances < 1:
+        raise ValueError("--num_instances must be at least 1")
     # Gym v0.24 env_checker can behave poorly with older envs; disable it.
     raw_env = gym.make(
         "WebAgentTextEnv-v0",
@@ -183,20 +255,29 @@ def main():
         raw_env = WebAgentTextEnv(observation_mode="text", num_products=1000)
     env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
     agent = OracleWebShopExecutor()
-    human = HumanSimulator(seed=args.seed)
+    if args.human_llm_backend == "azure":
+        human = HumanSimulator(
+            llm_client=AzureOpenAIChatClient.from_env(api_version=args.azure_api_version),
+            seed=args.seed,
+        )
+    else:
+        human = HumanSimulator(seed=args.seed)
     logger = RuntimeLogger()
 
-    instance = simulate_dialogue_instance(
-        task=task,
-        env=env,
-        execution_agent=agent,
-        human_simulator=human,
-        max_turns=args.max_turns,
-        seed=args.seed,
-    )
-    logger.log_instance(instance)
+    for instance_index in range(1, args.num_instances + 1):
+        task = make_demo_webshop_task(instance_index=instance_index)
+        instance = simulate_dialogue_instance(
+            task=task,
+            env=env,
+            execution_agent=agent,
+            human_simulator=human,
+            max_turns=args.max_turns,
+            seed=args.seed + instance_index - 1,
+        )
+        logger.log_instance(instance)
+
     logger.dump_json(args.output)
-    print(f"Saved to {args.output}")
+    print(f"Saved {len(logger.instances)} instances to {args.output}")
 
 
 if __name__ == "__main__":

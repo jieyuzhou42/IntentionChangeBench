@@ -14,11 +14,13 @@ class ShiftCondition:
 
 @dataclass
 class ShiftOp:
-    op: str  # add / relax / override / reprioritize / none
+    op: str  # relax / override / reprioritize / scope_correction / none
     field: Optional[str] = None
     value: Any = None
     old_value: Any = None
     rationale: str = ""
+    priority_update: Optional[List[str]] = None
+    utterance_plan: Optional[Dict[str, Any]] = None
 
 
 @dataclass
