@@ -7,7 +7,7 @@ import random
 from typing import Any, Dict, List
 from pathlib import Path
 
-from agents.oracle_executor import OracleWebShopExecutor
+from agents.llm_executor import LLMWebShopExecutor
 from evaluators.runtime_logger import RuntimeLogger
 from models import BaseTask, DialogueInstance, TurnRecord
 from simulators.human_simulator import HumanSimulator
@@ -243,7 +243,7 @@ def main():
     parser.add_argument("--output", type=str, default="../data/webshop_simulated_dataset.json")
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--max_turns", type=int, default=4)
-    parser.add_argument("--num_instances", type=int, default=1)
+    parser.add_argument("--num_instances", type=int, default=10)
     parser.add_argument(
         "--azure_api_version",
         type=str,
@@ -264,10 +264,9 @@ def main():
         # Defensive fallback for edge cases where gym.make returns None.
         raw_env = WebAgentTextEnv(observation_mode="text", num_products=1000)
     env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
-    agent = OracleWebShopExecutor()
-    human = HumanSimulator(
-        llm_client=AzureOpenAIChatClient.from_env(api_version=args.azure_api_version),
-    )
+    llm_client = AzureOpenAIChatClient.from_env(api_version=args.azure_api_version)
+    agent = LLMWebShopExecutor(llm_client=llm_client)
+    human = HumanSimulator(llm_client=llm_client)
     logger = RuntimeLogger()
 
     for instance_index in range(1, args.num_instances + 1):
