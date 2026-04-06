@@ -9,10 +9,9 @@ from pathlib import Path
 
 from agents.oracle_executor import OracleWebShopExecutor
 from evaluators.runtime_logger import RuntimeLogger
-from models import BaseTask, DialogueInstance, ShiftOp, TurnRecord
+from models import BaseTask, DialogueInstance, TurnRecord
 from simulators.human_simulator import HumanSimulator
 from simulators.llm_clients import AzureOpenAIChatClient
-from simulators.trigger_detector import detect_trigger
 import gym
 from web_agent_site.envs import WebAgentTextEnv
 from envs.webshop_env import WebShopEnvAdapter
@@ -139,31 +138,52 @@ def simulate_dialogue_instance(
     for turn_id in range(1, max_turns + 1):
         agent_action = execution_agent.act(history, current_intention, env_obs)
         env_feedback = env.step(agent_action, current_intention)
-
-        trigger, evidence = detect_trigger(env_feedback, current_intention)
         style = rng.choice(STYLE_POOL)
-
-        if trigger is not None:
-            shift = human_simulator.decide_shift(trigger, current_intention)
-            new_intention, delta = human_simulator.apply_shift(current_intention, shift)
-            user_utt = human_simulator.realize_shift(shift, current_intention, style)
+        shift = human_simulator.decide_shift(
+            current_intention,
+            agent_action=agent_action,
+            env_feedback=env_feedback,
+            history=history,
+        )
+        new_intention, delta = human_simulator.apply_shift(current_intention, shift)
+        user_utt = human_simulator.realize_shift(
+            shift,
+            current_intention,
+            style,
+            agent_action=agent_action,
+            env_feedback=env_feedback,
+            history=history,
+        )
+        shift_condition = None
+        trigger_evidence = {
+            "trigger_type": "none",
+            "source": "simulator",
+            "details": {},
+        }
+        if shift.op != "none":
             shift_condition = {
-                "type": trigger.type,
-                "reason": trigger.reason,
-                "source": trigger.source,
-                "details": trigger.details,
+                "type": "llm_inferred_shift",
+                "reason": shift.rationale,
+                "source": "simulator",
+                "details": {
+                    "op": shift.op,
+                    "field": shift.field,
+                    "old_value": shift.old_value,
+                    "value": shift.value,
+                    "priority_update": shift.priority_update,
+                },
             }
-            current_intention = new_intention
-            action_implication = "requery" if shift.op in {"relax", "override"} else "continue"
-        else:
-            delta = {}
-            user_utt = human_simulator.realize_shift(
-                ShiftOp(op="none", rationale="no_trigger"),
-                current_intention,
-                style,
-            )
-            shift_condition = None
-            action_implication = "continue"
+            trigger_evidence = {
+                "trigger_type": "llm_inferred_shift",
+                "source": "simulator",
+                "details": {
+                    "op": shift.op,
+                    "field": shift.field,
+                    "rationale": shift.rationale,
+                },
+            }
+        current_intention = new_intention
+        action_implication = "requery" if shift.op in {"relax", "override"} else "continue"
 
         turns.append(
             TurnRecord(
@@ -182,11 +202,7 @@ def simulate_dialogue_instance(
                     "satisfied_constraints": env_feedback.satisfied_constraints,
                     "violated_constraints": env_feedback.violated_constraints,
                 },
-                trigger_evidence={
-                    "trigger_type": evidence.trigger_type,
-                    "source": evidence.source,
-                    "details": evidence.details,
-                },
+                trigger_evidence=trigger_evidence,
                 shift_condition=shift_condition,
                 gold_delta=delta,
                 gold_current_intention=copy.deepcopy(current_intention),
@@ -229,12 +245,6 @@ def main():
     parser.add_argument("--max_turns", type=int, default=4)
     parser.add_argument("--num_instances", type=int, default=1)
     parser.add_argument(
-        "--human_llm_backend",
-        type=str,
-        choices=["mock", "azure"],
-        default=os.getenv("HUMAN_SIMULATOR_LLM_BACKEND", "mock"),
-    )
-    parser.add_argument(
         "--azure_api_version",
         type=str,
         default=os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21"),
@@ -255,13 +265,9 @@ def main():
         raw_env = WebAgentTextEnv(observation_mode="text", num_products=1000)
     env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
     agent = OracleWebShopExecutor()
-    if args.human_llm_backend == "azure":
-        human = HumanSimulator(
-            llm_client=AzureOpenAIChatClient.from_env(api_version=args.azure_api_version),
-            seed=args.seed,
-        )
-    else:
-        human = HumanSimulator(seed=args.seed)
+    human = HumanSimulator(
+        llm_client=AzureOpenAIChatClient.from_env(api_version=args.azure_api_version),
+    )
     logger = RuntimeLogger()
 
     for instance_index in range(1, args.num_instances + 1):

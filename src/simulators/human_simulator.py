@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import copy
 import json
-import random
 import re
 from dataclasses import asdict
 from typing import Any, Dict, List, Optional, Protocol, Tuple
 
-from models import ShiftCondition, ShiftOp
+from models import AgentAction, EnvFeedback, ShiftOp
 
 
 ALLOWED_SHIFT_OPS = {
@@ -18,7 +17,6 @@ ALLOWED_SHIFT_OPS = {
     "scope_correction",
 }
 
-OBSERVATION_REPAIR_REASONS = {"available_option_not_selected"}
 ALLOWED_STYLES = {"explicit", "partial", "elliptical"}
 ALLOWED_DIRECTNESS = {"direct", "indirect"}
 SHIFT_CONTEXT_MARKER = "SHIFT_CONTEXT_JSON:"
@@ -69,17 +67,6 @@ def _parse_json_like(raw: Any) -> Optional[Dict[str, Any]]:
     except json.JSONDecodeError:
         return None
 
-
-def _extract_prompt_payload(prompt: str, marker: str) -> Dict[str, Any]:
-    marker_index = prompt.rfind(marker)
-    if marker_index < 0:
-        return {}
-
-    raw_payload = prompt[marker_index + len(marker):].strip()
-    parsed = _parse_json_like(raw_payload)
-    return parsed or {}
-
-
 def _clean_string(value: Any) -> str:
     return str(value).strip()
 
@@ -99,280 +86,7 @@ def _format_value(value: Any) -> str:
     return str(value)
 
 
-class MockLLMClient:
-    """
-    Deterministic local client for tests and offline runs.
-
-    It reads the machine-readable prompt payload and returns structured
-    decisions / utterances without external dependencies.
-    """
-
-    def __init__(self, seed: int = 7):
-        self.rng = random.Random(seed)
-
-    def generate_json(self, prompt: str) -> Dict[str, Any]:
-        context = _extract_prompt_payload(prompt, SHIFT_CONTEXT_MARKER)
-        return self._decide_shift_from_context(context)
-
-    def generate_text(self, prompt: str) -> str:
-        context = _extract_prompt_payload(prompt, REALIZATION_CONTEXT_MARKER)
-        return self._realize_from_context(context)
-
-    def _decide_shift_from_context(self, context: Dict[str, Any]) -> Dict[str, Any]:
-        trigger = context.get("trigger", {})
-        trigger_type = trigger.get("type")
-        details = trigger.get("details", {}) or {}
-        user_state = context.get("user_state", {}) or {}
-        constraints = user_state.get("constraints", {}) or {}
-        priority = user_state.get("priority", list(constraints.keys())) or list(constraints.keys())
-        result = context.get("result", {}) or details.get("result", {}) or {}
-        violated = context.get("violated_constraints", []) or details.get("violated_constraints", []) or []
-        pref_mismatches = (
-            context.get("preference_mismatches", [])
-            or details.get("preference_mismatches", [])
-            or []
-        )
-
-        if trigger_type == "real_world_feasibility":
-            reason = trigger.get("reason")
-            available_not_selected = details.get("available_but_not_selected", []) or []
-            if reason in OBSERVATION_REPAIR_REASONS and available_not_selected:
-                field = available_not_selected[0]
-                desired_value = constraints.get(field)
-                return {
-                    "op": "scope_correction",
-                    "field": field,
-                    "old_value": constraints.get(field),
-                    "value": desired_value,
-                    "priority_update": priority,
-                    "rationale": "clarify the original requested option rather than changing preferences",
-                    "utterance_plan": {
-                        "style": "explicit",
-                        "directness": "direct",
-                        "mention_old_value": False,
-                    },
-                }
-
-            field = self._pick_feasibility_field(violated, priority, constraints)
-            if field is None:
-                return {
-                    "op": "none",
-                    "field": None,
-                    "old_value": None,
-                    "value": None,
-                    "priority_update": None,
-                    "rationale": "no relaxable field",
-                    "utterance_plan": {
-                        "style": "partial",
-                        "directness": "indirect",
-                        "mention_old_value": False,
-                    },
-                }
-
-            old_value = constraints.get(field)
-            value = self._default_relax_value(field, old_value)
-            return {
-                "op": "relax",
-                "field": field,
-                "old_value": old_value,
-                "value": value,
-                "priority_update": priority,
-                "rationale": "relax a lower-priority constraint to restore feasibility",
-                "utterance_plan": {
-                    "style": "partial",
-                    "directness": "indirect",
-                    "mention_old_value": False,
-                },
-            }
-
-        if trigger_type == "user_preference":
-            field = self._pick_low_priority_field(pref_mismatches, priority, constraints)
-            if field is None:
-                return {
-                    "op": "none",
-                    "field": None,
-                    "old_value": None,
-                    "value": None,
-                    "priority_update": None,
-                    "rationale": "no preference field selected",
-                    "utterance_plan": {
-                        "style": "partial",
-                        "directness": "direct",
-                        "mention_old_value": False,
-                    },
-                }
-
-            actual_value = result.get(field)
-            if actual_value is None:
-                return {
-                    "op": "none",
-                    "field": None,
-                    "old_value": None,
-                    "value": None,
-                    "priority_update": None,
-                    "rationale": "result missing preference value",
-                    "utterance_plan": {
-                        "style": "partial",
-                        "directness": "direct",
-                        "mention_old_value": False,
-                    },
-                }
-
-            return {
-                "op": "override",
-                "field": field,
-                "old_value": constraints.get(field),
-                "value": actual_value,
-                "priority_update": priority,
-                "rationale": "user changes preference after inspecting the result",
-                "utterance_plan": {
-                    "style": "partial",
-                    "directness": "direct",
-                    "mention_old_value": False,
-                },
-            }
-
-        return {
-            "op": "none",
-            "field": None,
-            "old_value": None,
-            "value": None,
-            "priority_update": None,
-            "rationale": "no trigger",
-            "utterance_plan": {
-                "style": "partial",
-                "directness": "direct",
-                "mention_old_value": False,
-            },
-        }
-
-    def _realize_from_context(self, context: Dict[str, Any]) -> str:
-        shift = context.get("shift", {}) or {}
-        plan = shift.get("utterance_plan", {}) or {}
-        style = context.get("requested_style") or plan.get("style") or "explicit"
-        style = style if style in ALLOWED_STYLES else "explicit"
-        directness = plan.get("directness", "direct")
-        mention_old_value = bool(plan.get("mention_old_value"))
-        op = shift.get("op", "none")
-        field = shift.get("field")
-        value = shift.get("value")
-        old_value = shift.get("old_value")
-        priority_update = shift.get("priority_update") or []
-        field_text = str(field).replace("_", " ") if field else "that"
-        value_text = _format_value(value)
-        old_text = _format_value(old_value)
-
-        if op == "none":
-            return "Let's keep the current constraints for now."
-
-        if op == "relax":
-            if style == "explicit":
-                if mention_old_value and old_value is not None:
-                    return (
-                        f"We can ease the {field_text} constraint a bit, from "
-                        f"{old_text} to {value_text}."
-                    )
-                return f"We can be a bit more flexible on {field_text}; set it to {value_text}."
-            if style == "partial":
-                if directness == "indirect":
-                    return f"I'm okay being a little looser on {field_text}."
-                return f"Let's relax {field_text} a bit."
-            return f"{field_text} can be more flexible."
-
-        if op == "override":
-            if style == "explicit":
-                if mention_old_value and old_value is not None:
-                    return f"Actually, change the {field_text} from {old_text} to {value_text}."
-                return f"Actually, let's make the {field_text} {value_text}."
-            if style == "partial":
-                return f"Let's go with {value_text} instead."
-            return f"{value_text} instead."
-
-        if op == "reprioritize":
-            top_field = priority_update[0] if priority_update else field
-            top_text = str(top_field).replace("_", " ") if top_field else "that"
-            if style == "explicit":
-                return f"Let's keep the same constraints, but prioritize {top_text} first."
-            if style == "partial":
-                return f"Let's focus more on {top_text}."
-            return f"{top_text} first."
-
-        if op == "scope_correction":
-            if style == "explicit":
-                return f"I still want {field_text} {value_text}."
-            if style == "partial":
-                return f"Still need {field_text} {value_text}."
-            return f"{field_text} {value_text}."
-
-        return "Please update that requirement."
-
-    def _pick_low_priority_field(
-        self,
-        candidate_fields: List[str],
-        priority: List[str],
-        constraints: Dict[str, Any],
-    ) -> Optional[str]:
-        valid = []
-        for field in candidate_fields:
-            if field in constraints and constraints.get(field) is not None:
-                valid.append(field)
-
-        ordered = [field for field in reversed(priority) if field in valid]
-        return ordered[0] if ordered else (valid[0] if valid else None)
-
-    def _pick_feasibility_field(
-        self,
-        violated: List[str],
-        priority: List[str],
-        constraints: Dict[str, Any],
-    ) -> Optional[str]:
-        top_priority = priority[0] if priority else None
-        non_top_violated = [
-            field
-            for field in reversed(priority)
-            if field in violated and constraints.get(field) is not None and field != top_priority
-        ]
-        if non_top_violated:
-            return non_top_violated[0]
-
-        relaxable_non_top = [
-            field
-            for field in reversed(priority)
-            if field in constraints and constraints.get(field) is not None and field != top_priority
-        ]
-        if relaxable_non_top:
-            return relaxable_non_top[0]
-
-        violated_any = [
-            field
-            for field in reversed(priority)
-            if field in violated and constraints.get(field) is not None
-        ]
-        if violated_any:
-            return violated_any[0]
-
-        relaxable_any = [
-            field
-            for field in reversed(priority)
-            if field in constraints and constraints.get(field) is not None
-        ]
-        return relaxable_any[0] if relaxable_any else None
-
-    def _default_relax_value(self, field: str, old_value: Any) -> Any:
-        if old_value is None:
-            return None
-        if field == "budget_max" and isinstance(old_value, (int, float)):
-            return round(float(old_value) * 1.25, 2)
-        if field.endswith("_max") and isinstance(old_value, (int, float)):
-            return round(float(old_value) * 1.25, 2)
-        if field.endswith("_min") and isinstance(old_value, (int, float)):
-            return round(float(old_value) * 0.8, 2)
-        if field in {"brand", "color"}:
-            return None
-        return None
-
-
-class LLMHumanSimulator:
+class HumanSimulator:
     """
     LLM-backed human simulator with deterministic state application.
 
@@ -381,39 +95,123 @@ class LLMHumanSimulator:
     transitions stay stable and easy to inspect.
     """
 
-    def __init__(self, llm_client: Optional[LLMClientProtocol] = None, seed: int = 7):
-        self.rng = random.Random(seed)
-        self.llm_client = llm_client or MockLLMClient(seed=seed)
+    def __init__(self, llm_client: LLMClientProtocol):
+        self.llm_client = llm_client
+
+    def _serialize_agent_action(self, agent_action: Optional[AgentAction]) -> Optional[Dict[str, Any]]:
+        if agent_action is None:
+            return None
+        return {
+            "action_type": agent_action.action_type,
+            "action_payload": dict(agent_action.action_payload or {}),
+        }
+
+    def _serialize_env_feedback(self, env_feedback: Optional[EnvFeedback]) -> Optional[Dict[str, Any]]:
+        if env_feedback is None:
+            return None
+
+        observation = env_feedback.observation or {}
+        raw_text = str(observation.get("raw_text", "") or "").strip()
+        clickables = observation.get("clickables", []) or []
+        visible_items = observation.get("visible_items", []) or []
+        item_context = observation.get("item_context")
+        serialized_item_context = None
+        if isinstance(item_context, dict):
+            serialized_item_context = {
+                "asin": item_context.get("asin"),
+                "title": item_context.get("title"),
+                "price": item_context.get("price"),
+                "pricing": list(item_context.get("pricing") or [])[:2],
+                "category": item_context.get("category"),
+                "product_category": item_context.get("product_category"),
+                "query": item_context.get("query"),
+                "description": str(item_context.get("description", "") or "").strip()[:3000],
+                "bullet_points": list(item_context.get("bullet_points") or [])[:8],
+                "rating": item_context.get("rating"),
+                "attributes": list(item_context.get("attributes") or [])[:12],
+                "main_image": item_context.get("main_image"),
+                "options": item_context.get("options") or {},
+                "selected_options": item_context.get("selected_options") or {},
+                "reviews": list(item_context.get("reviews") or [])[:3],
+                "instruction_text": item_context.get("instruction_text"),
+                "instruction_attributes": item_context.get("instruction_attributes"),
+                "brand": item_context.get("brand"),
+                "color": item_context.get("color"),
+            }
+
+        return {
+            "status": env_feedback.status,
+            "feasible": env_feedback.feasible,
+            "reason": env_feedback.reason,
+            "result": env_feedback.result or {},
+            "satisfied_constraints": list(env_feedback.satisfied_constraints or []),
+            "violated_constraints": list(env_feedback.violated_constraints or []),
+            "observation": {
+                "page_type": observation.get("page_type"),
+                "instruction": observation.get("instruction"),
+                "executed_action": observation.get("executed_action"),
+                "reward": observation.get("reward"),
+                "selected_item": observation.get("selected_item"),
+                "selected_asin": observation.get("selected_asin"),
+                "selected_options": observation.get("selected_options"),
+                "item_context": serialized_item_context,
+                "clickables": clickables[:40],
+                "visible_items": visible_items[:10],
+                "raw_text": raw_text[:4000],
+            },
+        }
+
+    def _serialize_history(
+        self,
+        history: Optional[List[Dict[str, Any]]],
+        max_items: int = 4,
+    ) -> List[Dict[str, Any]]:
+        if not isinstance(history, list) or not history:
+            return []
+
+        serialized: List[Dict[str, Any]] = []
+        for turn in history[-max_items:]:
+            if not isinstance(turn, dict):
+                continue
+
+            role = _clean_string(turn.get("role", "unknown")) or "unknown"
+            content = turn.get("content")
+            if isinstance(content, dict):
+                normalized_content = copy.deepcopy(content)
+            else:
+                normalized_content = _clean_string(content)
+
+            serialized.append(
+                {
+                    "role": role,
+                    "content": normalized_content,
+                }
+            )
+
+        return serialized
 
     def _build_shift_prompt(
         self,
-        trigger: ShiftCondition,
         user_state: Dict[str, Any],
+        agent_action: Optional[AgentAction] = None,
+        env_feedback: Optional[EnvFeedback] = None,
+        history: Optional[List[Dict[str, Any]]] = None,
     ) -> str:
         constraints = self._constraints_from_state(user_state)
         priority = self._priority_from_state(user_state, constraints)
-        details = trigger.details or {}
-
         context = {
-            "trigger": {
-                "type": trigger.type,
-                "reason": trigger.reason,
-                "source": trigger.source,
-                "details": details,
-            },
             "user_state": {
                 "request": user_state.get("request"),
                 "constraints": constraints,
                 "priority": priority,
             },
-            "violated_constraints": details.get("violated_constraints", []),
-            "satisfied_constraints": details.get("satisfied_constraints", []),
-            "preference_mismatches": details.get("preference_mismatches", []),
-            "result": details.get("result", {}),
+            "latest_agent_action": self._serialize_agent_action(agent_action),
+            "latest_env_feedback": self._serialize_env_feedback(env_feedback),
+            "recent_history": self._serialize_history(history),
         }
 
         instructions = """
-You are simulating a human user who may revise their intent after receiving environment feedback.
+You are simulating a human user reacting to the latest WebShop page and agent action.
 Return a single JSON object only.
 
 Allowed ops:
@@ -424,12 +222,13 @@ Allowed ops:
 - scope_correction
 
 Rules:
+- First decide whether the user would keep the current intention or revise it after seeing this page.
 - Prefer repairing the agent or clarifying the original request before changing preferences.
-- If the desired option is visibly available on the page but not selected, use scope_correction on the original field/value.
-- Only relax lower-priority constraints for real_world_feasibility when the environment suggests the original request may be infeasible.
+- If the desired option is visibly available on the page but not selected, prefer scope_correction on the original field/value.
+- Only relax lower-priority constraints when the page suggests the original request may be hard to satisfy.
 - Keep high-priority constraints stable unless the evidence strongly supports changing them.
-- For user_preference, allow natural override behavior when the inspected result genuinely changes the user's mind.
-- Keep the decision grounded in trigger evidence, result fields, observation details, and current priority ordering.
+- Allow natural override behavior when the inspected result genuinely changes the user's mind.
+- Treat adapter-provided status / feasible / reason as hints, not ground truth. Use the page text, visible items, selected item, and action context as the main evidence.
 - If no change is appropriate, return op="none".
 
 Required JSON schema:
@@ -460,15 +259,15 @@ Required JSON schema:
     def _parse_shift_output(
         self,
         llm_output: Optional[Dict[str, Any]],
-        trigger: ShiftCondition,
         user_state: Dict[str, Any],
+        env_feedback: Optional[EnvFeedback] = None,
     ) -> ShiftOp:
         if not llm_output:
             return ShiftOp(op="none", rationale="invalid_llm_output")
 
         constraints = self._constraints_from_state(user_state)
         priority = self._priority_from_state(user_state, constraints)
-        result = (trigger.details or {}).get("result", {}) or {}
+        result = (env_feedback.result if env_feedback is not None else None) or {}
 
         op = _clean_string(llm_output.get("op", "none")).lower()
         if op not in ALLOWED_SHIFT_OPS:
@@ -540,12 +339,19 @@ Required JSON schema:
 
     def decide_shift(
         self,
-        trigger: ShiftCondition,
         user_state: Dict[str, Any],
+        agent_action: Optional[AgentAction] = None,
+        env_feedback: Optional[EnvFeedback] = None,
+        history: Optional[List[Dict[str, Any]]] = None,
     ) -> ShiftOp:
-        prompt = self._build_shift_prompt(trigger, user_state)
+        prompt = self._build_shift_prompt(
+            user_state,
+            agent_action=agent_action,
+            env_feedback=env_feedback,
+            history=history,
+        )
         llm_output = self._call_llm_for_shift(prompt)
-        return self._parse_shift_output(llm_output, trigger, user_state)
+        return self._parse_shift_output(llm_output, user_state, env_feedback=env_feedback)
 
     def apply_shift(
         self,
@@ -593,6 +399,9 @@ Required JSON schema:
         shift: ShiftOp,
         user_state: Dict[str, Any],
         style: str,
+        agent_action: Optional[AgentAction] = None,
+        env_feedback: Optional[EnvFeedback] = None,
+        history: Optional[List[Dict[str, Any]]] = None,
     ) -> str:
         requested_style = style if style in ALLOWED_STYLES else "explicit"
         context = {
@@ -606,12 +415,16 @@ Required JSON schema:
                 ),
             },
             "shift": asdict(shift),
+            "latest_agent_action": self._serialize_agent_action(agent_action),
+            "latest_env_feedback": self._serialize_env_feedback(env_feedback),
+            "recent_history": self._serialize_history(history),
         }
 
         instructions = """
 Write the user's next utterance as a single short sentence.
 Ground the utterance strictly in the structured shift decision.
 Do not invent new constraints or changes that are not present in the shift object.
+Make the utterance responsive to the latest agent action and the current page feedback when that context is relevant.
 
 Style guide:
 - explicit: directly state the change
@@ -635,8 +448,23 @@ Return plain text only, with no quotes and no JSON.
         cleaned = raw_output.strip().strip('"').strip()
         return cleaned or None
 
-    def realize_shift(self, shift: ShiftOp, user_state: Dict[str, Any], style: str) -> str:
-        prompt = self._build_realization_prompt(shift, user_state, style)
+    def realize_shift(
+        self,
+        shift: ShiftOp,
+        user_state: Dict[str, Any],
+        style: str,
+        agent_action: Optional[AgentAction] = None,
+        env_feedback: Optional[EnvFeedback] = None,
+        history: Optional[List[Dict[str, Any]]] = None,
+    ) -> str:
+        prompt = self._build_realization_prompt(
+            shift,
+            user_state,
+            style,
+            agent_action=agent_action,
+            env_feedback=env_feedback,
+            history=history,
+        )
         utterance = self._call_llm_for_realization(prompt)
         if utterance:
             return utterance
@@ -848,32 +676,13 @@ Return plain text only, with no quotes and no JSON.
         return new_value != old_value
 
 
-class HumanSimulator(LLMHumanSimulator):
-    """Backward-compatible simulator name used by the existing pipeline."""
-
-
-def build_example_usage() -> Dict[str, Any]:
+def build_example_usage(llm_client: LLMClientProtocol) -> Dict[str, Any]:
     """
-    Small end-to-end example that exercises the three-stage flow with the
-    built-in mock client.
+    Small end-to-end example that exercises the three-stage flow with an
+    injected LLM client.
     """
 
-    simulator = LLMHumanSimulator(seed=7)
-    trigger = ShiftCondition(
-        type="real_world_feasibility",
-        reason="no_matching_results",
-        source="environment",
-        details={
-            "violated_constraints": ["budget_max", "color"],
-            "satisfied_constraints": ["category"],
-            "result": {
-                "category": "office chair",
-                "color": "blue",
-                "budget_max": 49.99,
-                "brand": "Acme",
-            },
-        },
-    )
+    simulator = HumanSimulator(llm_client=llm_client)
     user_state = {
         "request": "Find me a black office chair under 40 dollars.",
         "constraints": {
@@ -884,14 +693,38 @@ def build_example_usage() -> Dict[str, Any]:
         },
         "priority": ["category", "budget_max", "color", "brand"],
     }
+    env_feedback = EnvFeedback(
+        status="observed",
+        feasible=True,
+        reason="no_matching_results",
+        observation={
+            "page_type": "results",
+            "raw_text": "No results matched the request for a black office chair under $40.",
+            "visible_items": [],
+            "clickables": ["back to search"],
+        },
+        result={
+            "category": "office chair",
+            "color": "blue",
+            "price": 49.99,
+            "brand": "Acme",
+        },
+        satisfied_constraints=["category"],
+        violated_constraints=["budget_max", "color"],
+    )
 
-    shift = simulator.decide_shift(trigger, user_state)
+    shift = simulator.decide_shift(user_state, env_feedback=env_feedback)
     new_state, delta = simulator.apply_shift(user_state, shift)
-    user_utterance = simulator.realize_shift(shift, user_state, style="partial")
+    user_utterance = simulator.realize_shift(
+        shift,
+        user_state,
+        style="partial",
+        env_feedback=env_feedback,
+    )
 
     return {
-        "trigger_input": asdict(trigger),
         "user_state_input": copy.deepcopy(user_state),
+        "env_feedback_input": asdict(env_feedback),
         "shift_output": asdict(shift),
         "updated_state": new_state,
         "delta": delta,
@@ -901,8 +734,6 @@ def build_example_usage() -> Dict[str, Any]:
 
 __all__ = [
     "HumanSimulator",
-    "LLMHumanSimulator",
     "LLMClientProtocol",
-    "MockLLMClient",
     "build_example_usage",
 ]
