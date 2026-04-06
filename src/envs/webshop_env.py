@@ -83,7 +83,7 @@ class WebShopEnvAdapter(BaseEnv):
 
         if step_out is None:
             return EnvFeedback(
-                status="failed",
+                status="error",
                 feasible=False,
                 reason=f"env_action_error: {repr(last_error)}",
                 observation=self.last_observation,
@@ -106,8 +106,8 @@ class WebShopEnvAdapter(BaseEnv):
 
         if self._looks_like_no_results(obs):
             return EnvFeedback(
-                status="failed",
-                feasible=False,
+                status="observed",
+                feasible=True,
                 reason="no_matching_results",
                 observation={**obs, "executed_action": used_action},
                 result=result,
@@ -118,7 +118,7 @@ class WebShopEnvAdapter(BaseEnv):
         # reward can optionally help detect terminal purchase success
         if violated and satisfied:
             return EnvFeedback(
-                status="partial",
+                status="observed",
                 feasible=True,
                 reason="partial_constraint_failure",
                 observation={**obs, "executed_action": used_action, "reward": reward},
@@ -129,8 +129,8 @@ class WebShopEnvAdapter(BaseEnv):
 
         if violated and not satisfied:
             return EnvFeedback(
-                status="failed",
-                feasible=False,
+                status="observed",
+                feasible=True,
                 reason="constraint_mismatch",
                 observation={**obs, "executed_action": used_action, "reward": reward},
                 result=result,
@@ -139,7 +139,7 @@ class WebShopEnvAdapter(BaseEnv):
             )
 
         return EnvFeedback(
-            status="success",
+            status="observed",
             feasible=True,
             reason=None,
             observation={**obs, "executed_action": used_action, "reward": reward},
@@ -320,6 +320,9 @@ class WebShopEnvAdapter(BaseEnv):
         available_actions = self._safe_get_available_actions(self.last_observation)
         clickables = self._extract_clickables(info, obs_text, available_actions)
         visible_items = self._extract_visible_items_from_text(obs_text, clickables, page_type)
+        selected_asin = self._current_selected_asin()
+        selected_options = self._current_selected_options()
+        item_context = self._extract_item_context(page_type, selected_asin, selected_options)
 
         return {
             "page_type": page_type,
@@ -327,7 +330,10 @@ class WebShopEnvAdapter(BaseEnv):
             "raw_text": obs_text,
             "clickables": clickables,
             "visible_items": visible_items,
-            "selected_item": self._extract_selected_item(obs_text, page_type),
+            "selected_item": self._extract_selected_item(obs_text, page_type, item_context=item_context),
+            "selected_asin": selected_asin,
+            "selected_options": selected_options,
+            "item_context": item_context,
             "info": info,
         }
 
@@ -409,7 +415,12 @@ class WebShopEnvAdapter(BaseEnv):
                 i += 1
         return items
 
-    def _extract_selected_item(self, obs_text: str, page_type: str) -> Optional[Dict[str, Any]]:
+    def _extract_selected_item(
+        self,
+        obs_text: str,
+        page_type: str,
+        item_context: Optional[Dict[str, Any]] = None,
+    ) -> Optional[Dict[str, Any]]:
         if page_type != "item":
             return None
         parts = [p.strip() for p in obs_text.split("[SEP]") if p.strip()]
@@ -425,10 +436,24 @@ class WebShopEnvAdapter(BaseEnv):
         if title is None:
             title = self._guess_title_from_item_page(obs_text)
 
+        if item_context:
+            title = title or item_context.get("title")
+            if price is None:
+                pricing = item_context.get("pricing") or []
+                if pricing:
+                    price = pricing[0]
+                else:
+                    price = item_context.get("price")
+
         if title is None and price is None:
             return None
 
-        return {"title": title, "price": price}
+        selected = {"title": title, "price": price}
+        if item_context:
+            for key in ("asin", "category", "product_category", "rating", "brand", "color"):
+                if item_context.get(key) is not None:
+                    selected[key] = item_context[key]
+        return selected
 
     def _guess_title_from_item_page(self, obs_text: str) -> Optional[str]:
         lines = [x.strip() for x in obs_text.splitlines() if x.strip()]
@@ -462,6 +487,7 @@ class WebShopEnvAdapter(BaseEnv):
         - price/color/brand/category are parsed heuristically when possible
         """
         info = info or {}
+        item_context = obs.get("item_context") or {}
         selected = obs.get("selected_item")
         if selected:
             result = dict(selected)
@@ -478,7 +504,135 @@ class WebShopEnvAdapter(BaseEnv):
 
         parsed_attrs = self._parse_product_attrs_from_text(product_text)
         result.update(parsed_attrs)
+        if item_context:
+            enriched_result = {
+                "asin": item_context.get("asin"),
+                "title": item_context.get("title"),
+                "price": item_context.get("price"),
+                "pricing": item_context.get("pricing"),
+                "rating": item_context.get("rating"),
+                "category": item_context.get("category"),
+                "product_category": item_context.get("product_category"),
+                "query": item_context.get("query"),
+                "brand": item_context.get("brand"),
+                "color": item_context.get("color"),
+                "selected_options": item_context.get("selected_options"),
+            }
+            result.update({k: v for k, v in enriched_result.items() if v is not None})
         return result
+
+    def _extract_item_context(
+        self,
+        page_type: str,
+        selected_asin: Optional[str],
+        selected_options: Optional[Dict[str, Any]] = None,
+    ) -> Optional[Dict[str, Any]]:
+        if page_type != "item" or not selected_asin:
+            return None
+
+        product = self._lookup_product(selected_asin)
+        if not isinstance(product, dict):
+            return None
+
+        pricing = product.get("pricing") or []
+        price = pricing[0] if pricing else self._parse_price(str(product.get("Price", "")))
+        bullet_points = product.get("BulletPoints") or []
+        if not isinstance(bullet_points, list):
+            bullet_points = [str(bullet_points)]
+        reviews = product.get("Reviews") or []
+        normalized_reviews: List[Dict[str, Any]] = []
+        if isinstance(reviews, list):
+            for review in reviews[:3]:
+                if not isinstance(review, dict):
+                    continue
+                normalized_reviews.append(
+                    {
+                        "score": review.get("score"),
+                        "summary": review.get("summary"),
+                        "body": review.get("body"),
+                    }
+                )
+
+        return {
+            "asin": selected_asin,
+            "title": product.get("Title") or product.get("name"),
+            "price": price,
+            "pricing": pricing[:2],
+            "category": product.get("category"),
+            "product_category": product.get("product_category"),
+            "query": product.get("query"),
+            "description": product.get("Description"),
+            "bullet_points": bullet_points[:8],
+            "rating": product.get("Rating"),
+            "attributes": (product.get("Attributes") or [])[:12],
+            "main_image": product.get("MainImage"),
+            "options": product.get("options") or {},
+            "selected_options": dict(selected_options or {}),
+            "option_to_image": product.get("option_to_image") or {},
+            "reviews": normalized_reviews,
+            "instruction_text": product.get("instruction_text"),
+            "instruction_attributes": product.get("instruction_attributes"),
+            "brand": self._infer_brand_from_product(product),
+            "color": self._infer_color_from_product(product),
+        }
+
+    def _lookup_product(self, asin: str) -> Optional[Dict[str, Any]]:
+        server = getattr(self.webshop_env, "server", None)
+        product_item_dict = getattr(server, "product_item_dict", None)
+        if isinstance(product_item_dict, dict):
+            product = product_item_dict.get(asin)
+            if isinstance(product, dict):
+                return product
+        return None
+
+    def _get_session_state(self) -> Dict[str, Any]:
+        server = getattr(self.webshop_env, "server", None)
+        session_id = getattr(self.webshop_env, "session", None)
+        user_sessions = getattr(server, "user_sessions", None)
+        if session_id is None or not isinstance(user_sessions, dict):
+            return {}
+        session = user_sessions.get(session_id)
+        return session if isinstance(session, dict) else {}
+
+    def _current_selected_asin(self) -> Optional[str]:
+        session = self._get_session_state()
+        asin = session.get("asin")
+        return str(asin).strip().upper() if asin else None
+
+    def _current_selected_options(self) -> Dict[str, Any]:
+        session = self._get_session_state()
+        options = session.get("options") or {}
+        return dict(options) if isinstance(options, dict) else {}
+
+    def _infer_brand_from_product(self, product: Dict[str, Any]) -> Optional[str]:
+        for key in ("brand", "Brand"):
+            value = product.get(key)
+            if isinstance(value, str) and value.strip():
+                return value.strip()
+
+        title = str(product.get("Title", "") or "").strip()
+        if not title:
+            return None
+        head = re.split(r"[-:|,]", title, maxsplit=1)[0].strip()
+        if not head:
+            return None
+        words = head.split()
+        if not words:
+            return None
+        return " ".join(words[:3])
+
+    def _infer_color_from_product(self, product: Dict[str, Any]) -> Optional[str]:
+        search_space = " ".join(
+            [
+                str(product.get("Title", "") or ""),
+                str(product.get("Description", "") or ""),
+                " ".join(str(x) for x in product.get("BulletPoints", []) or []),
+            ]
+        ).lower()
+        for color in ["black", "white", "gray", "grey", "blue", "red", "green", "teal", "pink", "brown"]:
+            if color in search_space:
+                return color
+        return None
 
     def _parse_product_attrs_from_text(self, text: str) -> Dict[str, Any]:
         """

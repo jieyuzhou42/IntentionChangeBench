@@ -31,10 +31,10 @@ class AgentAction:
 
 @dataclass
 class EnvFeedback:
-    status: str  # success / failed / partial
-    feasible: bool
+    status: str  # adapter-level observation status, e.g. observed / error
+    feasible: bool  # adapter hint, not the benchmark's final shift decision
     reason: Optional[str] = None
-    observation: Dict[str, Any] = field(default_factory=dict)
+    observation: Dict[str, Any] = field(default_factory=dict)  # raw_text, actions, visible_items, item_context, etc.
     result: Dict[str, Any] = field(default_factory=dict)
     satisfied_constraints: List[str] = field(default_factory=list)
     violated_constraints: List[str] = field(default_factory=list)
