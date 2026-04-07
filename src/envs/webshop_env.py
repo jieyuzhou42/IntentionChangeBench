@@ -65,8 +65,75 @@ class WebShopEnvAdapter(BaseEnv):
     def get_observation(self) -> Dict[str, Any]:
         return self.last_observation
 
+    def summarize_current_state(self, user_state: Dict[str, Any]) -> EnvFeedback:
+        obs = dict(self.last_observation or {})
+        result = self._extract_result(obs, info=self.last_info)
+        satisfied, violated, constraint_debug = self._check_constraints(
+            result,
+            user_state,
+            include_debug=True,
+        )
+        selected_asin = obs.get("selected_asin")
+        selected_options = self._copy_selected_options(obs.get("selected_options"))
+        observation_payload = self._build_step_observation(
+            obs=obs,
+            used_action=None,
+            reward=None,
+            candidate_actions=[],
+            pre_selected_asin=selected_asin,
+            pre_selected_options=selected_options,
+            result=result,
+            constraint_debug=constraint_debug,
+        )
+        active_constraints = self._get_active_constraint_fields(user_state)
+
+        if self._looks_like_no_results(obs):
+            return EnvFeedback(
+                status="observed",
+                feasible=True,
+                reason="no_matching_results",
+                observation=observation_payload,
+                result=result,
+                satisfied_constraints=satisfied,
+                violated_constraints=violated or active_constraints,
+            )
+
+        if violated and satisfied:
+            return EnvFeedback(
+                status="observed",
+                feasible=True,
+                reason="partial_constraint_failure",
+                observation=observation_payload,
+                result=result,
+                satisfied_constraints=satisfied,
+                violated_constraints=violated,
+            )
+
+        if violated and not satisfied:
+            return EnvFeedback(
+                status="observed",
+                feasible=True,
+                reason="constraint_mismatch",
+                observation=observation_payload,
+                result=result,
+                satisfied_constraints=satisfied,
+                violated_constraints=violated,
+            )
+
+        return EnvFeedback(
+            status="observed",
+            feasible=True,
+            reason=None,
+            observation=observation_payload,
+            result=result,
+            satisfied_constraints=satisfied,
+            violated_constraints=violated,
+        )
+
     def step(self, agent_action: AgentAction, user_state: Dict[str, Any]) -> EnvFeedback:
         candidate_actions = self._serialize_action_candidates(agent_action)
+        pre_selected_asin = self._current_selected_asin()
+        pre_selected_options = self._current_selected_options()
 
         last_error = None
         step_out = None
@@ -101,15 +168,29 @@ class WebShopEnvAdapter(BaseEnv):
         self.last_observation = obs
 
         result = self._extract_result(obs, info=self.last_info)
-        satisfied, violated = self._check_constraints(result, user_state)
+        satisfied, violated, constraint_debug = self._check_constraints(
+            result,
+            user_state,
+            include_debug=True,
+        )
         active_constraints = self._get_active_constraint_fields(user_state)
+        observation_payload = self._build_step_observation(
+            obs=obs,
+            used_action=used_action,
+            reward=reward,
+            candidate_actions=candidate_actions,
+            pre_selected_asin=pre_selected_asin,
+            pre_selected_options=pre_selected_options,
+            result=result,
+            constraint_debug=constraint_debug,
+        )
 
         if self._looks_like_no_results(obs):
             return EnvFeedback(
                 status="observed",
                 feasible=True,
                 reason="no_matching_results",
-                observation={**obs, "executed_action": used_action},
+                observation=observation_payload,
                 result=result,
                 satisfied_constraints=satisfied,
                 violated_constraints=violated or active_constraints,
@@ -121,7 +202,7 @@ class WebShopEnvAdapter(BaseEnv):
                 status="observed",
                 feasible=True,
                 reason="partial_constraint_failure",
-                observation={**obs, "executed_action": used_action, "reward": reward},
+                observation=observation_payload,
                 result=result,
                 satisfied_constraints=satisfied,
                 violated_constraints=violated,
@@ -132,7 +213,7 @@ class WebShopEnvAdapter(BaseEnv):
                 status="observed",
                 feasible=True,
                 reason="constraint_mismatch",
-                observation={**obs, "executed_action": used_action, "reward": reward},
+                observation=observation_payload,
                 result=result,
                 satisfied_constraints=satisfied,
                 violated_constraints=violated,
@@ -142,7 +223,7 @@ class WebShopEnvAdapter(BaseEnv):
             status="observed",
             feasible=True,
             reason=None,
-            observation={**obs, "executed_action": used_action, "reward": reward},
+            observation=observation_payload,
             result=result,
             satisfied_constraints=satisfied,
             violated_constraints=violated,
@@ -183,7 +264,7 @@ class WebShopEnvAdapter(BaseEnv):
         if not instruction or not instruction.strip():
             return None
 
-        cleaned_instruction = instruction.replace("Instruction:", "").strip()
+        cleaned_instruction = re.sub(r"^\s*Instruction:\s*", "", instruction, flags=re.IGNORECASE).strip()
         if not cleaned_instruction:
             return None
 
@@ -192,19 +273,32 @@ class WebShopEnvAdapter(BaseEnv):
         constraints = {
             "category": None,
             "color": None,
+            "color_exact": None,
             "budget_max": None,
             "brand": None,
+            "brand_exact": None,
+            "size": None,
+            "size_exact": None,
         }
 
         m = re.search(r"price lower than ([0-9]+(?:\.[0-9]+)?)", text)
         if m:
             constraints["budget_max"] = float(m.group(1))
 
-        color_markers = ["black", "white", "green", "blue", "red", "pink", "grey", "gray"]
-        for c in color_markers:
-            if c in text:
-                constraints["color"] = c
-                break
+        for field in ("color", "size", "brand"):
+            exact_value = self._extract_labeled_constraint(cleaned_instruction, field)
+            if not exact_value:
+                exact_value = self._extract_unlabeled_constraint(cleaned_instruction, field)
+            if exact_value:
+                constraints[field] = exact_value
+                constraints[f"{field}_exact"] = exact_value
+
+        if constraints["color"] is None:
+            color_markers = ["black", "white", "green", "blue", "red", "pink", "grey", "gray"]
+            for c in color_markers:
+                if c in text:
+                    constraints["color"] = c
+                    break
 
         # very rough category extraction
         if "chair" in text:
@@ -217,6 +311,141 @@ class WebShopEnvAdapter(BaseEnv):
             "constraints": constraints,
             "priority": ["category", "budget_max", "color", "brand"],
         }
+
+    def _extract_labeled_constraint(self, instruction: str, label: str) -> Optional[str]:
+        pattern = (
+            rf"\b{re.escape(label)}\s*:\s*(.+?)"
+            rf"(?=(?:\s*\b(?:color|size|brand)\s*:|"
+            rf"\s+\bprice\b(?:\s*:|\s+lower\s+than|\s+under|\s+below)?|"
+            rf"[;,\n]|\[SEP\]|$))"
+        )
+        match = re.search(pattern, instruction, flags=re.IGNORECASE)
+        if not match:
+            return None
+
+        value = re.sub(r"\s+", " ", match.group(1)).strip(" \t\r\n.,;:")
+        return value or None
+
+    def _extract_unlabeled_constraint(self, instruction: str, field: str) -> Optional[str]:
+        if field == "color":
+            return self._extract_unlabeled_color_constraint(instruction)
+        if field == "size":
+            return self._extract_unlabeled_size_constraint(instruction)
+        if field == "brand":
+            return self._extract_unlabeled_brand_constraint(instruction)
+        return None
+
+    def _extract_quoted_option_phrase(self, instruction: str) -> Optional[str]:
+        for pattern in (r'"([^"]+)"', r"'([^']+)'"):
+            match = re.search(pattern, instruction)
+            if match:
+                value = re.sub(r"\s+", " ", match.group(1)).strip(" \t\r\n.,;:")
+                if value:
+                    return value
+        return None
+
+    def _extract_unlabeled_color_constraint(self, instruction: str) -> Optional[str]:
+        quoted = self._extract_quoted_option_phrase(instruction)
+        if quoted and self._phrase_has_color_hint(quoted):
+            return quoted
+
+        clauses = self._split_instruction_clauses(instruction)
+        best_candidate = None
+        best_score = (-1, -1)
+        token_pattern = r"[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)*"
+
+        for clause in clauses:
+            if re.search(r"\b(?:color|size|brand)\s*:", clause, flags=re.IGNORECASE):
+                continue
+
+            token_matches = list(re.finditer(token_pattern, clause))
+            tokens = [match.group(0) for match in token_matches]
+            for start in range(len(tokens)):
+                for end in range(start + 1, min(len(tokens), start + 4) + 1):
+                    window_tokens = tokens[start:end]
+                    if not any(self._token_has_color_hint(token) for token in window_tokens):
+                        continue
+
+                    candidate = self._trim_option_phrase(" ".join(window_tokens))
+                    if not candidate or not self._phrase_has_color_hint(candidate):
+                        continue
+
+                    score = (len(candidate.split()), len(candidate))
+                    if score > best_score:
+                        best_candidate = candidate
+                        best_score = score
+
+        return best_candidate
+
+    def _extract_unlabeled_size_constraint(self, instruction: str) -> Optional[str]:
+        quoted = self._extract_quoted_option_phrase(instruction)
+        if quoted and re.search(r"\b(?:xxs|xs|s|m|l|xl|xxl|small|medium|large)\b", quoted, flags=re.IGNORECASE):
+            return quoted
+
+        match = re.search(
+            r"\b(?:size\s+)?(xxs|xs|s|m|l|xl|xxl|small|medium|large)\b",
+            instruction,
+            flags=re.IGNORECASE,
+        )
+        if not match:
+            return None
+        return match.group(1)
+
+    def _extract_unlabeled_brand_constraint(self, instruction: str) -> Optional[str]:
+        quoted = self._extract_quoted_option_phrase(instruction)
+        if quoted and not self._phrase_has_color_hint(quoted):
+            return quoted
+
+        match = re.search(
+            r"\b(?:by|from)\s+([A-Za-z0-9][A-Za-z0-9&' -]{1,40})"
+            r"(?=(?:\s+\b(?:price|under|below|with|in|for)\b|[;,\n]|\[SEP\]|$))",
+            instruction,
+            flags=re.IGNORECASE,
+        )
+        if not match:
+            return None
+
+        value = re.sub(r"\s+", " ", match.group(1)).strip(" \t\r\n.,;:")
+        return value or None
+
+    def _split_instruction_clauses(self, instruction: str) -> List[str]:
+        text = re.sub(
+            r"\b(?:price\s+)?(?:lower\s+than|under|below)\s+[0-9]+(?:\.[0-9]+)?",
+            "|",
+            instruction,
+            flags=re.IGNORECASE,
+        )
+        return [part.strip() for part in re.split(r"[;,\n|]", text) if part.strip()]
+
+    def _token_has_color_hint(self, token: str) -> bool:
+        normalized = self._normalize_option_text(token)
+        parts = [part for part in re.split(r"[-_/]", normalized) if part]
+        search_terms = [normalized] + parts
+        color_markers = {"black", "white", "green", "blue", "red", "pink", "grey", "gray", "brown", "teal"}
+        return any(term in color_markers for term in search_terms)
+
+    def _phrase_has_color_hint(self, phrase: str) -> bool:
+        return any(self._token_has_color_hint(token) for token in phrase.split())
+
+    def _trim_option_phrase(self, phrase: str) -> str:
+        tokens = [token for token in phrase.split() if token]
+        if not tokens:
+            return ""
+
+        leading_stopwords = {
+            "a", "an", "the", "find", "get", "buy", "need", "want", "looking", "for", "with", "in", "show", "me",
+        }
+        trailing_stopwords = {
+            "chair", "chairs", "shirt", "shirts", "shoe", "shoes", "jumpsuit", "jumpsuits", "rompers", "overalls",
+            "item", "items", "product", "products", "option", "options", "office", "under", "below", "than", "price",
+        }
+
+        while tokens and self._normalize_option_text(tokens[0]) in leading_stopwords:
+            tokens.pop(0)
+        while tokens and self._normalize_option_text(tokens[-1]) in trailing_stopwords:
+            tokens.pop()
+
+        return " ".join(tokens)
 
     def _unpack_step_output(self, step_out):
         """
@@ -519,6 +748,43 @@ class WebShopEnvAdapter(BaseEnv):
                 "selected_options": item_context.get("selected_options"),
             }
             result.update({k: v for k, v in enriched_result.items() if v is not None})
+
+        selected_options = self._copy_selected_options(
+            obs.get("selected_options") or item_context.get("selected_options")
+        )
+        result["selected_options"] = selected_options
+
+        base_color = item_context.get("color") or result.get("color")
+        base_brand = item_context.get("brand") or result.get("brand")
+        base_category = item_context.get("category") or item_context.get("product_category") or result.get("category")
+
+        if base_color is not None:
+            result["base_color"] = base_color
+        if base_brand is not None:
+            result["base_brand"] = base_brand
+        if base_category is not None:
+            result["base_category"] = base_category
+
+        selected_color = self._get_selected_option_value(selected_options, "color")
+        selected_size = self._get_selected_option_value(selected_options, "size")
+        selected_brand = self._get_selected_option_value(selected_options, "brand")
+
+        if selected_color is not None:
+            result["selected_color"] = selected_color
+            result["color"] = selected_color
+        elif base_color is not None:
+            result["color"] = base_color
+
+        if selected_size is not None:
+            result["selected_size"] = selected_size
+            result["size"] = selected_size
+
+        if selected_brand is not None:
+            result["selected_brand"] = selected_brand
+            result["brand"] = selected_brand
+        elif base_brand is not None:
+            result["brand"] = base_brand
+
         return result
 
     def _extract_item_context(
@@ -681,7 +947,11 @@ class WebShopEnvAdapter(BaseEnv):
 
     def _get_active_constraint_fields(self, user_state: Dict[str, Any]) -> List[str]:
         constraints = user_state.get("constraints", {})
-        return [field for field, value in constraints.items() if value is not None]
+        return [
+            field
+            for field, value in constraints.items()
+            if value is not None and not field.endswith("_exact")
+        ]
 
     def _looks_like_asin(self, text: str) -> bool:
         return bool(re.fullmatch(r"[A-Z0-9]{10}", text.strip()))
@@ -695,20 +965,132 @@ class WebShopEnvAdapter(BaseEnv):
         except ValueError:
             return None
 
-    def _check_constraints(self, result: Dict[str, Any], user_state: Dict[str, Any]) -> tuple[List[str], List[str]]:
+    def _copy_selected_options(self, selected_options: Any) -> Dict[str, Any]:
+        return dict(selected_options) if isinstance(selected_options, dict) else {}
+
+    def _normalize_option_text(self, value: Any) -> str:
+        return re.sub(r"\s+", " ", str(value or "")).strip().lower()
+
+    def _get_selected_option_value(self, selected_options: Dict[str, Any], option_name: str) -> Optional[str]:
+        if not isinstance(selected_options, dict):
+            return None
+
+        target_name = self._normalize_option_text(option_name)
+        for key, value in selected_options.items():
+            if self._normalize_option_text(key) != target_name:
+                continue
+            value_text = re.sub(r"\s+", " ", str(value or "")).strip()
+            return value_text or None
+        return None
+
+    def _resolve_constraint_actual(
+        self,
+        result: Dict[str, Any],
+        field: str,
+    ) -> tuple[Optional[Any], Optional[str]]:
+        selected_options = self._copy_selected_options(result.get("selected_options"))
+
+        if field == "color":
+            for actual, source in (
+                (self._get_selected_option_value(selected_options, "color"), "selected_options.color"),
+                (result.get("selected_color"), "selected_color"),
+                (result.get("color"), "color"),
+                (result.get("base_color"), "base_color"),
+            ):
+                if actual is not None:
+                    return actual, source
+            return None, None
+
+        if field == "size":
+            for actual, source in (
+                (self._get_selected_option_value(selected_options, "size"), "selected_options.size"),
+                (result.get("selected_size"), "selected_size"),
+                (result.get("size"), "size"),
+            ):
+                if actual is not None:
+                    return actual, source
+            return None, None
+
+        if field == "brand":
+            for actual, source in (
+                (self._get_selected_option_value(selected_options, "brand"), "selected_options.brand"),
+                (result.get("selected_brand"), "selected_brand"),
+                (result.get("brand"), "brand"),
+                (result.get("base_brand"), "base_brand"),
+            ):
+                if actual is not None:
+                    return actual, source
+            return None, None
+
+        if field == "category":
+            for actual, source in (
+                (result.get("category"), "category"),
+                (result.get("base_category"), "base_category"),
+                (result.get("product_category"), "product_category"),
+            ):
+                if actual is not None:
+                    return actual, source
+            return None, None
+
+        return result.get(field), field if result.get(field) is not None else None
+
+    def _build_step_observation(
+        self,
+        obs: Dict[str, Any],
+        used_action: Optional[str],
+        reward: Any,
+        candidate_actions: List[str],
+        pre_selected_asin: Optional[str],
+        pre_selected_options: Dict[str, Any],
+        result: Dict[str, Any],
+        constraint_debug: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        post_selected_asin = obs.get("selected_asin")
+        post_selected_options = self._copy_selected_options(obs.get("selected_options"))
+
+        return {
+            **obs,
+            "executed_action": used_action,
+            "candidate_actions": list(candidate_actions),
+            "reward": reward,
+            "pre_step_selected_asin": pre_selected_asin,
+            "pre_step_selected_options": self._copy_selected_options(pre_selected_options),
+            "post_step_selected_asin": post_selected_asin,
+            "post_step_selected_options": post_selected_options,
+            "selection_changed": (
+                pre_selected_asin != post_selected_asin
+                or self._copy_selected_options(pre_selected_options) != post_selected_options
+            ),
+            "constraint_debug": constraint_debug,
+            "extracted_result": result,
+        }
+
+    def _check_constraints(
+        self,
+        result: Dict[str, Any],
+        user_state: Dict[str, Any],
+        include_debug: bool = False,
+    ) -> tuple[List[str], List[str]] | tuple[List[str], List[str], Dict[str, Any]]:
         constraints = user_state.get("constraints", {})
         satisfied, violated = [], []
+        debug: Dict[str, Any] = {}
 
         if not result:
             # do not mark everything violated blindly if the env simply hasn't exposed the attrs yet
-            return satisfied, []
+            return (satisfied, [], debug) if include_debug else (satisfied, [])
 
         for field, desired in constraints.items():
-            if desired is None:
+            if desired is None or field.endswith("_exact"):
                 continue
 
             if field == "budget_max":
                 price = result.get("price")
+                debug[field] = {
+                    "desired": desired,
+                    "actual": price,
+                    "actual_source": "price",
+                    "matched": None if price is None else price <= desired,
+                }
                 if price is None:
                     continue
                 if price <= desired:
@@ -716,13 +1098,29 @@ class WebShopEnvAdapter(BaseEnv):
                 else:
                     violated.append(field)
 
-            elif field in {"color", "brand", "category"}:
-                actual = result.get(field)
+            elif field in {"color", "size", "brand", "category"}:
+                desired_value = constraints.get(f"{field}_exact") or desired
+                actual, actual_source = self._resolve_constraint_actual(result, field)
+                matches = None
                 if actual is None:
+                    debug[field] = {
+                        "desired": desired_value,
+                        "actual": actual,
+                        "actual_source": actual_source,
+                        "matched": matches,
+                    }
                     continue
-                if str(actual).lower() == str(desired).lower():
+
+                matches = self._normalize_option_text(actual) == self._normalize_option_text(desired_value)
+                debug[field] = {
+                    "desired": desired_value,
+                    "actual": actual,
+                    "actual_source": actual_source,
+                    "matched": matches,
+                }
+                if matches:
                     satisfied.append(field)
                 else:
                     violated.append(field)
 
-        return satisfied, violated
+        return (satisfied, violated, debug) if include_debug else (satisfied, violated)

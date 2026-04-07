@@ -59,6 +59,9 @@ class TurnRecord:
     gold_current_intention: Dict[str, Any]
     linguistic_style: str
     action_implication: str
+    num_internal_steps: int = 0
+    stop_reason: Optional[str] = None
+    rollout_trace: List[Dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
