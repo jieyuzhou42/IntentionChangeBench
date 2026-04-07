@@ -86,6 +86,35 @@ class RecordingHumanSimulator:
         return "Keep going."
 
 
+class AddConstraintHumanSimulator(RecordingHumanSimulator):
+    def decide_shift(self, user_state, agent_action=None, env_feedback=None, history=None):
+        super().decide_shift(
+            user_state,
+            agent_action=agent_action,
+            env_feedback=env_feedback,
+            history=history,
+        )
+        return ShiftOp(
+            op="add",
+            field="brand",
+            old_value=None,
+            value="Field & Pine",
+            rationale="user adds a brand preference after seeing the item",
+        )
+
+    def apply_shift(self, current_intention, shift):
+        next_state = copy.deepcopy(current_intention)
+        next_state["constraints"]["brand"] = shift.value
+        return next_state, {
+            "brand": {
+                "op": "add",
+                "old": None,
+                "new": shift.value,
+                "rationale": shift.rationale,
+            }
+        }
+
+
 class MockRolloutEnv:
     def __init__(self, initial_observation=None):
         self.done = False
@@ -410,3 +439,39 @@ def test_execute_turn_stops_when_no_progress_repeats():
     assert rollout.num_internal_steps == 2
     assert [step["state_changed"] for step in rollout.rollout_trace] == [False, False]
     assert [step["made_progress"] for step in rollout.rollout_trace] == [False, False]
+
+
+def test_simulate_dialogue_marks_add_constraint_shift_as_requery():
+    env = MockRolloutEnv()
+    agent = ScriptedExecutionAgent(
+        [
+            AgentAction("search", {"query": "green stripe shirt large"}),
+            AgentAction("click", {"target": "B000GREEN1"}),
+            AgentAction("click", {"target": "green stripe"}),
+            AgentAction("click", {"target": "large"}),
+        ]
+    )
+    human = AddConstraintHumanSimulator()
+    task = BaseTask(
+        instance_id="webshop_add_constraint_test",
+        task_type="transaction",
+        subtype="shopping",
+        world_state={"domain": "webshop"},
+        initial_intention=_make_intention(),
+    )
+
+    instance = simulate_dialogue_instance(
+        task=task,
+        env=env,
+        execution_agent=agent,
+        human_simulator=human,
+        max_turns=1,
+        max_internal_steps=6,
+        seed=7,
+    )
+
+    turn = instance.turns[1]
+    assert turn.action_implication == "requery"
+    assert turn.shift_condition["details"]["op"] == "add"
+    assert turn.gold_delta["brand"]["op"] == "add"
+    assert turn.gold_current_intention["constraints"]["brand"] == "Field & Pine"

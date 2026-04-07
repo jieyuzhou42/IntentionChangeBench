@@ -14,7 +14,7 @@ class ShiftCondition:
 
 @dataclass
 class ShiftOp:
-    op: str  # relax / override / reprioritize / scope_correction / none
+    op: str  # add / relax / override / reprioritize / scope_correction / none
     field: Optional[str] = None
     value: Any = None
     old_value: Any = None
