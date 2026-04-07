@@ -611,7 +611,7 @@ def simulate_dialogue_instance(
                 },
             }
         current_intention = new_intention
-        action_implication = "requery" if shift.op in {"relax", "override"} else "continue"
+        action_implication = "requery" if shift.op in {"add", "relax", "override"} else "continue"
 
         turns.append(
             TurnRecord(

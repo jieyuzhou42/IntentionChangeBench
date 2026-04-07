@@ -11,6 +11,7 @@ from models import AgentAction, EnvFeedback, ShiftOp
 
 ALLOWED_SHIFT_OPS = {
     "none",
+    "add",
     "relax",
     "override",
     "reprioritize",
@@ -216,6 +217,7 @@ Return a single JSON object only.
 
 Allowed ops:
 - none
+- add
 - relax
 - override
 - reprioritize
@@ -233,7 +235,7 @@ Rules:
 
 Required JSON schema:
 {
-  "op": "none | relax | override | reprioritize | scope_correction",
+  "op": "none | add | relax | override | reprioritize | scope_correction",
   "field": "constraint field name or null",
   "old_value": "previous value or null",
   "value": "new value or null",
@@ -274,6 +276,8 @@ Required JSON schema:
             return ShiftOp(op="none", rationale="invalid_llm_output")
 
         field = self._match_field_name(llm_output.get("field"), constraints, priority)
+        if op == "add" and field is None:
+            field = self._normalize_new_field_name(llm_output.get("field"))
         rationale = _clean_string(llm_output.get("rationale", "")) or "llm_decision"
         priority_update = self._normalize_priority_update(
             llm_output.get("priority_update"),
@@ -305,23 +309,29 @@ Required JSON schema:
                 utterance_plan=utterance_plan,
             )
 
-        if field is None or field not in constraints:
+        if field is None:
             return ShiftOp(op="none", rationale="invalid_llm_output")
 
-        old_value = llm_output.get("old_value", constraints.get(field))
-        old_value = self._coerce_value(field, old_value, constraints.get(field))
+        if op != "add" and field not in constraints:
+            return ShiftOp(op="none", rationale="invalid_llm_output")
+
+        current_value = constraints.get(field)
+        old_value = self._coerce_value(field, llm_output.get("old_value"), current_value)
         if old_value is None:
-            old_value = constraints.get(field)
+            old_value = current_value
 
         raw_value = llm_output.get("value")
         value = self._coerce_value(field, raw_value, old_value)
         if value is None and op == "relax":
             value = self._default_relax_value(field, old_value)
-        if value is None and op in {"override", "scope_correction"}:
+        if value is None and op in {"add", "override", "scope_correction"}:
             value = result.get(field)
             value = self._coerce_value(field, value, old_value)
 
-        if op in {"override", "scope_correction"} and value is None:
+        if op == "add" and old_value is not None:
+            return ShiftOp(op="none", rationale="invalid_llm_output")
+
+        if op in {"add", "override", "scope_correction"} and value is None:
             return ShiftOp(op="none", rationale="invalid_llm_output")
 
         if op == "relax" and old_value is not None and not self._looks_like_relaxation(field, old_value, value):
@@ -366,7 +376,7 @@ Required JSON schema:
         if shift.op == "none":
             return new_state, delta
 
-        if shift.op in {"relax", "override", "scope_correction"} and shift.field:
+        if shift.op in {"add", "relax", "override", "scope_correction"} and shift.field:
             old_value = new_state["constraints"].get(shift.field)
             new_state["constraints"][shift.field] = shift.value
             delta[shift.field] = {
@@ -392,6 +402,7 @@ Required JSON schema:
                     "rationale": shift.rationale,
                 }
 
+        new_state["priority"] = self._priority_from_state(new_state, new_state["constraints"])
         return new_state, delta
 
     def _build_realization_prompt(
@@ -490,6 +501,13 @@ Return plain text only, with no quotes and no JSON.
                 return f"{field_text} can be a little more flexible."
             return "That part can be more flexible."
 
+        if shift.op == "add":
+            if effective_style == "explicit":
+                return f"Please also add {field_text} {value_text}."
+            if effective_style == "partial":
+                return f"Also make it {value_text}."
+            return f"{field_text} {value_text} too."
+
         if shift.op == "override":
             if effective_style == "explicit":
                 if mention_old_value and shift.old_value is not None:
@@ -563,6 +581,13 @@ Return plain text only, with no quotes and no JSON.
             if field.lower() == normalized:
                 return field
         return None
+
+    def _normalize_new_field_name(self, raw_field: Any) -> Optional[str]:
+        candidate = _clean_string(raw_field)
+        if not candidate:
+            return None
+        normalized = candidate.replace(" ", "_").lower()
+        return normalized or None
 
     def _normalize_priority_update(
         self,
