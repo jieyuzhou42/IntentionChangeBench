@@ -11,7 +11,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from models import AgentAction, BaseTask, EnvFeedback, ShiftOp
-from run_simulation import execute_turn, simulate_dialogue_instance
+from run_simulation import execute_turn, load_webshop_tasks, simulate_dialogue_instance
 
 
 def _make_intention() -> dict:
@@ -96,6 +96,9 @@ class AddConstraintHumanSimulator(RecordingHumanSimulator):
         )
         return ShiftOp(
             op="add",
+            intention_changed=True,
+            condition="user_preference",
+            change_category="add",
             field="brand",
             old_value=None,
             value="Field & Pine",
@@ -472,6 +475,44 @@ def test_simulate_dialogue_marks_add_constraint_shift_as_requery():
 
     turn = instance.turns[1]
     assert turn.action_implication == "requery"
+    assert turn.shift_condition["type"] == "user_preference"
+    assert turn.shift_condition["details"]["change_category"] == "add"
     assert turn.shift_condition["details"]["op"] == "add"
     assert turn.gold_delta["brand"]["op"] == "add"
     assert turn.gold_current_intention["constraints"]["brand"] == "Field & Pine"
+
+
+def test_load_webshop_tasks_reads_distinct_initial_tasks_from_json():
+    tasks_path = ROOT / "tests" / "_tmp_tasks_for_load_test.json"
+    tasks_path.write_text(
+        """
+[
+  {
+    "instance_id": "task_001",
+    "initial_intention": {
+      "request": "Find a blue mug.",
+      "constraints": {"category": "mug", "color": "blue"},
+      "priority": ["category", "color"]
+    }
+  },
+  {
+    "instance_id": "task_002",
+    "initial_intention": {
+      "request": "Find a red lamp.",
+      "constraints": {"category": "lamp", "color": "red"},
+      "priority": ["category", "color"]
+    }
+  }
+]
+        """.strip(),
+        encoding="utf-8",
+    )
+    try:
+        tasks = load_webshop_tasks(tasks_path=str(tasks_path), num_instances=None)
+
+        assert [task.instance_id for task in tasks] == ["task_001", "task_002"]
+        assert tasks[0].initial_intention["request"] == "Find a blue mug."
+        assert tasks[1].initial_intention["request"] == "Find a red lamp."
+    finally:
+        if tasks_path.exists():
+            tasks_path.unlink()
