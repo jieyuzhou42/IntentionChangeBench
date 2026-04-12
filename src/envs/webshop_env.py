@@ -721,9 +721,6 @@ class WebShopEnvAdapter(BaseEnv):
         if selected:
             result = dict(selected)
             product_text = result.get("title", "") or ""
-        elif obs.get("visible_items"):
-            result = dict(obs["visible_items"][0])
-            product_text = result.get("title", "") or ""
         else:
             result = {}
             product_text = obs.get("raw_text", "")
@@ -756,7 +753,7 @@ class WebShopEnvAdapter(BaseEnv):
 
         base_color = item_context.get("color") or result.get("color")
         base_brand = item_context.get("brand") or result.get("brand")
-        base_category = item_context.get("category") or item_context.get("product_category") or result.get("category")
+        base_category = item_context.get("product_category") or result.get("product_category") or item_context.get("category") or result.get("category")
 
         if base_color is not None:
             result["base_color"] = base_color
@@ -1024,9 +1021,9 @@ class WebShopEnvAdapter(BaseEnv):
 
         if field == "category":
             for actual, source in (
-                (result.get("category"), "category"),
-                (result.get("base_category"), "base_category"),
                 (result.get("product_category"), "product_category"),
+                (result.get("base_category"), "base_category"),
+                (result.get("category"), "category"),
             ):
                 if actual is not None:
                     return actual, source
@@ -1064,6 +1061,49 @@ class WebShopEnvAdapter(BaseEnv):
             "constraint_debug": constraint_debug,
             "extracted_result": result,
         }
+
+    def _normalize_category_text(self, value: Any) -> str:
+        text = self._normalize_option_text(value)
+        text = text.replace("â€º", " ").replace("›", " ").replace("&", " and ")
+        tokens = re.findall(r"[a-z0-9]+", text)
+        normalized_tokens = []
+        stop_tokens = {"s", "and", "a", "an", "the", "for", "with"}
+        for token in tokens:
+            if token in stop_tokens:
+                continue
+            if token.endswith("ies") and len(token) > 4:
+                token = f"{token[:-3]}y"
+            elif token.endswith("s") and len(token) > 3:
+                token = token[:-1]
+            normalized_tokens.append(token)
+        return " ".join(normalized_tokens)
+
+    def _category_matches(self, desired: Any, actual: Any, result: Dict[str, Any]) -> Optional[bool]:
+        desired_text = self._normalize_category_text(desired)
+        if not desired_text:
+            return None
+
+        candidate_values = [
+            actual,
+            result.get("product_category"),
+            result.get("base_category"),
+            result.get("category"),
+            result.get("title"),
+            result.get("query"),
+        ]
+        desired_tokens = set(desired_text.split())
+
+        for candidate in candidate_values:
+            candidate_text = self._normalize_category_text(candidate)
+            if not candidate_text:
+                continue
+            if desired_text == candidate_text or desired_text in candidate_text or candidate_text in desired_text:
+                return True
+            candidate_tokens = set(candidate_text.split())
+            if desired_tokens and desired_tokens.issubset(candidate_tokens):
+                return True
+
+        return False
 
     def _check_constraints(
         self,
@@ -1111,7 +1151,10 @@ class WebShopEnvAdapter(BaseEnv):
                     }
                     continue
 
-                matches = self._normalize_option_text(actual) == self._normalize_option_text(desired_value)
+                if field == "category":
+                    matches = self._category_matches(desired_value, actual, result)
+                else:
+                    matches = self._normalize_option_text(actual) == self._normalize_option_text(desired_value)
                 debug[field] = {
                     "desired": desired_value,
                     "actual": actual,

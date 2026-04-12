@@ -35,7 +35,9 @@ class AgentAction:
 @dataclass
 class EnvFeedback:
     status: str  # adapter-level observation status, e.g. observed / error
-    feasible: bool  # adapter hint, not the benchmark's final shift decision
+    # Adapter diagnostics used internally by rollout control. They are not part
+    # of the public dataset env_feedback payload or human-simulator prompt.
+    feasible: bool
     reason: Optional[str] = None
     observation: Dict[str, Any] = field(default_factory=dict)  # raw_text, actions, visible_items, item_context, etc.
     result: Dict[str, Any] = field(default_factory=dict)

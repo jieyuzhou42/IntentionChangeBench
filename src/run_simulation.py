@@ -20,6 +20,7 @@ from envs.webshop_env import WebShopEnvAdapter
 
 STYLE_POOL = ["explicit", "partial", "elliptical"]
 DEFAULT_MAX_INTERNAL_STEPS = 6
+ROLLOUT_CONSTRAINT_FIELDS = ("category", "color", "size", "brand")
 SELECTABLE_CONSTRAINT_FIELDS = ("color", "size", "brand")
 PAGE_TYPE_RANK = {
     "unknown": 0,
@@ -185,6 +186,18 @@ def _normalize_text(value: Any) -> str:
     return re.sub(r"\s+", " ", str(value or "")).strip().lower()
 
 
+def _requested_rollout_constraints(current_intention: Dict[str, Any]) -> Dict[str, Any]:
+    constraints = current_intention.get("constraints", {}) or {}
+    requested: Dict[str, Any] = {}
+    for field in ROLLOUT_CONSTRAINT_FIELDS:
+        desired = constraints.get(f"{field}_exact")
+        if desired is None:
+            desired = constraints.get(field)
+        if desired is not None:
+            requested[field] = desired
+    return requested
+
+
 def _requested_selectable_constraints(current_intention: Dict[str, Any]) -> Dict[str, Any]:
     constraints = current_intention.get("constraints", {}) or {}
     requested: Dict[str, Any] = {}
@@ -228,11 +241,11 @@ def _available_option_fields(env_feedback: Optional[EnvFeedback]) -> set[str]:
     return {_normalize_text(field) for field in options.keys() if _normalize_text(field)}
 
 
-def _all_requested_selectable_constraints_satisfied(
+def _all_requested_rollout_constraints_satisfied(
     current_intention: Dict[str, Any],
     env_feedback: Optional[EnvFeedback],
 ) -> bool:
-    requested = _requested_selectable_constraints(current_intention)
+    requested = _requested_rollout_constraints(current_intention)
     if not requested or env_feedback is None:
         return False
 
@@ -294,6 +307,9 @@ def _candidate_ready(current_intention: Dict[str, Any], env_feedback: Optional[E
     if not (observation.get("selected_asin") or env_feedback.result.get("asin")):
         return False
     if not _has_candidate_evidence(env_feedback):
+        return False
+    requested_rollout = _requested_rollout_constraints(current_intention)
+    if "category" in requested_rollout and _constraint_match_status(env_feedback, "category") is not True:
         return False
     return _selectable_constraints_resolved_for_current_candidate(current_intention, env_feedback)
 
@@ -381,21 +397,11 @@ def _made_useful_progress(
     return False
 
 
-def _compact_constraint_snapshot(env_feedback: Optional[EnvFeedback]) -> Dict[str, Any]:
-    if env_feedback is None:
-        return {}
-
-    snapshot: Dict[str, Any] = {}
-    constraint_debug = (env_feedback.observation or {}).get("constraint_debug") or {}
-    for field, details in constraint_debug.items():
-        if not isinstance(details, dict):
-            continue
-        snapshot[field] = {
-            "desired": details.get("desired"),
-            "actual": details.get("actual"),
-            "matched": details.get("matched"),
-        }
-    return snapshot
+def _public_observation_payload(observation: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    payload = copy.deepcopy(observation or {})
+    payload.pop("constraint_debug", None)
+    payload.pop("extracted_result", None)
+    return payload
 
 
 def _action_signature(agent_action: Optional[AgentAction]) -> Tuple[str, Tuple[Tuple[str, str], ...]]:
@@ -435,8 +441,8 @@ def _rollout_stop_reason(
         return "error"
     if env_done:
         return "env_done"
-    if _all_requested_selectable_constraints_satisfied(current_intention, env_feedback):
-        return "requested_options_satisfied"
+    if _all_requested_rollout_constraints_satisfied(current_intention, env_feedback):
+        return "rollout_options_satisfied"
     if _candidate_ready(current_intention, env_feedback):
         return "candidate_ready"
     if repeated_action_streak >= 2 or stagnant_steps >= 2:
@@ -467,9 +473,6 @@ def _build_rollout_trace_entry(
         "selected_options": copy.deepcopy(observation.get("selected_options") or {}),
         "state_changed": state_changed,
         "made_progress": made_progress,
-        "satisfied_constraints": list(env_feedback.satisfied_constraints or []),
-        "violated_constraints": list(env_feedback.violated_constraints or []),
-        "constraint_snapshot": _compact_constraint_snapshot(env_feedback),
         "stop_reason": stop_reason,
     }
 
@@ -492,7 +495,7 @@ def execute_turn(
         max_internal_steps=max_internal_steps,
         env_done=getattr(env, "done", False),
     )
-    if initial_stop_reason in {"requested_options_satisfied", "candidate_ready", "env_done"}:
+    if initial_stop_reason in {"rollout_options_satisfied", "candidate_ready", "env_done"}:
         return TurnRolloutResult(
             final_action=None,
             final_env_feedback=previous_feedback,
@@ -708,12 +711,8 @@ def simulate_dialogue_instance(
                 env_feedback=(
                     {
                         "status": env_feedback.status,
-                        "feasible": env_feedback.feasible,
-                        "reason": env_feedback.reason,
-                        "observation": env_feedback.observation,
+                        "observation": _public_observation_payload(env_feedback.observation),
                         "result": env_feedback.result,
-                        "satisfied_constraints": env_feedback.satisfied_constraints,
-                        "violated_constraints": env_feedback.violated_constraints,
                     }
                     if env_feedback is not None
                     else None
@@ -863,7 +862,7 @@ def main():
     parser.add_argument("--max_turns", type=int, default=4)
     parser.add_argument("--max_internal_steps", type=int, default=DEFAULT_MAX_INTERNAL_STEPS)
     parser.add_argument("--tasks_path", type=str, default=None)
-    parser.add_argument("--num_instances", type=int, default=None)
+    parser.add_argument("--num_instances", type=int, default=10)
     parser.add_argument(
         "--parallelism",
         type=int,
