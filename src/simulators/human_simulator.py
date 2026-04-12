@@ -95,7 +95,6 @@ def _format_value(value: Any) -> str:
         return rendered
     return str(value)
 
-
 class HumanSimulator:
     """
     LLM-backed human simulator with deterministic state application.
@@ -137,12 +136,12 @@ class HumanSimulator:
                 "query": item_context.get("query"),
                 "description": str(item_context.get("description", "") or "").strip()[:3000],
                 "bullet_points": list(item_context.get("bullet_points") or [])[:8],
-                "rating": item_context.get("rating"),
+                #"rating": item_context.get("rating"),
                 "attributes": list(item_context.get("attributes") or [])[:12],
                 "main_image": item_context.get("main_image"),
                 "options": item_context.get("options") or {},
                 "selected_options": item_context.get("selected_options") or {},
-                "reviews": list(item_context.get("reviews") or [])[:3],
+                #"reviews": list(item_context.get("reviews") or [])[:3],
                 "instruction_text": item_context.get("instruction_text"),
                 "instruction_attributes": item_context.get("instruction_attributes"),
                 "brand": item_context.get("brand"),
@@ -151,11 +150,7 @@ class HumanSimulator:
 
         return {
             "status": env_feedback.status,
-            "feasible": env_feedback.feasible,
-            "reason": env_feedback.reason,
             "result": env_feedback.result or {},
-            "satisfied_constraints": list(env_feedback.satisfied_constraints or []),
-            "violated_constraints": list(env_feedback.violated_constraints or []),
             "observation": {
                 "page_type": observation.get("page_type"),
                 "instruction": observation.get("instruction"),
@@ -252,12 +247,13 @@ Examples of grounded preference change:
 - after finding a viable option, the user still changes direction because they no longer want it
 
 Rules:
-- Treat adapter-provided status / feasible / reason as hints, not ground truth. Use the page text, visible items, selected item, and action context as the main evidence.
+- Treat adapter-provided status as a low-level environment signal, not ground truth. Use the page text, visible items, selected item, and action context as the main evidence.
 - Use condition="user_preference" when the user changes or adds preferences because of what they just saw.
 - Use condition="real_world_feasibility" when exact constraints seem unavailable or hard to satisfy.
 - Use condition="agent_misunderstanding" when the user is correcting a mistaken interpretation or an overly coarse refinement by the agent.
 - Use change_category="scope_correction" only for a refinement or clarification that preserves the intended target rather than replacing it wholesale.
 - Do not introduce correction, termination, or no_change_continue as top-level reaction classes.
+- Do not create, reprioritize, or mention rating/review/star/customer-score constraints. Those signals are unavailable to the executor and are out of scope for this simulator run
 
 Required JSON schema:
 {
@@ -298,17 +294,6 @@ Examples:
   "priority_update": null,
   "rationale": "The exact option does not seem available, so something close is acceptable.",
   "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": true}
-}
-{
-  "intention_changed": true,
-  "condition": "agent_misunderstanding",
-  "category": "scope_correction",
-  "field": "category_exact",
-  "old_value": "loafers",
-  "value": "men's loafers & slip-ons",
-  "priority_update": null,
-  "rationale": "The user is clarifying the intended entity rather than changing targets.",
-  "utterance_plan": {"style": "explicit", "directness": "direct", "mention_old_value": true}
 }
 """.strip()
 
@@ -842,15 +827,6 @@ Return plain text only, with no quotes and no JSON.
             return "agent_misunderstanding"
         if any(cue in rationale for cue in preference_cues):
             return "user_preference"
-        if env_feedback is not None:
-            if env_feedback.feasible is False:
-                return "real_world_feasibility"
-            reason = _clean_string(env_feedback.reason or "").lower()
-            violated = set(env_feedback.violated_constraints or [])
-            if "no_" in reason or "unavailable" in reason or "hard" in reason:
-                return "real_world_feasibility"
-            if field and field in violated and op == "relax":
-                return "real_world_feasibility"
         if "unavailable" in rationale or "hard to satisfy" in rationale or "not available" in rationale:
             return "real_world_feasibility"
         if "misunder" in rationale or "clarif" in rationale or "too coarse" in rationale:
