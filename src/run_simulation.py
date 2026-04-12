@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import copy
+import json
 import os
 import random
 import re
@@ -106,6 +108,77 @@ def make_demo_webshop_task(instance_index: int = 1) -> BaseTask:
             "priority": ["category", "budget_max", "color", "brand"],
         },
     )
+
+
+def _task_from_payload(raw_task: Dict[str, Any], *, fallback_index: int) -> BaseTask:
+    if not isinstance(raw_task, dict):
+        raise ValueError(f"Task #{fallback_index} must be a JSON object")
+
+    initial_intention = raw_task.get("initial_intention")
+    if not isinstance(initial_intention, dict):
+        raise ValueError(f"Task #{fallback_index} is missing a valid initial_intention object")
+
+    return BaseTask(
+        instance_id=str(raw_task.get("instance_id") or f"webshop_task_{fallback_index:03d}"),
+        task_type=str(raw_task.get("task_type") or "transaction"),
+        subtype=str(raw_task.get("subtype") or "shopping"),
+        world_state=copy.deepcopy(raw_task.get("world_state") or {"domain": "webshop"}),
+        initial_intention=copy.deepcopy(initial_intention),
+    )
+
+
+def load_webshop_tasks(
+    *,
+    tasks_path: Optional[str],
+    num_instances: Optional[int],
+) -> List[BaseTask]:
+    if not tasks_path:
+        total = num_instances or 10
+        return [make_demo_webshop_task(instance_index=i) for i in range(1, total + 1)]
+
+    path = Path(tasks_path)
+    if not path.is_file():
+        raise FileNotFoundError(f"Task file not found: {path}")
+
+    raw_tasks: List[Dict[str, Any]]
+    suffix = path.suffix.lower()
+    if suffix == ".jsonl":
+        raw_tasks = []
+        for line_index, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            line = raw_line.strip()
+            if not line:
+                continue
+            payload = json.loads(line)
+            if not isinstance(payload, dict):
+                raise ValueError(f"Line {line_index} in {path} is not a JSON object")
+            raw_tasks.append(payload)
+    else:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(payload, dict) and isinstance(payload.get("tasks"), list):
+            raw_tasks = payload["tasks"]
+        elif isinstance(payload, list):
+            raw_tasks = payload
+        else:
+            raise ValueError(
+                f"Task file {path} must be a JSON array, a JSONL file, or a JSON object with a 'tasks' array"
+            )
+
+    tasks = [
+        _task_from_payload(raw_task, fallback_index=index)
+        for index, raw_task in enumerate(raw_tasks, start=1)
+    ]
+    if not tasks:
+        raise ValueError(f"Task file {path} did not contain any tasks")
+
+    if num_instances is None:
+        return tasks
+    if num_instances < 1:
+        raise ValueError("--num_instances must be at least 1")
+    if num_instances > len(tasks):
+        raise ValueError(
+            f"Requested {num_instances} tasks, but {path} only contains {len(tasks)} tasks"
+        )
+    return tasks[:num_instances]
 
 
 def _normalize_text(value: Any) -> str:
@@ -588,12 +661,18 @@ def simulate_dialogue_instance(
             "source": "simulator",
             "details": {},
         }
-        if shift.op != "none":
+        intention_changed = shift.intention_changed if shift.intention_changed is not None else shift.op != "none"
+        condition = shift.condition or "none"
+        change_category = shift.change_category or (shift.op if shift.op != "none" else "none")
+        if intention_changed:
             shift_condition = {
-                "type": "llm_inferred_shift",
+                "type": condition,
                 "reason": shift.rationale,
                 "source": "simulator",
                 "details": {
+                    "intention_changed": intention_changed,
+                    "condition": condition,
+                    "change_category": change_category,
                     "op": shift.op,
                     "field": shift.field,
                     "old_value": shift.old_value,
@@ -602,9 +681,10 @@ def simulate_dialogue_instance(
                 },
             }
             trigger_evidence = {
-                "trigger_type": "llm_inferred_shift",
+                "trigger_type": condition,
                 "source": "simulator",
                 "details": {
+                    "change_category": change_category,
                     "op": shift.op,
                     "field": shift.field,
                     "rationale": shift.rationale,
@@ -678,17 +758,118 @@ def simulate_dialogue_instance(
     )
 
 
-def main():
-    load_local_dotenv()
+def _build_runtime_components(
+    *,
+    azure_api_version: str,
+) -> Tuple[WebShopEnvAdapter, Any, HumanSimulator, Any]:
     import gym
     from web_agent_site.envs import WebAgentTextEnv
 
+    # Each task gets isolated runtime state so parallel runs do not share a
+    # mutable WebShop session or agent history.
+    raw_env = gym.make(
+        "WebAgentTextEnv-v0",
+        observation_mode="text",
+        num_products=1000,
+        disable_env_checker=True,
+    )
+    if raw_env is None:
+        raw_env = WebAgentTextEnv(observation_mode="text", num_products=1000)
+
+    env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
+    llm_client = AzureOpenAIChatClient.from_env(api_version=azure_api_version)
+    agent = LLMWebShopExecutor(llm_client=llm_client)
+    human = HumanSimulator(llm_client=llm_client)
+    return env, agent, human, raw_env
+
+
+def _simulate_single_instance(
+    *,
+    task: BaseTask,
+    seed: int,
+    max_turns: int,
+    max_internal_steps: int,
+    azure_api_version: str,
+) -> DialogueInstance:
+    env, agent, human, raw_env = _build_runtime_components(
+        azure_api_version=azure_api_version,
+    )
+    try:
+        return simulate_dialogue_instance(
+            task=task,
+            env=env,
+            execution_agent=agent,
+            human_simulator=human,
+            max_turns=max_turns,
+            max_internal_steps=max_internal_steps,
+            seed=seed,
+        )
+    finally:
+        close_env = getattr(raw_env, "close", None)
+        if callable(close_env):
+            close_env()
+
+
+def _simulate_instances(
+    *,
+    tasks: List[BaseTask],
+    seed: int,
+    max_turns: int,
+    max_internal_steps: int,
+    azure_api_version: str,
+    parallelism: int,
+) -> List[DialogueInstance]:
+    jobs = [
+        {
+            "task": task,
+            "seed": seed + task_index - 1,
+            "max_turns": max_turns,
+            "max_internal_steps": max_internal_steps,
+            "azure_api_version": azure_api_version,
+        }
+        for task_index, task in enumerate(tasks, start=1)
+    ]
+
+    if parallelism <= 1:
+        return [_simulate_single_instance(**job) for job in jobs]
+
+    instances_by_index: Dict[int, DialogueInstance] = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=parallelism) as executor:
+        future_to_index = {
+            executor.submit(_simulate_single_instance, **job): task_index
+            for task_index, job in enumerate(jobs, start=1)
+        }
+        for future in concurrent.futures.as_completed(future_to_index):
+            task_index = future_to_index[future]
+            try:
+                instances_by_index[task_index] = future.result()
+            except Exception as exc:
+                raise RuntimeError(
+                    f"Failed while simulating task #{task_index}"
+                ) from exc
+
+    return [
+        instances_by_index[task_index]
+        for task_index in sorted(instances_by_index)
+    ]
+
+
+def main():
+    load_local_dotenv()
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=str, default=".\IntentionChangeBench\data\webshop_simulated_dataset.json")
+    parser.add_argument("--output", type=str, default=r".\IntentionChangeBench\data\webshop_simulated_dataset.json")
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--max_turns", type=int, default=4)
     parser.add_argument("--max_internal_steps", type=int, default=DEFAULT_MAX_INTERNAL_STEPS)
-    parser.add_argument("--num_instances", type=int, default=10)
+    parser.add_argument("--tasks_path", type=str, default=None)
+    parser.add_argument("--num_instances", type=int, default=None)
+    parser.add_argument(
+        "--parallelism",
+        type=int,
+        default=10,
+        help="Number of tasks to simulate concurrently. Use the same value as the number of selected tasks for one task per worker.",
+    )
     parser.add_argument(
         "--azure_api_version",
         type=str,
@@ -696,8 +877,34 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.num_instances < 1:
-        raise ValueError("--num_instances must be at least 1")
+    if args.parallelism < 1:
+        raise ValueError("--parallelism must be at least 1")
+
+    tasks = load_webshop_tasks(
+        tasks_path=args.tasks_path,
+        num_instances=args.num_instances,
+    )
+    effective_parallelism = min(args.parallelism, len(tasks))
+    logger = RuntimeLogger()
+
+    instances = _simulate_instances(
+        tasks=tasks,
+        seed=args.seed,
+        max_turns=args.max_turns,
+        max_internal_steps=args.max_internal_steps,
+        azure_api_version=args.azure_api_version,
+        parallelism=effective_parallelism,
+    )
+    for instance in instances:
+        logger.log_instance(instance)
+
+    logger.dump_json(args.output)
+    print(
+        f"Saved {len(logger.instances)} instances to {args.output} "
+        f"(parallelism={effective_parallelism})"
+    )
+    return
+
     # Gym v0.24 env_checker can behave poorly with older envs; disable it.
     raw_env = gym.make(
         "WebAgentTextEnv-v0",

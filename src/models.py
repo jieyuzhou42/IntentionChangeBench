@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional
 
 @dataclass
 class ShiftCondition:
-    type: str
+    type: str  # none / user_preference / real_world_feasibility / agent_misunderstanding
     reason: str
     source: str = "environment"  # environment / result_inspection / stochastic
     details: Dict[str, Any] = field(default_factory=dict)
@@ -15,6 +15,9 @@ class ShiftCondition:
 @dataclass
 class ShiftOp:
     op: str  # add / relax / override / reprioritize / scope_correction / none
+    intention_changed: Optional[bool] = None
+    condition: Optional[str] = None  # none / user_preference / real_world_feasibility / agent_misunderstanding
+    change_category: Optional[str] = None  # mirrors op when a change occurs
     field: Optional[str] = None
     value: Any = None
     old_value: Any = None

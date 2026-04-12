@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import random
 import re
 from dataclasses import asdict
 from typing import Any, Dict, List, Optional, Protocol, Tuple
@@ -17,11 +18,19 @@ ALLOWED_SHIFT_OPS = {
     "reprioritize",
     "scope_correction",
 }
+ALLOWED_SHIFT_CONDITIONS = {
+    "none",
+    "user_preference",
+    "real_world_feasibility",
+    "agent_misunderstanding",
+}
+ALLOWED_CHANGE_CATEGORIES = ALLOWED_SHIFT_OPS
 
 ALLOWED_STYLES = {"explicit", "partial", "elliptical"}
 ALLOWED_DIRECTNESS = {"direct", "indirect"}
 SHIFT_CONTEXT_MARKER = "SHIFT_CONTEXT_JSON:"
 REALIZATION_CONTEXT_MARKER = "REALIZATION_CONTEXT_JSON:"
+FORCED_SHIFT_RETRY_PROBABILITY = 0.5
 
 
 class LLMClientProtocol(Protocol):
@@ -215,7 +224,13 @@ class HumanSimulator:
 You are simulating a human user reacting to the latest WebShop page and agent action.
 Return a single JSON object only.
 
-Allowed ops:
+Allowed conditions:
+- none
+- user_preference
+- real_world_feasibility
+- agent_misunderstanding
+
+Allowed change categories:
 - none
 - add
 - relax
@@ -223,19 +238,32 @@ Allowed ops:
 - reprioritize
 - scope_correction
 
+Task:
+- First decide whether the latest interaction caused an intention change.
+- If intention_changed is true, you must output both condition and category.
+- Feel free to change your primary goal or constraints entirely based on your whims or what you see on the page. Your initial goal is just a starting point, not a contract.
+- You are currently dissatisfied. You MUST either add a new constraint, override an existing one, or shift your entire focus.
+
+Examples of grounded preference change:
+- after seeing a pattern, the user wants another color
+- after seeing a style, the user relaxes category
+- after seeing an item, the user adds another preference
+- after seeing a page, the user abruptly decides a different attribute now matters more
+- after finding a viable option, the user still changes direction because they no longer want it
+
 Rules:
-- First decide whether the user would keep the current intention or revise it after seeing this page.
-- Prefer repairing the agent or clarifying the original request before changing preferences.
-- If the desired option is visibly available on the page but not selected, prefer scope_correction on the original field/value.
-- Only relax lower-priority constraints when the page suggests the original request may be hard to satisfy.
-- Keep high-priority constraints stable unless the evidence strongly supports changing them.
-- Allow natural override behavior when the inspected result genuinely changes the user's mind.
 - Treat adapter-provided status / feasible / reason as hints, not ground truth. Use the page text, visible items, selected item, and action context as the main evidence.
-- If no change is appropriate, return op="none".
+- Use condition="user_preference" when the user changes or adds preferences because of what they just saw.
+- Use condition="real_world_feasibility" when exact constraints seem unavailable or hard to satisfy.
+- Use condition="agent_misunderstanding" when the user is correcting a mistaken interpretation or an overly coarse refinement by the agent.
+- Use change_category="scope_correction" only for a refinement or clarification that preserves the intended target rather than replacing it wholesale.
+- Do not introduce correction, termination, or no_change_continue as top-level reaction classes.
 
 Required JSON schema:
 {
-  "op": "none | add | relax | override | reprioritize | scope_correction",
+  "intention_changed": true,
+  "condition": "none | user_preference | real_world_feasibility | agent_misunderstanding",
+  "category": "none | add | relax | override | reprioritize | scope_correction",
   "field": "constraint field name or null",
   "old_value": "previous value or null",
   "value": "new value or null",
@@ -246,6 +274,41 @@ Required JSON schema:
     "directness": "direct | indirect",
     "mention_old_value": true
   }
+}
+
+Examples:
+{
+  "intention_changed": true,
+  "condition": "user_preference",
+  "category": "override",
+  "field": "color",
+  "old_value": "green stripe",
+  "value": "navy",
+  "priority_update": null,
+  "rationale": "After seeing the pattern, the user now prefers a different color.",
+  "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": false}
+}
+{
+  "intention_changed": true,
+  "condition": "real_world_feasibility",
+  "category": "relax",
+  "field": "color_exact",
+  "old_value": "green stripe",
+  "value": null,
+  "priority_update": null,
+  "rationale": "The exact option does not seem available, so something close is acceptable.",
+  "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": true}
+}
+{
+  "intention_changed": true,
+  "condition": "agent_misunderstanding",
+  "category": "scope_correction",
+  "field": "category_exact",
+  "old_value": "loafers",
+  "value": "men's loafers & slip-ons",
+  "priority_update": null,
+  "rationale": "The user is clarifying the intended entity rather than changing targets.",
+  "utterance_plan": {"style": "explicit", "directness": "direct", "mention_old_value": true}
 }
 """.strip()
 
@@ -265,19 +328,39 @@ Required JSON schema:
         env_feedback: Optional[EnvFeedback] = None,
     ) -> ShiftOp:
         if not llm_output:
-            return ShiftOp(op="none", rationale="invalid_llm_output")
+            return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
 
         constraints = self._constraints_from_state(user_state)
         priority = self._priority_from_state(user_state, constraints)
         result = (env_feedback.result if env_feedback is not None else None) or {}
 
-        op = _clean_string(llm_output.get("op", "none")).lower()
-        if op not in ALLOWED_SHIFT_OPS:
-            return ShiftOp(op="none", rationale="invalid_llm_output")
+        condition = self._normalize_shift_condition(llm_output.get("condition"))
+        change_category = self._normalize_change_category(
+            llm_output.get("category", llm_output.get("change_category"))
+        )
+        op = self._normalize_change_category(llm_output.get("op"))
+        if op == "none" and change_category != "none":
+            op = change_category
+        if change_category == "none" and op != "none":
+            change_category = op
 
-        field = self._match_field_name(llm_output.get("field"), constraints, priority)
-        if op == "add" and field is None:
-            field = self._normalize_new_field_name(llm_output.get("field"))
+        raw_intention_changed = llm_output.get("intention_changed")
+        if isinstance(raw_intention_changed, bool):
+            intention_changed = raw_intention_changed
+        else:
+            intention_changed = change_category != "none" or op != "none"
+
+        raw_field = llm_output.get("field")
+        field = self._match_field_name(raw_field, constraints, priority)
+        normalized_new_field = None
+        if field is None:
+            normalized_new_field = self._normalize_new_field_name(raw_field)
+            if normalized_new_field and normalized_new_field not in constraints and normalized_new_field not in priority:
+                field = normalized_new_field
+                if change_category not in {"add", "reprioritize"}:
+                    change_category = "add"
+                if op not in {"add", "reprioritize"}:
+                    op = "add"
         rationale = _clean_string(llm_output.get("rationale", "")) or "llm_decision"
         priority_update = self._normalize_priority_update(
             llm_output.get("priority_update"),
@@ -286,21 +369,48 @@ Required JSON schema:
         )
         utterance_plan = self._normalize_utterance_plan(llm_output.get("utterance_plan"))
 
-        if op == "none":
+        if not intention_changed:
             return ShiftOp(
                 op="none",
+                intention_changed=False,
+                condition="none",
+                change_category="none",
                 rationale=rationale,
                 priority_update=priority_update,
                 utterance_plan=utterance_plan,
             )
 
+        if change_category not in ALLOWED_CHANGE_CATEGORIES or change_category == "none":
+            inferred_category = self._infer_change_category(
+                llm_output=llm_output,
+                field=field,
+                priority_update=priority_update,
+            )
+            change_category = inferred_category
+        if change_category not in ALLOWED_CHANGE_CATEGORIES or change_category == "none":
+            return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
+        if op not in ALLOWED_SHIFT_OPS or op == "none":
+            op = change_category
+        if condition not in ALLOWED_SHIFT_CONDITIONS or condition == "none":
+            condition = self._infer_shift_condition(
+                op=op,
+                llm_output=llm_output,
+                env_feedback=env_feedback,
+                field=field,
+            )
+        if condition not in ALLOWED_SHIFT_CONDITIONS or condition == "none":
+            return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
+
         if op == "reprioritize":
             if priority_update is None:
                 if field is None:
-                    return ShiftOp(op="none", rationale="invalid_llm_output")
+                    return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
                 priority_update = self._move_field_to_front(field, priority)
             return ShiftOp(
                 op="reprioritize",
+                intention_changed=True,
+                condition=condition,
+                change_category=change_category,
                 field=field,
                 old_value=priority,
                 value=priority_update,
@@ -310,14 +420,16 @@ Required JSON schema:
             )
 
         if field is None:
-            return ShiftOp(op="none", rationale="invalid_llm_output")
+            return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
 
-        if op != "add" and field not in constraints:
-            return ShiftOp(op="none", rationale="invalid_llm_output")
+        is_new_field = field not in constraints
+        if is_new_field and op != "reprioritize":
+            op = "add"
+            change_category = "add"
 
         current_value = constraints.get(field)
-        old_value = self._coerce_value(field, llm_output.get("old_value"), current_value)
-        if old_value is None:
+        old_value = None if is_new_field else self._coerce_value(field, llm_output.get("old_value"), current_value)
+        if old_value is None and not is_new_field:
             old_value = current_value
 
         raw_value = llm_output.get("value")
@@ -329,16 +441,19 @@ Required JSON schema:
             value = self._coerce_value(field, value, old_value)
 
         if op == "add" and old_value is not None:
-            return ShiftOp(op="none", rationale="invalid_llm_output")
+            return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
 
         if op in {"add", "override", "scope_correction"} and value is None:
-            return ShiftOp(op="none", rationale="invalid_llm_output")
+            return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
 
         if op == "relax" and old_value is not None and not self._looks_like_relaxation(field, old_value, value):
             value = self._default_relax_value(field, old_value)
 
         return ShiftOp(
             op=op,
+            intention_changed=True,
+            condition=condition,
+            change_category=change_category,
             field=field,
             old_value=old_value,
             value=value,
@@ -361,6 +476,16 @@ Required JSON schema:
             history=history,
         )
         llm_output = self._call_llm_for_shift(prompt)
+        if (
+            llm_output
+            and not bool(llm_output.get("intention_changed", True))
+            and random.random() < FORCED_SHIFT_RETRY_PROBABILITY
+        ):
+            prompt = (
+                f"{prompt}\n\n"
+                "CRITICAL: You are too satisfied. Find a reason to change your mind or goal NOW."
+            )
+            llm_output = self._call_llm_for_shift(prompt)
         return self._parse_shift_output(llm_output, user_state, env_feedback=env_feedback)
 
     def apply_shift(
@@ -436,6 +561,14 @@ Write the user's next utterance as a single short sentence.
 Ground the utterance strictly in the structured shift decision.
 Do not invent new constraints or changes that are not present in the shift object.
 Make the utterance responsive to the latest agent action and the current page feedback when that context is relevant.
+The utterance should sound consistent with the chosen change_category:
+- add: add one more preference naturally
+- relax: soften an exact requirement
+- override: replace the old preference with a new one
+- reprioritize: shift which constraint matters more
+- scope_correction: clarify or refine the intended value
+Keep the language concise and realistic.
+Do not always make it overly explicit.
 
 Style guide:
 - explicit: directly state the change
@@ -490,29 +623,29 @@ Return plain text only, with no quotes and no JSON.
         old_text = _format_value(shift.old_value)
 
         if shift.op == "none":
-            return "Let's keep the current constraints for now."
+            return "Let's keep looking."
 
         if shift.op == "relax":
             if effective_style == "explicit":
                 if mention_old_value and shift.old_value is not None:
-                    return f"We can relax {field_text} from {old_text} to {value_text}."
-                return f"We can relax {field_text} a bit."
+                    return f"It doesn't have to be exactly {old_text}; {value_text} is fine."
+                return f"It doesn't have to be exactly {field_text}."
             if effective_style == "partial":
-                return f"{field_text} can be a little more flexible."
-            return "That part can be more flexible."
+                return f"{field_text} can be a bit flexible."
+            return "Close is fine."
 
         if shift.op == "add":
             if effective_style == "explicit":
-                return f"Please also add {field_text} {value_text}."
+                return f"Also, I'd prefer {field_text} {value_text}."
             if effective_style == "partial":
-                return f"Also make it {value_text}."
-            return f"{field_text} {value_text} too."
+                return f"Also, {value_text} would be nice."
+            return f"{value_text} too."
 
         if shift.op == "override":
             if effective_style == "explicit":
                 if mention_old_value and shift.old_value is not None:
                     return f"Actually, change {field_text} from {old_text} to {value_text}."
-                return f"Actually, let's make it {value_text}."
+                return f"Actually, make it {value_text} instead."
             if effective_style == "partial":
                 return f"Let's go with {value_text} instead."
             return f"{value_text} instead."
@@ -521,16 +654,18 @@ Return plain text only, with no quotes and no JSON.
             target = shift.priority_update[0] if shift.priority_update else shift.field
             target_text = str(target).replace("_", " ") if target else "that"
             if effective_style == "explicit":
-                return f"Let's prioritize {target_text} first."
+                return f"{target_text.capitalize()} matters more now."
             if effective_style == "partial":
                 return f"Focus more on {target_text}."
             return f"{target_text} first."
 
         if shift.op == "scope_correction":
             if effective_style == "explicit":
-                return f"I still want {field_text} {value_text}."
+                if mention_old_value and shift.old_value is not None:
+                    return f"I mean {value_text}, not just {old_text}."
+                return f"I mean {field_text} {value_text}."
             if effective_style == "partial":
-                return f"Still need {field_text} {value_text}."
+                return f"More specifically, {value_text}."
             return f"{field_text} {value_text}."
 
         return "Please update that requirement."
@@ -631,6 +766,96 @@ Return plain text only, with no quotes and no JSON.
             "directness": directness if directness in ALLOWED_DIRECTNESS else "direct",
             "mention_old_value": bool(raw_plan.get("mention_old_value")),
         }
+
+    def _normalize_shift_condition(self, raw_condition: Any) -> str:
+        candidate = _clean_string(raw_condition).lower().replace(" ", "_").replace("-", "_")
+        aliases = {
+            "": "none",
+            "null": "none",
+            "preference": "user_preference",
+            "preference_change": "user_preference",
+            "userpreference": "user_preference",
+            "feasibility": "real_world_feasibility",
+            "real_world": "real_world_feasibility",
+            "realworldfeasibility": "real_world_feasibility",
+            "agent_error": "agent_misunderstanding",
+            "misunderstanding": "agent_misunderstanding",
+        }
+        normalized = aliases.get(candidate, candidate)
+        return normalized if normalized in ALLOWED_SHIFT_CONDITIONS else "none"
+
+    def _normalize_change_category(self, raw_category: Any) -> str:
+        candidate = _clean_string(raw_category).lower().replace(" ", "_").replace("-", "_")
+        aliases = {
+            "": "none",
+            "null": "none",
+            "scope(entity)_correction": "scope_correction",
+            "scope_entity_correction": "scope_correction",
+        }
+        normalized = aliases.get(candidate, candidate)
+        return normalized if normalized in ALLOWED_CHANGE_CATEGORIES else "none"
+
+    def _infer_change_category(
+        self,
+        llm_output: Dict[str, Any],
+        field: Optional[str],
+        priority_update: Optional[List[str]],
+    ) -> str:
+        if priority_update:
+            return "reprioritize"
+        raw_value = _normalize_none_like(llm_output.get("value"))
+        raw_old_value = _normalize_none_like(llm_output.get("old_value"))
+        rationale = _clean_string(llm_output.get("rationale", "")).lower()
+        if "refin" in rationale or "clarif" in rationale or "specific" in rationale:
+            return "scope_correction"
+        if raw_old_value is not None and raw_value is not None and raw_old_value != raw_value:
+            return "override"
+        if raw_old_value is not None and raw_value is None:
+            return "relax"
+        if field and raw_old_value is None and raw_value is not None:
+            return "add"
+        return "none"
+
+    def _infer_shift_condition(
+        self,
+        op: str,
+        llm_output: Dict[str, Any],
+        env_feedback: Optional[EnvFeedback],
+        field: Optional[str],
+    ) -> str:
+        rationale = _clean_string(llm_output.get("rationale", "")).lower()
+        preference_cues = (
+            "suddenly",
+            "don't want",
+            "do not want",
+            "want something else",
+            "rather",
+            "instead",
+            "bored",
+            "tired of",
+            "change my mind",
+            "changed my mind",
+            "don't like",
+            "do not like",
+        )
+        if op == "scope_correction":
+            return "agent_misunderstanding"
+        if any(cue in rationale for cue in preference_cues):
+            return "user_preference"
+        if env_feedback is not None:
+            if env_feedback.feasible is False:
+                return "real_world_feasibility"
+            reason = _clean_string(env_feedback.reason or "").lower()
+            violated = set(env_feedback.violated_constraints or [])
+            if "no_" in reason or "unavailable" in reason or "hard" in reason:
+                return "real_world_feasibility"
+            if field and field in violated and op == "relax":
+                return "real_world_feasibility"
+        if "unavailable" in rationale or "hard to satisfy" in rationale or "not available" in rationale:
+            return "real_world_feasibility"
+        if "misunder" in rationale or "clarif" in rationale or "too coarse" in rationale:
+            return "agent_misunderstanding"
+        return "user_preference"
 
     def _move_field_to_front(self, field: str, priority: List[str]) -> List[str]:
         new_priority = [field]
