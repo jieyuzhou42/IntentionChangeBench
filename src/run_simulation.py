@@ -404,6 +404,21 @@ def _public_observation_payload(observation: Optional[Dict[str, Any]]) -> Dict[s
     return payload
 
 
+def _public_env_feedback_payload(env_feedback: Optional[EnvFeedback]) -> Optional[Dict[str, Any]]:
+    if env_feedback is None:
+        return None
+
+    observation = env_feedback.observation or {}
+    return {
+        "status": env_feedback.status,
+        "feedback_type": "candidate_items",
+        "page_type": observation.get("page_type"),
+        "requested_constraints": copy.deepcopy(observation.get("requested_constraints") or {}),
+        "candidate_items": copy.deepcopy(observation.get("candidate_items") or []),
+        "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
+    }
+
+
 def _action_signature(agent_action: Optional[AgentAction]) -> Tuple[str, Tuple[Tuple[str, str], ...]]:
     if agent_action is None:
         return ("", ())
@@ -615,6 +630,13 @@ def simulate_dialogue_instance(
             "content": initial_request,
         }
     ]
+    intention_history: List[Dict[str, Any]] = [
+        {
+            "turn_id": 0,
+            "user_utterance": initial_request,
+            "gold_intention": copy.deepcopy(current_intention),
+        }
+    ]
 
     turns.append(
         TurnRecord(
@@ -645,18 +667,16 @@ def simulate_dialogue_instance(
         style = rng.choice(STYLE_POOL)
         shift = human_simulator.decide_shift(
             current_intention,
-            agent_action=agent_action,
             env_feedback=env_feedback,
-            history=history,
+            intention_history=intention_history[:-1],
         )
         new_intention, delta = human_simulator.apply_shift(current_intention, shift)
         user_utt = human_simulator.realize_shift(
             shift,
             current_intention,
             style,
-            agent_action=agent_action,
             env_feedback=env_feedback,
-            history=history,
+            intention_history=intention_history[:-1],
         )
         shift_condition = None
         trigger_evidence = {
@@ -708,15 +728,7 @@ def simulate_dialogue_instance(
                     if agent_action is not None
                     else None
                 ),
-                env_feedback=(
-                    {
-                        "status": env_feedback.status,
-                        "observation": _public_observation_payload(env_feedback.observation),
-                        "result": env_feedback.result,
-                    }
-                    if env_feedback is not None
-                    else None
-                ),
+                env_feedback=_public_env_feedback_payload(env_feedback),
                 trigger_evidence=trigger_evidence,
                 shift_condition=shift_condition,
                 gold_delta=delta,
@@ -743,6 +755,13 @@ def simulate_dialogue_instance(
             }
         )
         history.append({"role": "user", "content": user_utt})
+        intention_history.append(
+            {
+                "turn_id": turn_id,
+                "user_utterance": user_utt,
+                "gold_intention": copy.deepcopy(current_intention),
+            }
+        )
         env_obs = env.get_observation()
 
         if env.done and not delta:
