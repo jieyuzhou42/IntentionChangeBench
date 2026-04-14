@@ -36,6 +36,7 @@ class WebShopEnvAdapter(BaseEnv):
         self.last_raw_observation: Any = None
         self.last_observation: Dict[str, Any] = {}
         self.last_info: Dict[str, Any] = {}
+        self.last_candidate_items: List[Dict[str, Any]] = []
         self.done = False
 
     def reset(self, task=None) -> Dict[str, Any]:
@@ -56,6 +57,7 @@ class WebShopEnvAdapter(BaseEnv):
 
         self.last_raw_observation = raw_obs
         self.last_info = info or {}
+        self.last_candidate_items = []
         self.done = False
 
         obs = self._normalize_observation(raw_obs, self.last_info)
@@ -84,6 +86,7 @@ class WebShopEnvAdapter(BaseEnv):
             pre_selected_options=selected_options,
             result=result,
             constraint_debug=constraint_debug,
+            user_state=user_state,
         )
         active_constraints = self._get_active_constraint_fields(user_state)
 
@@ -183,6 +186,7 @@ class WebShopEnvAdapter(BaseEnv):
             pre_selected_options=pre_selected_options,
             result=result,
             constraint_debug=constraint_debug,
+            user_state=user_state,
         )
 
         if self._looks_like_no_results(obs):
@@ -552,6 +556,20 @@ class WebShopEnvAdapter(BaseEnv):
         selected_asin = self._current_selected_asin()
         selected_options = self._current_selected_options()
         item_context = self._extract_item_context(page_type, selected_asin, selected_options)
+        candidate_items = self._extract_candidate_items(
+            page_type=page_type,
+            visible_items=visible_items,
+            item_context=item_context,
+        )
+        if page_type == "results" and candidate_items:
+            self.last_candidate_items = candidate_items
+        elif page_type == "item" and candidate_items:
+            self.last_candidate_items = self._merge_candidate_items(
+                candidate_items,
+                self.last_candidate_items,
+            )
+        elif page_type == "search":
+            candidate_items = list(self.last_candidate_items)
 
         return {
             "page_type": page_type,
@@ -559,6 +577,7 @@ class WebShopEnvAdapter(BaseEnv):
             "raw_text": obs_text,
             "clickables": clickables,
             "visible_items": visible_items,
+            "candidate_items": candidate_items,
             "selected_item": self._extract_selected_item(obs_text, page_type, item_context=item_context),
             "selected_asin": selected_asin,
             "selected_options": selected_options,
@@ -643,6 +662,183 @@ class WebShopEnvAdapter(BaseEnv):
             else:
                 i += 1
         return items
+
+    def _extract_candidate_items(
+        self,
+        page_type: str,
+        visible_items: Optional[List[Dict[str, Any]]] = None,
+        item_context: Optional[Dict[str, Any]] = None,
+    ) -> List[Dict[str, Any]]:
+        candidates: List[Dict[str, Any]] = []
+
+        if page_type == "results":
+            candidates = self._candidate_items_from_current_search(limit=50)
+            if not candidates:
+                candidates = self._candidate_items_from_visible_items(visible_items or [])
+
+        if page_type == "item" and isinstance(item_context, dict):
+            selected_candidate = self._candidate_item_from_item_context(item_context, rank=None)
+            candidates = self._merge_candidate_items(
+                [selected_candidate] if selected_candidate else [],
+                self.last_candidate_items,
+            )
+
+        return candidates
+
+    def _candidate_items_from_current_search(self, limit: int = 50) -> List[Dict[str, Any]]:
+        session = self._get_session_state()
+        keywords = session.get("keywords")
+        if not isinstance(keywords, list) or not keywords:
+            return []
+
+        server = getattr(self.webshop_env, "server", None)
+        search_engine = getattr(server, "search_engine", None)
+        product_item_dict = getattr(server, "product_item_dict", None)
+        all_products = getattr(server, "all_products", None)
+        if search_engine is None or not isinstance(product_item_dict, dict) or not isinstance(all_products, list):
+            return []
+
+        try:
+            if keywords[0] == "<r>":
+                top_products = all_products[:limit]
+            elif keywords[0] == "<c>":
+                category = keywords[1].strip() if len(keywords) > 1 else ""
+                top_products = [p for p in all_products if p.get("category") == category][:limit]
+            elif keywords[0] == "<q>":
+                query = " ".join(keywords[1:]).strip()
+                top_products = [p for p in all_products if p.get("query") == query][:limit]
+            else:
+                query_text = " ".join(str(k) for k in keywords)
+                hits = search_engine.search(query_text, k=limit)
+                top_products = []
+                for hit in hits:
+                    doc = search_engine.doc(hit.docid)
+                    if doc is None:
+                        continue
+                    import json
+                    asin = json.loads(doc.raw()).get("id")
+                    product = product_item_dict.get(asin)
+                    if isinstance(product, dict):
+                        top_products.append(product)
+        except Exception:
+            return []
+
+        return [
+            self._candidate_item_from_product(product, rank=index)
+            for index, product in enumerate(top_products[:limit], start=1)
+        ]
+
+    def _candidate_items_from_visible_items(self, visible_items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        candidates: List[Dict[str, Any]] = []
+        for rank, visible_item in enumerate(visible_items, start=1):
+            asin = str(visible_item.get("asin") or "").strip().upper()
+            product = self._lookup_product(asin) if asin else None
+            if isinstance(product, dict):
+                candidate = self._candidate_item_from_product(
+                    product,
+                    rank=rank,
+                    price_override=visible_item.get("price"),
+                )
+            else:
+                candidate = {
+                    "asin": asin or None,
+                    "rank": rank,
+                    "title": visible_item.get("title"),
+                    "price": visible_item.get("price"),
+                    "pricing": [],
+                    "query": None,
+                    "category": None,
+                    "product_category": None,
+                    "description": "",
+                    "bullet_points": [],
+                    "attributes": [],
+                    "options": {},
+                    "brand": None,
+                    "color": None,
+                }
+            candidates.append(candidate)
+        return candidates
+
+    def _candidate_item_from_item_context(
+        self,
+        item_context: Dict[str, Any],
+        rank: Optional[int] = None,
+    ) -> Optional[Dict[str, Any]]:
+        asin = item_context.get("asin")
+        if not asin:
+            return None
+        return {
+            "asin": asin,
+            "rank": rank,
+            "title": item_context.get("title"),
+            "price": item_context.get("price"),
+            "pricing": list(item_context.get("pricing") or [])[:2],
+            "query": item_context.get("query"),
+            "category": item_context.get("category"),
+            "product_category": item_context.get("product_category"),
+            "description": self._clip_text(item_context.get("description"), 1000),
+            "bullet_points": [self._clip_text(x, 500) for x in list(item_context.get("bullet_points") or [])[:5]],
+            "attributes": list(item_context.get("attributes") or [])[:12],
+            "options": item_context.get("options") or {},
+            "brand": item_context.get("brand"),
+            "color": item_context.get("color"),
+        }
+
+    def _candidate_item_from_product(
+        self,
+        product: Dict[str, Any],
+        rank: Optional[int],
+        price_override: Any = None,
+    ) -> Dict[str, Any]:
+        pricing = product.get("pricing") or []
+        price = price_override
+        if price is None:
+            price = pricing[0] if pricing else self._parse_price(str(product.get("Price", "")))
+        bullet_points = product.get("BulletPoints") or []
+        if not isinstance(bullet_points, list):
+            bullet_points = [str(bullet_points)]
+
+        return {
+            "asin": product.get("asin"),
+            "rank": rank,
+            "title": product.get("Title") or product.get("name"),
+            "price": price,
+            "pricing": list(pricing)[:2],
+            "query": product.get("query"),
+            "category": product.get("category"),
+            "product_category": product.get("product_category"),
+            "description": self._clip_text(product.get("Description") or product.get("full_description"), 1000),
+            "bullet_points": [self._clip_text(x, 500) for x in bullet_points[:5]],
+            "attributes": list(product.get("Attributes") or [])[:12],
+            "options": product.get("options") or {},
+            "brand": self._infer_brand_from_product(product),
+            "color": self._infer_color_from_product(product),
+        }
+
+    def _merge_candidate_items(
+        self,
+        primary: List[Dict[str, Any]],
+        secondary: List[Dict[str, Any]],
+        limit: int = 50,
+    ) -> List[Dict[str, Any]]:
+        merged: List[Dict[str, Any]] = []
+        seen = set()
+        for item in list(primary or []) + list(secondary or []):
+            if not isinstance(item, dict):
+                continue
+            asin = str(item.get("asin") or "").strip().upper()
+            key = asin or str(item.get("title") or "")
+            if not key or key in seen:
+                continue
+            seen.add(key)
+            merged.append(item)
+            if len(merged) >= limit:
+                break
+        return merged
+
+    def _clip_text(self, value: Any, limit: int) -> str:
+        text = re.sub(r"\s+", " ", str(value or "")).strip()
+        return text[:limit]
 
     def _extract_selected_item(
         self,
@@ -1041,12 +1237,27 @@ class WebShopEnvAdapter(BaseEnv):
         pre_selected_options: Dict[str, Any],
         result: Dict[str, Any],
         constraint_debug: Dict[str, Any],
+        user_state: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         post_selected_asin = obs.get("selected_asin")
         post_selected_options = self._copy_selected_options(obs.get("selected_options"))
+        requested_constraints = self._requested_constraints_for_feedback(user_state or {})
+        candidate_items = self._annotate_candidate_items(
+            obs.get("candidate_items") or [],
+            user_state or {},
+        )
+        selected_candidate = self._annotate_candidate_item(
+            self._candidate_item_from_item_context(obs.get("item_context") or {})
+            if isinstance(obs.get("item_context"), dict)
+            else None,
+            user_state or {},
+        )
 
         return {
             **obs,
+            "requested_constraints": requested_constraints,
+            "candidate_items": candidate_items,
+            "selected_candidate": selected_candidate,
             "executed_action": used_action,
             "candidate_actions": list(candidate_actions),
             "reward": reward,
@@ -1061,6 +1272,119 @@ class WebShopEnvAdapter(BaseEnv):
             "constraint_debug": constraint_debug,
             "extracted_result": result,
         }
+
+    def _requested_constraints_for_feedback(self, user_state: Dict[str, Any]) -> Dict[str, Any]:
+        constraints = user_state.get("constraints", {}) or {}
+        if not isinstance(constraints, dict):
+            return {}
+        return {
+            field: value
+            for field, value in constraints.items()
+            if value is not None
+        }
+
+    def _annotate_candidate_items(
+        self,
+        candidate_items: List[Dict[str, Any]],
+        user_state: Dict[str, Any],
+    ) -> List[Dict[str, Any]]:
+        annotated: List[Dict[str, Any]] = []
+        for item in candidate_items:
+            candidate = self._annotate_candidate_item(item, user_state)
+            if candidate is not None:
+                annotated.append(candidate)
+        return annotated
+
+    def _annotate_candidate_item(
+        self,
+        candidate_item: Optional[Dict[str, Any]],
+        user_state: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        if not isinstance(candidate_item, dict):
+            return None
+
+        item = dict(candidate_item)
+        constraints = user_state.get("constraints", {}) or {}
+        if not isinstance(constraints, dict):
+            constraints = {}
+
+        constraint_matches: Dict[str, Any] = {}
+        failed_constraints: List[str] = []
+        for field, desired in constraints.items():
+            if desired is None or field.endswith("_exact"):
+                continue
+            desired_value = constraints.get(f"{field}_exact")
+            if desired_value is None:
+                desired_value = desired
+            matched = self._candidate_constraint_match(item, field, desired_value)
+            constraint_matches[field] = matched
+            if matched is False:
+                failed_constraints.append(field)
+
+        item["constraint_matches"] = constraint_matches
+        item["failed_constraints"] = failed_constraints
+        return item
+
+    def _candidate_constraint_match(
+        self,
+        item: Dict[str, Any],
+        field: str,
+        desired: Any,
+    ) -> Optional[bool]:
+        if desired is None:
+            return None
+
+        if field == "budget_max":
+            price = item.get("price")
+            try:
+                return float(price) <= float(desired)
+            except (TypeError, ValueError):
+                return None
+
+        if field == "category":
+            result = {
+                "product_category": item.get("product_category"),
+                "category": item.get("category"),
+                "title": item.get("title"),
+                "query": item.get("query"),
+            }
+            return self._category_matches(desired, item.get("product_category") or item.get("category"), result)
+
+        if field in {"color", "size", "brand"}:
+            desired_text = self._normalize_option_text(desired)
+            if not desired_text:
+                return None
+
+            options = item.get("options") or {}
+            if isinstance(options, dict):
+                for option_name, option_values in options.items():
+                    if self._normalize_option_text(option_name) != field:
+                        continue
+                    values = option_values if isinstance(option_values, list) else [option_values]
+                    normalized_values = {self._normalize_option_text(value) for value in values}
+                    if desired_text in normalized_values:
+                        return True
+                    if normalized_values:
+                        return False
+
+            actual = item.get(field)
+            if actual is not None:
+                return self._normalize_option_text(actual) == desired_text
+
+        desired_text = self._normalize_option_text(desired)
+        if not desired_text:
+            return None
+        search_space = " ".join(
+            [
+                str(item.get("title") or ""),
+                str(item.get("description") or ""),
+                str(item.get("product_category") or ""),
+                str(item.get("query") or ""),
+                " ".join(str(x) for x in item.get("bullet_points") or []),
+                " ".join(str(x) for x in item.get("attributes") or []),
+            ]
+        )
+        return desired_text in self._normalize_option_text(search_space)
 
     def _normalize_category_text(self, value: Any) -> str:
         text = self._normalize_option_text(value)

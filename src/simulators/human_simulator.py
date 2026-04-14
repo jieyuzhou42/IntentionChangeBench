@@ -107,123 +107,72 @@ class HumanSimulator:
     def __init__(self, llm_client: LLMClientProtocol):
         self.llm_client = llm_client
 
-    def _serialize_agent_action(self, agent_action: Optional[AgentAction]) -> Optional[Dict[str, Any]]:
-        if agent_action is None:
-            return None
-        return {
-            "action_type": agent_action.action_type,
-            "action_payload": dict(agent_action.action_payload or {}),
-        }
-
     def _serialize_env_feedback(self, env_feedback: Optional[EnvFeedback]) -> Optional[Dict[str, Any]]:
         if env_feedback is None:
             return None
 
         observation = env_feedback.observation or {}
-        raw_text = str(observation.get("raw_text", "") or "").strip()
-        clickables = observation.get("clickables", []) or []
-        visible_items = observation.get("visible_items", []) or []
-        item_context = observation.get("item_context")
-        serialized_item_context = None
-        if isinstance(item_context, dict):
-            serialized_item_context = {
-                "asin": item_context.get("asin"),
-                "title": item_context.get("title"),
-                "price": item_context.get("price"),
-                "pricing": list(item_context.get("pricing") or [])[:2],
-                "category": item_context.get("category"),
-                "product_category": item_context.get("product_category"),
-                "query": item_context.get("query"),
-                "description": str(item_context.get("description", "") or "").strip()[:3000],
-                "bullet_points": list(item_context.get("bullet_points") or [])[:8],
-                #"rating": item_context.get("rating"),
-                "attributes": list(item_context.get("attributes") or [])[:12],
-                "main_image": item_context.get("main_image"),
-                "options": item_context.get("options") or {},
-                "selected_options": item_context.get("selected_options") or {},
-                #"reviews": list(item_context.get("reviews") or [])[:3],
-                "instruction_text": item_context.get("instruction_text"),
-                "instruction_attributes": item_context.get("instruction_attributes"),
-                "brand": item_context.get("brand"),
-                "color": item_context.get("color"),
-            }
-
         return {
+            "feedback_type": "candidate_items",
             "status": env_feedback.status,
-            "result": env_feedback.result or {},
-            "observation": {
-                "page_type": observation.get("page_type"),
-                "instruction": observation.get("instruction"),
-                "executed_action": observation.get("executed_action"),
-                "reward": observation.get("reward"),
-                "selected_item": observation.get("selected_item"),
-                "selected_asin": observation.get("selected_asin"),
-                "selected_options": observation.get("selected_options"),
-                "item_context": serialized_item_context,
-                "clickables": clickables[:40],
-                "visible_items": visible_items[:10],
-                "raw_text": raw_text[:4000],
-            },
+            "page_type": observation.get("page_type"),
+            "requested_constraints": copy.deepcopy(observation.get("requested_constraints") or {}),
+            "candidate_items": copy.deepcopy(list(observation.get("candidate_items") or [])[:24]),
+            "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
         }
 
-    def _serialize_history(
+    def _serialize_intention_timeline(
         self,
-        history: Optional[List[Dict[str, Any]]],
+        current_intention: Dict[str, Any],
+        intention_history: Optional[List[Dict[str, Any]]],
         max_items: int = 4,
     ) -> List[Dict[str, Any]]:
-        if not isinstance(history, list) or not history:
-            return []
-
         serialized: List[Dict[str, Any]] = []
-        for turn in history[-max_items:]:
-            if not isinstance(turn, dict):
-                continue
+        if isinstance(intention_history, list):
+            for turn in intention_history[-max_items:]:
+                if not isinstance(turn, dict):
+                    continue
 
-            role = _clean_string(turn.get("role", "unknown")) or "unknown"
-            content = turn.get("content")
-            if isinstance(content, dict):
-                normalized_content = copy.deepcopy(content)
-            else:
-                normalized_content = _clean_string(content)
+                gold_intention = copy.deepcopy(turn.get("gold_intention") or {})
+                serialized.append(
+                    {
+                        "turn_id": turn.get("turn_id"),
+                        "is_current": False,
+                        "request": gold_intention.get("request"),
+                        "constraints": copy.deepcopy(gold_intention.get("constraints") or {}),
+                    }
+                )
 
-            serialized.append(
-                {
-                    "role": role,
-                    "content": normalized_content,
-                }
-            )
+        serialized.append(
+            {
+                "turn_id": "current",
+                "is_current": True,
+                "request": current_intention.get("request"),
+                "constraints": copy.deepcopy(current_intention.get("constraints") or {}),
+            }
+        )
 
         return serialized
 
     def _build_shift_prompt(
         self,
-        user_state: Dict[str, Any],
-        agent_action: Optional[AgentAction] = None,
+        current_intention: Dict[str, Any],
         env_feedback: Optional[EnvFeedback] = None,
-        history: Optional[List[Dict[str, Any]]] = None,
+        intention_history: Optional[List[Dict[str, Any]]] = None,
     ) -> str:
-        constraints = self._constraints_from_state(user_state)
-        priority = self._priority_from_state(user_state, constraints)
         context = {
-            "user_state": {
-                "request": user_state.get("request"),
-                "constraints": constraints,
-                "priority": priority,
-            },
-            "latest_agent_action": self._serialize_agent_action(agent_action),
+            "intention_timeline": self._serialize_intention_timeline(current_intention, intention_history),
             "latest_env_feedback": self._serialize_env_feedback(env_feedback),
-            "recent_history": self._serialize_history(history),
         }
 
         instructions = """
-You are simulating a human user reacting to the latest WebShop page and agent action.
+You are simulating a human user reacting to the latest WebShop page feedback.
 Return a single JSON object only.
 
 Allowed conditions:
 - none
 - user_preference
 - real_world_feasibility
-- agent_misunderstanding
 
 Allowed change categories:
 - none
@@ -247,13 +196,11 @@ Examples of grounded preference change:
 - after finding a viable option, the user still changes direction because they no longer want it
 
 Rules:
-- Treat adapter-provided status as a low-level environment signal, not ground truth. Use the page text, visible items, selected item, and action context as the main evidence.
+- Treat adapter-provided status as a low-level environment signal, not ground truth. Use the candidate items and their constraint matches as the main evidence.
 - Use condition="user_preference" when the user changes or adds preferences because of what they just saw.
 - Use condition="real_world_feasibility" when exact constraints seem unavailable or hard to satisfy.
-- Use condition="agent_misunderstanding" when the user is correcting a mistaken interpretation or an overly coarse refinement by the agent.
-- Use change_category="scope_correction" only for a refinement or clarification that preserves the intended target rather than replacing it wholesale.
 - Do not introduce correction, termination, or no_change_continue as top-level reaction classes.
-- Do not create, reprioritize, or mention rating/review/star/customer-score constraints. Those signals are unavailable to the executor and are out of scope for this simulator run
+- Do not mention rating/review/star/customer-score constraints. Those signals are unavailable to the executor and are out of scope for this simulator run
 
 Required JSON schema:
 {
@@ -309,16 +256,14 @@ Examples:
     def _parse_shift_output(
         self,
         llm_output: Optional[Dict[str, Any]],
-        user_state: Dict[str, Any],
+        current_intention: Dict[str, Any],
         env_feedback: Optional[EnvFeedback] = None,
     ) -> ShiftOp:
         if not llm_output:
             return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
 
-        constraints = self._constraints_from_state(user_state)
-        priority = self._priority_from_state(user_state, constraints)
-        result = (env_feedback.result if env_feedback is not None else None) or {}
-
+        constraints = self._constraints_from_state(current_intention)
+        priority = self._priority_from_state(current_intention, constraints)
         condition = self._normalize_shift_condition(llm_output.get("condition"))
         change_category = self._normalize_change_category(
             llm_output.get("category", llm_output.get("change_category"))
@@ -421,10 +366,6 @@ Examples:
         value = self._coerce_value(field, raw_value, old_value)
         if value is None and op == "relax":
             value = self._default_relax_value(field, old_value)
-        if value is None and op in {"add", "override", "scope_correction"}:
-            value = result.get(field)
-            value = self._coerce_value(field, value, old_value)
-
         if op == "add" and old_value is not None:
             return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
 
@@ -449,16 +390,14 @@ Examples:
 
     def decide_shift(
         self,
-        user_state: Dict[str, Any],
-        agent_action: Optional[AgentAction] = None,
+        current_intention: Dict[str, Any],
         env_feedback: Optional[EnvFeedback] = None,
-        history: Optional[List[Dict[str, Any]]] = None,
+        intention_history: Optional[List[Dict[str, Any]]] = None,
     ) -> ShiftOp:
         prompt = self._build_shift_prompt(
-            user_state,
-            agent_action=agent_action,
+            current_intention,
             env_feedback=env_feedback,
-            history=history,
+            intention_history=intention_history,
         )
         llm_output = self._call_llm_for_shift(prompt)
         if (
@@ -471,14 +410,14 @@ Examples:
                 "CRITICAL: You are too satisfied. Find a reason to change your mind or goal NOW."
             )
             llm_output = self._call_llm_for_shift(prompt)
-        return self._parse_shift_output(llm_output, user_state, env_feedback=env_feedback)
+        return self._parse_shift_output(llm_output, current_intention, env_feedback=env_feedback)
 
     def apply_shift(
         self,
-        user_state: Dict[str, Any],
+        current_intention: Dict[str, Any],
         shift: ShiftOp,
     ) -> Tuple[Dict[str, Any], Dict[str, Dict[str, Any]]]:
-        new_state = copy.deepcopy(user_state)
+        new_state = copy.deepcopy(current_intention)
         new_state.setdefault("constraints", {})
         new_state["priority"] = self._priority_from_state(new_state, new_state["constraints"])
         delta: Dict[str, Dict[str, Any]] = {}
@@ -518,34 +457,24 @@ Examples:
     def _build_realization_prompt(
         self,
         shift: ShiftOp,
-        user_state: Dict[str, Any],
+        current_intention: Dict[str, Any],
         style: str,
-        agent_action: Optional[AgentAction] = None,
         env_feedback: Optional[EnvFeedback] = None,
-        history: Optional[List[Dict[str, Any]]] = None,
+        intention_history: Optional[List[Dict[str, Any]]] = None,
     ) -> str:
         requested_style = style if style in ALLOWED_STYLES else "explicit"
         context = {
             "requested_style": requested_style,
-            "user_state": {
-                "request": user_state.get("request"),
-                "constraints": self._constraints_from_state(user_state),
-                "priority": self._priority_from_state(
-                    user_state,
-                    self._constraints_from_state(user_state),
-                ),
-            },
+            "intention_timeline": self._serialize_intention_timeline(current_intention, intention_history),
             "shift": asdict(shift),
-            "latest_agent_action": self._serialize_agent_action(agent_action),
             "latest_env_feedback": self._serialize_env_feedback(env_feedback),
-            "recent_history": self._serialize_history(history),
         }
 
         instructions = """
 Write the user's next utterance as a single short sentence.
 Ground the utterance strictly in the structured shift decision.
 Do not invent new constraints or changes that are not present in the shift object.
-Make the utterance responsive to the latest agent action and the current page feedback when that context is relevant.
+Make the utterance responsive to the current page feedback when that context is relevant.
 The utterance should sound consistent with the chosen change_category:
 - add: add one more preference naturally
 - relax: soften an exact requirement
@@ -580,19 +509,17 @@ Return plain text only, with no quotes and no JSON.
     def realize_shift(
         self,
         shift: ShiftOp,
-        user_state: Dict[str, Any],
+        current_intention: Dict[str, Any],
         style: str,
-        agent_action: Optional[AgentAction] = None,
         env_feedback: Optional[EnvFeedback] = None,
-        history: Optional[List[Dict[str, Any]]] = None,
+        intention_history: Optional[List[Dict[str, Any]]] = None,
     ) -> str:
         prompt = self._build_realization_prompt(
             shift,
-            user_state,
+            current_intention,
             style,
-            agent_action=agent_action,
             env_feedback=env_feedback,
-            history=history,
+            intention_history=intention_history,
         )
         utterance = self._call_llm_for_realization(prompt)
         if utterance:
@@ -655,16 +582,16 @@ Return plain text only, with no quotes and no JSON.
 
         return "Please update that requirement."
 
-    def _constraints_from_state(self, user_state: Dict[str, Any]) -> Dict[str, Any]:
-        constraints = user_state.get("constraints", {}) or {}
+    def _constraints_from_state(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        constraints = state.get("constraints", {}) or {}
         return constraints if isinstance(constraints, dict) else {}
 
     def _priority_from_state(
         self,
-        user_state: Dict[str, Any],
+        state: Dict[str, Any],
         constraints: Dict[str, Any],
     ) -> List[str]:
-        raw_priority = user_state.get("priority", [])
+        raw_priority = state.get("priority", [])
         priority = raw_priority if isinstance(raw_priority, list) else []
         ordered: List[str] = []
         seen = set()
@@ -909,7 +836,7 @@ def build_example_usage(llm_client: LLMClientProtocol) -> Dict[str, Any]:
     """
 
     simulator = HumanSimulator(llm_client=llm_client)
-    user_state = {
+    current_intention = {
         "request": "Find me a black office chair under 40 dollars.",
         "constraints": {
             "category": "office chair",
@@ -939,17 +866,17 @@ def build_example_usage(llm_client: LLMClientProtocol) -> Dict[str, Any]:
         violated_constraints=["budget_max", "color"],
     )
 
-    shift = simulator.decide_shift(user_state, env_feedback=env_feedback)
-    new_state, delta = simulator.apply_shift(user_state, shift)
+    shift = simulator.decide_shift(current_intention, env_feedback=env_feedback)
+    new_state, delta = simulator.apply_shift(current_intention, shift)
     user_utterance = simulator.realize_shift(
         shift,
-        user_state,
+        current_intention,
         style="partial",
         env_feedback=env_feedback,
     )
 
     return {
-        "user_state_input": copy.deepcopy(user_state),
+        "current_intention_input": copy.deepcopy(current_intention),
         "env_feedback_input": asdict(env_feedback),
         "shift_output": asdict(shift),
         "updated_state": new_state,
