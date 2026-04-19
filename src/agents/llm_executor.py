@@ -100,12 +100,7 @@ class LLMWebShopExecutor(ExecutionAgent):
         current_intention: Dict[str, Any],
         env_observation: Dict[str, Any],
     ) -> str:
-        prompt_constraints = self._constraints_for_prompt(current_intention)
         context = {
-            "current_intention": {
-                "constraints": prompt_constraints,
-                "priority": self._priority_for_prompt(current_intention, prompt_constraints),
-            },
             "page": self._serialize_observation(env_observation),
             "recent_history": self._serialize_history(history),
         }
@@ -125,8 +120,8 @@ Allowed action_type values:
 - refine
 
 Rules:
-- Use the current intention, page contents, item context, and recent history.
-- Treat current_intention.constraints as the source of truth. The original request text is omitted because it may be stale after user intention shifts.
+- Use the page contents, item context, WebShop instruction text, and recent history.
+- Infer the active user requirements from the natural-language context. Do not expect structured constraint fields.
 - If you need to select an option on an item page before buying, use action_type="click" with the exact option value from clickables.
 - If a navigation button like "back to search", "next >", or "< prev" is the right move, prefer the dedicated action types when possible.
 - Only use action_type="buy" when the current item looks like a strong match or after selecting necessary options.
@@ -145,43 +140,6 @@ Required JSON schema:
 }
 """.strip()
         return f"{instructions}\n\nEXECUTOR_CONTEXT_JSON:\n{_safe_json_dumps(context)}"
-
-    def _constraints_for_prompt(self, current_intention: Dict[str, Any]) -> Dict[str, Any]:
-        constraints = copy.deepcopy(current_intention.get("constraints", {}) or {})
-        if not isinstance(constraints, dict):
-            return {}
-
-        prompt_constraints = {
-            key: value
-            for key, value in constraints.items()
-            if value is not None
-        }
-
-        for field in ("color", "size", "brand"):
-            exact_field = f"{field}_exact"
-            if field not in prompt_constraints or exact_field not in prompt_constraints:
-                continue
-            if self._normalize_constraint_text(prompt_constraints[field]) != self._normalize_constraint_text(prompt_constraints[exact_field]):
-                prompt_constraints.pop(exact_field, None)
-
-        return prompt_constraints
-
-    def _priority_for_prompt(
-        self,
-        current_intention: Dict[str, Any],
-        prompt_constraints: Dict[str, Any],
-    ) -> List[str]:
-        priority = current_intention.get("priority", []) or []
-        if not isinstance(priority, list):
-            return []
-        return [
-            str(field)
-            for field in priority
-            if str(field) in prompt_constraints
-        ]
-
-    def _normalize_constraint_text(self, value: Any) -> str:
-        return re.sub(r"\s+", " ", str(value or "")).strip().lower()
 
     def _serialize_observation(self, env_observation: Dict[str, Any]) -> Dict[str, Any]:
         raw_text = str(env_observation.get("raw_text", "") or "").strip()
@@ -307,16 +265,10 @@ Required JSON schema:
         env_observation: Dict[str, Any],
     ) -> AgentAction:
         page_type = str(env_observation.get("page_type", "search") or "search").lower()
-        constraints = current_intention.get("constraints", {}) or {}
+        request_text = str(current_intention.get("request", "product") or "product")
 
         if page_type in {"search", "unknown"}:
-            query_parts = []
-            for field in ("color", "brand", "category"):
-                value = constraints.get(field)
-                if value is not None:
-                    query_parts.append(str(value))
-            query = " ".join(query_parts).strip() or str(current_intention.get("request", "product") or "product")
-            return AgentAction("search", {"query": query})
+            return AgentAction("search", {"query": request_text})
 
         if page_type == "results":
             visible_items = env_observation.get("visible_items", []) or []
@@ -330,7 +282,7 @@ Required JSON schema:
                 target = _clean_string(target)
                 if target:
                     return AgentAction("click", {"target": target})
-            return AgentAction("refine", {"query": str(current_intention.get("request", "product") or "product")})
+            return AgentAction("refine", {"query": request_text})
 
         if page_type == "item":
             option_target = self._choose_option_target(current_intention, env_observation)
@@ -344,7 +296,7 @@ Required JSON schema:
                 return AgentAction("back_to_search", {})
             return AgentAction("buy", {})
 
-        return AgentAction("search", {"query": str(current_intention.get("request", "product") or "product")})
+        return AgentAction("search", {"query": request_text})
 
     def _choose_option_target(
         self,
@@ -358,7 +310,6 @@ Required JSON schema:
         options = item_context.get("options") or {}
         selected_options = item_context.get("selected_options") or {}
         clickables = {str(c).lower(): str(c) for c in env_observation.get("clickables", []) or []}
-        constraints = current_intention.get("constraints", {}) or {}
         request_text = str(current_intention.get("request", "") or "").lower()
 
         if not isinstance(options, dict) or not clickables:
@@ -368,17 +319,7 @@ Required JSON schema:
             if not isinstance(option_values, list) or not option_values:
                 continue
 
-            desired_candidates: List[str] = []
-            constraint_value = constraints.get(option_name)
-            if constraint_value is not None:
-                desired_candidates.append(str(constraint_value).lower())
-
-            if option_name == "color" and constraints.get("color") is not None:
-                desired_candidates.append(str(constraints["color"]).lower())
-            if option_name == "brand" and constraints.get("brand") is not None:
-                desired_candidates.append(str(constraints["brand"]).lower())
-
-            matched = self._match_option_value(option_values, desired_candidates, request_text)
+            matched = self._match_option_value(option_values, request_text)
             if matched is None:
                 continue
 
@@ -395,20 +336,11 @@ Required JSON schema:
     def _match_option_value(
         self,
         option_values: List[Any],
-        desired_candidates: List[str],
         request_text: str,
     ) -> str | None:
         normalized_values = [str(v).strip().lower() for v in option_values if str(v).strip()]
         if not normalized_values:
             return None
-
-        for candidate in desired_candidates:
-            candidate = candidate.strip().lower()
-            if not candidate:
-                continue
-            for value in normalized_values:
-                if value == candidate or value in candidate or candidate in value:
-                    return value
 
         for value in normalized_values:
             if value in request_text:

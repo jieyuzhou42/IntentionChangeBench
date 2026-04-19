@@ -242,6 +242,137 @@ def load_webshop_tasks(
     return tasks[:num_instances]
 
 
+def _clean_initial_request(instruction: str) -> str:
+    return re.sub(r"^\s*Instruction:\s*", "", instruction or "", flags=re.IGNORECASE).strip()
+
+
+def _fallback_initial_intention(request: str) -> Dict[str, Any]:
+    return {
+        "request": request,
+        "constraints": {},
+        "priority": [],
+    }
+
+
+def _normalize_initial_constraint_key(key: Any) -> str:
+    normalized = re.sub(r"[^a-z0-9_]+", "_", str(key or "").strip().lower())
+    normalized = re.sub(r"_+", "_", normalized).strip("_")
+    aliases = {
+        "max_price": "budget_max",
+        "maximum_price": "budget_max",
+        "price_max": "budget_max",
+        "budget": "budget_max",
+        "budget_limit": "budget_max",
+        "product_type": "category",
+        "item_type": "category",
+    }
+    return aliases.get(normalized, normalized)
+
+
+def _normalize_initial_constraint_value(field: str, value: Any) -> Any:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        value = re.sub(r"\s+", " ", value).strip()
+        if not value or value.lower() in {"none", "null", "unknown", "not specified"}:
+            return None
+
+    if field == "budget_max":
+        if isinstance(value, (int, float)):
+            return float(value)
+        if isinstance(value, str):
+            match = re.search(r"[0-9]+(?:\.[0-9]+)?", value.replace(",", ""))
+            if match:
+                return float(match.group(0))
+        return None
+
+    return value
+
+
+def _sanitize_llm_initial_intention(raw_intention: Any, request: str) -> Dict[str, Any]:
+    if not isinstance(raw_intention, dict):
+        return _fallback_initial_intention(request)
+
+    raw_constraints = raw_intention.get("constraints") or {}
+    constraints: Dict[str, Any] = {}
+    if isinstance(raw_constraints, dict):
+        for raw_field, raw_value in raw_constraints.items():
+            field = _normalize_initial_constraint_key(raw_field)
+            if not field or field.endswith("_exact"):
+                continue
+            value = _normalize_initial_constraint_value(field, raw_value)
+            if value is not None:
+                constraints[field] = value
+
+    raw_priority = raw_intention.get("priority") or []
+    priority: List[str] = []
+    if isinstance(raw_priority, list):
+        for raw_field in raw_priority:
+            field = _normalize_initial_constraint_key(raw_field)
+            if field in constraints and field not in priority:
+                priority.append(field)
+    for field in constraints:
+        if field not in priority:
+            priority.append(field)
+
+    llm_request = raw_intention.get("request")
+    if isinstance(llm_request, str) and llm_request.strip():
+        request = llm_request.strip()
+
+    return {
+        "request": request,
+        "constraints": constraints,
+        "priority": priority,
+    }
+
+
+def _llm_initial_intention_from_instruction(
+    instruction: str,
+    llm_client: Any,
+) -> Optional[Dict[str, Any]]:
+    request = _clean_initial_request(instruction)
+    if not request:
+        return None
+    if llm_client is None or not hasattr(llm_client, "generate_json"):
+        return _fallback_initial_intention(request)
+
+    prompt = f"""
+Convert the initial WebShop instruction into benchmark intention JSON.
+Return one JSON object only.
+
+Schema:
+{{
+  "request": "the original user request, cleaned but not rewritten",
+  "constraints": {{
+    "category": "product category or null",
+    "budget_max": "maximum price as a number or null",
+    "color": "requested color option or null",
+    "brand": "requested brand only if explicitly stated or null",
+    "size": "requested size option or null"
+  }},
+  "priority": ["ordered constraint fields that matter most"]
+}}
+
+Rules:
+- Extract constraints from the instruction semantics, not with regex-style substring guesses.
+- Preserve option values exactly when they are explicit labels, e.g. color: dusty blush.
+- Use budget_max for "price lower than", "under", "below", or similar maximum-price language.
+- Set brand only when the instruction explicitly names a brand, uses a brand label, or says by/from a brand.
+- Do not infer brand from dimensions, quoted fragments, size strings, or punctuation. For example, 52"w x 54"l is a size, not a brand.
+- Omit constraints whose value is unknown instead of inventing them.
+- Do not output *_exact fields.
+
+Instruction:
+{request}
+""".strip()
+
+    try:
+        raw_intention = llm_client.generate_json(prompt)
+    except Exception:
+        return _fallback_initial_intention(request)
+    return _sanitize_llm_initial_intention(raw_intention, request)
+
+
 def _normalize_text(value: Any) -> str:
     return re.sub(r"\s+", " ", str(value or "")).strip().lower()
 
@@ -250,9 +381,7 @@ def _requested_rollout_constraints(current_intention: Dict[str, Any]) -> Dict[st
     constraints = current_intention.get("constraints", {}) or {}
     requested: Dict[str, Any] = {}
     for field in ROLLOUT_CONSTRAINT_FIELDS:
-        desired = constraints.get(f"{field}_exact")
-        if desired is None:
-            desired = constraints.get(field)
+        desired = constraints.get(field)
         if desired is not None:
             requested[field] = desired
     return requested
@@ -262,9 +391,7 @@ def _requested_selectable_constraints(current_intention: Dict[str, Any]) -> Dict
     constraints = current_intention.get("constraints", {}) or {}
     requested: Dict[str, Any] = {}
     for field in SELECTABLE_CONSTRAINT_FIELDS:
-        desired = constraints.get(f"{field}_exact")
-        if desired is None:
-            desired = constraints.get(field)
+        desired = constraints.get(field)
         if desired is not None:
             requested[field] = desired
     return requested
@@ -473,7 +600,6 @@ def _public_env_feedback_payload(env_feedback: Optional[EnvFeedback]) -> Optiona
         "status": env_feedback.status,
         "feedback_type": "candidate_items",
         "page_type": observation.get("page_type"),
-        "requested_constraints": copy.deepcopy(observation.get("requested_constraints") or {}),
         "candidate_items": copy.deepcopy(observation.get("candidate_items") or []),
         "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
     }
@@ -676,11 +802,14 @@ def simulate_dialogue_instance(
     current_intention = copy.deepcopy(task.initial_intention)
     env_obs = env.reset(task)
     real_instruction = env.get_instruction_text()
-    parsed_intention = env.parse_instruction_to_intention(real_instruction)
-    if parsed_intention is not None:
-        current_intention = parsed_intention
+    llm_initial_intention = _llm_initial_intention_from_instruction(
+        real_instruction,
+        getattr(human_simulator, "llm_client", None),
+    )
+    if llm_initial_intention is not None:
+        current_intention = llm_initial_intention
     elif real_instruction and real_instruction.strip():
-        current_intention["request"] = real_instruction.strip()
+        current_intention = _fallback_initial_intention(_clean_initial_request(real_instruction))
 
     initial_request = current_intention.get("request", "")
 
@@ -1032,7 +1161,7 @@ def main():
     parser.add_argument("--max_turns", type=int, default=4)
     parser.add_argument("--max_internal_steps", type=int, default=DEFAULT_MAX_INTERNAL_STEPS)
     parser.add_argument("--tasks_path", type=str, default=None)
-    parser.add_argument("--num_instances", type=int, default=10)
+    parser.add_argument("--num_instances", type=int, default=20)
     parser.add_argument(
         "--webshop_num_products",
         type=str,
