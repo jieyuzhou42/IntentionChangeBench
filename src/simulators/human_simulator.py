@@ -117,7 +117,7 @@ class HumanSimulator:
             "status": env_feedback.status,
             "page_type": observation.get("page_type"),
             "requested_constraints": copy.deepcopy(observation.get("requested_constraints") or {}),
-            "candidate_items": copy.deepcopy(list(observation.get("candidate_items") or [])[:24]),
+            "candidate_items": copy.deepcopy(list(observation.get("candidate_items") or [])[:10]),
             "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
         }
 

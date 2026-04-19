@@ -1,0 +1,570 @@
+{
+  "instance_id": "webshop_demo_018",
+  "task_type": "transaction",
+  "subtype": "shopping",
+  "world_state": {
+    "domain": "webshop",
+    "catalog_subset": "demo"
+  },
+  "turns": [
+    {
+      "turn_id": 0,
+      "user_utterance": "Find me slim fit men's suits & sport coats with long sleeve, short sleeve with color: 157- black, and size: x-large, and price lower than 30.00 dollars",
+      "agent_action": {
+        "action_type": "buy",
+        "action_payload": {}
+      },
+      "env_feedback": {
+        "status": "observed",
+        "feedback_type": "candidate_items",
+        "page_type": "unknown",
+        "requested_constraints": {
+          "color": "157- black",
+          "color_exact": "157- black",
+          "budget_max": 30.0,
+          "size": "x-large",
+          "size_exact": "x-large"
+        },
+        "candidate_items": [],
+        "selected_candidate": null
+      },
+      "trigger_evidence": null,
+      "shift_condition": null,
+      "gold_delta": {},
+      "gold_current_intention": {
+        "request": "Find me slim fit men's suits & sport coats with long sleeve, short sleeve with color: 157- black, and size: x-large, and price lower than 30.00 dollars",
+        "constraints": {
+          "category": null,
+          "color": "157- black",
+          "color_exact": "157- black",
+          "budget_max": 30.0,
+          "brand": null,
+          "brand_exact": null,
+          "size": "x-large",
+          "size_exact": "x-large"
+        },
+        "priority": [
+          "category",
+          "budget_max",
+          "color",
+          "brand"
+        ]
+      },
+      "linguistic_style": "explicit",
+      "action_implication": "start_search",
+      "num_internal_steps": 6,
+      "stop_reason": "env_done",
+      "rollout_trace": [
+        {
+          "step_index": 1,
+          "action": {
+            "action_type": "search",
+            "action_payload": {
+              "query": "men's slim fit suits sport coats black x-large under $30"
+            }
+          },
+          "page_type": "results",
+          "selected_asin": null,
+          "selected_options": {},
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 2,
+          "action": {
+            "action_type": "next_page",
+            "action_payload": {}
+          },
+          "page_type": "results",
+          "selected_asin": null,
+          "selected_options": {},
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 3,
+          "action": {
+            "action_type": "click",
+            "action_payload": {
+              "target": "b09plk39cm"
+            }
+          },
+          "page_type": "item",
+          "selected_asin": "B09PLK39CM",
+          "selected_options": {},
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 4,
+          "action": {
+            "action_type": "click",
+            "action_payload": {
+              "target": "x-large"
+            }
+          },
+          "page_type": "item",
+          "selected_asin": "B09PLK39CM",
+          "selected_options": {
+            "size": "x-large"
+          },
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 5,
+          "action": {
+            "action_type": "click",
+            "action_payload": {
+              "target": "black"
+            }
+          },
+          "page_type": "item",
+          "selected_asin": "B09PLK39CM",
+          "selected_options": {
+            "size": "x-large",
+            "color": "black"
+          },
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 6,
+          "action": {
+            "action_type": "buy",
+            "action_payload": {}
+          },
+          "page_type": "unknown",
+          "selected_asin": "B09PLK39CM",
+          "selected_options": {
+            "size": "x-large",
+            "color": "black"
+          },
+          "state_changed": true,
+          "made_progress": false,
+          "stop_reason": "env_done"
+        }
+      ]
+    },
+    {
+      "turn_id": 1,
+      "user_utterance": "Let’s raise the budget from $30 to $60.",
+      "agent_action": null,
+      "env_feedback": {
+        "status": "observed",
+        "feedback_type": "candidate_items",
+        "page_type": "unknown",
+        "requested_constraints": {
+          "color": "157- black",
+          "color_exact": "157- black",
+          "budget_max": 60.0,
+          "size": "x-large",
+          "size_exact": "x-large"
+        },
+        "candidate_items": [],
+        "selected_candidate": null
+      },
+      "trigger_evidence": {
+        "trigger_type": "real_world_feasibility",
+        "source": "simulator",
+        "details": {
+          "change_category": "relax",
+          "op": "relax",
+          "field": "budget_max",
+          "rationale": "There are no candidate items, so the original under-$30 requirement for suits or sport coats appears too restrictive. Raising the budget is a practical way to find viable options while keeping the main item attributes."
+        }
+      },
+      "shift_condition": {
+        "type": "real_world_feasibility",
+        "reason": "There are no candidate items, so the original under-$30 requirement for suits or sport coats appears too restrictive. Raising the budget is a practical way to find viable options while keeping the main item attributes.",
+        "source": "simulator",
+        "details": {
+          "intention_changed": true,
+          "condition": "real_world_feasibility",
+          "change_category": "relax",
+          "op": "relax",
+          "field": "budget_max",
+          "old_value": 30.0,
+          "value": 60.0,
+          "priority_update": [
+            "category",
+            "color",
+            "size",
+            "budget_max",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ]
+        }
+      },
+      "gold_delta": {
+        "budget_max": {
+          "op": "relax",
+          "old": 30.0,
+          "new": 60.0,
+          "rationale": "There are no candidate items, so the original under-$30 requirement for suits or sport coats appears too restrictive. Raising the budget is a practical way to find viable options while keeping the main item attributes."
+        },
+        "priority": {
+          "op": "reprioritize",
+          "old": [
+            "category",
+            "budget_max",
+            "color",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size",
+            "size_exact"
+          ],
+          "new": [
+            "category",
+            "color",
+            "size",
+            "budget_max",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ],
+          "rationale": "There are no candidate items, so the original under-$30 requirement for suits or sport coats appears too restrictive. Raising the budget is a practical way to find viable options while keeping the main item attributes."
+        }
+      },
+      "gold_current_intention": {
+        "request": "Find me slim fit men's suits & sport coats with long sleeve, short sleeve with color: 157- black, and size: x-large, and price lower than 30.00 dollars",
+        "constraints": {
+          "category": null,
+          "color": "157- black",
+          "color_exact": "157- black",
+          "budget_max": 60.0,
+          "brand": null,
+          "brand_exact": null,
+          "size": "x-large",
+          "size_exact": "x-large"
+        },
+        "priority": [
+          "category",
+          "color",
+          "size",
+          "budget_max",
+          "brand",
+          "color_exact",
+          "brand_exact",
+          "size_exact"
+        ]
+      },
+      "linguistic_style": "elliptical",
+      "action_implication": "requery",
+      "num_internal_steps": 0,
+      "stop_reason": "env_done",
+      "rollout_trace": []
+    },
+    {
+      "turn_id": 2,
+      "user_utterance": "Black is fine, it doesn’t have to be that exact 157 shade.",
+      "agent_action": null,
+      "env_feedback": {
+        "status": "observed",
+        "feedback_type": "candidate_items",
+        "page_type": "unknown",
+        "requested_constraints": {
+          "color": "157- black",
+          "budget_max": 60.0,
+          "size": "x-large",
+          "size_exact": "x-large"
+        },
+        "candidate_items": [],
+        "selected_candidate": null
+      },
+      "trigger_evidence": {
+        "trigger_type": "real_world_feasibility",
+        "source": "simulator",
+        "details": {
+          "change_category": "relax",
+          "op": "relax",
+          "field": "color_exact",
+          "rationale": "There are no candidate items, so the exact color variant appears too restrictive; keeping black generally while dropping the exact shade code may surface options."
+        }
+      },
+      "shift_condition": {
+        "type": "real_world_feasibility",
+        "reason": "There are no candidate items, so the exact color variant appears too restrictive; keeping black generally while dropping the exact shade code may surface options.",
+        "source": "simulator",
+        "details": {
+          "intention_changed": true,
+          "condition": "real_world_feasibility",
+          "change_category": "relax",
+          "op": "relax",
+          "field": "color_exact",
+          "old_value": "157- black",
+          "value": null,
+          "priority_update": [
+            "size",
+            "budget_max",
+            "color",
+            "category",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ]
+        }
+      },
+      "gold_delta": {
+        "color_exact": {
+          "op": "relax",
+          "old": "157- black",
+          "new": null,
+          "rationale": "There are no candidate items, so the exact color variant appears too restrictive; keeping black generally while dropping the exact shade code may surface options."
+        },
+        "priority": {
+          "op": "reprioritize",
+          "old": [
+            "category",
+            "color",
+            "size",
+            "budget_max",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ],
+          "new": [
+            "size",
+            "budget_max",
+            "color",
+            "category",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ],
+          "rationale": "There are no candidate items, so the exact color variant appears too restrictive; keeping black generally while dropping the exact shade code may surface options."
+        }
+      },
+      "gold_current_intention": {
+        "request": "Find me slim fit men's suits & sport coats with long sleeve, short sleeve with color: 157- black, and size: x-large, and price lower than 30.00 dollars",
+        "constraints": {
+          "category": null,
+          "color": "157- black",
+          "color_exact": null,
+          "budget_max": 60.0,
+          "brand": null,
+          "brand_exact": null,
+          "size": "x-large",
+          "size_exact": "x-large"
+        },
+        "priority": [
+          "size",
+          "budget_max",
+          "color",
+          "category",
+          "brand",
+          "color_exact",
+          "brand_exact",
+          "size_exact"
+        ]
+      },
+      "linguistic_style": "partial",
+      "action_implication": "requery",
+      "num_internal_steps": 0,
+      "stop_reason": "env_done",
+      "rollout_trace": []
+    },
+    {
+      "turn_id": 3,
+      "user_utterance": "X-large doesn’t have to be exact.",
+      "agent_action": null,
+      "env_feedback": {
+        "status": "observed",
+        "feedback_type": "candidate_items",
+        "page_type": "unknown",
+        "requested_constraints": {
+          "color": "157- black",
+          "budget_max": 60.0,
+          "size": "x-large"
+        },
+        "candidate_items": [],
+        "selected_candidate": null
+      },
+      "trigger_evidence": {
+        "trigger_type": "real_world_feasibility",
+        "source": "simulator",
+        "details": {
+          "change_category": "relax",
+          "op": "relax",
+          "field": "size_exact",
+          "rationale": "There are no candidate items shown, so the exact x-large requirement may be too restrictive; allowing nearby sizing could make results possible."
+        }
+      },
+      "shift_condition": {
+        "type": "real_world_feasibility",
+        "reason": "There are no candidate items shown, so the exact x-large requirement may be too restrictive; allowing nearby sizing could make results possible.",
+        "source": "simulator",
+        "details": {
+          "intention_changed": true,
+          "condition": "real_world_feasibility",
+          "change_category": "relax",
+          "op": "relax",
+          "field": "size_exact",
+          "old_value": "x-large",
+          "value": null,
+          "priority_update": null
+        }
+      },
+      "gold_delta": {
+        "size_exact": {
+          "op": "relax",
+          "old": "x-large",
+          "new": null,
+          "rationale": "There are no candidate items shown, so the exact x-large requirement may be too restrictive; allowing nearby sizing could make results possible."
+        }
+      },
+      "gold_current_intention": {
+        "request": "Find me slim fit men's suits & sport coats with long sleeve, short sleeve with color: 157- black, and size: x-large, and price lower than 30.00 dollars",
+        "constraints": {
+          "category": null,
+          "color": "157- black",
+          "color_exact": null,
+          "budget_max": 60.0,
+          "brand": null,
+          "brand_exact": null,
+          "size": "x-large",
+          "size_exact": null
+        },
+        "priority": [
+          "size",
+          "budget_max",
+          "color",
+          "category",
+          "brand",
+          "color_exact",
+          "brand_exact",
+          "size_exact"
+        ]
+      },
+      "linguistic_style": "elliptical",
+      "action_implication": "requery",
+      "num_internal_steps": 0,
+      "stop_reason": "env_done",
+      "rollout_trace": []
+    },
+    {
+      "turn_id": 4,
+      "user_utterance": "Let's switch to men's jackets and blazers instead.",
+      "agent_action": null,
+      "env_feedback": {
+        "status": "observed",
+        "feedback_type": "candidate_items",
+        "page_type": "unknown",
+        "requested_constraints": {
+          "category": "men's jackets/blazers",
+          "color": "157- black",
+          "budget_max": 60.0,
+          "size": "x-large"
+        },
+        "candidate_items": [],
+        "selected_candidate": null
+      },
+      "trigger_evidence": {
+        "trigger_type": "real_world_feasibility",
+        "source": "simulator",
+        "details": {
+          "change_category": "override",
+          "op": "override",
+          "field": "category",
+          "rationale": "No candidates appeared for the current suit/sport coat search, so the user shifts focus to a more broadly available but similar formal outerwear category while keeping the main budget, color, and size preferences."
+        }
+      },
+      "shift_condition": {
+        "type": "real_world_feasibility",
+        "reason": "No candidates appeared for the current suit/sport coat search, so the user shifts focus to a more broadly available but similar formal outerwear category while keeping the main budget, color, and size preferences.",
+        "source": "simulator",
+        "details": {
+          "intention_changed": true,
+          "condition": "real_world_feasibility",
+          "change_category": "override",
+          "op": "override",
+          "field": "category",
+          "old_value": null,
+          "value": "men's jackets/blazers",
+          "priority_update": [
+            "budget_max",
+            "color",
+            "size",
+            "category",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ]
+        }
+      },
+      "gold_delta": {
+        "category": {
+          "op": "override",
+          "old": null,
+          "new": "men's jackets/blazers",
+          "rationale": "No candidates appeared for the current suit/sport coat search, so the user shifts focus to a more broadly available but similar formal outerwear category while keeping the main budget, color, and size preferences."
+        },
+        "priority": {
+          "op": "reprioritize",
+          "old": [
+            "size",
+            "budget_max",
+            "color",
+            "category",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ],
+          "new": [
+            "budget_max",
+            "color",
+            "size",
+            "category",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ],
+          "rationale": "No candidates appeared for the current suit/sport coat search, so the user shifts focus to a more broadly available but similar formal outerwear category while keeping the main budget, color, and size preferences."
+        }
+      },
+      "gold_current_intention": {
+        "request": "Find me slim fit men's suits & sport coats with long sleeve, short sleeve with color: 157- black, and size: x-large, and price lower than 30.00 dollars",
+        "constraints": {
+          "category": "men's jackets/blazers",
+          "color": "157- black",
+          "color_exact": null,
+          "budget_max": 60.0,
+          "brand": null,
+          "brand_exact": null,
+          "size": "x-large",
+          "size_exact": null
+        },
+        "priority": [
+          "budget_max",
+          "color",
+          "size",
+          "category",
+          "brand",
+          "color_exact",
+          "brand_exact",
+          "size_exact"
+        ]
+      },
+      "linguistic_style": "explicit",
+      "action_implication": "requery",
+      "num_internal_steps": 0,
+      "stop_reason": "env_done",
+      "rollout_trace": []
+    }
+  ]
+}

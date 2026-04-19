@@ -100,11 +100,11 @@ class LLMWebShopExecutor(ExecutionAgent):
         current_intention: Dict[str, Any],
         env_observation: Dict[str, Any],
     ) -> str:
+        prompt_constraints = self._constraints_for_prompt(current_intention)
         context = {
             "current_intention": {
-                "request": current_intention.get("request"),
-                "constraints": copy.deepcopy(current_intention.get("constraints", {}) or {}),
-                "priority": list(current_intention.get("priority", []) or []),
+                "constraints": prompt_constraints,
+                "priority": self._priority_for_prompt(current_intention, prompt_constraints),
             },
             "page": self._serialize_observation(env_observation),
             "recent_history": self._serialize_history(history),
@@ -126,6 +126,7 @@ Allowed action_type values:
 
 Rules:
 - Use the current intention, page contents, item context, and recent history.
+- Treat current_intention.constraints as the source of truth. The original request text is omitted because it may be stale after user intention shifts.
 - If you need to select an option on an item page before buying, use action_type="click" with the exact option value from clickables.
 - If a navigation button like "back to search", "next >", or "< prev" is the right move, prefer the dedicated action types when possible.
 - Only use action_type="buy" when the current item looks like a strong match or after selecting necessary options.
@@ -144,6 +145,43 @@ Required JSON schema:
 }
 """.strip()
         return f"{instructions}\n\nEXECUTOR_CONTEXT_JSON:\n{_safe_json_dumps(context)}"
+
+    def _constraints_for_prompt(self, current_intention: Dict[str, Any]) -> Dict[str, Any]:
+        constraints = copy.deepcopy(current_intention.get("constraints", {}) or {})
+        if not isinstance(constraints, dict):
+            return {}
+
+        prompt_constraints = {
+            key: value
+            for key, value in constraints.items()
+            if value is not None
+        }
+
+        for field in ("color", "size", "brand"):
+            exact_field = f"{field}_exact"
+            if field not in prompt_constraints or exact_field not in prompt_constraints:
+                continue
+            if self._normalize_constraint_text(prompt_constraints[field]) != self._normalize_constraint_text(prompt_constraints[exact_field]):
+                prompt_constraints.pop(exact_field, None)
+
+        return prompt_constraints
+
+    def _priority_for_prompt(
+        self,
+        current_intention: Dict[str, Any],
+        prompt_constraints: Dict[str, Any],
+    ) -> List[str]:
+        priority = current_intention.get("priority", []) or []
+        if not isinstance(priority, list):
+            return []
+        return [
+            str(field)
+            for field in priority
+            if str(field) in prompt_constraints
+        ]
+
+    def _normalize_constraint_text(self, value: Any) -> str:
+        return re.sub(r"\s+", " ", str(value or "")).strip().lower()
 
     def _serialize_observation(self, env_observation: Dict[str, Any]) -> Dict[str, Any]:
         raw_text = str(env_observation.get("raw_text", "") or "").strip()
