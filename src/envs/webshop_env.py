@@ -265,193 +265,6 @@ class WebShopEnvAdapter(BaseEnv):
 
         return self._infer_available_actions_from_obs(fallback_obs or self.last_observation)
 
-    def parse_instruction_to_intention(self, instruction: str) -> Optional[dict]:
-        if not instruction or not instruction.strip():
-            return None
-
-        cleaned_instruction = re.sub(r"^\s*Instruction:\s*", "", instruction, flags=re.IGNORECASE).strip()
-        if not cleaned_instruction:
-            return None
-
-        text = cleaned_instruction.lower()
-
-        constraints = {
-            "category": None,
-            "color": None,
-            "color_exact": None,
-            "budget_max": None,
-            "brand": None,
-            "brand_exact": None,
-            "size": None,
-            "size_exact": None,
-        }
-
-        m = re.search(r"price lower than ([0-9]+(?:\.[0-9]+)?)", text)
-        if m:
-            constraints["budget_max"] = float(m.group(1))
-
-        for field in ("color", "size", "brand"):
-            exact_value = self._extract_labeled_constraint(cleaned_instruction, field)
-            if not exact_value:
-                exact_value = self._extract_unlabeled_constraint(cleaned_instruction, field)
-            if exact_value:
-                constraints[field] = exact_value
-                constraints[f"{field}_exact"] = exact_value
-
-        if constraints["color"] is None:
-            color_markers = ["black", "white", "green", "blue", "red", "pink", "grey", "gray"]
-            for c in color_markers:
-                if c in text:
-                    constraints["color"] = c
-                    break
-
-        # very rough category extraction
-        if "chair" in text:
-            constraints["category"] = "office chair"
-        elif "jumpsuits" in text or "rompers" in text or "overalls" in text:
-            constraints["category"] = "jumpsuit"
-
-        return {
-            "request": cleaned_instruction,
-            "constraints": constraints,
-            "priority": ["category", "budget_max", "color", "brand"],
-        }
-
-    def _extract_labeled_constraint(self, instruction: str, label: str) -> Optional[str]:
-        pattern = (
-            rf"\b{re.escape(label)}\s*:\s*(.+?)"
-            rf"(?=(?:\s*\b(?:color|size|brand)\s*:|"
-            rf"\s+\bprice\b(?:\s*:|\s+lower\s+than|\s+under|\s+below)?|"
-            rf"[;,\n]|\[SEP\]|$))"
-        )
-        match = re.search(pattern, instruction, flags=re.IGNORECASE)
-        if not match:
-            return None
-
-        value = re.sub(r"\s+", " ", match.group(1)).strip(" \t\r\n.,;:")
-        return value or None
-
-    def _extract_unlabeled_constraint(self, instruction: str, field: str) -> Optional[str]:
-        if field == "color":
-            return self._extract_unlabeled_color_constraint(instruction)
-        if field == "size":
-            return self._extract_unlabeled_size_constraint(instruction)
-        if field == "brand":
-            return self._extract_unlabeled_brand_constraint(instruction)
-        return None
-
-    def _extract_quoted_option_phrase(self, instruction: str) -> Optional[str]:
-        for pattern in (r'"([^"]+)"', r"'([^']+)'"):
-            match = re.search(pattern, instruction)
-            if match:
-                value = re.sub(r"\s+", " ", match.group(1)).strip(" \t\r\n.,;:")
-                if value:
-                    return value
-        return None
-
-    def _extract_unlabeled_color_constraint(self, instruction: str) -> Optional[str]:
-        quoted = self._extract_quoted_option_phrase(instruction)
-        if quoted and self._phrase_has_color_hint(quoted):
-            return quoted
-
-        clauses = self._split_instruction_clauses(instruction)
-        best_candidate = None
-        best_score = (-1, -1)
-        token_pattern = r"[A-Za-z0-9]+(?:[-'][A-Za-z0-9]+)*"
-
-        for clause in clauses:
-            if re.search(r"\b(?:color|size|brand)\s*:", clause, flags=re.IGNORECASE):
-                continue
-
-            token_matches = list(re.finditer(token_pattern, clause))
-            tokens = [match.group(0) for match in token_matches]
-            for start in range(len(tokens)):
-                for end in range(start + 1, min(len(tokens), start + 4) + 1):
-                    window_tokens = tokens[start:end]
-                    if not any(self._token_has_color_hint(token) for token in window_tokens):
-                        continue
-
-                    candidate = self._trim_option_phrase(" ".join(window_tokens))
-                    if not candidate or not self._phrase_has_color_hint(candidate):
-                        continue
-
-                    score = (len(candidate.split()), len(candidate))
-                    if score > best_score:
-                        best_candidate = candidate
-                        best_score = score
-
-        return best_candidate
-
-    def _extract_unlabeled_size_constraint(self, instruction: str) -> Optional[str]:
-        quoted = self._extract_quoted_option_phrase(instruction)
-        if quoted and re.search(r"\b(?:xxs|xs|s|m|l|xl|xxl|small|medium|large)\b", quoted, flags=re.IGNORECASE):
-            return quoted
-
-        match = re.search(
-            r"\b(?:size\s+)?(xxs|xs|s|m|l|xl|xxl|small|medium|large)\b",
-            instruction,
-            flags=re.IGNORECASE,
-        )
-        if not match:
-            return None
-        return match.group(1)
-
-    def _extract_unlabeled_brand_constraint(self, instruction: str) -> Optional[str]:
-        quoted = self._extract_quoted_option_phrase(instruction)
-        if quoted and not self._phrase_has_color_hint(quoted):
-            return quoted
-
-        match = re.search(
-            r"\b(?:by|from)\s+([A-Za-z0-9][A-Za-z0-9&' -]{1,40})"
-            r"(?=(?:\s+\b(?:price|under|below|with|in|for)\b|[;,\n]|\[SEP\]|$))",
-            instruction,
-            flags=re.IGNORECASE,
-        )
-        if not match:
-            return None
-
-        value = re.sub(r"\s+", " ", match.group(1)).strip(" \t\r\n.,;:")
-        return value or None
-
-    def _split_instruction_clauses(self, instruction: str) -> List[str]:
-        text = re.sub(
-            r"\b(?:price\s+)?(?:lower\s+than|under|below)\s+[0-9]+(?:\.[0-9]+)?",
-            "|",
-            instruction,
-            flags=re.IGNORECASE,
-        )
-        return [part.strip() for part in re.split(r"[;,\n|]", text) if part.strip()]
-
-    def _token_has_color_hint(self, token: str) -> bool:
-        normalized = self._normalize_option_text(token)
-        parts = [part for part in re.split(r"[-_/]", normalized) if part]
-        search_terms = [normalized] + parts
-        color_markers = {"black", "white", "green", "blue", "red", "pink", "grey", "gray", "brown", "teal"}
-        return any(term in color_markers for term in search_terms)
-
-    def _phrase_has_color_hint(self, phrase: str) -> bool:
-        return any(self._token_has_color_hint(token) for token in phrase.split())
-
-    def _trim_option_phrase(self, phrase: str) -> str:
-        tokens = [token for token in phrase.split() if token]
-        if not tokens:
-            return ""
-
-        leading_stopwords = {
-            "a", "an", "the", "find", "get", "buy", "need", "want", "looking", "for", "with", "in", "show", "me",
-        }
-        trailing_stopwords = {
-            "chair", "chairs", "shirt", "shirts", "shoe", "shoes", "jumpsuit", "jumpsuits", "rompers", "overalls",
-            "item", "items", "product", "products", "option", "options", "office", "under", "below", "than", "price",
-        }
-
-        while tokens and self._normalize_option_text(tokens[0]) in leading_stopwords:
-            tokens.pop(0)
-        while tokens and self._normalize_option_text(tokens[-1]) in trailing_stopwords:
-            tokens.pop()
-
-        return " ".join(tokens)
-
     def _unpack_step_output(self, step_out):
         """
         Supports both old gym (obs, reward, done, info)
@@ -1144,7 +957,7 @@ class WebShopEnvAdapter(BaseEnv):
         return [
             field
             for field, value in constraints.items()
-            if value is not None and not field.endswith("_exact")
+            if value is not None
         ]
 
     def _looks_like_asin(self, text: str) -> bool:
@@ -1242,7 +1055,6 @@ class WebShopEnvAdapter(BaseEnv):
     ) -> Dict[str, Any]:
         post_selected_asin = obs.get("selected_asin")
         post_selected_options = self._copy_selected_options(obs.get("selected_options"))
-        requested_constraints = self._requested_constraints_for_feedback(user_state or {})
         candidate_items = list(obs.get("candidate_items") or [])
         selected_candidate = (
             self._candidate_item_from_item_context(obs.get("item_context") or {})
@@ -1252,7 +1064,6 @@ class WebShopEnvAdapter(BaseEnv):
 
         return {
             **obs,
-            "requested_constraints": requested_constraints,
             "candidate_items": candidate_items,
             "selected_candidate": selected_candidate,
             "executed_action": used_action,
@@ -1268,16 +1079,6 @@ class WebShopEnvAdapter(BaseEnv):
             ),
             "constraint_debug": constraint_debug,
             "extracted_result": result,
-        }
-
-    def _requested_constraints_for_feedback(self, user_state: Dict[str, Any]) -> Dict[str, Any]:
-        constraints = user_state.get("constraints", {}) or {}
-        if not isinstance(constraints, dict):
-            return {}
-        return {
-            field: value
-            for field, value in constraints.items()
-            if value is not None
         }
 
     def _normalize_category_text(self, value: Any) -> str:
@@ -1338,7 +1139,7 @@ class WebShopEnvAdapter(BaseEnv):
             return (satisfied, [], debug) if include_debug else (satisfied, [])
 
         for field, desired in constraints.items():
-            if desired is None or field.endswith("_exact"):
+            if desired is None:
                 continue
 
             if field == "budget_max":
@@ -1357,7 +1158,7 @@ class WebShopEnvAdapter(BaseEnv):
                     violated.append(field)
 
             elif field in {"color", "size", "brand", "category"}:
-                desired_value = constraints.get(f"{field}_exact") or desired
+                desired_value = desired
                 actual, actual_source = self._resolve_constraint_actual(result, field)
                 matches = None
                 if actual is None:

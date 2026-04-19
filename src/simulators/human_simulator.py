@@ -116,7 +116,6 @@ class HumanSimulator:
             "feedback_type": "candidate_items",
             "status": env_feedback.status,
             "page_type": observation.get("page_type"),
-            "requested_constraints": copy.deepcopy(observation.get("requested_constraints") or {}),
             "candidate_items": copy.deepcopy(list(observation.get("candidate_items") or [])[:10]),
             "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
         }
@@ -235,7 +234,7 @@ Examples:
   "intention_changed": true,
   "condition": "real_world_feasibility",
   "category": "relax",
-  "field": "color_exact",
+  "field": "color",
   "old_value": "green stripe",
   "value": null,
   "priority_update": null,
