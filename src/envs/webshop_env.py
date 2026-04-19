@@ -15,6 +15,7 @@ class WebShopEnvAdapter(BaseEnv):
         import gym
         from web_agent_site.envs import WebAgentTextEnv
         env = gym.make('WebAgentTextEnv-v0', observation_mode='text', num_products=1000)
+        # use num_products=None with WEBSHOP_DATASET=all for the full WebShop dataset
 
     This adapter tries to be robust to:
     - old/new gym step signatures
@@ -1242,15 +1243,11 @@ class WebShopEnvAdapter(BaseEnv):
         post_selected_asin = obs.get("selected_asin")
         post_selected_options = self._copy_selected_options(obs.get("selected_options"))
         requested_constraints = self._requested_constraints_for_feedback(user_state or {})
-        candidate_items = self._annotate_candidate_items(
-            obs.get("candidate_items") or [],
-            user_state or {},
-        )
-        selected_candidate = self._annotate_candidate_item(
+        candidate_items = list(obs.get("candidate_items") or [])
+        selected_candidate = (
             self._candidate_item_from_item_context(obs.get("item_context") or {})
             if isinstance(obs.get("item_context"), dict)
-            else None,
-            user_state or {},
+            else None
         )
 
         return {
@@ -1282,109 +1279,6 @@ class WebShopEnvAdapter(BaseEnv):
             for field, value in constraints.items()
             if value is not None
         }
-
-    def _annotate_candidate_items(
-        self,
-        candidate_items: List[Dict[str, Any]],
-        user_state: Dict[str, Any],
-    ) -> List[Dict[str, Any]]:
-        annotated: List[Dict[str, Any]] = []
-        for item in candidate_items:
-            candidate = self._annotate_candidate_item(item, user_state)
-            if candidate is not None:
-                annotated.append(candidate)
-        return annotated
-
-    def _annotate_candidate_item(
-        self,
-        candidate_item: Optional[Dict[str, Any]],
-        user_state: Dict[str, Any],
-    ) -> Optional[Dict[str, Any]]:
-        if not isinstance(candidate_item, dict):
-            return None
-
-        item = dict(candidate_item)
-        constraints = user_state.get("constraints", {}) or {}
-        if not isinstance(constraints, dict):
-            constraints = {}
-
-        constraint_matches: Dict[str, Any] = {}
-        failed_constraints: List[str] = []
-        for field, desired in constraints.items():
-            if desired is None or field.endswith("_exact"):
-                continue
-            desired_value = constraints.get(f"{field}_exact")
-            if desired_value is None:
-                desired_value = desired
-            matched = self._candidate_constraint_match(item, field, desired_value)
-            constraint_matches[field] = matched
-            if matched is False:
-                failed_constraints.append(field)
-
-        item["constraint_matches"] = constraint_matches
-        item["failed_constraints"] = failed_constraints
-        return item
-
-    def _candidate_constraint_match(
-        self,
-        item: Dict[str, Any],
-        field: str,
-        desired: Any,
-    ) -> Optional[bool]:
-        if desired is None:
-            return None
-
-        if field == "budget_max":
-            price = item.get("price")
-            try:
-                return float(price) <= float(desired)
-            except (TypeError, ValueError):
-                return None
-
-        if field == "category":
-            result = {
-                "product_category": item.get("product_category"),
-                "category": item.get("category"),
-                "title": item.get("title"),
-                "query": item.get("query"),
-            }
-            return self._category_matches(desired, item.get("product_category") or item.get("category"), result)
-
-        if field in {"color", "size", "brand"}:
-            desired_text = self._normalize_option_text(desired)
-            if not desired_text:
-                return None
-
-            options = item.get("options") or {}
-            if isinstance(options, dict):
-                for option_name, option_values in options.items():
-                    if self._normalize_option_text(option_name) != field:
-                        continue
-                    values = option_values if isinstance(option_values, list) else [option_values]
-                    normalized_values = {self._normalize_option_text(value) for value in values}
-                    if desired_text in normalized_values:
-                        return True
-                    if normalized_values:
-                        return False
-
-            actual = item.get(field)
-            if actual is not None:
-                return self._normalize_option_text(actual) == desired_text
-
-        desired_text = self._normalize_option_text(desired)
-        if not desired_text:
-            return None
-        search_space = " ".join(
-            [
-                str(item.get("title") or ""),
-                str(item.get("description") or ""),
-                str(item.get("product_category") or ""),
-                str(item.get("query") or ""),
-                " ".join(str(x) for x in item.get("bullet_points") or []),
-                " ".join(str(x) for x in item.get("attributes") or []),
-            ]
-        )
-        return desired_text in self._normalize_option_text(search_space)
 
     def _normalize_category_text(self, value: Any) -> str:
         text = self._normalize_option_text(value)

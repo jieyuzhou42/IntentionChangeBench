@@ -1,0 +1,332 @@
+{
+  "instance_id": "webshop_demo_012",
+  "task_type": "transaction",
+  "subtype": "shopping",
+  "world_state": {
+    "domain": "webshop",
+    "catalog_subset": "demo"
+  },
+  "turns": [
+    {
+      "turn_id": 0,
+      "user_utterance": "Find me men's t-shirts & tanks with short sleeve, fashion design, long sleeve, button closure with color: a-red, and size: 3x-large, and price lower than 30.00 dollars",
+      "agent_action": {
+        "action_type": "buy",
+        "action_payload": {}
+      },
+      "env_feedback": {
+        "status": "observed",
+        "feedback_type": "candidate_items",
+        "page_type": "unknown",
+        "requested_constraints": {
+          "color": "a-red",
+          "color_exact": "a-red",
+          "budget_max": 30.0,
+          "size": "3x-large",
+          "size_exact": "3x-large"
+        },
+        "candidate_items": [],
+        "selected_candidate": null
+      },
+      "trigger_evidence": null,
+      "shift_condition": null,
+      "gold_delta": {},
+      "gold_current_intention": {
+        "request": "Find me men's t-shirts & tanks with short sleeve, fashion design, long sleeve, button closure with color: a-red, and size: 3x-large, and price lower than 30.00 dollars",
+        "constraints": {
+          "category": null,
+          "color": "a-red",
+          "color_exact": "a-red",
+          "budget_max": 30.0,
+          "brand": null,
+          "brand_exact": null,
+          "size": "3x-large",
+          "size_exact": "3x-large"
+        },
+        "priority": [
+          "category",
+          "budget_max",
+          "color",
+          "brand"
+        ]
+      },
+      "linguistic_style": "explicit",
+      "action_implication": "start_search",
+      "num_internal_steps": 5,
+      "stop_reason": "env_done",
+      "rollout_trace": [
+        {
+          "step_index": 1,
+          "action": {
+            "action_type": "search",
+            "action_payload": {
+              "query": "men's t-shirts tanks red 3x-large under $30 button closure"
+            }
+          },
+          "page_type": "results",
+          "selected_asin": null,
+          "selected_options": {},
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 2,
+          "action": {
+            "action_type": "click",
+            "action_payload": {
+              "target": "b09qq31bgn"
+            }
+          },
+          "page_type": "item",
+          "selected_asin": "B09QQ31BGN",
+          "selected_options": {},
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 3,
+          "action": {
+            "action_type": "click",
+            "action_payload": {
+              "target": "red"
+            }
+          },
+          "page_type": "item",
+          "selected_asin": "B09QQ31BGN",
+          "selected_options": {
+            "color": "red"
+          },
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 4,
+          "action": {
+            "action_type": "click",
+            "action_payload": {
+              "target": "3x-large"
+            }
+          },
+          "page_type": "item",
+          "selected_asin": "B09QQ31BGN",
+          "selected_options": {
+            "color": "red",
+            "size": "3x-large"
+          },
+          "state_changed": true,
+          "made_progress": true,
+          "stop_reason": null
+        },
+        {
+          "step_index": 5,
+          "action": {
+            "action_type": "buy",
+            "action_payload": {}
+          },
+          "page_type": "unknown",
+          "selected_asin": "B09QQ31BGN",
+          "selected_options": {
+            "color": "red",
+            "size": "3x-large"
+          },
+          "state_changed": true,
+          "made_progress": false,
+          "stop_reason": "env_done"
+        }
+      ]
+    },
+    {
+      "turn_id": 1,
+      "user_utterance": "It doesn’t have to be that exact red shade—any red is fine.",
+      "agent_action": null,
+      "env_feedback": {
+        "status": "observed",
+        "feedback_type": "candidate_items",
+        "page_type": "unknown",
+        "requested_constraints": {
+          "color": "a-red",
+          "budget_max": 30.0,
+          "size": "3x-large",
+          "size_exact": "3x-large"
+        },
+        "candidate_items": [],
+        "selected_candidate": null
+      },
+      "trigger_evidence": {
+        "trigger_type": "real_world_feasibility",
+        "source": "simulator",
+        "details": {
+          "change_category": "relax",
+          "op": "relax",
+          "field": "color_exact",
+          "rationale": "No candidate items were found, so the exact red shade appears too restrictive. A broader red color is now acceptable while keeping size and budget important."
+        }
+      },
+      "shift_condition": {
+        "type": "real_world_feasibility",
+        "reason": "No candidate items were found, so the exact red shade appears too restrictive. A broader red color is now acceptable while keeping size and budget important.",
+        "source": "simulator",
+        "details": {
+          "intention_changed": true,
+          "condition": "real_world_feasibility",
+          "change_category": "relax",
+          "op": "relax",
+          "field": "color_exact",
+          "old_value": "a-red",
+          "value": null,
+          "priority_update": [
+            "size",
+            "budget_max",
+            "color",
+            "category",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ]
+        }
+      },
+      "gold_delta": {
+        "color_exact": {
+          "op": "relax",
+          "old": "a-red",
+          "new": null,
+          "rationale": "No candidate items were found, so the exact red shade appears too restrictive. A broader red color is now acceptable while keeping size and budget important."
+        },
+        "priority": {
+          "op": "reprioritize",
+          "old": [
+            "category",
+            "budget_max",
+            "color",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size",
+            "size_exact"
+          ],
+          "new": [
+            "size",
+            "budget_max",
+            "color",
+            "category",
+            "brand",
+            "color_exact",
+            "brand_exact",
+            "size_exact"
+          ],
+          "rationale": "No candidate items were found, so the exact red shade appears too restrictive. A broader red color is now acceptable while keeping size and budget important."
+        }
+      },
+      "gold_current_intention": {
+        "request": "Find me men's t-shirts & tanks with short sleeve, fashion design, long sleeve, button closure with color: a-red, and size: 3x-large, and price lower than 30.00 dollars",
+        "constraints": {
+          "category": null,
+          "color": "a-red",
+          "color_exact": null,
+          "budget_max": 30.0,
+          "brand": null,
+          "brand_exact": null,
+          "size": "3x-large",
+          "size_exact": "3x-large"
+        },
+        "priority": [
+          "size",
+          "budget_max",
+          "color",
+          "category",
+          "brand",
+          "color_exact",
+          "brand_exact",
+          "size_exact"
+        ]
+      },
+      "linguistic_style": "explicit",
+      "action_implication": "requery",
+      "num_internal_steps": 0,
+      "stop_reason": "env_done",
+      "rollout_trace": []
+    },
+    {
+      "turn_id": 2,
+      "user_utterance": "3X-large doesn’t have to be exact.",
+      "agent_action": null,
+      "env_feedback": {
+        "status": "observed",
+        "feedback_type": "candidate_items",
+        "page_type": "unknown",
+        "requested_constraints": {
+          "color": "a-red",
+          "budget_max": 30.0,
+          "size": "3x-large"
+        },
+        "candidate_items": [],
+        "selected_candidate": null
+      },
+      "trigger_evidence": {
+        "trigger_type": "real_world_feasibility",
+        "source": "simulator",
+        "details": {
+          "change_category": "relax",
+          "op": "relax",
+          "field": "size_exact",
+          "rationale": "There are no candidate items shown, so the exact 3X-large requirement seems too restrictive; a nearby size may be needed."
+        }
+      },
+      "shift_condition": {
+        "type": "real_world_feasibility",
+        "reason": "There are no candidate items shown, so the exact 3X-large requirement seems too restrictive; a nearby size may be needed.",
+        "source": "simulator",
+        "details": {
+          "intention_changed": true,
+          "condition": "real_world_feasibility",
+          "change_category": "relax",
+          "op": "relax",
+          "field": "size_exact",
+          "old_value": "3x-large",
+          "value": null,
+          "priority_update": null
+        }
+      },
+      "gold_delta": {
+        "size_exact": {
+          "op": "relax",
+          "old": "3x-large",
+          "new": null,
+          "rationale": "There are no candidate items shown, so the exact 3X-large requirement seems too restrictive; a nearby size may be needed."
+        }
+      },
+      "gold_current_intention": {
+        "request": "Find me men's t-shirts & tanks with short sleeve, fashion design, long sleeve, button closure with color: a-red, and size: 3x-large, and price lower than 30.00 dollars",
+        "constraints": {
+          "category": null,
+          "color": "a-red",
+          "color_exact": null,
+          "budget_max": 30.0,
+          "brand": null,
+          "brand_exact": null,
+          "size": "3x-large",
+          "size_exact": null
+        },
+        "priority": [
+          "size",
+          "budget_max",
+          "color",
+          "category",
+          "brand",
+          "color_exact",
+          "brand_exact",
+          "size_exact"
+        ]
+      },
+      "linguistic_style": "explicit",
+      "action_implication": "requery",
+      "num_internal_steps": 0,
+      "stop_reason": "env_done",
+      "rollout_trace": []
+    }
+  ]
+}

@@ -20,6 +20,7 @@ from envs.webshop_env import WebShopEnvAdapter
 
 STYLE_POOL = ["explicit", "partial", "elliptical"]
 DEFAULT_MAX_INTERNAL_STEPS = 6
+DEFAULT_WEBSHOP_NUM_PRODUCTS = "100000"
 ROLLOUT_CONSTRAINT_FIELDS = ("category", "color", "size", "brand")
 SELECTABLE_CONSTRAINT_FIELDS = ("color", "size", "brand")
 PAGE_TYPE_RANK = {
@@ -37,6 +38,65 @@ class TurnRolloutResult:
     rollout_trace: List[Dict[str, Any]]
     num_internal_steps: int
     stop_reason: str
+
+
+def parse_webshop_num_products(value: Any) -> Optional[int]:
+    text = str(value if value is not None else DEFAULT_WEBSHOP_NUM_PRODUCTS).strip().lower()
+    if text in {"all", "full", "large", "none"}:
+        return None
+
+    try:
+        num_products = int(text)
+    except ValueError as exc:
+        raise ValueError(
+            "--webshop_num_products must be one of 100, 1000, 100000, or all"
+        ) from exc
+
+    if num_products not in {100, 1000, 100000}:
+        raise ValueError(
+            "--webshop_num_products must be one of 100, 1000, 100000, or all"
+        )
+    return num_products
+
+
+def configure_webshop_dataset(num_products: Optional[int]) -> None:
+    """
+    Select the product JSON/attribute JSON before importing WebShop modules.
+
+    WebShop has two independent switches:
+    - data files: 1000-product files vs full files
+    - search index: chosen by num_products in WebShop's init_search_engine
+    """
+
+    dataset_mode = "all" if num_products is None or num_products > 1000 else "small"
+    os.environ["WEBSHOP_DATASET"] = dataset_mode
+
+    if dataset_mode != "all":
+        return
+
+    repo_root = Path(__file__).resolve().parents[2]
+    data_dir = repo_root / "WebShop" / "data"
+    required_files = [
+        data_dir / "items_shuffle.json",
+        data_dir / "items_ins_v2_1000.json",
+    ]
+    search_index_name = "indexes" if num_products is None else "indexes_100k"
+    required_dirs = [
+        repo_root / "WebShop" / "search_engine" / search_index_name,
+    ]
+    missing = [str(path) for path in required_files if not path.is_file()]
+    missing.extend(str(path) for path in required_dirs if not path.is_dir())
+    if missing:
+        missing_text = "\n  - ".join(missing)
+        raise FileNotFoundError(
+            "Full WebShop data files are not present. Download/build the full dataset first, "
+            "then rerun with --webshop_num_products all or 100000.\n"
+            f"Missing:\n  - {missing_text}\n"
+            "Expected setup: from WebShop/, run `bash setup.sh -d all` or otherwise place "
+            "`items_shuffle.json` under WebShop/data and build the matching search index. "
+            "The default instruction/attribute file stays on the 1k subset; set "
+            "WEBSHOP_ATTR_DATASET=all only if you also want full instructions."
+        )
 
 
 def load_local_dotenv(dotenv_path: str | None = None, override: bool = False) -> None:
@@ -624,36 +684,23 @@ def simulate_dialogue_instance(
 
     initial_request = current_intention.get("request", "")
 
-    history: List[Dict[str, Any]] = [
-        {
-            "role": "user",
-            "content": initial_request,
-        }
-    ]
+    user_utterance = initial_request
+    gold_delta: Dict[str, Dict[str, Any]] = {}
+    trigger_evidence: Optional[Dict[str, Any]] = None
+    shift_condition: Optional[Dict[str, Any]] = None
+    linguistic_style = "explicit"
+    action_implication = "start_search"
+
+    history: List[Dict[str, Any]] = [{"role": "user", "content": user_utterance}]
     intention_history: List[Dict[str, Any]] = [
         {
             "turn_id": 0,
-            "user_utterance": initial_request,
+            "user_utterance": user_utterance,
             "gold_intention": copy.deepcopy(current_intention),
         }
     ]
 
-    turns.append(
-        TurnRecord(
-            turn_id=0,
-            user_utterance=initial_request,
-            agent_action=None,
-            env_feedback=None,
-            trigger_evidence=None,
-            shift_condition=None,
-            gold_delta={},
-            gold_current_intention=copy.deepcopy(current_intention),
-            linguistic_style="explicit",
-            action_implication="start_search",
-        )
-    )
-
-    for turn_id in range(1, max_turns + 1):
+    for turn_id in range(max_turns + 1):
         rollout = execute_turn(
             env=env,
             execution_agent=execution_agent,
@@ -664,6 +711,50 @@ def simulate_dialogue_instance(
         )
         agent_action = rollout.final_action
         env_feedback = rollout.final_env_feedback
+
+        turns.append(
+            TurnRecord(
+                turn_id=turn_id,
+                user_utterance=user_utterance,
+                agent_action=(
+                    {
+                        "action_type": agent_action.action_type,
+                        "action_payload": agent_action.action_payload,
+                    }
+                    if agent_action is not None
+                    else None
+                ),
+                env_feedback=_public_env_feedback_payload(env_feedback),
+                trigger_evidence=trigger_evidence,
+                shift_condition=shift_condition,
+                gold_delta=gold_delta,
+                gold_current_intention=copy.deepcopy(current_intention),
+                linguistic_style=linguistic_style,
+                action_implication=action_implication,
+                num_internal_steps=rollout.num_internal_steps,
+                stop_reason=rollout.stop_reason,
+                rollout_trace=rollout.rollout_trace,
+            )
+        )
+
+        history.append(
+            {
+                "role": "assistant",
+                "content": {
+                    "action_type": agent_action.action_type if agent_action is not None else None,
+                    "action_payload": agent_action.action_payload if agent_action is not None else {},
+                    "env_result": env_feedback.result if env_feedback is not None else {},
+                    "num_internal_steps": rollout.num_internal_steps,
+                    "stop_reason": rollout.stop_reason,
+                    "rollout_trace": rollout.rollout_trace,
+                },
+            }
+        )
+        env_obs = env.get_observation()
+
+        if turn_id >= max_turns:
+            break
+
         style = rng.choice(STYLE_POOL)
         shift = human_simulator.decide_shift(
             current_intention,
@@ -678,6 +769,9 @@ def simulate_dialogue_instance(
             env_feedback=env_feedback,
             intention_history=intention_history[:-1],
         )
+        if env.done and not delta:
+            break
+
         shift_condition = None
         trigger_evidence = {
             "trigger_type": "none",
@@ -713,59 +807,21 @@ def simulate_dialogue_instance(
                     "rationale": shift.rationale,
                 },
             }
+
         current_intention = new_intention
+        user_utterance = user_utt
+        gold_delta = delta
+        linguistic_style = style
         action_implication = "requery" if shift.op in {"add", "relax", "override"} else "continue"
 
-        turns.append(
-            TurnRecord(
-                turn_id=turn_id,
-                user_utterance=user_utt,
-                agent_action=(
-                    {
-                        "action_type": agent_action.action_type,
-                        "action_payload": agent_action.action_payload,
-                    }
-                    if agent_action is not None
-                    else None
-                ),
-                env_feedback=_public_env_feedback_payload(env_feedback),
-                trigger_evidence=trigger_evidence,
-                shift_condition=shift_condition,
-                gold_delta=delta,
-                gold_current_intention=copy.deepcopy(current_intention),
-                linguistic_style=style,
-                action_implication=action_implication,
-                num_internal_steps=rollout.num_internal_steps,
-                stop_reason=rollout.stop_reason,
-                rollout_trace=rollout.rollout_trace,
-            )
-        )
-
-        history.append(
-            {
-                "role": "assistant",
-                "content": {
-                    "action_type": agent_action.action_type if agent_action is not None else None,
-                    "action_payload": agent_action.action_payload if agent_action is not None else {},
-                    "env_result": env_feedback.result if env_feedback is not None else {},
-                    "num_internal_steps": rollout.num_internal_steps,
-                    "stop_reason": rollout.stop_reason,
-                    "rollout_trace": rollout.rollout_trace,
-                },
-            }
-        )
-        history.append({"role": "user", "content": user_utt})
+        history.append({"role": "user", "content": user_utterance})
         intention_history.append(
             {
-                "turn_id": turn_id,
-                "user_utterance": user_utt,
+                "turn_id": turn_id + 1,
+                "user_utterance": user_utterance,
                 "gold_intention": copy.deepcopy(current_intention),
             }
         )
-        env_obs = env.get_observation()
-
-        if env.done and not delta:
-            break
 
     return DialogueInstance(
         instance_id=task.instance_id,
@@ -779,7 +835,10 @@ def simulate_dialogue_instance(
 def _build_runtime_components(
     *,
     azure_api_version: str,
+    webshop_num_products: Optional[int],
 ) -> Tuple[WebShopEnvAdapter, Any, HumanSimulator, Any]:
+    configure_webshop_dataset(webshop_num_products)
+
     import gym
     from web_agent_site.envs import WebAgentTextEnv
 
@@ -788,11 +847,14 @@ def _build_runtime_components(
     raw_env = gym.make(
         "WebAgentTextEnv-v0",
         observation_mode="text",
-        num_products=1000,
+        num_products=webshop_num_products,
         disable_env_checker=True,
     )
     if raw_env is None:
-        raw_env = WebAgentTextEnv(observation_mode="text", num_products=1000)
+        raw_env = WebAgentTextEnv(
+            observation_mode="text",
+            num_products=webshop_num_products,
+        )
 
     env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
     llm_client = AzureOpenAIChatClient.from_env(api_version=azure_api_version)
@@ -808,9 +870,11 @@ def _simulate_single_instance(
     max_turns: int,
     max_internal_steps: int,
     azure_api_version: str,
+    webshop_num_products: Optional[int],
 ) -> DialogueInstance:
     env, agent, human, raw_env = _build_runtime_components(
         azure_api_version=azure_api_version,
+        webshop_num_products=webshop_num_products,
     )
     try:
         return simulate_dialogue_instance(
@@ -828,6 +892,86 @@ def _simulate_single_instance(
             close_env()
 
 
+def _simulate_instances_serial(
+    *,
+    tasks: List[BaseTask],
+    seed: int,
+    max_turns: int,
+    max_internal_steps: int,
+    azure_api_version: str,
+    webshop_num_products: Optional[int],
+) -> List[DialogueInstance]:
+    env, agent, human, raw_env = _build_runtime_components(
+        azure_api_version=azure_api_version,
+        webshop_num_products=webshop_num_products,
+    )
+    try:
+        instances = []
+        for task_index, task in enumerate(tasks, start=1):
+            instances.append(
+                simulate_dialogue_instance(
+                    task=task,
+                    env=env,
+                    execution_agent=agent,
+                    human_simulator=human,
+                    max_turns=max_turns,
+                    max_internal_steps=max_internal_steps,
+                    seed=seed + task_index - 1,
+                )
+            )
+        return instances
+    finally:
+        close_env = getattr(raw_env, "close", None)
+        if callable(close_env):
+            close_env()
+
+
+def _simulate_task_batch(
+    *,
+    indexed_tasks: List[Tuple[int, BaseTask]],
+    seed: int,
+    max_turns: int,
+    max_internal_steps: int,
+    azure_api_version: str,
+    webshop_num_products: Optional[int],
+) -> Dict[int, DialogueInstance]:
+    env, agent, human, raw_env = _build_runtime_components(
+        azure_api_version=azure_api_version,
+        webshop_num_products=webshop_num_products,
+    )
+    try:
+        instances_by_index = {}
+        for task_index, task in indexed_tasks:
+            instances_by_index[task_index] = simulate_dialogue_instance(
+                task=task,
+                env=env,
+                execution_agent=agent,
+                human_simulator=human,
+                max_turns=max_turns,
+                max_internal_steps=max_internal_steps,
+                seed=seed + task_index - 1,
+            )
+        return instances_by_index
+    finally:
+        close_env = getattr(raw_env, "close", None)
+        if callable(close_env):
+            close_env()
+
+
+def _partition_indexed_tasks(
+    tasks: List[BaseTask],
+    num_partitions: int,
+) -> List[List[Tuple[int, BaseTask]]]:
+    partitions: List[List[Tuple[int, BaseTask]]] = [
+        [] for _ in range(num_partitions)
+    ]
+    for zero_based_index, task in enumerate(tasks):
+        partitions[zero_based_index % num_partitions].append(
+            (zero_based_index + 1, task)
+        )
+    return [partition for partition in partitions if partition]
+
+
 def _simulate_instances(
     *,
     tasks: List[BaseTask],
@@ -835,35 +979,42 @@ def _simulate_instances(
     max_turns: int,
     max_internal_steps: int,
     azure_api_version: str,
+    webshop_num_products: Optional[int],
     parallelism: int,
 ) -> List[DialogueInstance]:
-    jobs = [
-        {
-            "task": task,
-            "seed": seed + task_index - 1,
-            "max_turns": max_turns,
-            "max_internal_steps": max_internal_steps,
-            "azure_api_version": azure_api_version,
-        }
-        for task_index, task in enumerate(tasks, start=1)
-    ]
-
     if parallelism <= 1:
-        return [_simulate_single_instance(**job) for job in jobs]
+        return _simulate_instances_serial(
+            tasks=tasks,
+            seed=seed,
+            max_turns=max_turns,
+            max_internal_steps=max_internal_steps,
+            azure_api_version=azure_api_version,
+            webshop_num_products=webshop_num_products,
+        )
 
+    effective_parallelism = min(parallelism, len(tasks))
+    task_batches = _partition_indexed_tasks(tasks, effective_parallelism)
     instances_by_index: Dict[int, DialogueInstance] = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=parallelism) as executor:
-        future_to_index = {
-            executor.submit(_simulate_single_instance, **job): task_index
-            for task_index, job in enumerate(jobs, start=1)
+        future_to_batch_index = {
+            executor.submit(
+                _simulate_task_batch,
+                indexed_tasks=batch,
+                seed=seed,
+                max_turns=max_turns,
+                max_internal_steps=max_internal_steps,
+                azure_api_version=azure_api_version,
+                webshop_num_products=webshop_num_products,
+            ): batch_index
+            for batch_index, batch in enumerate(task_batches, start=1)
         }
-        for future in concurrent.futures.as_completed(future_to_index):
-            task_index = future_to_index[future]
+        for future in concurrent.futures.as_completed(future_to_batch_index):
+            batch_index = future_to_batch_index[future]
             try:
-                instances_by_index[task_index] = future.result()
+                instances_by_index.update(future.result())
             except Exception as exc:
                 raise RuntimeError(
-                    f"Failed while simulating task #{task_index}"
+                    f"Failed while simulating task batch #{batch_index}"
                 ) from exc
 
     return [
@@ -883,9 +1034,18 @@ def main():
     parser.add_argument("--tasks_path", type=str, default=None)
     parser.add_argument("--num_instances", type=int, default=10)
     parser.add_argument(
+        "--webshop_num_products",
+        type=str,
+        default=os.getenv("WEBSHOP_NUM_PRODUCTS", DEFAULT_WEBSHOP_NUM_PRODUCTS),
+        help=(
+            "WebShop product subset to load: 100, 1000, 100000, or all. "
+            "Use all after downloading the full WebShop data and building the full search index."
+        ),
+    )
+    parser.add_argument(
         "--parallelism",
         type=int,
-        default=10,
+        default=1,
         help="Number of tasks to simulate concurrently. Use the same value as the number of selected tasks for one task per worker.",
     )
     parser.add_argument(
@@ -897,6 +1057,7 @@ def main():
 
     if args.parallelism < 1:
         raise ValueError("--parallelism must be at least 1")
+    webshop_num_products = parse_webshop_num_products(args.webshop_num_products)
 
     tasks = load_webshop_tasks(
         tasks_path=args.tasks_path,
@@ -911,6 +1072,7 @@ def main():
         max_turns=args.max_turns,
         max_internal_steps=args.max_internal_steps,
         azure_api_version=args.azure_api_version,
+        webshop_num_products=webshop_num_products,
         parallelism=effective_parallelism,
     )
     for instance in instances:
@@ -919,41 +1081,9 @@ def main():
     logger.dump_json(args.output)
     print(
         f"Saved {len(logger.instances)} instances to {args.output} "
-        f"(parallelism={effective_parallelism})"
+        f"(parallelism={effective_parallelism}, webshop_num_products={args.webshop_num_products})"
     )
     return
-
-    # Gym v0.24 env_checker can behave poorly with older envs; disable it.
-    raw_env = gym.make(
-        "WebAgentTextEnv-v0",
-        observation_mode="text",
-        num_products=1000,   # 先用 small
-        disable_env_checker=True,
-    )
-    if raw_env is None:
-        # Defensive fallback for edge cases where gym.make returns None.
-        raw_env = WebAgentTextEnv(observation_mode="text", num_products=1000)
-    env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
-    llm_client = AzureOpenAIChatClient.from_env(api_version=args.azure_api_version)
-    agent = LLMWebShopExecutor(llm_client=llm_client)
-    human = HumanSimulator(llm_client=llm_client)
-    logger = RuntimeLogger()
-
-    for instance_index in range(1, args.num_instances + 1):
-        task = make_demo_webshop_task(instance_index=instance_index)
-        instance = simulate_dialogue_instance(
-            task=task,
-            env=env,
-            execution_agent=agent,
-            human_simulator=human,
-            max_turns=args.max_turns,
-            max_internal_steps=args.max_internal_steps,
-            seed=args.seed + instance_index - 1,
-        )
-        logger.log_instance(instance)
-
-    logger.dump_json(args.output)
-    print(f"Saved {len(logger.instances)} instances to {args.output}")
 
 
 if __name__ == "__main__":
