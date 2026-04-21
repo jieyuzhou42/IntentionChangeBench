@@ -84,23 +84,24 @@ class LLMWebShopExecutor(ExecutionAgent):
     def act(
         self,
         history: List[Dict[str, Any]],
-        current_intention: Dict[str, Any],
+        user_utterance: str,
         env_observation: Dict[str, Any],
     ) -> AgentAction:
-        prompt = self._build_prompt(history, current_intention, env_observation)
+        prompt = self._build_prompt(history, user_utterance, env_observation)
         llm_output = self._call_llm(prompt)
         action = self._parse_action_output(llm_output, env_observation)
         if action is not None:
             return action
-        return self._emergency_fallback_action(current_intention, env_observation)
+        return self._emergency_fallback_action(user_utterance, env_observation)
 
     def _build_prompt(
         self,
         history: List[Dict[str, Any]],
-        current_intention: Dict[str, Any],
+        user_utterance: str,
         env_observation: Dict[str, Any],
     ) -> str:
         context = {
+            "user_utterance": _clean_string(user_utterance),
             "page": self._serialize_observation(env_observation),
             "recent_history": self._serialize_history(history),
         }
@@ -122,12 +123,14 @@ Allowed action_type values:
 Rules:
 - Use the page contents, item context, WebShop instruction text, and recent history.
 - Infer the active user requirements from the natural-language context. Do not expect structured constraint fields.
-- If you need to select an option on an item page before buying, use action_type="click" with the exact option value from clickables.
+- If the latest user utterance changes or narrows the request, decide whether to search/refine based on that utterance and the returned items.
+- Use action_type="buy" when the selected item page is the final rollout result. This is a virtual finalization action, not a WebShop click.
+- Do not use action_type="click" with target "Buy Now" or "Buy".
+- If you need to select an option on an item page, use action_type="click" with the exact option value from clickables.
 - If a navigation button like "back to search", "next >", or "< prev" is the right move, prefer the dedicated action types when possible.
-- Only use action_type="buy" when the current item looks like a strong match or after selecting necessary options.
 - When using action_type="click", the target must exactly match one available clickable string.
 - When using action_type="search" or "refine", include a non-empty query.
-- If the current page provides too little evidence to buy, inspect or navigate instead.
+- If the current page provides too little evidence to select, inspect or navigate instead.
 
 Required JSON schema:
 {
@@ -230,9 +233,14 @@ Required JSON schema:
             canonical_target = clickable_map.get(target.lower())
             if canonical_target is None:
                 return None
+            if canonical_target.lower() in {"buy now", "buy"}:
+                return None
             return AgentAction("click", {"target": canonical_target})
 
         if action_type == "buy":
+            page_type = str(env_observation.get("page_type", "") or "").lower()
+            if page_type != "item":
+                return None
             return AgentAction("buy", {})
 
         if action_type == "back_to_search":
@@ -261,11 +269,11 @@ Required JSON schema:
 
     def _emergency_fallback_action(
         self,
-        current_intention: Dict[str, Any],
+        user_utterance: str,
         env_observation: Dict[str, Any],
     ) -> AgentAction:
         page_type = str(env_observation.get("page_type", "search") or "search").lower()
-        request_text = str(current_intention.get("request", "product") or "product")
+        request_text = _clean_string(user_utterance)
 
         if page_type in {"search", "unknown"}:
             return AgentAction("search", {"query": request_text})
@@ -285,22 +293,16 @@ Required JSON schema:
             return AgentAction("refine", {"query": request_text})
 
         if page_type == "item":
-            option_target = self._choose_option_target(current_intention, env_observation)
+            option_target = self._choose_option_target(user_utterance, env_observation)
             if option_target:
                 return AgentAction("click", {"target": option_target})
-            clickables = {str(c).lower(): str(c) for c in env_observation.get("clickables", []) or []}
-            for key in ("buy now", "buy"):
-                if key in clickables:
-                    return AgentAction("buy", {})
-            if "back to search" in clickables:
-                return AgentAction("back_to_search", {})
             return AgentAction("buy", {})
 
         return AgentAction("search", {"query": request_text})
 
     def _choose_option_target(
         self,
-        current_intention: Dict[str, Any],
+        user_utterance: str,
         env_observation: Dict[str, Any],
     ) -> str | None:
         item_context = env_observation.get("item_context") or {}
@@ -310,11 +312,11 @@ Required JSON schema:
         options = item_context.get("options") or {}
         selected_options = item_context.get("selected_options") or {}
         clickables = {str(c).lower(): str(c) for c in env_observation.get("clickables", []) or []}
-        request_text = str(current_intention.get("request", "") or "").lower()
 
         if not isinstance(options, dict) or not clickables:
             return None
 
+        request_text = _clean_string(user_utterance).lower()
         for option_name, option_values in options.items():
             if not isinstance(option_values, list) or not option_values:
                 continue

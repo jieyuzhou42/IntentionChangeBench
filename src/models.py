@@ -65,6 +65,8 @@ class TurnRecord:
     linguistic_style: str
     action_implication: str
     num_internal_steps: int = 0
+    num_rollout_search_actions: int = 0
+    rollout_search_queries: List[str] = field(default_factory=list)
     stop_reason: Optional[str] = None
     rollout_trace: List[Dict[str, Any]] = field(default_factory=list)
 

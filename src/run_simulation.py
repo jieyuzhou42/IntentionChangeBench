@@ -7,7 +7,7 @@ import json
 import os
 import random
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -38,6 +38,8 @@ class TurnRolloutResult:
     rollout_trace: List[Dict[str, Any]]
     num_internal_steps: int
     stop_reason: str
+    num_search_actions: int = 0
+    search_queries: List[str] = field(default_factory=list)
 
 
 def parse_webshop_num_products(value: Any) -> Optional[int]:
@@ -171,11 +173,43 @@ def make_demo_webshop_task(instance_index: int = 1) -> BaseTask:
     )
 
 
+def make_webshop_goal_task(goal_index: int) -> BaseTask:
+    return BaseTask(
+        instance_id=f"webshop_goal_{goal_index:05d}",
+        task_type="transaction",
+        subtype="shopping",
+        world_state={
+            "domain": "webshop",
+            "webshop_goal_index": goal_index,
+        },
+        initial_intention={
+            "request": "",
+            "constraints": {},
+            "priority": [],
+        },
+    )
+
+
 def _task_from_payload(raw_task: Dict[str, Any], *, fallback_index: int) -> BaseTask:
     if not isinstance(raw_task, dict):
         raise ValueError(f"Task #{fallback_index} must be a JSON object")
 
     initial_intention = raw_task.get("initial_intention")
+    world_state = copy.deepcopy(raw_task.get("world_state") or {"domain": "webshop"})
+    if not isinstance(initial_intention, dict) and isinstance(raw_task.get("turns"), list):
+        first_turn = raw_task["turns"][0] if raw_task["turns"] else {}
+        if isinstance(first_turn, dict):
+            turn_intention = first_turn.get("gold_current_intention")
+            if isinstance(turn_intention, dict):
+                initial_intention = copy.deepcopy(turn_intention)
+            elif first_turn.get("user_utterance"):
+                initial_intention = _fallback_initial_intention(str(first_turn["user_utterance"]))
+
+    if isinstance(initial_intention, dict):
+        request = initial_intention.get("request")
+        if isinstance(request, str) and request.strip():
+            world_state.setdefault("webshop_instruction_text", request.strip())
+
     if not isinstance(initial_intention, dict):
         raise ValueError(f"Task #{fallback_index} is missing a valid initial_intention object")
 
@@ -183,7 +217,7 @@ def _task_from_payload(raw_task: Dict[str, Any], *, fallback_index: int) -> Base
         instance_id=str(raw_task.get("instance_id") or f"webshop_task_{fallback_index:03d}"),
         task_type=str(raw_task.get("task_type") or "transaction"),
         subtype=str(raw_task.get("subtype") or "shopping"),
-        world_state=copy.deepcopy(raw_task.get("world_state") or {"domain": "webshop"}),
+        world_state=world_state,
         initial_intention=copy.deepcopy(initial_intention),
     )
 
@@ -192,18 +226,38 @@ def load_webshop_tasks(
     *,
     tasks_path: Optional[str],
     num_instances: Optional[int],
+    goal_indices: Optional[List[int]] = None,
+    instance_ids: Optional[List[str]] = None,
 ) -> List[BaseTask]:
+    if goal_indices is not None:
+        tasks = [make_webshop_goal_task(goal_index) for goal_index in goal_indices]
+        if num_instances is not None:
+            tasks = tasks[:num_instances]
+        return tasks
+
     if not tasks_path:
         total = num_instances or 10
-        return [make_demo_webshop_task(instance_index=i) for i in range(1, total + 1)]
+        tasks = [make_demo_webshop_task(instance_index=i) for i in range(1, total + 1)]
+        return _filter_tasks_by_instance_ids(tasks, instance_ids)
 
     path = Path(tasks_path)
-    if not path.is_file():
+    if not path.exists():
         raise FileNotFoundError(f"Task file not found: {path}")
 
     raw_tasks: List[Dict[str, Any]]
-    suffix = path.suffix.lower()
-    if suffix == ".jsonl":
+    if path.is_dir():
+        raw_tasks = []
+        for file_path in sorted(path.glob("*.json")):
+            payload = json.loads(file_path.read_text(encoding="utf-8"))
+            if isinstance(payload, dict) and isinstance(payload.get("tasks"), list):
+                raw_tasks.extend(payload["tasks"])
+            elif isinstance(payload, list):
+                raw_tasks.extend(payload)
+            elif isinstance(payload, dict):
+                raw_tasks.append(payload)
+            else:
+                raise ValueError(f"Task file {file_path} must contain a JSON object or array")
+    elif path.suffix.lower() == ".jsonl":
         raw_tasks = []
         for line_index, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
             line = raw_line.strip()
@@ -228,18 +282,96 @@ def load_webshop_tasks(
         _task_from_payload(raw_task, fallback_index=index)
         for index, raw_task in enumerate(raw_tasks, start=1)
     ]
+    tasks = _filter_tasks_by_instance_ids(tasks, instance_ids)
     if not tasks:
-        raise ValueError(f"Task file {path} did not contain any tasks")
+        raise ValueError(f"Task path {path} did not contain any selected tasks")
 
     if num_instances is None:
         return tasks
     if num_instances < 1:
         raise ValueError("--num_instances must be at least 1")
     if num_instances > len(tasks):
+        if instance_ids:
+            return tasks
         raise ValueError(
             f"Requested {num_instances} tasks, but {path} only contains {len(tasks)} tasks"
         )
     return tasks[:num_instances]
+
+
+def parse_instance_ids(value: Optional[str]) -> Optional[List[str]]:
+    if value is None or not str(value).strip():
+        return None
+    ids = []
+    seen = set()
+    for raw_part in str(value).split(","):
+        part = raw_part.strip()
+        if not part:
+            continue
+        normalized = _normalize_instance_id(part)
+        if normalized not in seen:
+            ids.append(normalized)
+            seen.add(normalized)
+    return ids or None
+
+
+def _normalize_instance_id(value: str) -> str:
+    text = str(value).strip()
+    match = re.fullmatch(r"web(?:shop_demo_)?(\d+)", text, flags=re.IGNORECASE)
+    if match:
+        number = int(match.group(1))
+        if number == 0:
+            number = 1
+        return f"webshop_demo_{number:03d}"
+    match = re.fullmatch(r"(\d+)", text)
+    if match:
+        number = int(match.group(1))
+        if number == 0:
+            number = 1
+        return f"webshop_demo_{number:03d}"
+    return text
+
+
+def _filter_tasks_by_instance_ids(tasks: List[BaseTask], instance_ids: Optional[List[str]]) -> List[BaseTask]:
+    if not instance_ids:
+        return tasks
+    wanted = set(instance_ids)
+    selected = [task for task in tasks if task.instance_id in wanted]
+    found = {task.instance_id for task in selected}
+    missing = [instance_id for instance_id in instance_ids if instance_id not in found]
+    if missing:
+        raise ValueError(f"Could not find requested instance_id(s): {', '.join(missing)}")
+    return selected
+
+
+def parse_goal_indices(value: Optional[str]) -> Optional[List[int]]:
+    if value is None or not str(value).strip():
+        return None
+
+    indices: List[int] = []
+    seen = set()
+    for part in str(value).split(","):
+        part = part.strip()
+        if not part:
+            continue
+        if "-" in part:
+            start_text, end_text = part.split("-", 1)
+            start = int(start_text.strip())
+            end = int(end_text.strip())
+            if end < start:
+                raise ValueError(f"Invalid goal index range: {part}")
+            values = range(start, end + 1)
+        else:
+            values = [int(part)]
+        for index in values:
+            if index < 0:
+                raise ValueError("Goal indices must be non-negative")
+            if index not in seen:
+                seen.add(index)
+                indices.append(index)
+    if not indices:
+        raise ValueError("--webshop_goal_indices did not contain any indices")
+    return indices
 
 
 def _clean_initial_request(instruction: str) -> str:
@@ -626,6 +758,32 @@ def _maybe_summarize_current_state(
     return summarize_current_state(current_intention)
 
 
+def _history_returned_items(
+    env_feedback: Optional[EnvFeedback],
+    limit: int = 10,
+) -> List[Dict[str, Any]]:
+    if env_feedback is None:
+        return []
+
+    observation = env_feedback.observation or {}
+    items = observation.get("candidate_items") or observation.get("visible_items") or []
+    if not isinstance(items, list):
+        return []
+
+    returned_items: List[Dict[str, Any]] = []
+    for item in items[:limit]:
+        if not isinstance(item, dict):
+            continue
+        returned_items.append(
+            {
+                key: copy.deepcopy(item.get(key))
+                for key in ("rank", "asin", "title", "price", "category", "brand", "color")
+                if item.get(key) is not None
+            }
+        )
+    return returned_items
+
+
 def _rollout_stop_reason(
     current_intention: Dict[str, Any],
     env_feedback: Optional[EnvFeedback],
@@ -682,6 +840,7 @@ def execute_turn(
     env: WebShopEnvAdapter,
     execution_agent,
     history: List[Dict[str, Any]],
+    user_utterance: str,
     current_intention: Dict[str, Any],
     env_observation: Dict[str, Any],
     max_internal_steps: int = DEFAULT_MAX_INTERNAL_STEPS,
@@ -689,21 +848,6 @@ def execute_turn(
     working_history = copy.deepcopy(history)
     rollout_trace: List[Dict[str, Any]] = []
     previous_feedback = _maybe_summarize_current_state(env, current_intention)
-    initial_stop_reason = _rollout_stop_reason(
-        current_intention,
-        previous_feedback,
-        num_internal_steps=0,
-        max_internal_steps=max_internal_steps,
-        env_done=getattr(env, "done", False),
-    )
-    if initial_stop_reason in {"rollout_options_satisfied", "candidate_ready", "env_done"}:
-        return TurnRolloutResult(
-            final_action=None,
-            final_env_feedback=previous_feedback,
-            rollout_trace=rollout_trace,
-            num_internal_steps=0,
-            stop_reason=initial_stop_reason,
-        )
 
     current_observation = copy.deepcopy(env_observation)
     final_feedback = previous_feedback
@@ -711,9 +855,12 @@ def execute_turn(
     previous_action_signature: Optional[Tuple[str, Tuple[Tuple[str, str], ...]]] = None
     repeated_action_streak = 0
     stagnant_steps = 0
+    search_queries: List[str] = []
 
     for step_index in range(1, max_internal_steps + 1):
-        agent_action = execution_agent.act(working_history, current_intention, current_observation)
+        agent_action = execution_agent.act(working_history, user_utterance, current_observation)
+        if agent_action.action_type in {"search", "refine"}:
+            search_queries.append(str((agent_action.action_payload or {}).get("query", "")))
         env_feedback = env.step(agent_action, current_intention)
         action_signature = _action_signature(agent_action)
         if action_signature == previous_action_signature:
@@ -728,15 +875,18 @@ def execute_turn(
         else:
             stagnant_steps += 1
 
-        stop_reason = _rollout_stop_reason(
-            current_intention,
-            env_feedback,
-            num_internal_steps=step_index,
-            max_internal_steps=max_internal_steps,
-            repeated_action_streak=repeated_action_streak,
-            stagnant_steps=stagnant_steps,
-            env_done=getattr(env, "done", False),
-        )
+        if agent_action.action_type == "buy":
+            stop_reason = "virtual_buy"
+        else:
+            stop_reason = _rollout_stop_reason(
+                current_intention,
+                env_feedback,
+                num_internal_steps=step_index,
+                max_internal_steps=max_internal_steps,
+                repeated_action_streak=repeated_action_streak,
+                stagnant_steps=stagnant_steps,
+                env_done=getattr(env, "done", False),
+            )
         rollout_trace.append(
             _build_rollout_trace_entry(
                 step_index,
@@ -758,6 +908,7 @@ def execute_turn(
                     "page_type": (env_feedback.observation or {}).get("page_type"),
                     "selected_asin": (env_feedback.observation or {}).get("selected_asin"),
                     "selected_options": copy.deepcopy((env_feedback.observation or {}).get("selected_options") or {}),
+                    "returned_items": _history_returned_items(env_feedback),
                     "internal_step": step_index,
                 },
             }
@@ -776,6 +927,8 @@ def execute_turn(
                 rollout_trace=rollout_trace,
                 num_internal_steps=step_index,
                 stop_reason=stop_reason,
+                num_search_actions=len(search_queries),
+                search_queries=list(search_queries),
             )
 
     return TurnRolloutResult(
@@ -784,6 +937,8 @@ def execute_turn(
         rollout_trace=rollout_trace,
         num_internal_steps=len(rollout_trace),
         stop_reason="step_budget",
+        num_search_actions=len(search_queries),
+        search_queries=list(search_queries),
     )
 
 
@@ -811,9 +966,7 @@ def simulate_dialogue_instance(
     elif real_instruction and real_instruction.strip():
         current_intention = _fallback_initial_intention(_clean_initial_request(real_instruction))
 
-    initial_request = current_intention.get("request", "")
-
-    user_utterance = initial_request
+    user_utterance = _clean_initial_request(real_instruction)
     gold_delta: Dict[str, Dict[str, Any]] = {}
     trigger_evidence: Optional[Dict[str, Any]] = None
     shift_condition: Optional[Dict[str, Any]] = None
@@ -834,6 +987,7 @@ def simulate_dialogue_instance(
             env=env,
             execution_agent=execution_agent,
             history=history,
+            user_utterance=user_utterance,
             current_intention=current_intention,
             env_observation=env_obs,
             max_internal_steps=max_internal_steps,
@@ -861,6 +1015,8 @@ def simulate_dialogue_instance(
                 linguistic_style=linguistic_style,
                 action_implication=action_implication,
                 num_internal_steps=rollout.num_internal_steps,
+                num_rollout_search_actions=rollout.num_search_actions,
+                rollout_search_queries=list(rollout.search_queries),
                 stop_reason=rollout.stop_reason,
                 rollout_trace=rollout.rollout_trace,
             )
@@ -873,6 +1029,7 @@ def simulate_dialogue_instance(
                     "action_type": agent_action.action_type if agent_action is not None else None,
                     "action_payload": agent_action.action_payload if agent_action is not None else {},
                     "env_result": env_feedback.result if env_feedback is not None else {},
+                    "returned_items": _history_returned_items(env_feedback),
                     "num_internal_steps": rollout.num_internal_steps,
                     "stop_reason": rollout.stop_reason,
                     "rollout_trace": rollout.rollout_trace,
@@ -941,7 +1098,7 @@ def simulate_dialogue_instance(
         user_utterance = user_utt
         gold_delta = delta
         linguistic_style = style
-        action_implication = "requery" if shift.op in {"add", "relax", "override"} else "continue"
+        action_implication = "continue"
 
         history.append({"role": "user", "content": user_utterance})
         intention_history.append(
@@ -1161,7 +1318,22 @@ def main():
     parser.add_argument("--max_turns", type=int, default=4)
     parser.add_argument("--max_internal_steps", type=int, default=DEFAULT_MAX_INTERNAL_STEPS)
     parser.add_argument("--tasks_path", type=str, default=None)
-    parser.add_argument("--num_instances", type=int, default=20)
+    parser.add_argument(
+        "--instance_ids",
+        type=str,
+        default=None,
+        help=(
+            "Comma-separated instance ids to run from --tasks_path, e.g. "
+            "webshop_demo_004,webshop_demo_010 or shorthand web4,web10."
+        ),
+    )
+    parser.add_argument(
+        "--webshop_goal_indices",
+        type=str,
+        default=None,
+        help="Comma-separated WebShop goal indices/ranges, e.g. 0,3,10-12.",
+    )
+    parser.add_argument("--num_instances", type=int, default=5)
     parser.add_argument(
         "--webshop_num_products",
         type=str,
@@ -1187,10 +1359,14 @@ def main():
     if args.parallelism < 1:
         raise ValueError("--parallelism must be at least 1")
     webshop_num_products = parse_webshop_num_products(args.webshop_num_products)
+    instance_ids = parse_instance_ids(args.instance_ids)
+    goal_indices = parse_goal_indices(args.webshop_goal_indices)
 
     tasks = load_webshop_tasks(
         tasks_path=args.tasks_path,
         num_instances=args.num_instances,
+        goal_indices=goal_indices,
+        instance_ids=instance_ids,
     )
     effective_parallelism = min(args.parallelism, len(tasks))
     logger = RuntimeLogger()
