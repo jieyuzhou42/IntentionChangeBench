@@ -11,7 +11,7 @@ class ExecutionAgent(ABC):
     def act(
         self,
         history: List[Dict[str, Any]],
-        current_intention: Dict[str, Any],
+        user_utterance: str,
         env_observation: Dict[str, Any],
     ) -> AgentAction:
         raise NotImplementedError

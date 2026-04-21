@@ -43,11 +43,20 @@ class WebShopEnvAdapter(BaseEnv):
     def reset(self, task=None) -> Dict[str, Any]:
         """
         Real WebShop env usually samples a random instruction on reset.
-        We do not rely on task.initial_intention here, because the public README
-        documents reset() but does not document a stable public API for directly
-        setting a custom instruction.
+        A task can pin the underlying WebShop goal by setting
+        world_state.webshop_goal_index. WebShop interprets an integer reset
+        session as the index into its shuffled goal list.
         """
-        reset_out = self.webshop_env.reset()
+        reset_kwargs: Dict[str, Any] = {}
+        goal_index = self._task_webshop_goal_index(task)
+        if goal_index is not None:
+            reset_kwargs["session"] = goal_index
+        instruction_text = self._task_webshop_instruction_text(task)
+        if instruction_text:
+            server = getattr(self.webshop_env, "server", None)
+            if server is not None:
+                setattr(server, "assigned_instruction_text", instruction_text)
+        reset_out = self.webshop_env.reset(**reset_kwargs)
 
         if isinstance(reset_out, tuple):
             raw_obs = reset_out[0]
@@ -64,6 +73,30 @@ class WebShopEnvAdapter(BaseEnv):
         obs = self._normalize_observation(raw_obs, self.last_info)
         self.last_observation = obs
         return obs
+
+    def _task_webshop_goal_index(self, task=None) -> Optional[int]:
+        world_state = getattr(task, "world_state", None)
+        if not isinstance(world_state, dict):
+            return None
+        value = world_state.get("webshop_goal_index", world_state.get("goal_index"))
+        if value is None:
+            return None
+        try:
+            goal_index = int(value)
+        except (TypeError, ValueError):
+            raise ValueError(f"webshop_goal_index must be an integer, got {value!r}")
+        if goal_index < 0:
+            raise ValueError("webshop_goal_index must be non-negative")
+        return goal_index
+
+    def _task_webshop_instruction_text(self, task=None) -> Optional[str]:
+        world_state = getattr(task, "world_state", None)
+        if not isinstance(world_state, dict):
+            return None
+        value = world_state.get("webshop_instruction_text", world_state.get("instruction_text"))
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+        return None
 
     def get_observation(self) -> Dict[str, Any]:
         return self.last_observation
@@ -135,6 +168,15 @@ class WebShopEnvAdapter(BaseEnv):
         )
 
     def step(self, agent_action: AgentAction, user_state: Dict[str, Any]) -> EnvFeedback:
+        if agent_action.action_type == "buy":
+            feedback = self.summarize_current_state(user_state)
+            observation = dict(feedback.observation or {})
+            observation["executed_action"] = "virtual_buy"
+            observation["virtual_action"] = True
+            observation["candidate_actions"] = []
+            feedback.observation = observation
+            return feedback
+
         candidate_actions = self._serialize_action_candidates(agent_action)
         pre_selected_asin = self._current_selected_asin()
         pre_selected_options = self._current_selected_options()
@@ -297,18 +339,6 @@ class WebShopEnvAdapter(BaseEnv):
                 return [f"choose[{target}]"]
             return [f"click[{target}]", f"choose[{target}]"]
 
-        if at == "buy":
-            if self.action_style == "click":
-                return ["click[Buy Now]", "click[Buy]"]
-            if self.action_style == "choose":
-                return ["choose[Buy Now]", "choose[Buy]"]
-            return [
-                "click[Buy Now]",
-                "click[Buy]",
-                "choose[Buy Now]",
-                "choose[Buy]",
-            ]
-
         if at == "back_to_search":
             if self.action_style == "click":
                 return ["click[Back to Search]"]
@@ -382,7 +412,9 @@ class WebShopEnvAdapter(BaseEnv):
                 candidate_items,
                 self.last_candidate_items,
             )
-        elif page_type == "search":
+        elif page_type in {"search", "done"}:
+            candidate_items = list(self.last_candidate_items)
+        elif not candidate_items and self.last_candidate_items and selected_asin:
             candidate_items = list(self.last_candidate_items)
 
         return {
@@ -400,6 +432,9 @@ class WebShopEnvAdapter(BaseEnv):
         }
 
     def _infer_page_type(self, obs_text: str, info: Dict[str, Any]) -> str:
+        if self.done:
+            return "done"
+
         t = obs_text.lower()
 
         if "buy now" in t or "product details" in t or "item page" in t:
@@ -499,6 +534,26 @@ class WebShopEnvAdapter(BaseEnv):
 
         return candidates
 
+    def _candidate_item_for_asin(
+        self,
+        asin: Optional[str],
+        candidate_items: Optional[List[Dict[str, Any]]] = None,
+    ) -> Optional[Dict[str, Any]]:
+        normalized_asin = str(asin or "").strip().upper()
+        if not normalized_asin:
+            return None
+
+        for item in candidate_items or []:
+            if not isinstance(item, dict):
+                continue
+            if str(item.get("asin") or "").strip().upper() == normalized_asin:
+                return dict(item)
+
+        product = self._lookup_product(normalized_asin)
+        if isinstance(product, dict):
+            return self._candidate_item_from_product(product, rank=None)
+        return None
+
     def _candidate_items_from_current_search(self, limit: int = 50) -> List[Dict[str, Any]]:
         session = self._get_session_state()
         keywords = session.get("keywords")
@@ -509,11 +564,19 @@ class WebShopEnvAdapter(BaseEnv):
         search_engine = getattr(server, "search_engine", None)
         product_item_dict = getattr(server, "product_item_dict", None)
         all_products = getattr(server, "all_products", None)
-        if search_engine is None or not isinstance(product_item_dict, dict) or not isinstance(all_products, list):
+        if not isinstance(product_item_dict, dict) or not isinstance(all_products, list):
             return []
 
         try:
-            if keywords[0] == "<r>":
+            cached_keywords = session.get("search_result_keywords")
+            cached_asins = session.get("search_result_asins")
+            if cached_keywords == keywords and isinstance(cached_asins, list):
+                top_products = []
+                for asin in cached_asins[:limit]:
+                    product = product_item_dict.get(asin)
+                    if isinstance(product, dict):
+                        top_products.append(product)
+            elif keywords[0] == "<r>":
                 top_products = all_products[:limit]
             elif keywords[0] == "<c>":
                 category = keywords[1].strip() if len(keywords) > 1 else ""
@@ -522,6 +585,8 @@ class WebShopEnvAdapter(BaseEnv):
                 query = " ".join(keywords[1:]).strip()
                 top_products = [p for p in all_products if p.get("query") == query][:limit]
             else:
+                if search_engine is None:
+                    return []
                 query_text = " ".join(str(k) for k in keywords)
                 hits = search_engine.search(query_text, k=limit)
                 top_products = []
@@ -1061,6 +1126,8 @@ class WebShopEnvAdapter(BaseEnv):
             if isinstance(obs.get("item_context"), dict)
             else None
         )
+        if selected_candidate is None:
+            selected_candidate = self._candidate_item_for_asin(post_selected_asin, candidate_items)
 
         return {
             **obs,
