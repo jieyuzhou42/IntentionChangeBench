@@ -66,12 +66,13 @@ def _parse_json_like(raw: Any) -> Optional[Dict[str, Any]]:
         return None
 
 
-class LLMWebShopExecutor(ExecutionAgent):
+class FixedUserLLMWebShopExecutor(ExecutionAgent):
     """
-    LLM-driven WebShop executor with deterministic output validation.
+    WebShop executor that only conditions on trajectory user utterances.
 
-    The LLM proposes the next action; invalid proposals fall back to a small
-    deterministic emergency policy so rollout remains stable.
+    This variant deliberately ignores assistant actions and other structured
+    history so the LLM only sees the recorded user utterance sequence plus the
+    current page state.
     """
 
     def __init__(
@@ -366,4 +367,4 @@ Required JSON schema:
         return None
 
 
-__all__ = ["LLMWebShopExecutor"]
+__all__ = ["FixedUserLLMWebShopExecutor"]
