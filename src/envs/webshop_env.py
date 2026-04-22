@@ -521,7 +521,7 @@ class WebShopEnvAdapter(BaseEnv):
         candidates: List[Dict[str, Any]] = []
 
         if page_type == "results":
-            candidates = self._candidate_items_from_current_search(limit=50)
+            candidates = self._candidate_items_from_current_search(limit=20)
             if not candidates:
                 candidates = self._candidate_items_from_visible_items(visible_items or [])
 
@@ -554,7 +554,7 @@ class WebShopEnvAdapter(BaseEnv):
             return self._candidate_item_from_product(product, rank=None)
         return None
 
-    def _candidate_items_from_current_search(self, limit: int = 50) -> List[Dict[str, Any]]:
+    def _candidate_items_from_current_search(self, limit: int = 20) -> List[Dict[str, Any]]:
         session = self._get_session_state()
         keywords = session.get("keywords")
         if not isinstance(keywords, list) or not keywords:
@@ -698,7 +698,7 @@ class WebShopEnvAdapter(BaseEnv):
         self,
         primary: List[Dict[str, Any]],
         secondary: List[Dict[str, Any]],
-        limit: int = 50,
+        limit: int = 20,
     ) -> List[Dict[str, Any]]:
         merged: List[Dict[str, Any]] = []
         seen = set()

@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from agents.fixed_user_llm_executor import FixedUserLLMWebShopExecutor
 from agents.llm_executor import LLMWebShopExecutor
 from evaluators.runtime_logger import RuntimeLogger
 from models import AgentAction, BaseTask, DialogueInstance, EnvFeedback, TurnRecord
@@ -19,7 +20,7 @@ from simulators.llm_clients import AzureOpenAIChatClient
 from envs.webshop_env import WebShopEnvAdapter
 
 STYLE_POOL = ["explicit", "partial", "elliptical"]
-DEFAULT_MAX_INTERNAL_STEPS = 6
+DEFAULT_MAX_INTERNAL_STEPS = 12
 DEFAULT_WEBSHOP_NUM_PRODUCTS = "100000"
 ROLLOUT_CONSTRAINT_FIELDS = ("category", "color", "size", "brand")
 SELECTABLE_CONSTRAINT_FIELDS = ("color", "size", "brand")
@@ -1122,6 +1123,7 @@ def _build_runtime_components(
     *,
     azure_api_version: str,
     webshop_num_products: Optional[int],
+    executor_type: str,
 ) -> Tuple[WebShopEnvAdapter, Any, HumanSimulator, Any]:
     configure_webshop_dataset(webshop_num_products)
 
@@ -1144,7 +1146,10 @@ def _build_runtime_components(
 
     env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
     llm_client = AzureOpenAIChatClient.from_env(api_version=azure_api_version)
-    agent = LLMWebShopExecutor(llm_client=llm_client)
+    if executor_type == "fixed_user":
+        agent = FixedUserLLMWebShopExecutor(llm_client=llm_client)
+    else:
+        agent = LLMWebShopExecutor(llm_client=llm_client)
     human = HumanSimulator(llm_client=llm_client)
     return env, agent, human, raw_env
 
@@ -1157,10 +1162,12 @@ def _simulate_single_instance(
     max_internal_steps: int,
     azure_api_version: str,
     webshop_num_products: Optional[int],
+    executor_type: str,
 ) -> DialogueInstance:
     env, agent, human, raw_env = _build_runtime_components(
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
+        executor_type=executor_type,
     )
     try:
         return simulate_dialogue_instance(
@@ -1186,10 +1193,12 @@ def _simulate_instances_serial(
     max_internal_steps: int,
     azure_api_version: str,
     webshop_num_products: Optional[int],
+    executor_type: str,
 ) -> List[DialogueInstance]:
     env, agent, human, raw_env = _build_runtime_components(
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
+        executor_type=executor_type,
     )
     try:
         instances = []
@@ -1220,10 +1229,12 @@ def _simulate_task_batch(
     max_internal_steps: int,
     azure_api_version: str,
     webshop_num_products: Optional[int],
+    executor_type: str,
 ) -> Dict[int, DialogueInstance]:
     env, agent, human, raw_env = _build_runtime_components(
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
+        executor_type=executor_type,
     )
     try:
         instances_by_index = {}
@@ -1266,6 +1277,7 @@ def _simulate_instances(
     max_internal_steps: int,
     azure_api_version: str,
     webshop_num_products: Optional[int],
+    executor_type: str,
     parallelism: int,
 ) -> List[DialogueInstance]:
     if parallelism <= 1:
@@ -1276,6 +1288,7 @@ def _simulate_instances(
             max_internal_steps=max_internal_steps,
             azure_api_version=azure_api_version,
             webshop_num_products=webshop_num_products,
+            executor_type=executor_type,
         )
 
     effective_parallelism = min(parallelism, len(tasks))
@@ -1291,6 +1304,7 @@ def _simulate_instances(
                 max_internal_steps=max_internal_steps,
                 azure_api_version=azure_api_version,
                 webshop_num_products=webshop_num_products,
+                executor_type=executor_type,
             ): batch_index
             for batch_index, batch in enumerate(task_batches, start=1)
         }
@@ -1333,7 +1347,7 @@ def main():
         default=None,
         help="Comma-separated WebShop goal indices/ranges, e.g. 0,3,10-12.",
     )
-    parser.add_argument("--num_instances", type=int, default=5)
+    parser.add_argument("--num_instances", type=int, default=20)
     parser.add_argument(
         "--webshop_num_products",
         type=str,
@@ -1353,6 +1367,16 @@ def main():
         "--azure_api_version",
         type=str,
         default=os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21"),
+    )
+    parser.add_argument(
+        "--executor_type",
+        type=str,
+        choices=["llm", "fixed_user"],
+        default="llm",
+        help=(
+            "Execution agent to use. `fixed_user` only conditions on trajectory "
+            "user utterances and ignores assistant/context history."
+        ),
     )
     args = parser.parse_args()
 
@@ -1378,6 +1402,7 @@ def main():
         max_internal_steps=args.max_internal_steps,
         azure_api_version=args.azure_api_version,
         webshop_num_products=webshop_num_products,
+        executor_type=args.executor_type,
         parallelism=effective_parallelism,
     )
     for instance in instances:
@@ -1386,7 +1411,8 @@ def main():
     logger.dump_json(args.output)
     print(
         f"Saved {len(logger.instances)} instances to {args.output} "
-        f"(parallelism={effective_parallelism}, webshop_num_products={args.webshop_num_products})"
+        f"(parallelism={effective_parallelism}, webshop_num_products={args.webshop_num_products}, "
+        f"executor_type={args.executor_type})"
     )
     return
 

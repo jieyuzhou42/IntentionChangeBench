@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import copy
 import json
 import re
 from typing import Any, Dict, List, Optional, Protocol
@@ -101,9 +100,12 @@ class LLMWebShopExecutor(ExecutionAgent):
         env_observation: Dict[str, Any],
     ) -> str:
         context = {
-            "user_utterance": _clean_string(user_utterance),
+            "current_user_utterance": _clean_string(user_utterance),
+            "trajectory_user_utterances": self._serialize_user_utterances(
+                history,
+                current_user_utterance=user_utterance,
+            ),
             "page": self._serialize_observation(env_observation),
-            "recent_history": self._serialize_history(history),
         }
 
         instructions = """
@@ -121,9 +123,11 @@ Allowed action_type values:
 - refine
 
 Rules:
-- Use the page contents, item context, WebShop instruction text, and recent history.
-- Infer the active user requirements from the natural-language context. Do not expect structured constraint fields.
+- Use the page contents, item context, WebShop instruction text, and the trajectory user utterances only.
+- Do not rely on assistant action history, rollout traces, or other context-history summaries.
+- Infer the active user requirements from the latest user utterance while using earlier user utterances only as user-side trajectory context.
 - If the latest user utterance changes or narrows the request, decide whether to search/refine based on that utterance and the returned items.
+- When composing a search/refine query, avoid negative phrasing such as "not sexy" or "not v neck". Prefer positive descriptors that imply the same intent, such as "casual modest" or "crew neck", or leave hard-to-express negatives out of the query and filter them during item inspection.
 - Use action_type="buy" when the selected item page is the final rollout result. This is a virtual finalization action, not a WebShop click.
 - Do not use action_type="click" with target "Buy Now" or "Buy".
 - If you need to select an option on an item page, use action_type="click" with the exact option value from clickables.
@@ -182,19 +186,30 @@ Required JSON schema:
             "raw_text": raw_text[:4000],
         }
 
-    def _serialize_history(self, history: List[Dict[str, Any]], max_items: int = 6) -> List[Dict[str, Any]]:
-        serialized: List[Dict[str, Any]] = []
-        for turn in history[-max_items:]:
+    def _serialize_user_utterances(
+        self,
+        history: List[Dict[str, Any]],
+        *,
+        current_user_utterance: str,
+        max_items: int = 8,
+    ) -> List[str]:
+        utterances: List[str] = []
+        for turn in history:
             if not isinstance(turn, dict):
                 continue
-            role = _clean_string(turn.get("role", "unknown")) or "unknown"
+            if _clean_string(turn.get("role")).lower() != "user":
+                continue
             content = turn.get("content")
             if isinstance(content, dict):
-                normalized_content = copy.deepcopy(content)
-            else:
-                normalized_content = _clean_string(content)
-            serialized.append({"role": role, "content": normalized_content})
-        return serialized
+                continue
+            utterance = _clean_string(content)
+            if utterance:
+                utterances.append(utterance)
+
+        current_clean = _clean_string(current_user_utterance)
+        if current_clean and (not utterances or utterances[-1] != current_clean):
+            utterances.append(current_clean)
+        return utterances[-max_items:]
 
     def _call_llm(self, prompt: str) -> Optional[Dict[str, Any]]:
         try:

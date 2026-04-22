@@ -4,7 +4,7 @@ from pathlib import Path
 # split.py 所在目录，也就是 IntentionChangeBench/data
 script_dir = Path(__file__).resolve().parent
 
-input_path = script_dir / "webshop_simulated_dataset3.json"
+input_path = script_dir / "webshop_benchmark_selected_01_10_13.json"
 output_dir = script_dir / "webshop_tasks_split"
 output_dir.mkdir(parents=True, exist_ok=True)
 
