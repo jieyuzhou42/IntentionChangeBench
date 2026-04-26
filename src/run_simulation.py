@@ -12,9 +12,10 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from agents.fixed_user_llm_executor import FixedUserLLMWebShopExecutor
-from agents.llm_executor import LLMWebShopExecutor
+from agents.executor import WebShopExecutor
 from evaluators.runtime_logger import RuntimeLogger
 from models import AgentAction, BaseTask, DialogueInstance, EnvFeedback, TurnRecord
+from prompt_logging import get_prompt_log_path, log_prompt
 from simulators.human_simulator import HumanSimulator
 from simulators.llm_clients import AzureOpenAIChatClient
 from envs.webshop_env import WebShopEnvAdapter
@@ -384,6 +385,7 @@ def _fallback_initial_intention(request: str) -> Dict[str, Any]:
         "request": request,
         "constraints": {},
         "priority": [],
+        "gold_search_query": request,
     }
 
 
@@ -452,10 +454,25 @@ def _sanitize_llm_initial_intention(raw_intention: Any, request: str) -> Dict[st
     if isinstance(llm_request, str) and llm_request.strip():
         request = llm_request.strip()
 
+    gold_search_query = raw_intention.get("gold_search_query")
+    if isinstance(gold_search_query, str) and gold_search_query.strip():
+        gold_search_query = re.sub(r"\s+", " ", gold_search_query).strip()
+    else:
+        query_parts: List[str] = []
+        category = constraints.get("category")
+        if category:
+            query_parts.append(str(category))
+        for field in ("color", "brand", "size"):
+            value = constraints.get(field)
+            if value is not None:
+                query_parts.append(str(value))
+        gold_search_query = re.sub(r"\s+", " ", " ".join(query_parts)).strip() or request
+
     return {
         "request": request,
         "constraints": constraints,
         "priority": priority,
+        "gold_search_query": gold_search_query,
     }
 
 
@@ -483,11 +500,14 @@ Schema:
     "brand": "requested brand only if explicitly stated or null",
     "size": "requested size option or null"
   }},
-  "priority": ["ordered constraint fields that matter most"]
+  "priority": ["ordered constraint fields that matter most"],
+  "gold_search_query": "concise WebShop/BM25 keyword query for this instruction"
 }}
 
 Rules:
 - Extract constraints from the instruction semantics, not with regex-style substring guesses.
+- Generate gold_search_query as search keywords, not a full sentence. Include product type and positive search-relevant attributes such as color, brand, or size.
+- Do not include budget/price limits in gold_search_query unless those words are naturally part of the item name; budget is evaluated after search.
 - Preserve option values exactly when they are explicit labels, e.g. color: dusty blush.
 - Use budget_max for "price lower than", "under", "below", or similar maximum-price language.
 - Set brand only when the instruction explicitly names a brand, uses a brand label, or says by/from a brand.
@@ -499,6 +519,7 @@ Instruction:
 {request}
 """.strip()
 
+    log_prompt("initial_intention", prompt)
     try:
         raw_intention = llm_client.generate_json(prompt)
     except Exception:
@@ -846,6 +867,30 @@ def execute_turn(
     env_observation: Dict[str, Any],
     max_internal_steps: int = DEFAULT_MAX_INTERNAL_STEPS,
 ) -> TurnRolloutResult:
+    direct_search = getattr(execution_agent, "search", None)
+    if callable(direct_search):
+        agent_action, env_feedback = direct_search(env, current_intention, user_utterance)
+        query = str((agent_action.action_payload or {}).get("query", ""))
+        rollout_trace = [
+            _build_rollout_trace_entry(
+                1,
+                agent_action,
+                env_feedback,
+                state_changed=True,
+                made_progress=bool((env_feedback.observation or {}).get("candidate_items")),
+                stop_reason="direct_search",
+            )
+        ]
+        return TurnRolloutResult(
+            final_action=agent_action,
+            final_env_feedback=env_feedback,
+            rollout_trace=rollout_trace,
+            num_internal_steps=1,
+            stop_reason="direct_search",
+            num_search_actions=1 if query else 0,
+            search_queries=[query] if query else [],
+        )
+
     working_history = copy.deepcopy(history)
     rollout_trace: List[Dict[str, Any]] = []
     previous_feedback = _maybe_summarize_current_state(env, current_intention)
@@ -1023,20 +1068,6 @@ def simulate_dialogue_instance(
             )
         )
 
-        history.append(
-            {
-                "role": "assistant",
-                "content": {
-                    "action_type": agent_action.action_type if agent_action is not None else None,
-                    "action_payload": agent_action.action_payload if agent_action is not None else {},
-                    "env_result": env_feedback.result if env_feedback is not None else {},
-                    "returned_items": _history_returned_items(env_feedback),
-                    "num_internal_steps": rollout.num_internal_steps,
-                    "stop_reason": rollout.stop_reason,
-                    "rollout_trace": rollout.rollout_trace,
-                },
-            }
-        )
         env_obs = env.get_observation()
 
         if turn_id >= max_turns:
@@ -1101,7 +1132,7 @@ def simulate_dialogue_instance(
         linguistic_style = style
         action_implication = "continue"
 
-        history.append({"role": "user", "content": user_utterance})
+        history = [{"role": "user", "content": user_utterance}]
         intention_history.append(
             {
                 "turn_id": turn_id + 1,
@@ -1149,7 +1180,7 @@ def _build_runtime_components(
     if executor_type == "fixed_user":
         agent = FixedUserLLMWebShopExecutor(llm_client=llm_client)
     else:
-        agent = LLMWebShopExecutor(llm_client=llm_client)
+        agent = WebShopExecutor(llm_client=llm_client)
     human = HumanSimulator(llm_client=llm_client)
     return env, agent, human, raw_env
 
@@ -1379,6 +1410,7 @@ def main():
         ),
     )
     args = parser.parse_args()
+    print(f"Prompt log path: {get_prompt_log_path()}")
 
     if args.parallelism < 1:
         raise ValueError("--parallelism must be at least 1")

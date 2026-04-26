@@ -11,6 +11,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from evaluators.runtime_logger import RuntimeLogger
 from models import BaseTask, DialogueInstance, TurnRecord
+from prompt_logging import get_prompt_log_path
 from run_simulation import (
     DEFAULT_MAX_INTERNAL_STEPS,
     _build_runtime_components,
@@ -140,7 +141,6 @@ def replay_dialogue_instance(
         replay_turns = source_turns[: max_turns + 1]
 
     turns: List[TurnRecord] = []
-    history: List[Dict[str, Any]] = []
     env_obs = env.reset(task)
     current_intention = copy.deepcopy(task.initial_intention)
 
@@ -150,7 +150,7 @@ def replay_dialogue_instance(
 
         current_intention = _resolve_turn_intention(raw_turn, current_intention)
         user_utterance = _resolve_turn_user_utterance(raw_turn, current_intention)
-        history.append({"role": "user", "content": user_utterance})
+        history: List[Dict[str, Any]] = [{"role": "user", "content": user_utterance}]
 
         rollout = execute_turn(
             env=env,
@@ -193,20 +193,6 @@ def replay_dialogue_instance(
             )
         )
 
-        history.append(
-            {
-                "role": "assistant",
-                "content": {
-                    "action_type": agent_action.action_type if agent_action is not None else None,
-                    "action_payload": agent_action.action_payload if agent_action is not None else {},
-                    "env_result": env_feedback.result if env_feedback is not None else {},
-                    "returned_items": _history_returned_items(env_feedback),
-                    "num_internal_steps": rollout.num_internal_steps,
-                    "stop_reason": rollout.stop_reason,
-                    "rollout_trace": rollout.rollout_trace,
-                },
-            }
-        )
         env_obs = env.get_observation()
 
         if env.done:
@@ -390,6 +376,7 @@ def main() -> None:
         help="Execution agent to use during replay.",
     )
     args = parser.parse_args()
+    print(f"Prompt log path: {get_prompt_log_path()}")
 
     if args.parallelism < 1:
         raise ValueError("--parallelism must be at least 1")

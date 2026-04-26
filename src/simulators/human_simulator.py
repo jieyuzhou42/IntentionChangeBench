@@ -8,6 +8,7 @@ from dataclasses import asdict
 from typing import Any, Dict, List, Optional, Protocol, Tuple
 
 from models import AgentAction, EnvFeedback, ShiftOp
+from prompt_logging import log_prompt
 
 
 ALLOWED_SHIFT_OPS = {
@@ -139,6 +140,7 @@ class HumanSimulator:
                         "is_current": False,
                         "request": gold_intention.get("request"),
                         "constraints": copy.deepcopy(gold_intention.get("constraints") or {}),
+                        "gold_search_query": gold_intention.get("gold_search_query"),
                     }
                 )
 
@@ -148,6 +150,7 @@ class HumanSimulator:
                 "is_current": True,
                 "request": current_intention.get("request"),
                 "constraints": copy.deepcopy(current_intention.get("constraints") or {}),
+                "gold_search_query": current_intention.get("gold_search_query"),
             }
         )
 
@@ -184,6 +187,7 @@ Allowed change categories:
 Task:
 - First decide whether the latest interaction caused an intention change.
 - If intention_changed is true, you must output both condition and category.
+- Always produce gold_search_query for the updated intention. It should be a concise WebShop/BM25 keyword query, not a sentence, and should include the product type plus the most search-relevant positive attributes.
 - Feel free to change your primary goal or constraints entirely based on your whims or what you see on the page. Your initial goal is just a starting point, not a contract.
 - You are currently dissatisfied. You MUST either add a new constraint, override an existing one, or shift your entire focus.
 
@@ -200,6 +204,7 @@ Rules:
 - Use condition="real_world_feasibility" when exact constraints seem unavailable or hard to satisfy.
 - Do not introduce correction, termination, or no_change_continue as top-level reaction classes.
 - Do not mention rating/review/star/customer-score constraints. Those signals are unavailable to the executor and are out of scope for this simulator run
+- Do not put price/budget limits in gold_search_query unless the product title naturally includes them; budget is evaluated after search.
 
 Required JSON schema:
 {
@@ -210,6 +215,7 @@ Required JSON schema:
   "old_value": "previous value or null",
   "value": "new value or null",
   "priority_update": ["ordered", "priority", "fields"] or null,
+  "gold_search_query": "concise WebShop search query for the updated intention",
   "rationale": "short explanation",
   "utterance_plan": {
     "style": "explicit | partial | elliptical",
@@ -227,6 +233,7 @@ Examples:
   "old_value": "green stripe",
   "value": "navy",
   "priority_update": null,
+  "gold_search_query": "navy office chair",
   "rationale": "After seeing the pattern, the user now prefers a different color.",
   "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": false}
 }
@@ -238,6 +245,7 @@ Examples:
   "old_value": "green stripe",
   "value": null,
   "priority_update": null,
+  "gold_search_query": "office chair",
   "rationale": "The exact option does not seem available, so something close is acceptable.",
   "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": true}
 }
@@ -246,6 +254,7 @@ Examples:
         return f"{instructions}\n\n{SHIFT_CONTEXT_MARKER}\n{_safe_json_dumps(context)}"
 
     def _call_llm_for_shift(self, prompt: str) -> Optional[Dict[str, Any]]:
+        log_prompt("simulator.shift", prompt)
         try:
             raw_output = self.llm_client.generate_json(prompt)
         except Exception:
@@ -297,6 +306,7 @@ Examples:
             priority,
         )
         utterance_plan = self._normalize_utterance_plan(llm_output.get("utterance_plan"))
+        gold_search_query = self._normalize_gold_search_query(llm_output.get("gold_search_query"))
 
         if not intention_changed:
             return ShiftOp(
@@ -307,6 +317,7 @@ Examples:
                 rationale=rationale,
                 priority_update=priority_update,
                 utterance_plan=utterance_plan,
+                gold_search_query=gold_search_query or self._query_from_intention(current_intention),
             )
 
         if change_category not in ALLOWED_CHANGE_CATEGORIES or change_category == "none":
@@ -346,6 +357,7 @@ Examples:
                 rationale=rationale,
                 priority_update=priority_update,
                 utterance_plan=utterance_plan,
+                gold_search_query=gold_search_query or self._query_from_intention(current_intention),
             )
 
         if field is None:
@@ -385,6 +397,7 @@ Examples:
             rationale=rationale,
             priority_update=priority_update,
             utterance_plan=utterance_plan,
+            gold_search_query=gold_search_query,
         )
 
     def decide_shift(
@@ -422,6 +435,10 @@ Examples:
         delta: Dict[str, Dict[str, Any]] = {}
 
         if shift.op == "none":
+            new_state["gold_search_query"] = (
+                self._normalize_gold_search_query(shift.gold_search_query)
+                or self._query_from_intention(new_state)
+            )
             return new_state, delta
 
         if shift.op in {"add", "relax", "override", "scope_correction"} and shift.field:
@@ -450,6 +467,10 @@ Examples:
                     "rationale": shift.rationale,
                 }
 
+        new_state["gold_search_query"] = (
+            self._normalize_gold_search_query(shift.gold_search_query)
+            or self._query_from_intention(new_state)
+        )
         new_state["priority"] = self._priority_from_state(new_state, new_state["constraints"])
         return new_state, delta
 
@@ -494,6 +515,7 @@ Return plain text only, with no quotes and no JSON.
         return f"{instructions}\n\n{REALIZATION_CONTEXT_MARKER}\n{_safe_json_dumps(context)}"
 
     def _call_llm_for_realization(self, prompt: str) -> Optional[str]:
+        log_prompt("simulator.realization", prompt)
         try:
             raw_output = self.llm_client.generate_text(prompt)
         except Exception:
@@ -584,6 +606,30 @@ Return plain text only, with no quotes and no JSON.
     def _constraints_from_state(self, state: Dict[str, Any]) -> Dict[str, Any]:
         constraints = state.get("constraints", {}) or {}
         return constraints if isinstance(constraints, dict) else {}
+
+    def _normalize_gold_search_query(self, value: Any) -> Optional[str]:
+        text = re.sub(r"\s+", " ", str(value or "")).strip()
+        if not text or text.lower() in {"none", "null"}:
+            return None
+        return text
+
+    def _query_from_intention(self, state: Dict[str, Any]) -> Optional[str]:
+        query = self._normalize_gold_search_query(state.get("gold_search_query"))
+        if query:
+            return query
+
+        constraints = self._constraints_from_state(state)
+        parts: List[str] = []
+        category = constraints.get("category")
+        if category:
+            parts.append(str(category))
+        for field in ("color", "brand", "size"):
+            value = constraints.get(field)
+            if value is not None:
+                parts.append(str(value))
+        if parts:
+            return re.sub(r"\s+", " ", " ".join(parts)).strip()
+        return self._normalize_gold_search_query(state.get("request"))
 
     def _priority_from_state(
         self,
