@@ -24,6 +24,7 @@ class ShiftOp:
     rationale: str = ""
     priority_update: Optional[List[str]] = None
     utterance_plan: Optional[Dict[str, Any]] = None
+    gold_search_query: Optional[str] = None
 
 
 @dataclass

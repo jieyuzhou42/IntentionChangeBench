@@ -101,6 +101,93 @@ class WebShopEnvAdapter(BaseEnv):
     def get_observation(self) -> Dict[str, Any]:
         return self.last_observation
 
+    def search_candidates(
+        self,
+        query: str,
+        user_state: Dict[str, Any],
+        *,
+        search_limit: int = 50,
+        return_limit: int = 10,
+    ) -> EnvFeedback:
+        """
+        Run WebShop search directly without stepping through page observations.
+
+        The executor consumes only the human simulator's gold search query; this
+        method retrieves BM25 candidates from WebShop and exposes the top window
+        as compact candidate feedback for the simulator.
+        """
+        query_text = re.sub(r"\s+", " ", str(query or "")).strip()
+        active_constraints = self._get_active_constraint_fields(user_state)
+        if not query_text:
+            return EnvFeedback(
+                status="error",
+                feasible=False,
+                reason="missing_gold_search_query",
+                observation={
+                    "feedback_type": "candidate_items",
+                    "page_type": "search_results",
+                    "gold_search_query": query_text,
+                    "candidate_items": [],
+                    "selected_candidate": None,
+                },
+                result={},
+                satisfied_constraints=[],
+                violated_constraints=active_constraints,
+            )
+
+        try:
+            products = self._search_products(query_text, limit=search_limit)
+        except Exception as exc:
+            return EnvFeedback(
+                status="error",
+                feasible=False,
+                reason=f"webshop_search_error: {repr(exc)}",
+                observation={
+                    "feedback_type": "candidate_items",
+                    "page_type": "search_results",
+                    "gold_search_query": query_text,
+                    "candidate_items": [],
+                    "selected_candidate": None,
+                },
+                result={},
+                satisfied_constraints=[],
+                violated_constraints=active_constraints,
+            )
+
+        candidate_items = [
+            self._candidate_item_from_product(product, rank=index)
+            for index, product in enumerate(products[:return_limit], start=1)
+        ]
+        self.last_candidate_items = list(candidate_items)
+        observation = {
+            "feedback_type": "candidate_items",
+            "page_type": "search_results",
+            "gold_search_query": query_text,
+            "candidate_items": candidate_items,
+            "selected_candidate": None,
+        }
+        if candidate_items:
+            result = {}
+            satisfied, violated, constraint_debug = self._check_constraints(
+                candidate_items[0],
+                user_state,
+                include_debug=True,
+            )
+            observation["constraint_debug"] = constraint_debug
+        else:
+            result = {}
+            satisfied, violated = [], active_constraints
+
+        return EnvFeedback(
+            status="observed",
+            feasible=True,
+            reason=None if candidate_items else "no_matching_results",
+            observation=observation,
+            result=result,
+            satisfied_constraints=satisfied,
+            violated_constraints=violated,
+        )
+
     def summarize_current_state(self, user_state: Dict[str, Any]) -> EnvFeedback:
         obs = dict(self.last_observation or {})
         result = self._extract_result(obs, info=self.last_info)
@@ -606,6 +693,27 @@ class WebShopEnvAdapter(BaseEnv):
             self._candidate_item_from_product(product, rank=index)
             for index, product in enumerate(top_products[:limit], start=1)
         ]
+
+    def _search_products(self, query_text: str, limit: int) -> List[Dict[str, Any]]:
+        server = getattr(self.webshop_env, "server", None)
+        search_engine = getattr(server, "search_engine", None)
+        product_item_dict = getattr(server, "product_item_dict", None)
+        if search_engine is None or not isinstance(product_item_dict, dict):
+            return []
+
+        bm25_search_engine = getattr(search_engine, "_searcher", search_engine)
+        hits = bm25_search_engine.search(query_text, k=limit)
+        products: List[Dict[str, Any]] = []
+        for hit in hits:
+            doc = bm25_search_engine.doc(hit.docid)
+            if doc is None:
+                continue
+            import json
+            asin = json.loads(doc.raw()).get("id")
+            product = product_item_dict.get(asin)
+            if isinstance(product, dict):
+                products.append(product)
+        return products
 
     def _candidate_items_from_visible_items(self, visible_items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         candidates: List[Dict[str, Any]] = []

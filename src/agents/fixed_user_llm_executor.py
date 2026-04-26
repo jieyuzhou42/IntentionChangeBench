@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional, Protocol
 
 from agents.execution_agent import ExecutionAgent
 from models import AgentAction
+from prompt_logging import log_prompt
 
 
 ALLOWED_ACTION_TYPES = {
@@ -68,11 +69,13 @@ def _parse_json_like(raw: Any) -> Optional[Dict[str, Any]]:
 
 class FixedUserLLMWebShopExecutor(ExecutionAgent):
     """
-    WebShop executor that only conditions on trajectory user utterances.
+    WebShop executor that conditions on trajectory user utterances and a
+    concise within-turn internal step trace.
 
-    This variant deliberately ignores assistant actions and other structured
-    history so the LLM only sees the recorded user utterance sequence plus the
-    current page state.
+    This variant still ignores previous-turn assistant history and broader
+    rollout summaries so the LLM mainly sees the recorded user utterance
+    sequence, the current page state, and short step summaries from the active
+    turn only.
     """
 
     def __init__(
@@ -106,6 +109,7 @@ class FixedUserLLMWebShopExecutor(ExecutionAgent):
                 history,
                 current_user_utterance=user_utterance,
             ),
+            "internal_step_trace": self._serialize_internal_steps(history),
             "page": self._serialize_observation(env_observation),
         }
 
@@ -125,7 +129,8 @@ Allowed action_type values:
 
 Rules:
 - Use the page contents, item context, WebShop instruction text, and the trajectory user utterances only.
-- Do not rely on assistant action history, rollout traces, or other context-history summaries.
+- A concise internal_step_trace may be provided for earlier steps in the same turn. Use it only as short within-turn memory; treat the current page as the source of truth.
+- Do not rely on assistant action history from previous turns, verbose rollout traces, or other context-history summaries.
 - Infer the active user requirements from the latest user utterance while using earlier user utterances only as user-side trajectory context.
 - If the latest user utterance changes or narrows the request, decide whether to search/refine based on that utterance and the returned items.
 - When composing a search/refine query, avoid negative phrasing such as "not sexy" or "not v neck". Prefer positive descriptors that imply the same intent, such as "casual modest" or "crew neck", or leave hard-to-express negatives out of the query and filter them during item inspection.
@@ -212,7 +217,63 @@ Required JSON schema:
             utterances.append(current_clean)
         return utterances[-max_items:]
 
+    def _serialize_internal_steps(
+        self,
+        history: List[Dict[str, Any]],
+        max_items: int = 6,
+    ) -> List[Dict[str, Any]]:
+        serialized: List[Dict[str, Any]] = []
+        for turn in history:
+            if not isinstance(turn, dict):
+                continue
+            if _clean_string(turn.get("role")).lower() != "assistant":
+                continue
+
+            content = turn.get("content")
+            if not isinstance(content, dict):
+                continue
+
+            internal_step = content.get("internal_step")
+            if internal_step is None:
+                continue
+
+            action_payload = content.get("action_payload")
+            if not isinstance(action_payload, dict):
+                action_payload = {}
+
+            returned_items: List[Dict[str, Any]] = []
+            for item in list(content.get("returned_items") or [])[:3]:
+                if not isinstance(item, dict):
+                    continue
+                returned_items.append(
+                    {
+                        "asin": item.get("asin"),
+                        "title": _clean_string(item.get("title"))[:120],
+                        "price": item.get("price"),
+                    }
+                )
+
+            serialized.append(
+                {
+                    "internal_step": internal_step,
+                    "action_type": _clean_string(content.get("action_type")),
+                    "action_payload": {
+                        key: _clean_string(value)[:200]
+                        for key, value in action_payload.items()
+                        if _clean_string(value)
+                    },
+                    "page_type": _clean_string(content.get("page_type")),
+                    "selected_asin": _clean_string(content.get("selected_asin")),
+                    "selected_options": content.get("selected_options")
+                    if isinstance(content.get("selected_options"), dict)
+                    else {},
+                    "returned_items": returned_items,
+                }
+            )
+        return serialized[-max_items:]
+
     def _call_llm(self, prompt: str) -> Optional[Dict[str, Any]]:
+        log_prompt("executor.fixed_user", prompt)
         try:
             raw_output = self.llm_client.generate_json(prompt)
         except Exception:
