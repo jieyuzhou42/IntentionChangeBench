@@ -83,6 +83,17 @@ class AzureOpenAIChatClient:
         )
 
     def generate_json(self, prompt: str) -> Dict[str, Any]:
+        raw_text = self.generate_json_text(prompt)
+        try:
+            parsed = json.loads(raw_text)
+        except json.JSONDecodeError as exc:
+            raise ValueError("Azure OpenAI did not return valid JSON") from exc
+
+        if not isinstance(parsed, dict):
+            raise ValueError("Azure OpenAI JSON response was not an object")
+        return parsed
+
+    def generate_json_text(self, prompt: str) -> str:
         if self.responses_endpoint:
             raw_text = self._responses_completion(
                 prompt=prompt,
@@ -95,14 +106,7 @@ class AzureOpenAIChatClient:
                 temperature=0.1,
                 response_format={"type": "json_object"},
             )
-        try:
-            parsed = json.loads(raw_text)
-        except json.JSONDecodeError as exc:
-            raise ValueError("Azure OpenAI did not return valid JSON") from exc
-
-        if not isinstance(parsed, dict):
-            raise ValueError("Azure OpenAI JSON response was not an object")
-        return parsed
+        return raw_text
 
     def generate_text(self, prompt: str) -> str:
         if self.responses_endpoint:

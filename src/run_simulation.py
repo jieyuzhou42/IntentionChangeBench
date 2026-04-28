@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from agents.fixed_user_llm_executor import FixedUserLLMWebShopExecutor
 from agents.executor import WebShopExecutor
+from agents.reranker import RerankerConfig
 from evaluators.runtime_logger import RuntimeLogger
 from models import AgentAction, BaseTask, DialogueInstance, EnvFeedback, TurnRecord
 from prompt_logging import get_prompt_log_path, log_prompt
@@ -63,6 +64,17 @@ def parse_webshop_num_products(value: Any) -> Optional[int]:
     return num_products
 
 
+def parse_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    text = str(value).strip().lower()
+    if text in {"1", "true", "yes", "y", "on"}:
+        return True
+    if text in {"0", "false", "no", "n", "off"}:
+        return False
+    raise argparse.ArgumentTypeError(f"Expected a boolean value, got {value!r}")
+
+
 def configure_webshop_dataset(num_products: Optional[int]) -> None:
     """
     Select the product JSON/attribute JSON before importing WebShop modules.
@@ -94,7 +106,7 @@ def configure_webshop_dataset(num_products: Optional[int]) -> None:
         missing_text = "\n  - ".join(missing)
         raise FileNotFoundError(
             "Full WebShop data files are not present. Download/build the full dataset first, "
-            "then rerun with --webshop_num_products all or 100000.\n"
+            "then rerun with --webshop_num_products all.\n"
             f"Missing:\n  - {missing_text}\n"
             "Expected setup: from WebShop/, run `bash setup.sh -d all` or otherwise place "
             "`items_shuffle.json` under WebShop/data and build the matching search index. "
@@ -500,14 +512,11 @@ Schema:
     "brand": "requested brand only if explicitly stated or null",
     "size": "requested size option or null"
   }},
-  "priority": ["ordered constraint fields that matter most"],
-  "gold_search_query": "concise WebShop/BM25 keyword query for this instruction"
+  "priority": ["ordered constraint fields that matter most"]
 }}
 
 Rules:
 - Extract constraints from the instruction semantics, not with regex-style substring guesses.
-- Generate gold_search_query as search keywords, not a full sentence. Include product type and positive search-relevant attributes such as color, brand, or size.
-- Do not include budget/price limits in gold_search_query unless those words are naturally part of the item name; budget is evaluated after search.
 - Preserve option values exactly when they are explicit labels, e.g. color: dusty blush.
 - Use budget_max for "price lower than", "under", "below", or similar maximum-price language.
 - Set brand only when the instruction explicitly names a brand, uses a brand label, or says by/from a brand.
@@ -756,6 +765,7 @@ def _public_env_feedback_payload(env_feedback: Optional[EnvFeedback]) -> Optiona
         "page_type": observation.get("page_type"),
         "candidate_items": copy.deepcopy(observation.get("candidate_items") or []),
         "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
+        "rerank_info": copy.deepcopy(observation.get("rerank_info")),
     }
 
 
@@ -865,11 +875,17 @@ def execute_turn(
     user_utterance: str,
     current_intention: Dict[str, Any],
     env_observation: Dict[str, Any],
+    gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
     max_internal_steps: int = DEFAULT_MAX_INTERNAL_STEPS,
 ) -> TurnRolloutResult:
     direct_search = getattr(execution_agent, "search", None)
     if callable(direct_search):
-        agent_action, env_feedback = direct_search(env, current_intention, user_utterance)
+        agent_action, env_feedback = direct_search(
+            env,
+            current_intention,
+            user_utterance,
+            gold_delta=gold_delta or {},
+        )
         query = str((agent_action.action_payload or {}).get("query", ""))
         rollout_trace = [
             _build_rollout_trace_entry(
@@ -1011,6 +1027,11 @@ def simulate_dialogue_instance(
         current_intention = llm_initial_intention
     elif real_instruction and real_instruction.strip():
         current_intention = _fallback_initial_intention(_clean_initial_request(real_instruction))
+    initial_gold_search_query = human_simulator.generate_gold_search_query_for_intention(
+        {**current_intention, "gold_search_query": None}
+    )
+    if initial_gold_search_query:
+        current_intention["gold_search_query"] = initial_gold_search_query
 
     user_utterance = _clean_initial_request(real_instruction)
     gold_delta: Dict[str, Dict[str, Any]] = {}
@@ -1036,6 +1057,7 @@ def simulate_dialogue_instance(
             user_utterance=user_utterance,
             current_intention=current_intention,
             env_observation=env_obs,
+            gold_delta=gold_delta,
             max_internal_steps=max_internal_steps,
         )
         agent_action = rollout.final_action
@@ -1155,6 +1177,7 @@ def _build_runtime_components(
     azure_api_version: str,
     webshop_num_products: Optional[int],
     executor_type: str,
+    reranker_config: RerankerConfig,
 ) -> Tuple[WebShopEnvAdapter, Any, HumanSimulator, Any]:
     configure_webshop_dataset(webshop_num_products)
 
@@ -1180,7 +1203,7 @@ def _build_runtime_components(
     if executor_type == "fixed_user":
         agent = FixedUserLLMWebShopExecutor(llm_client=llm_client)
     else:
-        agent = WebShopExecutor(llm_client=llm_client)
+        agent = WebShopExecutor(llm_client=llm_client, reranker_config=reranker_config)
     human = HumanSimulator(llm_client=llm_client)
     return env, agent, human, raw_env
 
@@ -1194,11 +1217,13 @@ def _simulate_single_instance(
     azure_api_version: str,
     webshop_num_products: Optional[int],
     executor_type: str,
+    reranker_config: RerankerConfig,
 ) -> DialogueInstance:
     env, agent, human, raw_env = _build_runtime_components(
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
         executor_type=executor_type,
+        reranker_config=reranker_config,
     )
     try:
         return simulate_dialogue_instance(
@@ -1225,11 +1250,13 @@ def _simulate_instances_serial(
     azure_api_version: str,
     webshop_num_products: Optional[int],
     executor_type: str,
+    reranker_config: RerankerConfig,
 ) -> List[DialogueInstance]:
     env, agent, human, raw_env = _build_runtime_components(
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
         executor_type=executor_type,
+        reranker_config=reranker_config,
     )
     try:
         instances = []
@@ -1261,11 +1288,13 @@ def _simulate_task_batch(
     azure_api_version: str,
     webshop_num_products: Optional[int],
     executor_type: str,
+    reranker_config: RerankerConfig,
 ) -> Dict[int, DialogueInstance]:
     env, agent, human, raw_env = _build_runtime_components(
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
         executor_type=executor_type,
+        reranker_config=reranker_config,
     )
     try:
         instances_by_index = {}
@@ -1310,6 +1339,7 @@ def _simulate_instances(
     webshop_num_products: Optional[int],
     executor_type: str,
     parallelism: int,
+    reranker_config: RerankerConfig,
 ) -> List[DialogueInstance]:
     if parallelism <= 1:
         return _simulate_instances_serial(
@@ -1320,6 +1350,7 @@ def _simulate_instances(
             azure_api_version=azure_api_version,
             webshop_num_products=webshop_num_products,
             executor_type=executor_type,
+            reranker_config=reranker_config,
         )
 
     effective_parallelism = min(parallelism, len(tasks))
@@ -1336,6 +1367,7 @@ def _simulate_instances(
                 azure_api_version=azure_api_version,
                 webshop_num_products=webshop_num_products,
                 executor_type=executor_type,
+                reranker_config=reranker_config,
             ): batch_index
             for batch_index, batch in enumerate(task_batches, start=1)
         }
@@ -1409,11 +1441,47 @@ def main():
             "user utterances and ignores assistant/context history."
         ),
     )
+    parser.add_argument(
+        "--enable_reranking",
+        type=parse_bool,
+        default=parse_bool(os.getenv("ENABLE_RERANKING", "true")),
+        help="Whether the llm executor reranks WebShop candidates before returning them.",
+    )
+    parser.add_argument(
+        "--rerank_top_n",
+        type=int,
+        default=int(os.getenv("RERANK_TOP_N", "30")),
+        help="Number of raw WebShop candidates to pass to the LLM reranker.",
+    )
+    parser.add_argument(
+        "--rerank_return_k",
+        type=int,
+        default=int(os.getenv("RERANK_RETURN_K", "10")),
+        help="Number of reranked candidates to return to the human simulator.",
+    )
+    parser.add_argument(
+        "--reranker_model",
+        type=str,
+        default=os.getenv("RERANKER_MODEL"),
+        help="Optional reranker model/deployment label for logs and metadata.",
+    )
+    parser.add_argument(
+        "--reranker_debug",
+        type=parse_bool,
+        default=parse_bool(os.getenv("RERANKER_DEBUG", "false")),
+        help="Include compact reranker input and raw LLM output in rerank_info.",
+    )
     args = parser.parse_args()
     print(f"Prompt log path: {get_prompt_log_path()}")
 
     if args.parallelism < 1:
         raise ValueError("--parallelism must be at least 1")
+    if args.rerank_top_n < 1:
+        raise ValueError("--rerank_top_n must be at least 1")
+    if args.rerank_return_k < 1:
+        raise ValueError("--rerank_return_k must be at least 1")
+    if args.rerank_return_k > args.rerank_top_n:
+        raise ValueError("--rerank_return_k cannot exceed --rerank_top_n")
     webshop_num_products = parse_webshop_num_products(args.webshop_num_products)
     instance_ids = parse_instance_ids(args.instance_ids)
     goal_indices = parse_goal_indices(args.webshop_goal_indices)
@@ -1426,6 +1494,13 @@ def main():
     )
     effective_parallelism = min(args.parallelism, len(tasks))
     logger = RuntimeLogger()
+    reranker_config = RerankerConfig(
+        enable_reranking=args.enable_reranking,
+        rerank_top_n=args.rerank_top_n,
+        rerank_return_k=args.rerank_return_k,
+        reranker_model=args.reranker_model,
+        reranker_debug=args.reranker_debug,
+    )
 
     instances = _simulate_instances(
         tasks=tasks,
@@ -1436,6 +1511,7 @@ def main():
         webshop_num_products=webshop_num_products,
         executor_type=args.executor_type,
         parallelism=effective_parallelism,
+        reranker_config=reranker_config,
     )
     for instance in instances:
         logger.log_instance(instance)

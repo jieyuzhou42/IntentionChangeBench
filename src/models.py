@@ -4,6 +4,14 @@ from dataclasses import dataclass, field, asdict
 from typing import Any, Dict, List, Optional
 
 
+def _public_turn_dict(turn: "TurnRecord") -> Dict[str, Any]:
+    payload = asdict(turn)
+    gold_intention = payload.get("gold_current_intention")
+    if isinstance(gold_intention, dict):
+        gold_intention.pop("request", None)
+    return payload
+
+
 @dataclass
 class ShiftCondition:
     type: str  # none / user_preference / real_world_feasibility / agent_misunderstanding
@@ -95,5 +103,5 @@ class DialogueInstance:
             "task_type": self.task_type,
             "subtype": self.subtype,
             "world_state": self.world_state,
-            "turns": [asdict(t) for t in self.turns],
+            "turns": [_public_turn_dict(t) for t in self.turns],
         }

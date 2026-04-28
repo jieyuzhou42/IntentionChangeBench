@@ -2,13 +2,13 @@
 
 ## WebShop Dataset Size
 
-The simulation runner defaults to the lightweight 1k-product WebShop subset:
+The simulation and benchmark runners default to the full WebShop product dataset:
 
 ```powershell
-python .\src\run_simulation.py --webshop_num_products 1000
+python .\src\run_simulation.py
 ```
 
-To use the full WebShop product dataset, first make sure these files exist:
+Make sure these files exist:
 
 - `WebShop/data/items_shuffle.json`
 - `WebShop/data/items_ins_v2_1000.json`
@@ -20,7 +20,8 @@ Then run:
 python .\src\run_simulation.py --webshop_num_products all
 ```
 
-`--webshop_num_products 100000` is also supported if you built `WebShop/search_engine/indexes_100k/`.
+For faster local smoke tests, pass `--webshop_num_products 1000`.
+`--webshop_num_products 100000` is still supported if you built `WebShop/search_engine/indexes_100k/`.
 
 The product catalog and instruction/attribute file can be scaled separately.
 By default, `--webshop_num_products all` uses the full product catalog with the
