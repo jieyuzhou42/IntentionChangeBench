@@ -30,6 +30,7 @@ ALLOWED_CHANGE_CATEGORIES = ALLOWED_SHIFT_OPS
 ALLOWED_STYLES = {"explicit", "partial", "elliptical"}
 ALLOWED_DIRECTNESS = {"direct", "indirect"}
 SHIFT_CONTEXT_MARKER = "SHIFT_CONTEXT_JSON:"
+SEARCH_QUERY_CONTEXT_MARKER = "SEARCH_QUERY_CONTEXT_JSON:"
 REALIZATION_CONTEXT_MARKER = "REALIZATION_CONTEXT_JSON:"
 FORCED_SHIFT_RETRY_PROBABILITY = 0.5
 
@@ -119,6 +120,7 @@ class HumanSimulator:
             "page_type": observation.get("page_type"),
             "candidate_items": copy.deepcopy(list(observation.get("candidate_items") or [])[:10]),
             "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
+            "rerank_info": copy.deepcopy(observation.get("rerank_info")),
         }
 
     def _serialize_intention_timeline(
@@ -138,7 +140,6 @@ class HumanSimulator:
                     {
                         "turn_id": turn.get("turn_id"),
                         "is_current": False,
-                        "request": gold_intention.get("request"),
                         "constraints": copy.deepcopy(gold_intention.get("constraints") or {}),
                         "gold_search_query": gold_intention.get("gold_search_query"),
                     }
@@ -148,7 +149,6 @@ class HumanSimulator:
             {
                 "turn_id": "current",
                 "is_current": True,
-                "request": current_intention.get("request"),
                 "constraints": copy.deepcopy(current_intention.get("constraints") or {}),
                 "gold_search_query": current_intention.get("gold_search_query"),
             }
@@ -168,16 +168,14 @@ class HumanSimulator:
         }
 
         instructions = """
-You are simulating a human user reacting to the latest WebShop page feedback.
+Pretend you are a real user shopping on amazon.com.
 Return a single JSON object only.
 
 Allowed conditions:
-- none
 - user_preference
 - real_world_feasibility
 
 Allowed change categories:
-- none
 - add
 - relax
 - override
@@ -185,37 +183,27 @@ Allowed change categories:
 - scope_correction
 
 Task:
-- First decide whether the latest interaction caused an intention change.
-- If intention_changed is true, you must output both condition and category.
-- Always produce gold_search_query for the updated intention. It should be a concise WebShop/BM25 keyword query, not a sentence, and should include the product type plus the most search-relevant positive attributes.
 - Feel free to change your primary goal or constraints entirely based on your whims or what you see on the page. Your initial goal is just a starting point, not a contract.
-- You are currently dissatisfied. You MUST either add a new constraint, override an existing one, or shift your entire focus.
-
-Examples of grounded preference change:
-- after seeing a pattern, the user wants another color
-- after seeing a style, the user relaxes category
-- after seeing an item, the user adds another preference
-- after seeing a page, the user abruptly decides a different attribute now matters more
-- after finding a viable option, the user still changes direction because they no longer want it
+- You are currently dissatisfied. You MUST either add a new constraint, relax a constrain, override an existing one, reprioritize some constrains over others, or shift your entire focus.
 
 Rules:
-- Treat adapter-provided status as a low-level environment signal, not ground truth. Use the candidate items and their constraint matches as the main evidence.
+- Treat searching status as a low-level environment signal, not ground truth. Use the candidate items and their constraint matches as the main evidence.
 - Use condition="user_preference" when the user changes or adds preferences because of what they just saw.
 - Use condition="real_world_feasibility" when exact constraints seem unavailable or hard to satisfy.
 - Do not introduce correction, termination, or no_change_continue as top-level reaction classes.
 - Do not mention rating/review/star/customer-score constraints. Those signals are unavailable to the executor and are out of scope for this simulator run
-- Do not put price/budget limits in gold_search_query unless the product title naturally includes them; budget is evaluated after search.
+- Do not repeatedly toggle between two values across turns.
+
 
 Required JSON schema:
 {
   "intention_changed": true,
-  "condition": "none | user_preference | real_world_feasibility | agent_misunderstanding",
-  "category": "none | add | relax | override | reprioritize | scope_correction",
+  "condition": "user_preference | real_world_feasibility",
+  "category": "add | relax | override | reprioritize | scope_correction",
   "field": "constraint field name or null",
   "old_value": "previous value or null",
   "value": "new value or null",
   "priority_update": ["ordered", "priority", "fields"] or null,
-  "gold_search_query": "concise WebShop search query for the updated intention",
   "rationale": "short explanation",
   "utterance_plan": {
     "style": "explicit | partial | elliptical",
@@ -233,7 +221,6 @@ Examples:
   "old_value": "green stripe",
   "value": "navy",
   "priority_update": null,
-  "gold_search_query": "navy office chair",
   "rationale": "After seeing the pattern, the user now prefers a different color.",
   "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": false}
 }
@@ -245,13 +232,107 @@ Examples:
   "old_value": "green stripe",
   "value": null,
   "priority_update": null,
-  "gold_search_query": "office chair",
   "rationale": "The exact option does not seem available, so something close is acceptable.",
   "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": true}
 }
 """.strip()
 
         return f"{instructions}\n\n{SHIFT_CONTEXT_MARKER}\n{_safe_json_dumps(context)}"
+
+    def _preview_intention_after_shift(
+        self,
+        current_intention: Dict[str, Any],
+        shift: ShiftOp,
+    ) -> Dict[str, Any]:
+        preview = copy.deepcopy(current_intention)
+        preview.setdefault("constraints", {})
+        constraints = preview["constraints"] if isinstance(preview["constraints"], dict) else {}
+        preview["constraints"] = constraints
+
+        if shift.op in {"add", "relax", "override", "scope_correction"} and shift.field:
+            constraints[shift.field] = shift.value
+        if shift.priority_update:
+            preview["priority"] = self._normalize_priority_update(
+                shift.priority_update,
+                constraints,
+                preview.get("priority", []),
+            ) or preview.get("priority", [])
+        preview.pop("gold_search_query", None)
+        preview["priority"] = self._priority_from_state(preview, constraints)
+        return preview
+
+    def _build_gold_search_query_prompt(
+        self,
+        updated_gold_intention: Dict[str, Any],
+    ) -> str:
+        context = {
+            "updated_gold_intention": copy.deepcopy(updated_gold_intention),
+        }
+
+        instructions = """
+Generate the gold WebShop search query for current shopping intention.
+Return a single JSON object only.
+
+Task:
+- Produce gold_search_query for retrieving a broad but relevant candidate pool.
+- The search query should primarily identify the correct product type/category.
+- Use concise keyword phrases, not a full sentence.
+- Include only the most search-critical positive descriptors when they are necessary to identify the product family, such as gender, product type.
+- Do not include too many fine-grained constraints in the search query. Fine-grained constraints will be evaluated later by a separate candidate filtering/reranking module.
+- Do not include budget/price limits unless those words are naturally part of the product name; budget is evaluated after search.
+- Do not include rating/review/star/customer-score constraints.
+- Do not include washing/care constraints such as "machine wash" unless the user is explicitly searching for a care-related product.
+- Do not include exact size constraints such as "large", "x-large", or "4x-large" unless size is central to the product type, such as "plus size".
+- Avoid negative phrasing such as "not v neck". Prefer positive descriptors that imply the same intent, such as "crew neck".
+
+Required JSON schema:
+{
+  "gold_search_query": "concise WebShop search query for broad candidate retrieval"
+}
+
+Examples:
+{"gold_search_query": "women's jumpsuits rompers overalls"}
+{"gold_search_query": "men's henley shirt"}
+{"gold_search_query": "men's loafers slip ons"}
+{"gold_search_query": "casual modest crew neck dress"}
+{"gold_search_query": "navy office chair"}
+""".strip()
+
+        return f"{instructions}\n\n{SEARCH_QUERY_CONTEXT_MARKER}\n{_safe_json_dumps(context)}"
+
+    def _call_llm_for_gold_search_query(self, prompt: str) -> Optional[str]:
+        log_prompt("simulator.gold_search_query", prompt)
+        try:
+            raw_output = self.llm_client.generate_json(prompt)
+        except Exception:
+            return None
+
+        parsed = _parse_json_like(raw_output)
+        if not parsed:
+            return None
+        return self._normalize_gold_search_query(parsed.get("gold_search_query"))
+
+    def generate_gold_search_query_for_intention(
+        self,
+        gold_intention: Dict[str, Any],
+    ) -> Optional[str]:
+        prompt = self._build_gold_search_query_prompt(gold_intention)
+        query = self._call_llm_for_gold_search_query(prompt)
+        if query:
+            return query
+        return self._query_from_intention(gold_intention)
+
+    def _generate_gold_search_query(
+        self,
+        current_intention: Dict[str, Any],
+        shift: ShiftOp,
+    ) -> Optional[str]:
+        if shift.op == "none":
+            return self._query_from_intention(current_intention)
+
+        return self.generate_gold_search_query_for_intention(
+            self._preview_intention_after_shift(current_intention, shift)
+        )
 
     def _call_llm_for_shift(self, prompt: str) -> Optional[Dict[str, Any]]:
         log_prompt("simulator.shift", prompt)
@@ -422,7 +503,12 @@ Examples:
                 "CRITICAL: You are too satisfied. Find a reason to change your mind or goal NOW."
             )
             llm_output = self._call_llm_for_shift(prompt)
-        return self._parse_shift_output(llm_output, current_intention, env_feedback=env_feedback)
+        shift = self._parse_shift_output(llm_output, current_intention, env_feedback=env_feedback)
+        shift.gold_search_query = self._generate_gold_search_query(
+            current_intention,
+            shift,
+        )
+        return shift
 
     def apply_shift(
         self,

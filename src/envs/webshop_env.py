@@ -701,11 +701,10 @@ class WebShopEnvAdapter(BaseEnv):
         if search_engine is None or not isinstance(product_item_dict, dict):
             return []
 
-        bm25_search_engine = getattr(search_engine, "_searcher", search_engine)
-        hits = bm25_search_engine.search(query_text, k=limit)
+        hits = search_engine.search(query_text, k=limit)
         products: List[Dict[str, Any]] = []
         for hit in hits:
-            doc = bm25_search_engine.doc(hit.docid)
+            doc = search_engine.doc(hit.docid)
             if doc is None:
                 continue
             import json

@@ -14,6 +14,7 @@ from models import BaseTask, DialogueInstance, TurnRecord
 from prompt_logging import get_prompt_log_path
 from run_simulation import (
     DEFAULT_MAX_INTERNAL_STEPS,
+    DEFAULT_WEBSHOP_NUM_PRODUCTS,
     _build_runtime_components,
     _history_returned_items,
     _partition_indexed_tasks,
@@ -354,7 +355,7 @@ def main() -> None:
     parser.add_argument(
         "--webshop_num_products",
         type=str,
-        default=os.getenv("WEBSHOP_NUM_PRODUCTS", "100000"),
+        default=os.getenv("WEBSHOP_NUM_PRODUCTS", DEFAULT_WEBSHOP_NUM_PRODUCTS),
         help="WebShop product subset to load: 100, 1000, 100000, or all.",
     )
     parser.add_argument(
