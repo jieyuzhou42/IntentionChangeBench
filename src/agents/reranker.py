@@ -142,32 +142,36 @@ You are a constraint-aware reranker for WebShop search results.
 Return a single JSON object only.
 
 Task:
-Given the current shopping intention and a list of candidate items, select the top {top_k} candidates that best match the intention.
+Given the current shopping intention, gold_delta, and candidate items, select the top {top_k} candidates that best match the current intention.
 
-Important:
-- Use the candidate item fields as evidence.
-- Prioritize matching the product type/category first.
+Rerank candidates using this priority order:
+
+1. Product family
+- First decide whether each candidate is the requested product family.
+- Use exact / broad / related / wrong.
+- Wrong product-family items should rank below plausible product-family matches.
+
+2. Latest user change
+- gold_delta represents the user's latest change or newly emphasized requirement.
+- Treat the latest change as more important than older unchanged constraints.
+- If a candidate explicitly violates the latest exclusion or override, rank it below candidates that do not violate it.
+- Example: if the latest change excludes pajama, onesie, bodysuit, sleepwear, or butt-flap styles, then candidates whose title, bullet_points, description, or product fields explicitly contain those terms should be marked as violating the latest change.
+
+3. Remaining constraints
+- After product family and latest change, compare the remaining constraints from current_shopping_intention.constraints.
+- Check reliable fields:
+  - budget_max: price
+  - size: options first
+  - color: options, explicit color field, title, attributes, bullet_points
+  - material/style/sleeve/care/occasion: title, attributes, bullet_points, description
 - Do not over-trust noisy keyword-stuffed descriptions.
-- If an item is clearly the wrong product type, rank it low even if it contains many matching keywords.
-- If an exact fine-grained constraint is not explicitly supported but the item is in the correct product family, it can still be kept if better options are unavailable.
-- Do not invent attributes that are not supported by the item fields.
+- Do not invent unsupported attributes.
+- If evidence is uncertain, mark it as uncertain instead of treating it as matched.
 
-Scoring guidance:
-- First apply the product family gate:
-  - If the candidate is clearly the wrong product family, give it a very low score and rank it below plausible product-family matches.
-  - Wrong product-family items should not appear in the final top {top_k} unless fewer than {top_k} plausible candidates exist.
-- Then score constraints from current_shopping_intention.constraints.
-- Use gold_delta to weight the changed constraint:
-  - If a gold_delta entry has op="add", and the candidate clearly satisfies that entry's new value, add 4 points.
-  - If the added constraint is missing or contradicted, add 0 points for that added constraint.
-  - For every other current constraint that the candidate clearly satisfies, add 2 points.
-  - If there is no add entry in gold_delta, score all current constraints as "other current constraints" worth 2 points each.
-- Budget/price, size, and color must be checked from reliable item fields when possible:
-  - budget_max from price
-  - size from options and relevant title/attributes/bullet_points
-  - color from options, title, attributes, bullet_points, or explicit color field
-- Do not add points for unsupported guesses.
-- If evidence is uncertain, mention it briefly and do not award full points for that constraint.
+Ranking rules:
+- Do not let many weak keyword matches outweigh an explicit violation of the latest user change.
+- A candidate that violates the latest exclusion should not rank above a non-violating plausible candidate unless all plausible candidates violate it.
+- If no candidate perfectly matches all constraints, prefer candidates that match the product family and latest user change, then satisfy the most important remaining constraints.
 
 Return this JSON schema:
 {{
@@ -176,24 +180,24 @@ Return this JSON schema:
       "asin": "candidate asin",
       "original_rank": 1,
       "new_rank": 1,
-      "score": 12,
       "product_family_match": "exact | broad | related | wrong",
-      "gold_delta_score": 4,
-      "other_constraints_score": 8,
-      "decision": "keep",
+      "latest_delta_match": "satisfies | neutral | uncertain | violates | none",
+      "constraint_match_level": "strong | partial | weak",
+      "decision": "keep | keep_as_fallback | downrank",
       "matched_constraints": ["..."],
       "missing_or_uncertain_constraints": ["..."],
-      "mismatch_reasons": ["..."],
-      "brief_reason": "concise reason"
+      "mismatch_reasons": ["..."]
     }}
   ]
 }}
 
 Rules:
-- Return exactly {top_k} candidates if at least {top_k} candidates are available.
+- Return at most {top_k} candidates.
+- You may return fewer than {top_k} candidates if fewer candidates plausibly match the current intention.
 - Preserve candidate ASINs exactly.
-- Do not include candidates that are clearly wrong product type unless fewer than {top_k} plausible candidates exist.
+- Do not include clearly wrong product-family candidates unless fewer than {top_k} plausible candidates exist.
 - Keep explanations concise.
+- Return JSON only.
 
 Input JSON:
 {json.dumps(payload, ensure_ascii=False, indent=2, default=str)}
@@ -240,8 +244,8 @@ def _apply_reranker_output(
     rows = parsed.get("reranked_candidates")
     if not isinstance(rows, list):
         raise ValueError("reranker response missing reranked_candidates list")
-    if len(rows) < top_k:
-        raise ValueError(f"reranker returned {len(rows)} candidates, expected {top_k}")
+    if len(rows) > top_k:
+        rows = rows[:top_k]
 
     by_asin = {
         _asin_key(candidate.get("asin")): candidate
@@ -251,7 +255,7 @@ def _apply_reranker_output(
     selected: List[Dict[str, Any]] = []
     summary: List[Dict[str, Any]] = []
     seen = set()
-    for output_rank, row in enumerate(rows[:top_k], start=1):
+    for output_rank, row in enumerate(rows, start=1):
         if not isinstance(row, dict):
             raise ValueError("reranker candidate entry is not an object")
         asin = row.get("asin")
@@ -267,15 +271,10 @@ def _apply_reranker_output(
         new_rank = _coerce_int(row.get("new_rank"), output_rank) or output_rank
         item["original_rank"] = original_rank
         item["rerank_rank"] = new_rank
-        item["rerank_score"] = _coerce_float(row.get("score"))
-        item["rerank_product_type_match"] = _coerce_float(row.get("product_type_match"))
-        item["rerank_hard_constraint_match"] = _coerce_float(row.get("hard_constraint_match"))
-        item["rerank_soft_constraint_match"] = _coerce_float(row.get("soft_constraint_match"))
-        item["rerank_evidence_quality"] = _coerce_float(row.get("evidence_quality"))
         item["rerank_product_family_match"] = _clip_text(row.get("product_family_match"), 80)
-        item["rerank_gold_delta_score"] = _coerce_float(row.get("gold_delta_score"))
-        item["rerank_other_constraints_score"] = _coerce_float(row.get("other_constraints_score"))
-        item["rerank_brief_reason"] = _clip_text(row.get("brief_reason"), 300)
+        item["rerank_latest_delta_match"] = _clip_text(row.get("latest_delta_match"), 80)
+        item["rerank_constraint_match_level"] = _clip_text(row.get("constraint_match_level"), 80)
+        item["rerank_decision"] = _clip_text(row.get("decision"), 80)
         item["rerank_matched_constraints"] = _string_list(row.get("matched_constraints"))
         item["rerank_missing_or_uncertain_constraints"] = _string_list(
             row.get("missing_or_uncertain_constraints")
@@ -287,7 +286,10 @@ def _apply_reranker_output(
                 "asin": item.get("asin"),
                 "original_rank": original_rank,
                 "rerank_rank": new_rank,
-                "score": item.get("rerank_score"),
+                "product_family_match": item.get("rerank_product_family_match"),
+                "latest_delta_match": item.get("rerank_latest_delta_match"),
+                "constraint_match_level": item.get("rerank_constraint_match_level"),
+                "decision": item.get("rerank_decision"),
             }
         )
 

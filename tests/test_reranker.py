@@ -84,8 +84,6 @@ def test_reranker_prompt_uses_gold_delta_weights_without_gold_search_query():
 
     assert '"gold_delta"' in prompt
     assert '"gold_search_query"' not in prompt
-    assert "add 4 points" in prompt
-    assert "add 2 points" in prompt
     assert "hard_constraint" not in prompt
     assert "soft_constraint" not in prompt
 
@@ -102,16 +100,13 @@ def test_rerank_candidates_uses_order_and_attaches_metadata():
                 "asin": asin,
                 "original_rank": int(asin[-3:]),
                 "new_rank": rank,
-                "score": 8.5 - (rank * 0.1),
-                "product_type_match": 3,
-                "hard_constraint_match": 3,
-                "soft_constraint_match": 2,
-                "evidence_quality": 0.5,
+                "product_family_match": "exact",
+                "latest_delta_match": "satisfies",
+                "constraint_match_level": "strong",
                 "decision": "keep",
                 "matched_constraints": ["green", "size L"],
                 "missing_or_uncertain_constraints": [],
                 "mismatch_reasons": [],
-                "brief_reason": "Correct family and constraints.",
             }
             for rank, asin in enumerate(ordered_asins, start=1)
         ]
@@ -128,8 +123,12 @@ def test_rerank_candidates_uses_order_and_attaches_metadata():
     assert [item["asin"] for item in reranked] == ordered_asins
     assert reranked[0]["original_rank"] == 30
     assert reranked[0]["rerank_rank"] == 1
-    assert reranked[0]["rerank_score"] == 8.4
-    assert reranked[0]["rerank_product_type_match"] == 3
+    assert "rerank_score" not in reranked[0]
+    assert "rerank_hard_constraint_match" not in reranked[0]
+    assert reranked[0]["rerank_product_family_match"] == "exact"
+    assert reranked[0]["rerank_latest_delta_match"] == "satisfies"
+    assert reranked[0]["rerank_constraint_match_level"] == "strong"
+    assert reranked[0]["rerank_decision"] == "keep"
     assert reranked[0]["rerank_matched_constraints"] == ["green", "size L"]
     assert info["succeeded"] is True
     assert info["fallback_used"] is False
@@ -153,3 +152,47 @@ def test_rerank_candidates_falls_back_to_bm25_top_10_on_invalid_output():
     assert "rerank_error" in reranked[0]
     assert info["succeeded"] is False
     assert info["fallback_used"] is True
+
+
+def test_rerank_candidates_allows_fewer_than_top_k_matches():
+    candidates = [_fake_candidate(i) for i in range(1, 31)]
+    payload = {
+        "reranked_candidates": [
+            {
+                "asin": "ASIN005",
+                "original_rank": 5,
+                "new_rank": 1,
+                "product_family_match": "exact",
+                "latest_delta_match": "satisfies",
+                "constraint_match_level": "strong",
+                "decision": "keep",
+                "matched_constraints": ["green"],
+                "missing_or_uncertain_constraints": [],
+                "mismatch_reasons": [],
+            },
+            {
+                "asin": "ASIN009",
+                "original_rank": 9,
+                "new_rank": 2,
+                "product_family_match": "broad",
+                "latest_delta_match": "uncertain",
+                "constraint_match_level": "partial",
+                "decision": "keep_as_fallback",
+                "matched_constraints": ["dress"],
+                "missing_or_uncertain_constraints": ["size"],
+                "mismatch_reasons": [],
+            },
+        ]
+    }
+
+    reranked, info = rerank_candidates_with_llm(
+        llm_client=FakeLLMClient(payload),
+        current_intention={"constraints": {"color": "green"}},
+        candidates=candidates,
+        top_k=10,
+    )
+
+    assert [item["asin"] for item in reranked] == ["ASIN005", "ASIN009"]
+    assert info["returned_candidate_count"] == 2
+    assert info["succeeded"] is True
+    assert info["fallback_used"] is False
