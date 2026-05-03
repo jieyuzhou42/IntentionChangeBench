@@ -127,6 +127,7 @@ class HumanSimulator:
         self,
         current_intention: Dict[str, Any],
         intention_history: Optional[List[Dict[str, Any]]],
+        current_gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
         max_items: int = 4,
     ) -> List[Dict[str, Any]]:
         serialized: List[Dict[str, Any]] = []
@@ -140,8 +141,8 @@ class HumanSimulator:
                     {
                         "turn_id": turn.get("turn_id"),
                         "is_current": False,
-                        "constraints": copy.deepcopy(gold_intention.get("constraints") or {}),
-                        "gold_search_query": gold_intention.get("gold_search_query"),
+                        "gold_intention": gold_intention,
+                        "gold_delta": copy.deepcopy(turn.get("gold_delta") or {}),
                     }
                 )
 
@@ -149,8 +150,8 @@ class HumanSimulator:
             {
                 "turn_id": "current",
                 "is_current": True,
-                "constraints": copy.deepcopy(current_intention.get("constraints") or {}),
-                "gold_search_query": current_intention.get("gold_search_query"),
+                "gold_intention": copy.deepcopy(current_intention),
+                "gold_delta": copy.deepcopy(current_gold_delta or {}),
             }
         )
 
@@ -161,9 +162,14 @@ class HumanSimulator:
         current_intention: Dict[str, Any],
         env_feedback: Optional[EnvFeedback] = None,
         intention_history: Optional[List[Dict[str, Any]]] = None,
+        current_gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> str:
         context = {
-            "intention_timeline": self._serialize_intention_timeline(current_intention, intention_history),
+            "intention_timeline": self._serialize_intention_timeline(
+                current_intention,
+                intention_history,
+                current_gold_delta=current_gold_delta,
+            ),
             "latest_env_feedback": self._serialize_env_feedback(env_feedback),
         }
 
@@ -239,51 +245,37 @@ Examples:
 
         return f"{instructions}\n\n{SHIFT_CONTEXT_MARKER}\n{_safe_json_dumps(context)}"
 
-    def _preview_intention_after_shift(
-        self,
-        current_intention: Dict[str, Any],
-        shift: ShiftOp,
-    ) -> Dict[str, Any]:
-        preview = copy.deepcopy(current_intention)
-        preview.setdefault("constraints", {})
-        constraints = preview["constraints"] if isinstance(preview["constraints"], dict) else {}
-        preview["constraints"] = constraints
-
-        if shift.op in {"add", "relax", "override", "scope_correction"} and shift.field:
-            constraints[shift.field] = shift.value
-        if shift.priority_update:
-            preview["priority"] = self._normalize_priority_update(
-                shift.priority_update,
-                constraints,
-                preview.get("priority", []),
-            ) or preview.get("priority", [])
-        preview.pop("gold_search_query", None)
-        preview["priority"] = self._priority_from_state(preview, constraints)
-        return preview
-
     def _build_gold_search_query_prompt(
         self,
         updated_gold_intention: Dict[str, Any],
+        gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> str:
         context = {
             "updated_gold_intention": copy.deepcopy(updated_gold_intention),
         }
+        if gold_delta is not None:
+            context["gold_delta"] = copy.deepcopy(gold_delta)
 
         instructions = """
-Generate the gold WebShop search query for current shopping intention.
+Generate the gold WebShop search query for the current shopping intention.
 Return a single JSON object only.
 
 Task:
 - Produce gold_search_query for retrieving a broad but relevant candidate pool.
 - The search query should primarily identify the correct product type/category.
 - Use concise keyword phrases, not a full sentence.
-- Include only the most search-critical positive descriptors when they are necessary to identify the product family, such as gender, product type.
+- Include the product type/category and search-critical descriptors that help retrieve the right candidate pool.
 - Do not include too many fine-grained constraints in the search query. Fine-grained constraints will be evaluated later by a separate candidate filtering/reranking module.
 - Do not include budget/price limits unless those words are naturally part of the product name; budget is evaluated after search.
 - Do not include rating/review/star/customer-score constraints.
-- Do not include washing/care constraints such as "machine wash" unless the user is explicitly searching for a care-related product.
 - Do not include exact size constraints such as "large", "x-large", or "4x-large" unless size is central to the product type, such as "plus size".
 - Avoid negative phrasing such as "not v neck". Prefer positive descriptors that imply the same intent, such as "crew neck".
+
+Query construction rule:
+- Start with the product type/category.
+- Add at most 1-3 search-critical descriptors.
+- If the current gold_delta introduces a new important descriptor, include it unless it is better handled by reranking/filtering.
+- Keep the query broad enough to retrieve alternatives, but specific enough to reflect the current turn's main change.
 
 Required JSON schema:
 {
@@ -292,10 +284,10 @@ Required JSON schema:
 
 Examples:
 {"gold_search_query": "women's jumpsuits rompers overalls"}
-{"gold_search_query": "men's henley shirt"}
+{"gold_search_query": "women's clarks wedge sandals"}
 {"gold_search_query": "men's loafers slip ons"}
 {"gold_search_query": "casual modest crew neck dress"}
-{"gold_search_query": "navy office chair"}
+
 """.strip()
 
         return f"{instructions}\n\n{SEARCH_QUERY_CONTEXT_MARKER}\n{_safe_json_dumps(context)}"
@@ -315,24 +307,13 @@ Examples:
     def generate_gold_search_query_for_intention(
         self,
         gold_intention: Dict[str, Any],
+        gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> Optional[str]:
-        prompt = self._build_gold_search_query_prompt(gold_intention)
+        prompt = self._build_gold_search_query_prompt(gold_intention, gold_delta=gold_delta)
         query = self._call_llm_for_gold_search_query(prompt)
         if query:
             return query
         return self._query_from_intention(gold_intention)
-
-    def _generate_gold_search_query(
-        self,
-        current_intention: Dict[str, Any],
-        shift: ShiftOp,
-    ) -> Optional[str]:
-        if shift.op == "none":
-            return self._query_from_intention(current_intention)
-
-        return self.generate_gold_search_query_for_intention(
-            self._preview_intention_after_shift(current_intention, shift)
-        )
 
     def _call_llm_for_shift(self, prompt: str) -> Optional[Dict[str, Any]]:
         log_prompt("simulator.shift", prompt)
@@ -486,11 +467,13 @@ Examples:
         current_intention: Dict[str, Any],
         env_feedback: Optional[EnvFeedback] = None,
         intention_history: Optional[List[Dict[str, Any]]] = None,
+        current_gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> ShiftOp:
         prompt = self._build_shift_prompt(
             current_intention,
             env_feedback=env_feedback,
             intention_history=intention_history,
+            current_gold_delta=current_gold_delta,
         )
         llm_output = self._call_llm_for_shift(prompt)
         if (
@@ -504,10 +487,6 @@ Examples:
             )
             llm_output = self._call_llm_for_shift(prompt)
         shift = self._parse_shift_output(llm_output, current_intention, env_feedback=env_feedback)
-        shift.gold_search_query = self._generate_gold_search_query(
-            current_intention,
-            shift,
-        )
         return shift
 
     def apply_shift(
@@ -554,7 +533,7 @@ Examples:
                 }
 
         new_state["gold_search_query"] = (
-            self._normalize_gold_search_query(shift.gold_search_query)
+            self.generate_gold_search_query_for_intention(new_state, gold_delta=delta)
             or self._query_from_intention(new_state)
         )
         new_state["priority"] = self._priority_from_state(new_state, new_state["constraints"])
@@ -567,11 +546,16 @@ Examples:
         style: str,
         env_feedback: Optional[EnvFeedback] = None,
         intention_history: Optional[List[Dict[str, Any]]] = None,
+        current_gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> str:
         requested_style = style if style in ALLOWED_STYLES else "explicit"
         context = {
             "requested_style": requested_style,
-            "intention_timeline": self._serialize_intention_timeline(current_intention, intention_history),
+            "intention_timeline": self._serialize_intention_timeline(
+                current_intention,
+                intention_history,
+                current_gold_delta=current_gold_delta,
+            ),
             "shift": asdict(shift),
             "latest_env_feedback": self._serialize_env_feedback(env_feedback),
         }
@@ -620,6 +604,7 @@ Return plain text only, with no quotes and no JSON.
         style: str,
         env_feedback: Optional[EnvFeedback] = None,
         intention_history: Optional[List[Dict[str, Any]]] = None,
+        current_gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
     ) -> str:
         prompt = self._build_realization_prompt(
             shift,
@@ -627,6 +612,7 @@ Return plain text only, with no quotes and no JSON.
             style,
             env_feedback=env_feedback,
             intention_history=intention_history,
+            current_gold_delta=current_gold_delta,
         )
         utterance = self._call_llm_for_realization(prompt)
         if utterance:
