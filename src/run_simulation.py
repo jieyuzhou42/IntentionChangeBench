@@ -1046,6 +1046,7 @@ def simulate_dialogue_instance(
             "turn_id": 0,
             "user_utterance": user_utterance,
             "gold_intention": copy.deepcopy(current_intention),
+            "gold_delta": copy.deepcopy(gold_delta),
         }
     ]
 
@@ -1100,6 +1101,7 @@ def simulate_dialogue_instance(
             current_intention,
             env_feedback=env_feedback,
             intention_history=intention_history[:-1],
+            current_gold_delta=gold_delta,
         )
         new_intention, delta = human_simulator.apply_shift(current_intention, shift)
         user_utt = human_simulator.realize_shift(
@@ -1108,6 +1110,7 @@ def simulate_dialogue_instance(
             style,
             env_feedback=env_feedback,
             intention_history=intention_history[:-1],
+            current_gold_delta=gold_delta,
         )
         if env.done and not delta:
             break
@@ -1160,6 +1163,7 @@ def simulate_dialogue_instance(
                 "turn_id": turn_id + 1,
                 "user_utterance": user_utterance,
                 "gold_intention": copy.deepcopy(current_intention),
+                "gold_delta": copy.deepcopy(gold_delta),
             }
         )
 
@@ -1410,7 +1414,7 @@ def main():
         default=None,
         help="Comma-separated WebShop goal indices/ranges, e.g. 0,3,10-12.",
     )
-    parser.add_argument("--num_instances", type=int, default=20)
+    parser.add_argument("--num_instances", type=int, default=10)
     parser.add_argument(
         "--webshop_num_products",
         type=str,
@@ -1423,7 +1427,7 @@ def main():
     parser.add_argument(
         "--parallelism",
         type=int,
-        default=1,
+        default=2,
         help="Number of tasks to simulate concurrently. Use the same value as the number of selected tasks for one task per worker.",
     )
     parser.add_argument(
