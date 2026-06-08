@@ -16,7 +16,6 @@ ALLOWED_ACTION_TYPES = {
     "back_to_search",
     "next_page",
     "prev_page",
-    "refine",
 }
 
 
@@ -125,26 +124,36 @@ Allowed action_type values:
 - back_to_search
 - next_page
 - prev_page
-- refine
 
 Rules:
 - Use the page contents, item context, WebShop instruction text, and the trajectory user utterances only.
 - A concise internal_step_trace may be provided for earlier steps in the same turn. Use it only as short within-turn memory; treat the current page as the source of truth.
 - Do not rely on assistant action history from previous turns, verbose rollout traces, or other context-history summaries.
 - Infer the active user requirements from the latest user utterance while using earlier user utterances only as user-side trajectory context.
-- If the latest user utterance changes or narrows the request, decide whether to search/refine based on that utterance and the returned items.
-- When composing a search/refine query, avoid negative phrasing such as "not sexy" or "not v neck". Prefer positive descriptors that imply the same intent, such as "casual modest" or "crew neck", or leave hard-to-express negatives out of the query and filter them during item inspection.
+- If the latest user utterance changes or narrows the request, decide whether to search again based on that utterance and the returned items.
+- When composing a search query, avoid negative phrasing such as "not sexy" or "not v neck". Prefer positive descriptors that imply the same intent, such as "casual modest" or "crew neck", or leave hard-to-express negatives out of the query and filter them during item inspection.
 - Use action_type="buy" when the selected item page is the final rollout result. This is a virtual finalization action, not a WebShop click.
 - Do not use action_type="click" with target "Buy Now" or "Buy".
 - If you need to select an option on an item page, use action_type="click" with the exact option value from clickables.
 - If a navigation button like "back to search", "next >", or "< prev" is the right move, prefer the dedicated action types when possible.
 - When using action_type="click", the target must exactly match one available clickable string.
-- When using action_type="search" or "refine", include a non-empty query.
+- When using action_type="search", include a non-empty query.
 - If the current page provides too little evidence to select, inspect or navigate instead.
 
 Required JSON schema:
 {
-  "action_type": "search | click | buy | back_to_search | next_page | prev_page | refine",
+  "current_intention_understanding": {
+    "explanation": "briefly explain your understanding of the user's current shopping intention",
+    "constraints": {
+      "constraint_name": "constraint value"
+    },
+    "priority": {
+      "high": ["most important constraint names"],
+      "medium": ["moderately important constraint names"],
+      "low": ["least important constraint names"]
+    }
+  },
+  "action_type": "search | click | buy | back_to_search | next_page | prev_page",
   "action_payload": {
     "query": "string when needed",
     "target": "clickable string when needed"
@@ -299,9 +308,9 @@ Required JSON schema:
         clickables = [str(c) for c in env_observation.get("clickables", []) or []]
         clickable_map = {c.lower(): c for c in clickables}
 
-        if action_type in {"search", "refine"}:
+        if action_type == "search":
             query = _clean_string(payload.get("query"))
-            return AgentAction(action_type, {"query": query}) if query else None
+            return self._build_agent_action(action_type, {"query": query}, llm_output) if query else None
 
         if action_type == "click":
             target = _clean_string(payload.get("target"))
@@ -312,24 +321,76 @@ Required JSON schema:
                 return None
             if canonical_target.lower() in {"buy now", "buy"}:
                 return None
-            return AgentAction("click", {"target": canonical_target})
+            return self._build_agent_action("click", {"target": canonical_target}, llm_output)
 
         if action_type == "buy":
             page_type = str(env_observation.get("page_type", "") or "").lower()
             if page_type != "item":
                 return None
-            return AgentAction("buy", {})
+            return self._build_agent_action("buy", {}, llm_output)
 
         if action_type == "back_to_search":
-            return AgentAction("back_to_search", {})
+            return self._build_agent_action("back_to_search", {}, llm_output)
 
         if action_type == "next_page":
-            return AgentAction("next_page", {})
+            return self._build_agent_action("next_page", {}, llm_output)
 
         if action_type == "prev_page":
-            return AgentAction("prev_page", {})
+            return self._build_agent_action("prev_page", {}, llm_output)
 
         return None
+
+    def _build_agent_action(
+        self,
+        action_type: str,
+        action_payload: Dict[str, Any],
+        llm_output: Dict[str, Any],
+    ) -> AgentAction:
+        return AgentAction(
+            action_type,
+            action_payload,
+            rationale=_clean_string(llm_output.get("rationale")) or None,
+            predicted_current_intention=self._normalize_intention_understanding(
+                llm_output.get("current_intention_understanding")
+            ),
+        )
+
+    def _normalize_intention_understanding(self, raw: Any) -> Optional[Dict[str, Any]]:
+        if not isinstance(raw, dict):
+            return None
+
+        constraints = raw.get("constraints") or {}
+        if not isinstance(constraints, dict):
+            constraints = {}
+        constraints = {
+            _clean_string(key): value
+            for key, value in constraints.items()
+            if _clean_string(key)
+        }
+
+        priority = raw.get("priority") or {}
+        normalized_priority: Dict[str, List[str]] = {"high": [], "medium": [], "low": []}
+        if isinstance(priority, dict):
+            for level in normalized_priority:
+                values = priority.get(level) or []
+                if isinstance(values, list):
+                    normalized_priority[level] = [
+                        _clean_string(value)
+                        for value in values
+                        if _clean_string(value)
+                    ]
+        elif isinstance(priority, list):
+            normalized_priority["medium"] = [
+                _clean_string(value)
+                for value in priority
+                if _clean_string(value)
+            ]
+
+        return {
+            "explanation": _clean_string(raw.get("explanation")),
+            "constraints": constraints,
+            "priority": normalized_priority,
+        }
 
     def _normalize_action_type(self, raw_action_type: Any) -> str:
         action_type = _clean_string(raw_action_type).lower()
@@ -367,7 +428,7 @@ Required JSON schema:
                 target = _clean_string(target)
                 if target:
                     return AgentAction("click", {"target": target})
-            return AgentAction("refine", {"query": request_text})
+            return AgentAction("search", {"query": request_text})
 
         if page_type == "item":
             option_target = self._choose_option_target(user_utterance, env_observation)

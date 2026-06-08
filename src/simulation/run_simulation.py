@@ -7,19 +7,24 @@ import json
 import os
 import random
 import re
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from agents.fixed_user_llm_executor import FixedUserLLMWebShopExecutor
-from agents.executor import WebShopExecutor
+_SRC_DIR = Path(__file__).resolve().parents[1]
+if str(_SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(_SRC_DIR))
+
+from agents.executor import TravelPlannerExecutor, WebShopExecutor
 from agents.reranker import RerankerConfig
-from evaluators.runtime_logger import RuntimeLogger
 from models import AgentAction, BaseTask, DialogueInstance, EnvFeedback, TurnRecord
 from prompt_logging import get_prompt_log_path, log_prompt
+from simulation.runtime_logger import RuntimeLogger
 from simulators.human_simulator import HumanSimulator
 from simulators.llm_clients import AzureOpenAIChatClient
 from envs.webshop_env import WebShopEnvAdapter
+from envs.travelplanner_env import TravelPlannerEnvAdapter, load_travelplanner_ref_info
 
 STYLE_POOL = ["explicit", "partial", "elliptical"]
 DEFAULT_MAX_INTERNAL_STEPS = 12
@@ -311,6 +316,148 @@ def load_webshop_tasks(
             f"Requested {num_instances} tasks, but {path} only contains {len(tasks)} tasks"
         )
     return tasks[:num_instances]
+
+
+def _travelplanner_initial_intention(raw_task: Dict[str, Any]) -> Dict[str, Any]:
+    query_data = raw_task.get("travelplanner_query_data") or raw_task
+    local_constraint = copy.deepcopy(query_data.get("local_constraint") or {})
+    constraints: Dict[str, Any] = {}
+    for source, target in (
+        ("budget", "budget"),
+        ("days", "days"),
+        ("people_number", "people_number"),
+        ("org", "org"),
+        ("dest", "dest"),
+        ("visiting_city_number", "visiting_city_number"),
+    ):
+        if query_data.get(source) is not None:
+            constraints[target] = copy.deepcopy(query_data[source])
+
+    for source, target in (
+        ("cuisine", "cuisine"),
+        ("room type", "room_type"),
+        ("room_type", "room_type"),
+        ("house rule", "house_rule"),
+        ("house_rule", "house_rule"),
+        ("transportation", "transportation"),
+    ):
+        if local_constraint.get(source) is not None:
+            constraints[target] = copy.deepcopy(local_constraint[source])
+
+    priority = [
+        field
+        for field in (
+            "dest",
+            "days",
+            "budget",
+            "transportation",
+            "cuisine",
+            "room_type",
+            "house_rule",
+        )
+        if constraints.get(field) is not None
+    ]
+    request = str(query_data.get("query") or raw_task.get("query") or "").strip()
+    return {
+        "request": request,
+        "constraints": constraints,
+        "priority": priority,
+    }
+
+
+def _travelplanner_task_from_payload(
+    raw_task: Dict[str, Any],
+    *,
+    fallback_index: int,
+    reference_information: Any = None,
+) -> BaseTask:
+    if not isinstance(raw_task, dict):
+        raise ValueError(f"TravelPlanner task #{fallback_index} must be a JSON object")
+
+    query_data = copy.deepcopy(raw_task.get("travelplanner_query_data") or raw_task)
+    ref_info = raw_task.get("reference_information")
+    if ref_info is None:
+        ref_info = reference_information
+    world_state = copy.deepcopy(raw_task.get("world_state") or {})
+    world_state.update(
+        {
+            "domain": "travelplanner",
+            "travelplanner_query_data": query_data,
+            "reference_information": copy.deepcopy(ref_info),
+        }
+    )
+    initial_intention = raw_task.get("initial_intention")
+    if not isinstance(initial_intention, dict):
+        initial_intention = _travelplanner_initial_intention(query_data)
+
+    return BaseTask(
+        instance_id=str(raw_task.get("instance_id") or f"travelplanner_{fallback_index:05d}"),
+        task_type=str(raw_task.get("task_type") or "planning"),
+        subtype=str(raw_task.get("subtype") or "travel"),
+        world_state=world_state,
+        initial_intention=copy.deepcopy(initial_intention),
+    )
+
+
+def load_travelplanner_tasks(
+    *,
+    tasks_path: Optional[str],
+    num_instances: Optional[int],
+    set_type: str = "validation",
+    instance_ids: Optional[List[str]] = None,
+) -> List[BaseTask]:
+    ref_infos = load_travelplanner_ref_info(set_type)
+    raw_tasks: List[Dict[str, Any]] = []
+
+    if tasks_path:
+        path = Path(tasks_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Task file not found: {path}")
+        if path.suffix.lower() == ".jsonl":
+            for line_index, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+                line = raw_line.strip()
+                if line:
+                    payload = json.loads(line)
+                    if not isinstance(payload, dict):
+                        raise ValueError(f"Line {line_index} in {path} is not a JSON object")
+                    raw_tasks.append(payload)
+        else:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            if isinstance(payload, dict) and isinstance(payload.get("tasks"), list):
+                raw_tasks = payload["tasks"]
+            elif isinstance(payload, list):
+                raw_tasks = payload
+            elif isinstance(payload, dict):
+                raw_tasks = [payload]
+            else:
+                raise ValueError(f"Task file {path} must contain a JSON object or array")
+    else:
+        try:
+            from datasets import load_dataset
+
+            dataset = load_dataset("osunlp/TravelPlanner", set_type)[set_type]
+            limit = num_instances or 10
+            raw_tasks = [dict(dataset[index]) for index in range(min(limit, len(dataset)))]
+        except Exception as exc:
+            raise RuntimeError(
+                "TravelPlanner tasks require --tasks_path, or an available cached/online "
+                "`datasets.load_dataset('osunlp/TravelPlanner', set_type)` source."
+            ) from exc
+
+    tasks = [
+        _travelplanner_task_from_payload(
+            raw_task,
+            fallback_index=index,
+            reference_information=ref_infos[index - 1] if index - 1 < len(ref_infos) else None,
+        )
+        for index, raw_task in enumerate(raw_tasks, start=1)
+    ]
+    tasks = _filter_tasks_by_instance_ids(tasks, instance_ids)
+    if num_instances is not None:
+        tasks = tasks[:num_instances]
+    if not tasks:
+        raise ValueError("No TravelPlanner tasks were selected")
+    return tasks
 
 
 def parse_instance_ids(value: Optional[str]) -> Optional[List[str]]:
@@ -761,7 +908,7 @@ def _public_env_feedback_payload(env_feedback: Optional[EnvFeedback]) -> Optiona
     observation = env_feedback.observation or {}
     return {
         "status": env_feedback.status,
-        "feedback_type": "candidate_items",
+        "feedback_type": observation.get("feedback_type") or "candidate_items",
         "page_type": observation.get("page_type"),
         "candidate_items": copy.deepcopy(observation.get("candidate_items") or []),
         "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
@@ -825,6 +972,7 @@ def _rollout_stop_reason(
     repeated_action_streak: int = 0,
     stagnant_steps: int = 0,
     env_done: bool = False,
+    stop_on_candidate_ready: bool = True,
 ) -> Optional[str]:
     if env_feedback is None:
         return "no_feedback"
@@ -832,9 +980,9 @@ def _rollout_stop_reason(
         return "error"
     if env_done:
         return "env_done"
-    if _all_requested_rollout_constraints_satisfied(current_intention, env_feedback):
+    if stop_on_candidate_ready and _all_requested_rollout_constraints_satisfied(current_intention, env_feedback):
         return "rollout_options_satisfied"
-    if _candidate_ready(current_intention, env_feedback):
+    if stop_on_candidate_ready and _candidate_ready(current_intention, env_feedback):
         return "candidate_ready"
     if repeated_action_streak >= 2 or stagnant_steps >= 2:
         return "stuck"
@@ -858,6 +1006,10 @@ def _build_rollout_trace_entry(
         "action": {
             "action_type": agent_action.action_type,
             "action_payload": dict(agent_action.action_payload or {}),
+            "rationale": getattr(agent_action, "rationale", None),
+            "predicted_current_intention": copy.deepcopy(
+                getattr(agent_action, "predicted_current_intention", None)
+            ),
         },
         "page_type": observation.get("page_type"),
         "selected_asin": observation.get("selected_asin"),
@@ -869,7 +1021,7 @@ def _build_rollout_trace_entry(
 
 
 def execute_turn(
-    env: WebShopEnvAdapter,
+    env,
     execution_agent,
     history: List[Dict[str, Any]],
     user_utterance: str,
@@ -877,7 +1029,37 @@ def execute_turn(
     env_observation: Dict[str, Any],
     gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
     max_internal_steps: int = DEFAULT_MAX_INTERNAL_STEPS,
+    stop_on_candidate_ready: bool = True,
 ) -> TurnRolloutResult:
+    direct_execute = getattr(execution_agent, "execute", None)
+    if callable(direct_execute):
+        agent_action, env_feedback = direct_execute(
+            env,
+            current_intention,
+            user_utterance,
+            history=history,
+            gold_delta=gold_delta or {},
+        )
+        rollout_trace = [
+            _build_rollout_trace_entry(
+                1,
+                agent_action,
+                env_feedback,
+                state_changed=True,
+                made_progress=not bool(env_feedback.violated_constraints),
+                stop_reason="direct_execute",
+            )
+        ]
+        return TurnRolloutResult(
+            final_action=agent_action,
+            final_env_feedback=env_feedback,
+            rollout_trace=rollout_trace,
+            num_internal_steps=1,
+            stop_reason="direct_execute",
+            num_search_actions=0,
+            search_queries=[],
+        )
+
     direct_search = getattr(execution_agent, "search", None)
     if callable(direct_search):
         agent_action, env_feedback = direct_search(
@@ -948,6 +1130,7 @@ def execute_turn(
                 repeated_action_streak=repeated_action_streak,
                 stagnant_steps=stagnant_steps,
                 env_done=getattr(env, "done", False),
+                stop_on_candidate_ready=stop_on_candidate_ready,
             )
         rollout_trace.append(
             _build_rollout_trace_entry(
@@ -1006,7 +1189,7 @@ def execute_turn(
 
 def simulate_dialogue_instance(
     task: BaseTask,
-    env: WebShopEnvAdapter,
+    env,
     execution_agent,
     human_simulator: HumanSimulator,
     max_turns: int = 4,
@@ -1019,19 +1202,21 @@ def simulate_dialogue_instance(
     current_intention = copy.deepcopy(task.initial_intention)
     env_obs = env.reset(task)
     real_instruction = env.get_instruction_text()
-    llm_initial_intention = _llm_initial_intention_from_instruction(
-        real_instruction,
-        getattr(human_simulator, "llm_client", None),
-    )
-    if llm_initial_intention is not None:
-        current_intention = llm_initial_intention
-    elif real_instruction and real_instruction.strip():
-        current_intention = _fallback_initial_intention(_clean_initial_request(real_instruction))
-    initial_gold_search_query = human_simulator.generate_gold_search_query_for_intention(
-        {**current_intention, "gold_search_query": None}
-    )
-    if initial_gold_search_query:
-        current_intention["gold_search_query"] = initial_gold_search_query
+    domain = (task.world_state or {}).get("domain")
+    if domain != "travelplanner":
+        llm_initial_intention = _llm_initial_intention_from_instruction(
+            real_instruction,
+            getattr(human_simulator, "llm_client", None),
+        )
+        if llm_initial_intention is not None:
+            current_intention = llm_initial_intention
+        elif real_instruction and real_instruction.strip():
+            current_intention = _fallback_initial_intention(_clean_initial_request(real_instruction))
+        initial_gold_search_query = human_simulator.generate_gold_search_query_for_intention(
+            {**current_intention, "gold_search_query": None}
+        )
+        if initial_gold_search_query:
+            current_intention["gold_search_query"] = initial_gold_search_query
 
     user_utterance = _clean_initial_request(real_instruction)
     gold_delta: Dict[str, Dict[str, Any]] = {}
@@ -1157,7 +1342,7 @@ def simulate_dialogue_instance(
         linguistic_style = style
         action_implication = "continue"
 
-        history = [{"role": "user", "content": user_utterance}]
+        history.append({"role": "user", "content": user_utterance})
         intention_history.append(
             {
                 "turn_id": turn_id + 1,
@@ -1178,11 +1363,28 @@ def simulate_dialogue_instance(
 
 def _build_runtime_components(
     *,
+    domain: str = "webshop",
     azure_api_version: str,
     webshop_num_products: Optional[int],
     executor_type: str,
-    reranker_config: RerankerConfig,
-) -> Tuple[WebShopEnvAdapter, Any, HumanSimulator, Any]:
+    reranker_config: Optional[RerankerConfig] = None,
+) -> Tuple[Any, Any, HumanSimulator, Any]:
+    try:
+        llm_client = AzureOpenAIChatClient.from_env(api_version=azure_api_version)
+    except ValueError:
+        if domain == "travelplanner" and parse_bool(os.getenv("ALLOW_LLM_FALLBACK", "false")):
+            print(
+                "Warning: Azure OpenAI settings are missing; running TravelPlanner with fallback planning only."
+            )
+            llm_client = None
+        else:
+            raise
+    if domain == "travelplanner":
+        env = TravelPlannerEnvAdapter()
+        agent = TravelPlannerExecutor(llm_client=llm_client)
+        human = HumanSimulator(llm_client=llm_client)
+        return env, agent, human, env
+
     configure_webshop_dataset(webshop_num_products)
 
     import gym
@@ -1203,17 +1405,16 @@ def _build_runtime_components(
         )
 
     env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
-    llm_client = AzureOpenAIChatClient.from_env(api_version=azure_api_version)
-    if executor_type == "fixed_user":
-        agent = FixedUserLLMWebShopExecutor(llm_client=llm_client)
-    else:
-        agent = WebShopExecutor(llm_client=llm_client, reranker_config=reranker_config)
+    if executor_type not in {"gold", "llm"}:
+        raise ValueError("simulation/run_simulation.py only supports the gold BM25+reranking executor")
+    agent = WebShopExecutor(llm_client=llm_client, reranker_config=reranker_config)
     human = HumanSimulator(llm_client=llm_client)
     return env, agent, human, raw_env
 
 
 def _simulate_single_instance(
     *,
+    domain: str,
     task: BaseTask,
     seed: int,
     max_turns: int,
@@ -1224,6 +1425,7 @@ def _simulate_single_instance(
     reranker_config: RerankerConfig,
 ) -> DialogueInstance:
     env, agent, human, raw_env = _build_runtime_components(
+        domain=domain,
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
         executor_type=executor_type,
@@ -1247,6 +1449,7 @@ def _simulate_single_instance(
 
 def _simulate_instances_serial(
     *,
+    domain: str,
     tasks: List[BaseTask],
     seed: int,
     max_turns: int,
@@ -1257,6 +1460,7 @@ def _simulate_instances_serial(
     reranker_config: RerankerConfig,
 ) -> List[DialogueInstance]:
     env, agent, human, raw_env = _build_runtime_components(
+        domain=domain,
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
         executor_type=executor_type,
@@ -1285,6 +1489,7 @@ def _simulate_instances_serial(
 
 def _simulate_task_batch(
     *,
+    domain: str,
     indexed_tasks: List[Tuple[int, BaseTask]],
     seed: int,
     max_turns: int,
@@ -1295,6 +1500,7 @@ def _simulate_task_batch(
     reranker_config: RerankerConfig,
 ) -> Dict[int, DialogueInstance]:
     env, agent, human, raw_env = _build_runtime_components(
+        domain=domain,
         azure_api_version=azure_api_version,
         webshop_num_products=webshop_num_products,
         executor_type=executor_type,
@@ -1335,6 +1541,7 @@ def _partition_indexed_tasks(
 
 def _simulate_instances(
     *,
+    domain: str,
     tasks: List[BaseTask],
     seed: int,
     max_turns: int,
@@ -1347,6 +1554,7 @@ def _simulate_instances(
 ) -> List[DialogueInstance]:
     if parallelism <= 1:
         return _simulate_instances_serial(
+            domain=domain,
             tasks=tasks,
             seed=seed,
             max_turns=max_turns,
@@ -1364,6 +1572,7 @@ def _simulate_instances(
         future_to_batch_index = {
             executor.submit(
                 _simulate_task_batch,
+                domain=domain,
                 indexed_tasks=batch,
                 seed=seed,
                 max_turns=max_turns,
@@ -1395,6 +1604,13 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=str, default=r".\IntentionChangeBench\data\webshop_simulated_dataset.json")
+    parser.add_argument(
+        "--domain",
+        type=str,
+        choices=["webshop", "travelplanner"],
+        default=os.getenv("BENCHMARK_DOMAIN", "webshop"),
+        help="Benchmark domain to simulate.",
+    )
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--max_turns", type=int, default=4)
     parser.add_argument("--max_internal_steps", type=int, default=DEFAULT_MAX_INTERNAL_STEPS)
@@ -1415,6 +1631,13 @@ def main():
         help="Comma-separated WebShop goal indices/ranges, e.g. 0,3,10-12.",
     )
     parser.add_argument("--num_instances", type=int, default=10)
+    parser.add_argument(
+        "--travelplanner_set_type",
+        type=str,
+        choices=["train", "validation", "test"],
+        default=os.getenv("TRAVELPLANNER_SET_TYPE", "validation"),
+        help="TravelPlanner split used for reference_information alignment when --domain travelplanner.",
+    )
     parser.add_argument(
         "--webshop_num_products",
         type=str,
@@ -1438,11 +1661,11 @@ def main():
     parser.add_argument(
         "--executor_type",
         type=str,
-        choices=["llm", "fixed_user"],
-        default="llm",
+        choices=["gold", "llm"],
+        default="gold",
         help=(
-            "Execution agent to use. `fixed_user` only conditions on trajectory "
-            "user utterances and ignores assistant/context history."
+            "Gold trajectory executor. `gold` and legacy alias `llm` both use "
+            "BM25 search plus optional LLM reranking over the exposed intention state."
         ),
     )
     parser.add_argument(
@@ -1490,12 +1713,22 @@ def main():
     instance_ids = parse_instance_ids(args.instance_ids)
     goal_indices = parse_goal_indices(args.webshop_goal_indices)
 
-    tasks = load_webshop_tasks(
-        tasks_path=args.tasks_path,
-        num_instances=args.num_instances,
-        goal_indices=goal_indices,
-        instance_ids=instance_ids,
-    )
+    if args.domain == "travelplanner":
+        if goal_indices is not None:
+            raise ValueError("--webshop_goal_indices is only valid with --domain webshop")
+        tasks = load_travelplanner_tasks(
+            tasks_path=args.tasks_path,
+            num_instances=args.num_instances,
+            set_type=args.travelplanner_set_type,
+            instance_ids=instance_ids,
+        )
+    else:
+        tasks = load_webshop_tasks(
+            tasks_path=args.tasks_path,
+            num_instances=args.num_instances,
+            goal_indices=goal_indices,
+            instance_ids=instance_ids,
+        )
     effective_parallelism = min(args.parallelism, len(tasks))
     logger = RuntimeLogger()
     reranker_config = RerankerConfig(
@@ -1507,6 +1740,7 @@ def main():
     )
 
     instances = _simulate_instances(
+        domain=args.domain,
         tasks=tasks,
         seed=args.seed,
         max_turns=args.max_turns,
@@ -1523,7 +1757,7 @@ def main():
     logger.dump_json(args.output)
     print(
         f"Saved {len(logger.instances)} instances to {args.output} "
-        f"(parallelism={effective_parallelism}, webshop_num_products={args.webshop_num_products}, "
+        f"(domain={args.domain}, parallelism={effective_parallelism}, webshop_num_products={args.webshop_num_products}, "
         f"executor_type={args.executor_type})"
     )
     return

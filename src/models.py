@@ -39,6 +39,8 @@ class ShiftOp:
 class AgentAction:
     action_type: str
     action_payload: Dict[str, Any] = field(default_factory=dict)
+    rationale: Optional[str] = None
+    predicted_current_intention: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -78,6 +80,8 @@ class TurnRecord:
     rollout_search_queries: List[str] = field(default_factory=list)
     stop_reason: Optional[str] = None
     rollout_trace: List[Dict[str, Any]] = field(default_factory=list)
+    agent_intention_prediction: Optional[Dict[str, Any]] = None
+    evaluation: Optional[Dict[str, Any]] = None
 
 
 @dataclass
