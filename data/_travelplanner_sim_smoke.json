@@ -1,0 +1,258 @@
+[
+  {
+    "instance_id": "travelplanner_smoke_001",
+    "task_type": "planning",
+    "subtype": "travel",
+    "world_state": {
+      "domain": "travelplanner",
+      "travelplanner_query_data": {
+        "query": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room.",
+        "org": "New York",
+        "dest": "Boston",
+        "days": 1,
+        "people_number": 1,
+        "budget": 500,
+        "visiting_city_number": 1,
+        "local_constraint": {
+          "cuisine": [
+            "Italian"
+          ],
+          "room type": "private room",
+          "house rule": null,
+          "transportation": "self-driving"
+        }
+      },
+      "reference_information": {
+        "restaurants": [
+          {
+            "name": "North End Italian Kitchen",
+            "city": "Boston",
+            "cuisine": "Italian",
+            "average_cost": 35
+          }
+        ],
+        "attractions": [
+          {
+            "name": "Boston Common",
+            "city": "Boston"
+          }
+        ],
+        "accommodations": [
+          {
+            "name": "Boston Private Stay",
+            "city": "Boston",
+            "room_type": "private room",
+            "price": 180
+          }
+        ]
+      }
+    },
+    "turns": [
+      {
+        "turn_id": 0,
+        "user_utterance": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room.",
+        "agent_action": {
+          "action_type": "submit_plan",
+          "action_payload": {
+            "plan": {
+              "itinerary": [
+                {
+                  "day": 1,
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "-",
+                  "lunch": "-",
+                  "dinner": "-",
+                  "attraction": "Boston",
+                  "accommodation": "Boston"
+                }
+              ],
+              "rationale": "Fallback plan generated from user request: Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
+            }
+          }
+        },
+        "env_feedback": {
+          "status": "observed",
+          "feedback_type": "travel_plan",
+          "page_type": "plan",
+          "candidate_items": [
+            {
+              "rank": 1,
+              "title": "Submitted travel plan",
+              "estimated_cost": null,
+              "num_days": 1,
+              "satisfied_constraints": [
+                "valid_days",
+                "valid_cost",
+                "valid_transportation"
+              ],
+              "violated_constraints": [
+                "valid_cuisine",
+                "valid_room_type"
+              ],
+              "constraint_debug": {
+                "valid_days": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_cost": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_cuisine": {
+                  "passed": false,
+                  "reason": "Missing cuisine constraint(s): Italian."
+                },
+                "valid_room_rule": {
+                  "passed": null,
+                  "reason": null
+                },
+                "valid_transportation": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_type": {
+                  "passed": false,
+                  "reason": "Room type should be private room."
+                }
+              },
+              "itinerary_preview": [
+                {
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "-",
+                  "lunch": "-",
+                  "dinner": "-",
+                  "attraction": "Boston",
+                  "accommodation": "Boston",
+                  "day": 1
+                }
+              ]
+            }
+          ],
+          "selected_candidate": {
+            "rank": 1,
+            "title": "Submitted travel plan",
+            "estimated_cost": null,
+            "num_days": 1,
+            "satisfied_constraints": [
+              "valid_days",
+              "valid_cost",
+              "valid_transportation"
+            ],
+            "violated_constraints": [
+              "valid_cuisine",
+              "valid_room_type"
+            ],
+            "constraint_debug": {
+              "valid_days": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_cost": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_cuisine": {
+                "passed": false,
+                "reason": "Missing cuisine constraint(s): Italian."
+              },
+              "valid_room_rule": {
+                "passed": null,
+                "reason": null
+              },
+              "valid_transportation": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_type": {
+                "passed": false,
+                "reason": "Room type should be private room."
+              }
+            },
+            "itinerary_preview": [
+              {
+                "current_city": "Boston",
+                "transportation": "Self-driving from New York to Boston",
+                "breakfast": "-",
+                "lunch": "-",
+                "dinner": "-",
+                "attraction": "Boston",
+                "accommodation": "Boston",
+                "day": 1
+              }
+            ]
+          },
+          "rerank_info": null
+        },
+        "trigger_evidence": null,
+        "shift_condition": null,
+        "gold_delta": {},
+        "gold_current_intention": {
+          "constraints": {
+            "budget": 500,
+            "days": 1,
+            "people_number": 1,
+            "org": "New York",
+            "dest": "Boston",
+            "visiting_city_number": 1,
+            "cuisine": [
+              "Italian"
+            ],
+            "room_type": "private room",
+            "transportation": "self-driving"
+          },
+          "priority": [
+            "dest",
+            "days",
+            "budget",
+            "transportation",
+            "cuisine",
+            "room_type"
+          ]
+        },
+        "linguistic_style": "explicit",
+        "action_implication": "start_search",
+        "num_internal_steps": 1,
+        "num_rollout_search_actions": 0,
+        "rollout_search_queries": [],
+        "stop_reason": "direct_execute",
+        "rollout_trace": [
+          {
+            "step_index": 1,
+            "action": {
+              "action_type": "submit_plan",
+              "action_payload": {
+                "plan": {
+                  "itinerary": [
+                    {
+                      "day": 1,
+                      "current_city": "Boston",
+                      "transportation": "Self-driving from New York to Boston",
+                      "breakfast": "-",
+                      "lunch": "-",
+                      "dinner": "-",
+                      "attraction": "Boston",
+                      "accommodation": "Boston"
+                    }
+                  ],
+                  "rationale": "Fallback plan generated from user request: Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
+                }
+              },
+              "rationale": null,
+              "predicted_current_intention": null
+            },
+            "page_type": "plan",
+            "selected_asin": null,
+            "selected_options": {},
+            "state_changed": true,
+            "made_progress": false,
+            "stop_reason": "direct_execute"
+          }
+        ],
+        "agent_intention_prediction": null,
+        "evaluation": null
+      }
+    ]
+  }
+]

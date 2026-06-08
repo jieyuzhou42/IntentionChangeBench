@@ -1150,6 +1150,58 @@ class WebShopEnvAdapter(BaseEnv):
     def _normalize_option_text(self, value: Any) -> str:
         return re.sub(r"\s+", " ", str(value or "")).strip().lower()
 
+    def _boolean_constraint_enabled(self, desired: Any) -> bool:
+        if isinstance(desired, bool):
+            return desired
+        if isinstance(desired, str):
+            return self._normalize_option_text(desired) in {"true", "yes", "y", "1"}
+        return bool(desired)
+
+    def _avoid_constraint_terms(self, field: str) -> List[str]:
+        text = re.sub(r"^avoid_", "", str(field or "").strip().lower())
+        text = re.sub(r"_?styles?$", "", text)
+        return [
+            term
+            for term in re.split(r"(?:_or_|_and_|_)", text)
+            if term and term not in {"style", "styles"}
+        ]
+
+    def _result_search_text(self, result: Dict[str, Any]) -> str:
+        parts: List[str] = []
+        for key in (
+            "title",
+            "description",
+            "category",
+            "product_category",
+            "base_category",
+            "brand",
+            "color",
+            "size",
+        ):
+            value = result.get(key)
+            if value is not None:
+                parts.append(str(value))
+
+        for key in ("bullet_points", "attributes", "pricing"):
+            values = result.get(key) or []
+            if isinstance(values, list):
+                parts.extend(str(value) for value in values if value is not None)
+
+        options = result.get("options") or {}
+        if isinstance(options, dict):
+            for option_name, option_values in options.items():
+                parts.append(str(option_name))
+                if isinstance(option_values, list):
+                    parts.extend(str(value) for value in option_values if value is not None)
+                elif option_values is not None:
+                    parts.append(str(option_values))
+
+        selected_options = result.get("selected_options") or {}
+        if isinstance(selected_options, dict):
+            parts.extend(str(value) for value in selected_options.values() if value is not None)
+
+        return self._normalize_option_text(" ".join(parts))
+
     def _get_selected_option_value(self, selected_options: Dict[str, Any], option_name: str) -> Optional[str]:
         if not isinstance(selected_options, dict):
             return None
@@ -1352,6 +1404,28 @@ class WebShopEnvAdapter(BaseEnv):
                     "desired": desired_value,
                     "actual": actual,
                     "actual_source": actual_source,
+                    "matched": matches,
+                }
+                if matches:
+                    satisfied.append(field)
+                else:
+                    violated.append(field)
+
+            elif str(field).startswith("avoid_") and self._boolean_constraint_enabled(desired):
+                terms = self._avoid_constraint_terms(field)
+                search_text = self._result_search_text(result)
+                matched_terms = [
+                    term
+                    for term in terms
+                    if re.search(rf"\b{re.escape(term)}s?\b", search_text)
+                ]
+                matches = not matched_terms
+                debug[field] = {
+                    "desired": desired,
+                    "actual": {
+                        "matched_forbidden_terms": matched_terms,
+                    },
+                    "actual_source": "product_text",
                     "matched": matches,
                 }
                 if matches:
