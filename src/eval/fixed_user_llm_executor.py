@@ -4,7 +4,7 @@ import json
 import re
 from typing import Any, Dict, List, Optional, Protocol
 
-from agents.execution_agent import ExecutionAgent
+from common.execution_agent import ExecutionAgent
 from models import AgentAction
 from prompt_logging import log_prompt
 

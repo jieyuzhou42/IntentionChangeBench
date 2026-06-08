@@ -12,17 +12,18 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-_SRC_DIR = Path(__file__).resolve().parents[1]
+_SRC_DIR = Path(__file__).resolve().parents[2]
 if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
-from agents.executor import TravelPlannerExecutor, WebShopExecutor
-from agents.reranker import RerankerConfig
+from common.llm_clients import AzureOpenAIChatClient
 from models import AgentAction, BaseTask, DialogueInstance, EnvFeedback, TurnRecord
 from prompt_logging import get_prompt_log_path, log_prompt
-from simulation.runtime_logger import RuntimeLogger
-from simulators.human_simulator import HumanSimulator
-from simulators.llm_clients import AzureOpenAIChatClient
+from simulation.simulation.human_simulator import HumanSimulator
+from simulation.simulation.reranker import RerankerConfig
+from simulation.simulation.runtime_logger import RuntimeLogger
+from simulation.simulation.travelplanner_executor import TravelPlannerExecutor
+from simulation.simulation.webshop_executor import WebShopExecutor
 from envs.webshop_env import WebShopEnvAdapter
 from envs.travelplanner_env import TravelPlannerEnvAdapter, load_travelplanner_ref_info
 
@@ -1203,6 +1204,8 @@ def simulate_dialogue_instance(
     env_obs = env.reset(task)
     real_instruction = env.get_instruction_text()
     domain = (task.world_state or {}).get("domain")
+    if domain:
+        current_intention.setdefault("domain", domain)
     if domain != "travelplanner":
         llm_initial_intention = _llm_initial_intention_from_instruction(
             real_instruction,
@@ -1297,7 +1300,7 @@ def simulate_dialogue_instance(
             intention_history=intention_history[:-1],
             current_gold_delta=gold_delta,
         )
-        if env.done and not delta:
+        if env.done and not delta and domain != "travelplanner":
             break
 
         shift_condition = None
@@ -1406,7 +1409,7 @@ def _build_runtime_components(
 
     env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
     if executor_type not in {"gold", "llm"}:
-        raise ValueError("simulation/run_simulation.py only supports the gold BM25+reranking executor")
+        raise ValueError("simulation/simulation/run_simulation.py only supports the gold BM25+reranking executor")
     agent = WebShopExecutor(llm_client=llm_client, reranker_config=reranker_config)
     human = HumanSimulator(llm_client=llm_client)
     return env, agent, human, raw_env
@@ -1603,7 +1606,7 @@ def main():
     load_local_dotenv()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=str, default=r".\IntentionChangeBench\data\webshop_simulated_dataset.json")
+    parser.add_argument("--output", type=str, default=r".\IntentionChangeBench\data\simulation\simulated_dataset.json")
     parser.add_argument(
         "--domain",
         type=str,

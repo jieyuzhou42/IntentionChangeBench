@@ -227,11 +227,14 @@ class TravelPlannerEnvAdapter(BaseEnv):
                 satisfied.append(field)
             elif passed is False:
                 violated.append(field)
+        estimated_cost = self._estimate_total_cost(days, query_data)
+        if "valid_cost" in debug:
+            debug["valid_cost"]["estimated_cost"] = estimated_cost
 
         return {
             "plan": copy.deepcopy(plan),
             "itinerary": copy.deepcopy(days),
-            "estimated_cost": debug.get("valid_cost", {}).get("estimated_cost"),
+            "estimated_cost": estimated_cost,
             "satisfied_constraints": satisfied,
             "violated_constraints": violated,
             "constraint_debug": debug,

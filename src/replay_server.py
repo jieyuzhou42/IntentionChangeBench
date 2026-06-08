@@ -10,7 +10,7 @@ from flask import Flask, jsonify, render_template_string, request, send_from_dir
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_DATASET_PATH = REPO_ROOT / "IntentionChangeBench" / "data" / "webshop_simulated_dataset.json"
+DEFAULT_DATASET_PATH = REPO_ROOT / "IntentionChangeBench" / "data" / "simulation" / "simulated_dataset.json"
 DEFAULT_CACHE_PATH = REPO_ROOT / "IntentionChangeBench" / "data" / "replay_image_cache.json"
 SMALL_CATALOG_PATH = REPO_ROOT / "WebShop" / "data" / "items_shuffle_1000.json"
 FULL_CATALOG_PATH = REPO_ROOT / "WebShop" / "data" / "items_shuffle.json"

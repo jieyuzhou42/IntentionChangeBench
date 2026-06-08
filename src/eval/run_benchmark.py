@@ -16,13 +16,13 @@ if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
 from eval.benchmark_fixed_rollout import execute_fixed_user_turn
-from eval.constraint_importance_eval import attach_instance_evaluations
-from eval.runtime_logger import RuntimeLogger
-from agents.fixed_user_llm_executor import FixedUserLLMWebShopExecutor
+from eval.evaluators.constraint_importance_eval import attach_instance_evaluations
+from eval.evaluators.runtime_logger import RuntimeLogger
+from common.llm_clients import AzureOpenAIChatClient
 from envs.webshop_env import WebShopEnvAdapter
+from eval.fixed_user_llm_executor import FixedUserLLMWebShopExecutor
 from models import BaseTask, DialogueInstance, TurnRecord
 from prompt_logging import get_prompt_log_path
-from simulators.llm_clients import AzureOpenAIChatClient
 
 DEFAULT_MAX_INTERNAL_STEPS = 12
 DEFAULT_WEBSHOP_NUM_PRODUCTS = "100000"
@@ -589,14 +589,14 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=str,
-        default=r".\IntentionChangeBench\data\webshop_benchmark_output.json",
+        default=r".\IntentionChangeBench\data\eval\benchmark_eval.json",
     )
     parser.add_argument(
         "--gold_trajectory_path",
         "--tasks_path",
         dest="gold_trajectory_path",
         type=str,
-        default=r".\IntentionChangeBench\data\webshop_simulated_dataset.json",
+        default=r".\IntentionChangeBench\data\simulation\annotated_dataset.json",
         help="Gold trajectory JSON used to replay fixed user utterances.",
     )
     parser.add_argument(
@@ -650,7 +650,7 @@ def main() -> None:
     if args.executor_type != "fixed_user":
         raise ValueError(
             "run_benchmark.py evaluates the original WebShop-style fixed_user executor only. "
-            "Use run_simulation.py for the gold/direct BM25 executor."
+            "Use simulation/simulation/run_simulation.py for the gold/direct BM25 executor."
         )
 
     webshop_num_products = parse_webshop_num_products(args.webshop_num_products)
