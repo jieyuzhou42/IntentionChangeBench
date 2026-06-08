@@ -1,0 +1,1233 @@
+[
+  {
+    "instance_id": "travelplanner_smoke_001",
+    "task_type": "planning",
+    "subtype": "travel",
+    "world_state": {
+      "domain": "travelplanner",
+      "travelplanner_query_data": {
+        "query": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room.",
+        "org": "New York",
+        "dest": "Boston",
+        "days": 1,
+        "people_number": 1,
+        "budget": 500,
+        "visiting_city_number": 1,
+        "local_constraint": {
+          "cuisine": [
+            "Italian"
+          ],
+          "room type": "private room",
+          "house rule": null,
+          "transportation": "self-driving"
+        }
+      },
+      "reference_information": {
+        "restaurants": [
+          {
+            "name": "North End Italian Kitchen",
+            "city": "Boston",
+            "cuisine": "Italian",
+            "average_cost": 35
+          }
+        ],
+        "attractions": [
+          {
+            "name": "Boston Common",
+            "city": "Boston"
+          }
+        ],
+        "accommodations": [
+          {
+            "name": "Boston Private Stay",
+            "city": "Boston",
+            "room_type": "private room",
+            "price": 180
+          }
+        ]
+      }
+    },
+    "turns": [
+      {
+        "turn_id": 0,
+        "user_utterance": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room.",
+        "agent_action": {
+          "action_type": "submit_plan",
+          "action_payload": {
+            "plan": {
+              "itinerary": [
+                {
+                  "day": 1,
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                }
+              ],
+              "rationale": "Fallback plan generated from user request: Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
+            }
+          }
+        },
+        "env_feedback": {
+          "status": "observed",
+          "feedback_type": "travel_plan",
+          "page_type": "plan",
+          "candidate_items": [
+            {
+              "rank": 1,
+              "title": "Submitted travel plan",
+              "estimated_cost": 285.0,
+              "num_days": 1,
+              "satisfied_constraints": [
+                "valid_days",
+                "valid_cost",
+                "valid_cuisine",
+                "valid_transportation",
+                "valid_room_type"
+              ],
+              "violated_constraints": [],
+              "constraint_debug": {
+                "valid_days": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_cost": {
+                  "passed": true,
+                  "reason": null,
+                  "estimated_cost": 285.0
+                },
+                "valid_cuisine": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_rule": {
+                  "passed": null,
+                  "reason": null
+                },
+                "valid_transportation": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_type": {
+                  "passed": true,
+                  "reason": null
+                }
+              },
+              "itinerary_preview": [
+                {
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                  "day": 1
+                }
+              ]
+            }
+          ],
+          "selected_candidate": {
+            "rank": 1,
+            "title": "Submitted travel plan",
+            "estimated_cost": 285.0,
+            "num_days": 1,
+            "satisfied_constraints": [
+              "valid_days",
+              "valid_cost",
+              "valid_cuisine",
+              "valid_transportation",
+              "valid_room_type"
+            ],
+            "violated_constraints": [],
+            "constraint_debug": {
+              "valid_days": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_cost": {
+                "passed": true,
+                "reason": null,
+                "estimated_cost": 285.0
+              },
+              "valid_cuisine": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_rule": {
+                "passed": null,
+                "reason": null
+              },
+              "valid_transportation": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_type": {
+                "passed": true,
+                "reason": null
+              }
+            },
+            "itinerary_preview": [
+              {
+                "current_city": "Boston",
+                "transportation": "Self-driving from New York to Boston",
+                "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "attraction": "Boston Common, Boston",
+                "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                "day": 1
+              }
+            ]
+          },
+          "rerank_info": null
+        },
+        "trigger_evidence": null,
+        "shift_condition": null,
+        "gold_delta": {},
+        "gold_current_intention": {
+          "constraints": {
+            "budget": 500,
+            "days": 1,
+            "people_number": 1,
+            "org": "New York",
+            "dest": "Boston",
+            "visiting_city_number": 1,
+            "cuisine": [
+              "Italian"
+            ],
+            "room_type": "private room",
+            "transportation": "self-driving"
+          },
+          "priority": [
+            "dest",
+            "days",
+            "budget",
+            "transportation",
+            "cuisine",
+            "room_type"
+          ],
+          "domain": "travelplanner"
+        },
+        "linguistic_style": "explicit",
+        "action_implication": "start_search",
+        "num_internal_steps": 1,
+        "num_rollout_search_actions": 0,
+        "rollout_search_queries": [],
+        "stop_reason": "direct_execute",
+        "rollout_trace": [
+          {
+            "step_index": 1,
+            "action": {
+              "action_type": "submit_plan",
+              "action_payload": {
+                "plan": {
+                  "itinerary": [
+                    {
+                      "day": 1,
+                      "current_city": "Boston",
+                      "transportation": "Self-driving from New York to Boston",
+                      "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "attraction": "Boston Common, Boston",
+                      "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                    }
+                  ],
+                  "rationale": "Fallback plan generated from user request: Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
+                }
+              },
+              "rationale": null,
+              "predicted_current_intention": null
+            },
+            "page_type": "plan",
+            "selected_asin": null,
+            "selected_options": {},
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": "direct_execute"
+          }
+        ],
+        "agent_intention_prediction": null,
+        "evaluation": null
+      },
+      {
+        "turn_id": 1,
+        "user_utterance": "Also, pets would be nice.",
+        "agent_action": {
+          "action_type": "submit_plan",
+          "action_payload": {
+            "plan": {
+              "itinerary": [
+                {
+                  "day": 1,
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                }
+              ],
+              "rationale": "Fallback plan generated from user request: Also, pets would be nice."
+            }
+          }
+        },
+        "env_feedback": {
+          "status": "observed",
+          "feedback_type": "travel_plan",
+          "page_type": "plan",
+          "candidate_items": [
+            {
+              "rank": 1,
+              "title": "Submitted travel plan",
+              "estimated_cost": 285.0,
+              "num_days": 1,
+              "satisfied_constraints": [
+                "valid_days",
+                "valid_cost",
+                "valid_cuisine",
+                "valid_transportation",
+                "valid_room_type"
+              ],
+              "violated_constraints": [],
+              "constraint_debug": {
+                "valid_days": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_cost": {
+                  "passed": true,
+                  "reason": null,
+                  "estimated_cost": 285.0
+                },
+                "valid_cuisine": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_rule": {
+                  "passed": null,
+                  "reason": null
+                },
+                "valid_transportation": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_type": {
+                  "passed": true,
+                  "reason": null
+                }
+              },
+              "itinerary_preview": [
+                {
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                  "day": 1
+                }
+              ]
+            }
+          ],
+          "selected_candidate": {
+            "rank": 1,
+            "title": "Submitted travel plan",
+            "estimated_cost": 285.0,
+            "num_days": 1,
+            "satisfied_constraints": [
+              "valid_days",
+              "valid_cost",
+              "valid_cuisine",
+              "valid_transportation",
+              "valid_room_type"
+            ],
+            "violated_constraints": [],
+            "constraint_debug": {
+              "valid_days": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_cost": {
+                "passed": true,
+                "reason": null,
+                "estimated_cost": 285.0
+              },
+              "valid_cuisine": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_rule": {
+                "passed": null,
+                "reason": null
+              },
+              "valid_transportation": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_type": {
+                "passed": true,
+                "reason": null
+              }
+            },
+            "itinerary_preview": [
+              {
+                "current_city": "Boston",
+                "transportation": "Self-driving from New York to Boston",
+                "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "attraction": "Boston Common, Boston",
+                "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                "day": 1
+              }
+            ]
+          },
+          "rerank_info": null
+        },
+        "trigger_evidence": {
+          "trigger_type": "user_preference",
+          "source": "simulator",
+          "details": {
+            "change_category": "add",
+            "op": "add",
+            "field": "house_rule",
+            "rationale": "Fallback TravelPlanner simulator adds a house-rule preference."
+          }
+        },
+        "shift_condition": {
+          "type": "user_preference",
+          "reason": "Fallback TravelPlanner simulator adds a house-rule preference.",
+          "source": "simulator",
+          "details": {
+            "intention_changed": true,
+            "condition": "user_preference",
+            "change_category": "add",
+            "op": "add",
+            "field": "house_rule",
+            "old_value": null,
+            "value": "pets",
+            "priority_update": null
+          }
+        },
+        "gold_delta": {
+          "house_rule": {
+            "op": "add",
+            "old": null,
+            "new": "pets",
+            "rationale": "Fallback TravelPlanner simulator adds a house-rule preference."
+          }
+        },
+        "gold_current_intention": {
+          "constraints": {
+            "budget": 500,
+            "days": 1,
+            "people_number": 1,
+            "org": "New York",
+            "dest": "Boston",
+            "visiting_city_number": 1,
+            "cuisine": [
+              "Italian"
+            ],
+            "room_type": "private room",
+            "transportation": "self-driving",
+            "house_rule": "pets"
+          },
+          "priority": [
+            "dest",
+            "days",
+            "budget",
+            "transportation",
+            "cuisine",
+            "room_type",
+            "people_number",
+            "org",
+            "visiting_city_number",
+            "house_rule"
+          ],
+          "domain": "travelplanner"
+        },
+        "linguistic_style": "partial",
+        "action_implication": "continue",
+        "num_internal_steps": 1,
+        "num_rollout_search_actions": 0,
+        "rollout_search_queries": [],
+        "stop_reason": "direct_execute",
+        "rollout_trace": [
+          {
+            "step_index": 1,
+            "action": {
+              "action_type": "submit_plan",
+              "action_payload": {
+                "plan": {
+                  "itinerary": [
+                    {
+                      "day": 1,
+                      "current_city": "Boston",
+                      "transportation": "Self-driving from New York to Boston",
+                      "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "attraction": "Boston Common, Boston",
+                      "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                    }
+                  ],
+                  "rationale": "Fallback plan generated from user request: Also, pets would be nice."
+                }
+              },
+              "rationale": null,
+              "predicted_current_intention": null
+            },
+            "page_type": "plan",
+            "selected_asin": null,
+            "selected_options": {},
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": "direct_execute"
+          }
+        ],
+        "agent_intention_prediction": null,
+        "evaluation": null
+      },
+      {
+        "turn_id": 2,
+        "user_utterance": "Also, I'd prefer attraction preference park or outdoor landmark.",
+        "agent_action": {
+          "action_type": "submit_plan",
+          "action_payload": {
+            "plan": {
+              "itinerary": [
+                {
+                  "day": 1,
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                }
+              ],
+              "rationale": "Fallback plan generated from user request: Also, I'd prefer attraction preference park or outdoor landmark."
+            }
+          }
+        },
+        "env_feedback": {
+          "status": "observed",
+          "feedback_type": "travel_plan",
+          "page_type": "plan",
+          "candidate_items": [
+            {
+              "rank": 1,
+              "title": "Submitted travel plan",
+              "estimated_cost": 285.0,
+              "num_days": 1,
+              "satisfied_constraints": [
+                "valid_days",
+                "valid_cost",
+                "valid_cuisine",
+                "valid_transportation",
+                "valid_room_type"
+              ],
+              "violated_constraints": [],
+              "constraint_debug": {
+                "valid_days": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_cost": {
+                  "passed": true,
+                  "reason": null,
+                  "estimated_cost": 285.0
+                },
+                "valid_cuisine": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_rule": {
+                  "passed": null,
+                  "reason": null
+                },
+                "valid_transportation": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_type": {
+                  "passed": true,
+                  "reason": null
+                }
+              },
+              "itinerary_preview": [
+                {
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                  "day": 1
+                }
+              ]
+            }
+          ],
+          "selected_candidate": {
+            "rank": 1,
+            "title": "Submitted travel plan",
+            "estimated_cost": 285.0,
+            "num_days": 1,
+            "satisfied_constraints": [
+              "valid_days",
+              "valid_cost",
+              "valid_cuisine",
+              "valid_transportation",
+              "valid_room_type"
+            ],
+            "violated_constraints": [],
+            "constraint_debug": {
+              "valid_days": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_cost": {
+                "passed": true,
+                "reason": null,
+                "estimated_cost": 285.0
+              },
+              "valid_cuisine": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_rule": {
+                "passed": null,
+                "reason": null
+              },
+              "valid_transportation": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_type": {
+                "passed": true,
+                "reason": null
+              }
+            },
+            "itinerary_preview": [
+              {
+                "current_city": "Boston",
+                "transportation": "Self-driving from New York to Boston",
+                "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "attraction": "Boston Common, Boston",
+                "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                "day": 1
+              }
+            ]
+          },
+          "rerank_info": null
+        },
+        "trigger_evidence": {
+          "trigger_type": "user_preference",
+          "source": "simulator",
+          "details": {
+            "change_category": "add",
+            "op": "add",
+            "field": "attraction_preference",
+            "rationale": "Fallback TravelPlanner simulator adds an attraction preference."
+          }
+        },
+        "shift_condition": {
+          "type": "user_preference",
+          "reason": "Fallback TravelPlanner simulator adds an attraction preference.",
+          "source": "simulator",
+          "details": {
+            "intention_changed": true,
+            "condition": "user_preference",
+            "change_category": "add",
+            "op": "add",
+            "field": "attraction_preference",
+            "old_value": null,
+            "value": "park or outdoor landmark",
+            "priority_update": null
+          }
+        },
+        "gold_delta": {
+          "attraction_preference": {
+            "op": "add",
+            "old": null,
+            "new": "park or outdoor landmark",
+            "rationale": "Fallback TravelPlanner simulator adds an attraction preference."
+          }
+        },
+        "gold_current_intention": {
+          "constraints": {
+            "budget": 500,
+            "days": 1,
+            "people_number": 1,
+            "org": "New York",
+            "dest": "Boston",
+            "visiting_city_number": 1,
+            "cuisine": [
+              "Italian"
+            ],
+            "room_type": "private room",
+            "transportation": "self-driving",
+            "house_rule": "pets",
+            "attraction_preference": "park or outdoor landmark"
+          },
+          "priority": [
+            "dest",
+            "days",
+            "budget",
+            "transportation",
+            "cuisine",
+            "room_type",
+            "people_number",
+            "org",
+            "visiting_city_number",
+            "house_rule",
+            "attraction_preference"
+          ],
+          "domain": "travelplanner"
+        },
+        "linguistic_style": "explicit",
+        "action_implication": "continue",
+        "num_internal_steps": 1,
+        "num_rollout_search_actions": 0,
+        "rollout_search_queries": [],
+        "stop_reason": "direct_execute",
+        "rollout_trace": [
+          {
+            "step_index": 1,
+            "action": {
+              "action_type": "submit_plan",
+              "action_payload": {
+                "plan": {
+                  "itinerary": [
+                    {
+                      "day": 1,
+                      "current_city": "Boston",
+                      "transportation": "Self-driving from New York to Boston",
+                      "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "attraction": "Boston Common, Boston",
+                      "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                    }
+                  ],
+                  "rationale": "Fallback plan generated from user request: Also, I'd prefer attraction preference park or outdoor landmark."
+                }
+              },
+              "rationale": null,
+              "predicted_current_intention": null
+            },
+            "page_type": "plan",
+            "selected_asin": null,
+            "selected_options": {},
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": "direct_execute"
+          }
+        ],
+        "agent_intention_prediction": null,
+        "evaluation": null
+      },
+      {
+        "turn_id": 3,
+        "user_utterance": "Also, relaxed would be nice.",
+        "agent_action": {
+          "action_type": "submit_plan",
+          "action_payload": {
+            "plan": {
+              "itinerary": [
+                {
+                  "day": 1,
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                }
+              ],
+              "rationale": "Fallback plan generated from user request: Also, relaxed would be nice."
+            }
+          }
+        },
+        "env_feedback": {
+          "status": "observed",
+          "feedback_type": "travel_plan",
+          "page_type": "plan",
+          "candidate_items": [
+            {
+              "rank": 1,
+              "title": "Submitted travel plan",
+              "estimated_cost": 285.0,
+              "num_days": 1,
+              "satisfied_constraints": [
+                "valid_days",
+                "valid_cost",
+                "valid_cuisine",
+                "valid_transportation",
+                "valid_room_type"
+              ],
+              "violated_constraints": [],
+              "constraint_debug": {
+                "valid_days": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_cost": {
+                  "passed": true,
+                  "reason": null,
+                  "estimated_cost": 285.0
+                },
+                "valid_cuisine": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_rule": {
+                  "passed": null,
+                  "reason": null
+                },
+                "valid_transportation": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_type": {
+                  "passed": true,
+                  "reason": null
+                }
+              },
+              "itinerary_preview": [
+                {
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                  "day": 1
+                }
+              ]
+            }
+          ],
+          "selected_candidate": {
+            "rank": 1,
+            "title": "Submitted travel plan",
+            "estimated_cost": 285.0,
+            "num_days": 1,
+            "satisfied_constraints": [
+              "valid_days",
+              "valid_cost",
+              "valid_cuisine",
+              "valid_transportation",
+              "valid_room_type"
+            ],
+            "violated_constraints": [],
+            "constraint_debug": {
+              "valid_days": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_cost": {
+                "passed": true,
+                "reason": null,
+                "estimated_cost": 285.0
+              },
+              "valid_cuisine": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_rule": {
+                "passed": null,
+                "reason": null
+              },
+              "valid_transportation": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_type": {
+                "passed": true,
+                "reason": null
+              }
+            },
+            "itinerary_preview": [
+              {
+                "current_city": "Boston",
+                "transportation": "Self-driving from New York to Boston",
+                "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "attraction": "Boston Common, Boston",
+                "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                "day": 1
+              }
+            ]
+          },
+          "rerank_info": null
+        },
+        "trigger_evidence": {
+          "trigger_type": "user_preference",
+          "source": "simulator",
+          "details": {
+            "change_category": "add",
+            "op": "add",
+            "field": "pace",
+            "rationale": "Fallback TravelPlanner simulator asks for a more relaxed itinerary pace."
+          }
+        },
+        "shift_condition": {
+          "type": "user_preference",
+          "reason": "Fallback TravelPlanner simulator asks for a more relaxed itinerary pace.",
+          "source": "simulator",
+          "details": {
+            "intention_changed": true,
+            "condition": "user_preference",
+            "change_category": "add",
+            "op": "add",
+            "field": "pace",
+            "old_value": null,
+            "value": "relaxed",
+            "priority_update": null
+          }
+        },
+        "gold_delta": {
+          "pace": {
+            "op": "add",
+            "old": null,
+            "new": "relaxed",
+            "rationale": "Fallback TravelPlanner simulator asks for a more relaxed itinerary pace."
+          }
+        },
+        "gold_current_intention": {
+          "constraints": {
+            "budget": 500,
+            "days": 1,
+            "people_number": 1,
+            "org": "New York",
+            "dest": "Boston",
+            "visiting_city_number": 1,
+            "cuisine": [
+              "Italian"
+            ],
+            "room_type": "private room",
+            "transportation": "self-driving",
+            "house_rule": "pets",
+            "attraction_preference": "park or outdoor landmark",
+            "pace": "relaxed"
+          },
+          "priority": [
+            "dest",
+            "days",
+            "budget",
+            "transportation",
+            "cuisine",
+            "room_type",
+            "people_number",
+            "org",
+            "visiting_city_number",
+            "house_rule",
+            "attraction_preference",
+            "pace"
+          ],
+          "domain": "travelplanner"
+        },
+        "linguistic_style": "partial",
+        "action_implication": "continue",
+        "num_internal_steps": 1,
+        "num_rollout_search_actions": 0,
+        "rollout_search_queries": [],
+        "stop_reason": "direct_execute",
+        "rollout_trace": [
+          {
+            "step_index": 1,
+            "action": {
+              "action_type": "submit_plan",
+              "action_payload": {
+                "plan": {
+                  "itinerary": [
+                    {
+                      "day": 1,
+                      "current_city": "Boston",
+                      "transportation": "Self-driving from New York to Boston",
+                      "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "attraction": "Boston Common, Boston",
+                      "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                    }
+                  ],
+                  "rationale": "Fallback plan generated from user request: Also, relaxed would be nice."
+                }
+              },
+              "rationale": null,
+              "predicted_current_intention": null
+            },
+            "page_type": "plan",
+            "selected_asin": null,
+            "selected_options": {},
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": "direct_execute"
+          }
+        ],
+        "agent_intention_prediction": null,
+        "evaluation": null
+      },
+      {
+        "turn_id": 4,
+        "user_utterance": "Close is fine.",
+        "agent_action": {
+          "action_type": "submit_plan",
+          "action_payload": {
+            "plan": {
+              "itinerary": [
+                {
+                  "day": 1,
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                }
+              ],
+              "rationale": "Fallback plan generated from user request: Close is fine."
+            }
+          }
+        },
+        "env_feedback": {
+          "status": "observed",
+          "feedback_type": "travel_plan",
+          "page_type": "plan",
+          "candidate_items": [
+            {
+              "rank": 1,
+              "title": "Submitted travel plan",
+              "estimated_cost": 285.0,
+              "num_days": 1,
+              "satisfied_constraints": [
+                "valid_days",
+                "valid_cost",
+                "valid_cuisine",
+                "valid_transportation",
+                "valid_room_type"
+              ],
+              "violated_constraints": [],
+              "constraint_debug": {
+                "valid_days": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_cost": {
+                  "passed": true,
+                  "reason": null,
+                  "estimated_cost": 285.0
+                },
+                "valid_cuisine": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_rule": {
+                  "passed": null,
+                  "reason": null
+                },
+                "valid_transportation": {
+                  "passed": true,
+                  "reason": null
+                },
+                "valid_room_type": {
+                  "passed": true,
+                  "reason": null
+                }
+              },
+              "itinerary_preview": [
+                {
+                  "current_city": "Boston",
+                  "transportation": "Self-driving from New York to Boston",
+                  "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                  "attraction": "Boston Common, Boston",
+                  "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                  "day": 1
+                }
+              ]
+            }
+          ],
+          "selected_candidate": {
+            "rank": 1,
+            "title": "Submitted travel plan",
+            "estimated_cost": 285.0,
+            "num_days": 1,
+            "satisfied_constraints": [
+              "valid_days",
+              "valid_cost",
+              "valid_cuisine",
+              "valid_transportation",
+              "valid_room_type"
+            ],
+            "violated_constraints": [],
+            "constraint_debug": {
+              "valid_days": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_cost": {
+                "passed": true,
+                "reason": null,
+                "estimated_cost": 285.0
+              },
+              "valid_cuisine": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_rule": {
+                "passed": null,
+                "reason": null
+              },
+              "valid_transportation": {
+                "passed": true,
+                "reason": null
+              },
+              "valid_room_type": {
+                "passed": true,
+                "reason": null
+              }
+            },
+            "itinerary_preview": [
+              {
+                "current_city": "Boston",
+                "transportation": "Self-driving from New York to Boston",
+                "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                "attraction": "Boston Common, Boston",
+                "accommodation": "Boston Private Stay, Boston, private room, price: 180",
+                "day": 1
+              }
+            ]
+          },
+          "rerank_info": null
+        },
+        "trigger_evidence": {
+          "trigger_type": "real_world_feasibility",
+          "source": "simulator",
+          "details": {
+            "change_category": "relax",
+            "op": "relax",
+            "field": "budget",
+            "rationale": "Fallback TravelPlanner simulator relaxes the budget after seeing the plan."
+          }
+        },
+        "shift_condition": {
+          "type": "real_world_feasibility",
+          "reason": "Fallback TravelPlanner simulator relaxes the budget after seeing the plan.",
+          "source": "simulator",
+          "details": {
+            "intention_changed": true,
+            "condition": "real_world_feasibility",
+            "change_category": "relax",
+            "op": "relax",
+            "field": "budget",
+            "old_value": 500.0,
+            "value": 600.0,
+            "priority_update": null
+          }
+        },
+        "gold_delta": {
+          "budget": {
+            "op": "relax",
+            "old": 500,
+            "new": 600.0,
+            "rationale": "Fallback TravelPlanner simulator relaxes the budget after seeing the plan."
+          }
+        },
+        "gold_current_intention": {
+          "constraints": {
+            "budget": 600.0,
+            "days": 1,
+            "people_number": 1,
+            "org": "New York",
+            "dest": "Boston",
+            "visiting_city_number": 1,
+            "cuisine": [
+              "Italian"
+            ],
+            "room_type": "private room",
+            "transportation": "self-driving",
+            "house_rule": "pets",
+            "attraction_preference": "park or outdoor landmark",
+            "pace": "relaxed"
+          },
+          "priority": [
+            "dest",
+            "days",
+            "budget",
+            "transportation",
+            "cuisine",
+            "room_type",
+            "people_number",
+            "org",
+            "visiting_city_number",
+            "house_rule",
+            "attraction_preference",
+            "pace"
+          ],
+          "domain": "travelplanner"
+        },
+        "linguistic_style": "elliptical",
+        "action_implication": "continue",
+        "num_internal_steps": 1,
+        "num_rollout_search_actions": 0,
+        "rollout_search_queries": [],
+        "stop_reason": "direct_execute",
+        "rollout_trace": [
+          {
+            "step_index": 1,
+            "action": {
+              "action_type": "submit_plan",
+              "action_payload": {
+                "plan": {
+                  "itinerary": [
+                    {
+                      "day": 1,
+                      "current_city": "Boston",
+                      "transportation": "Self-driving from New York to Boston",
+                      "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
+                      "attraction": "Boston Common, Boston",
+                      "accommodation": "Boston Private Stay, Boston, private room, price: 180"
+                    }
+                  ],
+                  "rationale": "Fallback plan generated from user request: Close is fine."
+                }
+              },
+              "rationale": null,
+              "predicted_current_intention": null
+            },
+            "page_type": "plan",
+            "selected_asin": null,
+            "selected_options": {},
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": "direct_execute"
+          }
+        ],
+        "agent_intention_prediction": null,
+        "evaluation": null
+      }
+    ]
+  }
+]
