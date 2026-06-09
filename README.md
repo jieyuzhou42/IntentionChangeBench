@@ -1,65 +1,220 @@
+# IntentionChangeBench
 
+This repo has two separate pipelines:
 
-## WebShop Dataset Size
+- `src/simulation/`: generate gold trajectories.
+- `src/eval/`: run the benchmark agent and score it.
 
-The simulation and benchmark runners default to the full WebShop product dataset:
+Keep these separate. Simulation may expose gold user intention because it is creating the benchmark data. Eval must not expose gold intention to the agent; gold is used only after rollout for scoring.
 
-```powershell
-python .\src\run_simulation.py
+## Directory Layout
+
+```text
+IntentionChangeBench/
+  src/
+    common/
+      execution_agent.py
+      llm_clients.py
+
+    simulation/
+      simulation/
+        run_simulation.py
+        human_simulator.py
+        gold_executor.py
+        reranker.py
+        runtime_logger.py
+
+    eval/
+      run_benchmark.py
+      fixed_user_llm_executor.py
+      benchmark_fixed_rollout.py
+      evaluators/
+        constraint_importance_eval.py
+        runtime_logger.py
+
+  data/
+    simulation/
+      simulated_dataset.json
+      annotated_dataset.json
+
+    eval/
+      benchmark_eval.json
 ```
 
-Make sure these files exist:
+## Setup
 
-- `WebShop/data/items_shuffle.json`
-- `WebShop/data/items_ins_v2_1000.json`
-- `WebShop/search_engine/indexes/`
+Create `IntentionChangeBench/.env` from `.env.example` and fill in the Azure OpenAI settings.
 
-Then run:
+From the repo root, commands usually need WebShop on `PYTHONPATH`:
 
 ```powershell
-python .\src\run_simulation.py --webshop_num_products all
+$env:PYTHONPATH=(Resolve-Path .\WebShop).Path
 ```
 
-For faster local smoke tests, pass `--webshop_num_products 1000`.
-`--webshop_num_products 100000` is still supported if you built `WebShop/search_engine/indexes_100k/`.
-
-The product catalog and instruction/attribute file can be scaled separately.
-By default, `--webshop_num_products all` uses the full product catalog with the
-existing 1k instruction/attribute file. Set `WEBSHOP_ATTR_DATASET=all` only if
-you also downloaded `WebShop/data/items_ins_v2.json`.
-
-## WebShop Search Reranking
-
-WebShop can keep its BM25/Pyserini first-stage search and rerank the top 50
-candidates with Jina AI before results are shown to the agent.
-
-Add these variables to `IntentionChangeBench/.env` or your shell:
+Use the WebShop Python environment:
 
 ```powershell
-JINA_API_KEY=your-jina-api-key
-WEBSHOP_JINA_RERANK=1
-WEBSHOP_JINA_RERANK_MODEL=jina-reranker-v3
-WEBSHOP_JINA_RERANK_TOP_N=50
-WEBSHOP_JINA_RERANK_MAX_DOC_CHARS=1200
-WEBSHOP_JINA_RERANK_MIN_INTERVAL=8
-WEBSHOP_JINA_RERANK_MAX_RETRIES=3
-WEBSHOP_JINA_RERANK_RETRY_BACKOFF=1
+.\.venv38-webshop\Scripts\python.exe ...
 ```
 
-If `JINA_API_KEY` is set, reranking is enabled by default unless
-`WEBSHOP_JINA_RERANK=0`. The wrapper falls back to the original BM25 order if a
-Jina request fails, so long simulations can continue. If you see transient
-connection resets, increase `WEBSHOP_JINA_RERANK_MAX_RETRIES` or lower
-`--parallelism`.
+## Run Simulation
 
-Jina's free reranker limit can be reached by TPM before RPM because one WebShop
-request sends many product documents. `WEBSHOP_JINA_RERANK_MAX_DOC_CHARS`
-shortens each candidate document before reranking, and
-`WEBSHOP_JINA_RERANK_MIN_INTERVAL` spaces requests out.
+Simulation creates gold trajectories. It uses:
 
-To see exactly which query/code path is calling Jina, enable diagnostics:
+- `HumanSimulator` for user shifts and annotations.
+- `WebShopExecutor` as the gold executor.
+- BM25 search plus optional LLM reranking.
+- Gold/current intention is allowed in this pipeline.
+
+Smoke run:
 
 ```powershell
-WEBSHOP_JINA_RERANK_VERBOSE=1
-WEBSHOP_JINA_RERANK_LOG_PATH=IntentionChangeBench/data/jina_rerank_calls.jsonl
+$env:PYTHONPATH=(Resolve-Path .\WebShop).Path
+.\.venv38-webshop\Scripts\python.exe .\IntentionChangeBench\src\simulation\simulation\run_simulation.py `
+  --output .\IntentionChangeBench\data\simulation\simulated_dataset.json `
+  --domain webshop `
+  --num_instances 2 `
+  --max_turns 4 `
+  --webshop_num_products 1000 `
+  --parallelism 1
 ```
+
+Fuller WebShop run:
+
+```powershell
+$env:PYTHONPATH=(Resolve-Path .\WebShop).Path
+.\.venv38-webshop\Scripts\python.exe .\IntentionChangeBench\src\simulation\simulation\run_simulation.py `
+  --output .\IntentionChangeBench\data\simulation\simulated_dataset.json `
+  --domain webshop `
+  --num_instances 20 `
+  --max_turns 4 `
+  --webshop_num_products 100000 `
+  --parallelism 2 `
+  --executor_type gold `
+  --enable_reranking true
+```
+
+Important simulation args:
+
+- `--num_instances`: number of tasks/goals to simulate.
+- `--max_turns`: number of user turns after the initial turn.
+- `--max_internal_steps`: max gold executor internal steps per turn.
+- `--webshop_num_products`: `100`, `1000`, `100000`, or `all`.
+- `--parallelism`: number of instances to run concurrently.
+- `--enable_reranking`: whether to rerank BM25 candidates with the LLM.
+
+## Annotated Dataset
+
+The benchmark input should live at:
+
+```text
+IntentionChangeBench/data/simulation/annotated_dataset.json
+```
+
+This file is the gold trajectory dataset used by eval. Each turn should include:
+
+- `user_utterance`
+- `gold_current_intention`
+- `gold_delta`
+- priority annotations such as `high`, `medium`, and `low`
+
+## Run Benchmark / Test
+
+Eval replays fixed user utterances and tests whether the agent can infer the user intention. It uses:
+
+- `FixedUserLLMWebShopExecutor`
+- default WebShop environment actions:
+  - `search`
+  - `click`
+  - `buy`
+  - `back_to_search`
+  - `next_page`
+  - `prev_page`
+- agent-predicted current intention for environment feedback
+- gold intention only after rollout for offline scoring
+
+Gold intention is not passed into `env.step`.
+
+Smoke benchmark:
+
+```powershell
+$env:PYTHONPATH=(Resolve-Path .\WebShop).Path
+.\.venv38-webshop\Scripts\python.exe .\IntentionChangeBench\src\eval\run_benchmark.py `
+  --gold_trajectory_path .\IntentionChangeBench\data\simulation\annotated_dataset.json `
+  --output .\IntentionChangeBench\data\eval\_benchmark_eval_smoke.json `
+  --num_instances 1 `
+  --webshop_num_products 100000 `
+  --parallelism 1 `
+  --executor_type fixed_user
+```
+
+Full benchmark:
+
+```powershell
+$env:PYTHONPATH=(Resolve-Path .\WebShop).Path
+.\.venv38-webshop\Scripts\python.exe .\IntentionChangeBench\src\eval\run_benchmark.py `
+  --gold_trajectory_path .\IntentionChangeBench\data\simulation\annotated_dataset.json `
+  --output .\IntentionChangeBench\data\eval\benchmark_eval.json `
+  --webshop_num_products 100000 `
+  --parallelism 2 `
+  --executor_type fixed_user
+```
+
+Important eval args:
+
+- `--gold_trajectory_path`: annotated/gold trajectory JSON.
+- `--output`: benchmark output with eval scores.
+- `--num_instances`: optional subset size.
+- `--instance_ids`: comma-separated instance IDs to replay.
+- `--max_turns`: optional max turn index to replay.
+- `--max_internal_steps`: max agent WebShop actions per turn.
+- `--parallelism`: number of benchmark instances to replay concurrently.
+
+## Eval Scores
+
+Each benchmark turn includes:
+
+```json
+"evaluation": {
+  "state_understanding_eval": {},
+  "action_selection_eval": {}
+}
+```
+
+State understanding:
+
+- `constraint_weighted_score`: did the agent predict the right constraint values?
+- `priority_level_weighted_score`: did the agent assign constraints to the right high/medium/low importance level?
+- `combined_weighted_score`: average of the two.
+
+Action selection:
+
+- `weighted_score`: selected item satisfaction against gold constraints.
+- `selected_asin`: final selected item, if any.
+- `per_constraint`: per-field credit and status.
+
+Importance weights:
+
+```text
+high = 3
+medium = 2
+low = 1
+```
+
+## Aggregate Scores
+
+Example aggregation command:
+
+```powershell
+python -c "import json; from collections import Counter; p='IntentionChangeBench/data/eval/benchmark_eval.json'; data=json.load(open(p,encoding='utf-8')); turns=[t for i in data for t in i.get('turns',[])]; avg=lambda xs: sum(xs)/len(xs) if xs else None; se=[t['evaluation']['state_understanding_eval'] for t in turns]; ae=[t['evaluation']['action_selection_eval'] for t in turns]; print('instances',len(data)); print('turns',len(turns)); print('state_constraint',avg([x.get('constraint_weighted_score',0) for x in se])); print('state_priority',avg([x.get('priority_level_weighted_score',0) for x in se])); print('state_combined',avg([x.get('combined_weighted_score',0) for x in se])); print('action',avg([x.get('weighted_score',0) for x in ae])); print('stop_reasons',dict(Counter(t.get('stop_reason') for t in turns)))"
+```
+
+## Prompt Logs
+
+Prompts are written to:
+
+```text
+IntentionChangeBench/data/prompt_log.jsonl
+```
+
+The path is printed at the start of simulation and eval runs.
