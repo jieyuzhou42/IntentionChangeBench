@@ -7,6 +7,11 @@ This repo has two separate pipelines:
 
 Keep these separate. Simulation may expose gold user intention because it is creating the benchmark data. Eval must not expose gold intention to the agent; gold is used only after rollout for scoring.
 
+## Benchmark Links
+
+- [WebShop](https://github.com/princeton-nlp/WebShop)
+- [TravelPlanner](https://github.com/OSU-NLP-Group/TravelPlanner)
+
 ## Directory Layout
 
 ```text
