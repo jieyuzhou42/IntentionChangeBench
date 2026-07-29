@@ -7,15 +7,24 @@ This repo has two separate pipelines:
 
 Keep these separate. Simulation may expose gold user intention because it is creating the benchmark data. Eval must not expose gold intention to the agent; gold is used only after rollout for scoring.
 
-## Benchmark Links
+## Bundled Environments
 
-- [WebShop](https://github.com/princeton-nlp/WebShop)
-- [TravelPlanner](https://github.com/OSU-NLP-Group/TravelPlanner)
+This repository includes the environment source snapshots used by the benchmark:
+
+- `WebShop/`, snapshot `d29ba91`, based on [princeton-nlp/WebShop](https://github.com/princeton-nlp/WebShop) and including the local Jina reranking changes.
+- `TravelPlanner/`, snapshot `72d34bc`, based on [OSU-NLP-Group/TravelPlanner](https://github.com/OSU-NLP-Group/TravelPlanner).
+
+Large downloaded datasets and generated search indexes are intentionally not stored in Git. Use the recovery steps below after cloning on a new machine.
 
 ## Directory Layout
 
 ```text
 IntentionChangeBench/
+  WebShop/
+  TravelPlanner/
+  scripts/
+    setup_webshop_data.ps1
+
   src/
     common/
       execution_agent.py
@@ -48,7 +57,7 @@ IntentionChangeBench/
 
 ## Setup
 
-Create `IntentionChangeBench/.env` from `.env.example` and fill in the Azure OpenAI settings.
+Create `.env` from `.env.example` and fill in the Azure OpenAI settings.
 
 From the repo root, commands usually need WebShop on `PYTHONPATH`:
 
@@ -61,6 +70,39 @@ Use the WebShop Python environment:
 ```powershell
 .\.venv38-webshop\Scripts\python.exe ...
 ```
+
+### Restore the full WebShop data
+
+GitHub cannot store `WebShop/data/items_shuffle.json` because the file is about 5.1 GiB. The original WebShop project publishes the dataset through Google Drive. On a new Windows machine, download the same data with:
+
+```powershell
+.\scripts\setup_webshop_data.ps1 `
+  -Python .\.venv38-webshop\Scripts\python.exe `
+  -Dataset all
+```
+
+To also regenerate the full Lucene search resources and index:
+
+```powershell
+.\scripts\setup_webshop_data.ps1 `
+  -Python .\.venv38-webshop\Scripts\python.exe `
+  -Dataset all `
+  -BuildIndex
+```
+
+The expected SHA-256 of the current `items_shuffle.json` is:
+
+```text
+2EF591D65DF3AF89E972AB72468EB82CBF124D876552D9F3678667EDD620A6C8
+```
+
+For full-data runs, set:
+
+```powershell
+$env:WEBSHOP_DATASET="all"
+```
+
+The full product file is required for `--webshop_num_products all`. The generated `WebShop/search_engine/resources/` and `WebShop/search_engine/indexes/` directories can be rebuilt and remain ignored by Git.
 
 ## Run Simulation
 
@@ -75,8 +117,8 @@ Smoke run:
 
 ```powershell
 $env:PYTHONPATH=(Resolve-Path .\WebShop).Path
-.\.venv38-webshop\Scripts\python.exe .\IntentionChangeBench\src\simulation\simulation\run_simulation.py `
-  --output .\IntentionChangeBench\data\simulation\simulated_dataset.json `
+.\.venv38-webshop\Scripts\python.exe .\src\simulation\simulation\run_simulation.py `
+  --output .\data\simulation\simulated_dataset.json `
   --domain webshop `
   --num_instances 2 `
   --max_turns 4 `
@@ -88,8 +130,8 @@ Fuller WebShop run:
 
 ```powershell
 $env:PYTHONPATH=(Resolve-Path .\WebShop).Path
-.\.venv38-webshop\Scripts\python.exe .\IntentionChangeBench\src\simulation\simulation\run_simulation.py `
-  --output .\IntentionChangeBench\data\simulation\simulated_dataset.json `
+.\.venv38-webshop\Scripts\python.exe .\src\simulation\simulation\run_simulation.py `
+  --output .\data\simulation\simulated_dataset.json `
   --domain webshop `
   --num_instances 20 `
   --max_turns 4 `
@@ -113,7 +155,7 @@ Important simulation args:
 The benchmark input should live at:
 
 ```text
-IntentionChangeBench/data/simulation/annotated_dataset.json
+data/simulation/annotated_dataset.json
 ```
 
 This file is the gold trajectory dataset used by eval. Each turn should include:
@@ -144,9 +186,9 @@ Smoke benchmark:
 
 ```powershell
 $env:PYTHONPATH=(Resolve-Path .\WebShop).Path
-.\.venv38-webshop\Scripts\python.exe .\IntentionChangeBench\src\eval\run_benchmark.py `
-  --gold_trajectory_path .\IntentionChangeBench\data\simulation\annotated_dataset.json `
-  --output .\IntentionChangeBench\data\eval\_benchmark_eval_smoke.json `
+.\.venv38-webshop\Scripts\python.exe .\src\eval\run_benchmark.py `
+  --gold_trajectory_path .\data\simulation\annotated_dataset.json `
+  --output .\data\eval\_benchmark_eval_smoke.json `
   --num_instances 1 `
   --webshop_num_products 100000 `
   --parallelism 1 `
@@ -157,9 +199,9 @@ Full benchmark:
 
 ```powershell
 $env:PYTHONPATH=(Resolve-Path .\WebShop).Path
-.\.venv38-webshop\Scripts\python.exe .\IntentionChangeBench\src\eval\run_benchmark.py `
-  --gold_trajectory_path .\IntentionChangeBench\data\simulation\annotated_dataset.json `
-  --output .\IntentionChangeBench\data\eval\benchmark_eval.json `
+.\.venv38-webshop\Scripts\python.exe .\src\eval\run_benchmark.py `
+  --gold_trajectory_path .\data\simulation\annotated_dataset.json `
+  --output .\data\eval\benchmark_eval.json `
   --webshop_num_products 100000 `
   --parallelism 2 `
   --executor_type fixed_user
@@ -211,7 +253,7 @@ low = 1
 Example aggregation command:
 
 ```powershell
-python -c "import json; from collections import Counter; p='IntentionChangeBench/data/eval/benchmark_eval.json'; data=json.load(open(p,encoding='utf-8')); turns=[t for i in data for t in i.get('turns',[])]; avg=lambda xs: sum(xs)/len(xs) if xs else None; se=[t['evaluation']['state_understanding_eval'] for t in turns]; ae=[t['evaluation']['action_selection_eval'] for t in turns]; print('instances',len(data)); print('turns',len(turns)); print('state_constraint',avg([x.get('constraint_weighted_score',0) for x in se])); print('state_priority',avg([x.get('priority_level_weighted_score',0) for x in se])); print('state_combined',avg([x.get('combined_weighted_score',0) for x in se])); print('action',avg([x.get('weighted_score',0) for x in ae])); print('stop_reasons',dict(Counter(t.get('stop_reason') for t in turns)))"
+python -c "import json; from collections import Counter; p='data/eval/benchmark_eval.json'; data=json.load(open(p,encoding='utf-8')); turns=[t for i in data for t in i.get('turns',[])]; avg=lambda xs: sum(xs)/len(xs) if xs else None; se=[t['evaluation']['state_understanding_eval'] for t in turns]; ae=[t['evaluation']['action_selection_eval'] for t in turns]; print('instances',len(data)); print('turns',len(turns)); print('state_constraint',avg([x.get('constraint_weighted_score',0) for x in se])); print('state_priority',avg([x.get('priority_level_weighted_score',0) for x in se])); print('state_combined',avg([x.get('combined_weighted_score',0) for x in se])); print('action',avg([x.get('weighted_score',0) for x in ae])); print('stop_reasons',dict(Counter(t.get('stop_reason') for t in turns)))"
 ```
 
 ## Prompt Logs
@@ -219,7 +261,7 @@ python -c "import json; from collections import Counter; p='IntentionChangeBench
 Prompts are written to:
 
 ```text
-IntentionChangeBench/data/prompt_log.jsonl
+data/prompt_log.jsonl
 ```
 
 The path is printed at the start of simulation and eval runs.
