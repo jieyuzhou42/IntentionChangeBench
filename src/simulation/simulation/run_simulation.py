@@ -224,6 +224,15 @@ def _task_from_payload(raw_task: Dict[str, Any], *, fallback_index: int) -> Base
 
     initial_intention = raw_task.get("initial_intention")
     world_state = copy.deepcopy(raw_task.get("world_state") or {"domain": "webshop"})
+    selection_metadata = raw_task.get("selection_metadata")
+    if isinstance(selection_metadata, dict):
+        world_state["webshop_selection_metadata"] = copy.deepcopy(selection_metadata)
+        selected_instruction = selection_metadata.get("instruction")
+        if isinstance(selected_instruction, str) and selected_instruction.strip():
+            world_state["webshop_instruction_text"] = selected_instruction.strip()
+        selected_price_upper = selection_metadata.get("price_upper")
+        if isinstance(selected_price_upper, (int, float)):
+            world_state["webshop_fixed_price_upper"] = float(selected_price_upper)
     if not isinstance(initial_intention, dict) and isinstance(raw_task.get("turns"), list):
         first_turn = raw_task["turns"][0] if raw_task["turns"] else {}
         if isinstance(first_turn, dict):

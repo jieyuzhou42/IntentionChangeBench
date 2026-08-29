@@ -9,8 +9,10 @@ queries and instructions.
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import math
+import random
 import re
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -114,15 +116,30 @@ def query_label(product: Dict[str, Any]) -> str:
     return normalize_text(product.get("query") or product.get("name")) or "unknown"
 
 
+def fixed_price_upper(product: Dict[str, Any]) -> float:
+    """Choose a stable budget that is safely above the product's listed price."""
+
+    raw_pricing = product.get("pricing")
+    values = []
+    if raw_pricing:
+        values = [float(value) for value in re.findall(r"\d+(?:\.\d+)?", str(raw_pricing))]
+    product_price_max = max(values) if values else 100.0
+    price_range = [10.0 * index for index in range(1, 100) if 10.0 * index > product_price_max][:4]
+    if len(price_range) < 2:
+        return 1_000_000.0
+    return price_range[1]
+
+
 def build_candidates(
     products_path: Path,
-    human_instructions_path: Path,
+    attributes_path: Path,
     num_products: int,
 ) -> List[Dict[str, Any]]:
-    human_instructions = json.loads(human_instructions_path.read_text(encoding="utf-8"))
+    """Mirror WebShop's default ``get_synthetic_goals`` candidate order."""
+
+    attributes = json.loads(attributes_path.read_text(encoding="utf-8"))
     candidates: List[Dict[str, Any]] = []
     seen_asins: Set[str] = set()
-    goal_index = 0
 
     for raw_index, product in enumerate(iter_json_array(products_path)):
         if raw_index >= num_products:
@@ -134,21 +151,53 @@ def build_candidates(
             continue
         seen_asins.add(asin)
 
-        for instruction in human_instructions.get(asin, []):
-            attrs = instruction.get("instruction_attributes") or []
-            if not attrs:
+        asin_attributes = attributes.get(asin, {})
+        instruction_text = asin_attributes.get("instruction")
+        instruction_attributes = asin_attributes.get("instruction_attributes")
+        if instruction_text is None or not instruction_attributes:
+            continue
+        price_upper = fixed_price_upper(product)
+
+        options: Dict[str, List[str]] = {}
+        for option_name, option_contents in (product.get("customization_options") or {}).items():
+            if option_contents is None:
                 continue
-            instruction_text = str(instruction.get("instruction") or "").strip().rstrip(".")
+            values = []
+            for option_content in option_contents:
+                value = str(option_content.get("value") or "").strip().replace("/", " | ").lower()
+                values.append(value)
+            options[str(option_name).lower()] = values
+
+        option_names = sorted(options)
+        combinations: Iterable[Tuple[str, ...]]
+        if option_names:
+            combinations = itertools.product(*(options[name] for name in option_names))
+        else:
+            combinations = [tuple()]
+
+        for combination in combinations:
+            goal_options = {
+                option_names[index]: value
+                for index, value in enumerate(combination)
+            }
+            option_text = ", and ".join(
+                f"{key}: {value}" for key, value in goal_options.items()
+            )
+            full_instruction = str(instruction_text)
+            if option_text:
+                full_instruction += " with " + option_text
+            if price_upper < 1_000_000:
+                full_instruction += f", and price lower than {price_upper:.2f} dollars"
             candidate = {
-                "goal_index": goal_index,
                 "asin": asin,
                 "broad_category": first_taxonomy_label(product),
                 "query": query_label(product),
                 "name": str(product.get("name") or "").strip(),
                 "product_category": str(product.get("product_category") or "").strip(),
-                "instruction": instruction_text,
-                "attributes": list(attrs),
-                "options": instruction.get("instruction_options") or [],
+                "instruction": full_instruction,
+                "price_upper": price_upper,
+                "attributes": list(instruction_attributes),
+                "options": goal_options,
             }
             candidate["tokens"] = tokens(
                 " ".join(
@@ -157,7 +206,13 @@ def build_candidates(
                 )
             )
             candidates.append(candidate)
-            goal_index += 1
+
+    # SimServer seeds and shuffles the complete goal list after get_goals().
+    # Goal indices accepted by env.reset(session=<int>) refer to this shuffled
+    # order, not product-file order.
+    random.Random(233).shuffle(candidates)
+    for goal_index, candidate in enumerate(candidates):
+        candidate["goal_index"] = goal_index
 
     return candidates
 
@@ -287,18 +342,19 @@ def task_payload(candidate: Dict[str, Any]) -> Dict[str, Any]:
             "domain": "webshop",
             "webshop_goal_index": index,
         },
-        "initial_intention": {
-            # Keep this empty so WebShop can expose the complete goal text for
-            # the pinned index, including its generated price constraint.
-            "request": "",
-            "constraints": {},
-            "priority": [],
-        },
+        # Use the same task-reading path as an existing simulated trajectory:
+        # _task_from_payload obtains the initial request from turn 0.
+        "turns": [
+            {
+                "turn_id": 0,
+                "user_utterance": candidate["instruction"],
+            }
+        ],
         "selection_metadata": {
             key: candidate[key]
             for key in (
                 "asin", "broad_category", "query", "name", "product_category",
-                "instruction", "attributes", "options",
+                "instruction", "price_upper", "attributes", "options",
             )
         },
     }
@@ -335,10 +391,10 @@ def parse_args() -> argparse.Namespace:
     repo_root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--products", type=Path, default=repo_root.parent / "WebShop" / "data" / "items_shuffle.json")
-    parser.add_argument("--human-instructions", type=Path, default=repo_root.parent / "WebShop" / "data" / "items_human_ins.json")
+    parser.add_argument("--attributes", type=Path, default=repo_root.parent / "WebShop" / "data" / "items_ins_v2_1000.json")
     parser.add_argument("--num-products", type=int, default=100000)
     parser.add_argument("--count", type=int, default=350)
-    parser.add_argument("--max-per-query", type=int, default=3)
+    parser.add_argument("--max-per-query", type=int, default=4)
     parser.add_argument("--output", type=Path, default=repo_root / "data" / "webshop" / "diverse_350_tasks.json")
     parser.add_argument("--report", type=Path, default=repo_root / "data" / "webshop" / "diverse_350_report.json")
     return parser.parse_args()
@@ -346,7 +402,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    candidates = build_candidates(args.products, args.human_instructions, args.num_products)
+    candidates = build_candidates(args.products, args.attributes, args.num_products)
     selected = select_diverse(candidates, args.count, args.max_per_query)
     tasks = [task_payload(candidate) for candidate in selected]
     report = selection_report(candidates, selected)
