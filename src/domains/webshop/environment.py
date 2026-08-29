@@ -57,6 +57,7 @@ class WebShopEnvAdapter(BaseEnv):
             if server is not None:
                 setattr(server, "assigned_instruction_text", instruction_text)
         reset_out = self.webshop_env.reset(**reset_kwargs)
+        self._apply_fixed_goal_metadata(task)
 
         if isinstance(reset_out, tuple):
             raw_obs = reset_out[0]
@@ -73,6 +74,25 @@ class WebShopEnvAdapter(BaseEnv):
         obs = self._normalize_observation(raw_obs, self.last_info)
         self.last_observation = obs
         return obs
+
+    def _apply_fixed_goal_metadata(self, task=None) -> None:
+        """Keep the selected instruction and its reward budget deterministic."""
+
+        world_state = getattr(task, "world_state", None)
+        if not isinstance(world_state, dict):
+            return
+        price_upper = world_state.get("webshop_fixed_price_upper")
+        if not isinstance(price_upper, (int, float)):
+            return
+
+        server = getattr(self.webshop_env, "server", None)
+        session_id = getattr(self.webshop_env, "session", None)
+        sessions = getattr(server, "user_sessions", None)
+        if not isinstance(sessions, dict) or session_id not in sessions:
+            return
+        goal = sessions[session_id].get("goal")
+        if isinstance(goal, dict):
+            goal["price_upper"] = float(price_upper)
 
     def _task_webshop_goal_index(self, task=None) -> Optional[int]:
         world_state = getattr(task, "world_state", None)
