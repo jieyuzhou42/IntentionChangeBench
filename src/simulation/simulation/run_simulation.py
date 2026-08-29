@@ -8,6 +8,7 @@ import os
 import random
 import re
 import sys
+import traceback
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -16,19 +17,24 @@ _SRC_DIR = Path(__file__).resolve().parents[2]
 if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
-from common.llm_clients import AzureOpenAIChatClient
+from common.llm_clients import create_llm_client_from_env
 from models import AgentAction, BaseTask, DialogueInstance, EnvFeedback, TurnRecord
 from prompt_logging import get_prompt_log_path, log_prompt
-from simulation.simulation.human_simulator import HumanSimulator
 from simulation.simulation.reranker import RerankerConfig
 from simulation.simulation.runtime_logger import RuntimeLogger
-from simulation.simulation.travelplanner_executor import TravelPlannerExecutor
-from simulation.simulation.webshop_executor import WebShopExecutor
-from envs.webshop_env import WebShopEnvAdapter
-from envs.travelplanner_env import TravelPlannerEnvAdapter, load_travelplanner_ref_info
+from simulation.simulation.base_user_simulator import HumanSimulator
+from domains.travelplanner import (
+    TravelPlannerEnvAdapter,
+    TravelPlannerExecutor,
+    TravelPlannerUserSimulator,
+    load_travelplanner_ref_info,
+)
+from domains.webshop import WebShopEnvAdapter, WebShopExecutor, WebShopUserSimulator
 
 STYLE_POOL = ["explicit", "partial", "elliptical"]
 DEFAULT_MAX_INTERNAL_STEPS = 12
+DEFAULT_TRAVELPLANNER_MAX_INTERNAL_STEPS = 30
+TRAVELPLANNER_CASE_RETRIES = 3
 DEFAULT_WEBSHOP_NUM_PRODUCTS = "100000"
 ROLLOUT_CONSTRAINT_FIELDS = ("category", "color", "size", "brand")
 SELECTABLE_CONSTRAINT_FIELDS = ("color", "size", "brand")
@@ -96,7 +102,7 @@ def configure_webshop_dataset(num_products: Optional[int]) -> None:
     if dataset_mode != "all":
         return
 
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = Path(__file__).resolve().parents[4]
     data_dir = repo_root / "WebShop" / "data"
     required_files = [
         data_dir / "items_shuffle.json",
@@ -134,11 +140,13 @@ def load_local_dotenv(dotenv_path: str | None = None, override: bool = False) ->
     if dotenv_path:
         candidate_paths.append(Path(dotenv_path))
     else:
-        repo_root = Path(__file__).resolve().parent.parent
+        repo_root = Path(__file__).resolve().parents[3]
         candidate_paths.extend(
             [
                 Path.cwd() / ".env",
                 repo_root / ".env",
+                Path.cwd() / ".env.llm",
+                repo_root / ".env.llm",
             ]
         )
 
@@ -843,6 +851,9 @@ def _feedback_state_signature(env_feedback: Optional[EnvFeedback]) -> Optional[T
         _normalize_text(result.get("title")),
         result.get("price"),
         tuple(sorted(_normalize_text(field) for field in env_feedback.satisfied_constraints or [])),
+        str(observation.get("tool_name") or ""),
+        str(observation.get("tool_argument") or ""),
+        observation.get("notebook_size") or len(observation.get("notebook") or []),
     )
 
 
@@ -892,6 +903,18 @@ def _made_useful_progress(
     if _normalize_text(current_result.get("title")) and _normalize_text(current_result.get("title")) != _normalize_text(prev_result.get("title")):
         return True
 
+    if current_obs.get("tool_name") and (
+        current_obs.get("tool_name"),
+        current_obs.get("tool_argument"),
+    ) != (
+        prev_obs.get("tool_name"),
+        prev_obs.get("tool_argument"),
+    ):
+        return True
+
+    if len(current_obs.get("notebook") or []) > len(prev_obs.get("notebook") or []):
+        return True
+
     return False
 
 
@@ -907,6 +930,16 @@ def _public_env_feedback_payload(env_feedback: Optional[EnvFeedback]) -> Optiona
         return None
 
     observation = env_feedback.observation or {}
+    if str(observation.get("domain") or "").lower() == "travelplanner":
+        return {
+            "status": env_feedback.status,
+            "feedback_type": observation.get("feedback_type") or "travel_search_results",
+            "page_type": observation.get("page_type"),
+            "search_results": copy.deepcopy(observation.get("search_results") or {}),
+            "satisfied_constraints": list(env_feedback.satisfied_constraints or []),
+            "violated_constraints": list(env_feedback.violated_constraints or []),
+            "constraint_debug": copy.deepcopy(observation.get("constraint_debug") or {}),
+        }
     return {
         "status": env_feedback.status,
         "feedback_type": observation.get("feedback_type") or "candidate_items",
@@ -1002,11 +1035,13 @@ def _build_rollout_trace_entry(
     stop_reason: Optional[str],
 ) -> Dict[str, Any]:
     observation = env_feedback.observation or {}
-    return {
+    action_payload = dict(agent_action.action_payload or {})
+    original_argument = str(action_payload.get("argument") or "").strip()
+    trace_entry = {
         "step_index": step_index,
         "action": {
             "action_type": agent_action.action_type,
-            "action_payload": dict(agent_action.action_payload or {}),
+            "action_payload": action_payload,
             "rationale": getattr(agent_action, "rationale", None),
             "predicted_current_intention": copy.deepcopy(
                 getattr(agent_action, "predicted_current_intention", None)
@@ -1019,6 +1054,17 @@ def _build_rollout_trace_entry(
         "made_progress": made_progress,
         "stop_reason": stop_reason,
     }
+    if str(observation.get("domain") or "").lower() == "travelplanner":
+        trace_entry["action"]["original_action"] = f"{agent_action.action_type}[{original_argument}]"
+        trace_entry.update(
+            {
+                "tool_name": observation.get("tool_name"),
+                "tool_argument": observation.get("tool_argument"),
+                "tool_result": copy.deepcopy(observation.get("tool_result")),
+                "notebook_size": observation.get("notebook_size") or len(observation.get("notebook") or []),
+            }
+        )
+    return trace_entry
 
 
 def execute_turn(
@@ -1032,6 +1078,11 @@ def execute_turn(
     max_internal_steps: int = DEFAULT_MAX_INTERNAL_STEPS,
     stop_on_candidate_ready: bool = True,
 ) -> TurnRolloutResult:
+    prepare_turn = getattr(env, "prepare_turn", None)
+    if callable(prepare_turn):
+        prepare_turn(current_intention, user_utterance, gold_delta or {})
+        env_observation = env.get_observation()
+
     direct_execute = getattr(execution_agent, "execute", None)
     if callable(direct_execute):
         agent_action, env_feedback = direct_execute(
@@ -1106,6 +1157,19 @@ def execute_turn(
         agent_action = execution_agent.act(working_history, user_utterance, current_observation)
         if agent_action.action_type in {"search", "refine"}:
             search_queries.append(str((agent_action.action_payload or {}).get("query", "")))
+        elif agent_action.action_type in {
+            "FlightSearch",
+            "AttractionSearch",
+            "AccommodationSearch",
+            "RestaurantSearch",
+            "CitySearch",
+            "GoogleDistanceMatrix",
+        }:
+            payload = agent_action.action_payload or {}
+            query = payload.get("query") or payload.get("argument")
+            if not query:
+                query = ", ".join(str(value) for value in payload.values() if value is not None)
+            search_queries.append(f"{agent_action.action_type}[{query}]")
         env_feedback = env.step(agent_action, current_intention)
         action_signature = _action_signature(agent_action)
         if action_signature == previous_action_signature:
@@ -1122,6 +1186,11 @@ def execute_turn(
 
         if agent_action.action_type == "buy":
             stop_reason = "virtual_buy"
+        elif agent_action.action_type == "Planner" and not getattr(env, "done", False):
+            # Planner is terminal in the original TravelPlanner workflow. An
+            # infeasible plan is evidence for the next user intention change,
+            # not a request to repeatedly invoke Planner in the same turn.
+            stop_reason = "planner_submitted"
         else:
             stop_reason = _rollout_stop_reason(
                 current_intention,
@@ -1144,21 +1213,27 @@ def execute_turn(
             )
         )
 
-        working_history.append(
-            {
-                "role": "assistant",
-                "content": {
-                    "action_type": agent_action.action_type,
-                    "action_payload": dict(agent_action.action_payload or {}),
-                    "env_result": copy.deepcopy(env_feedback.result or {}),
-                    "page_type": (env_feedback.observation or {}).get("page_type"),
-                    "selected_asin": (env_feedback.observation or {}).get("selected_asin"),
-                    "selected_options": copy.deepcopy((env_feedback.observation or {}).get("selected_options") or {}),
-                    "returned_items": _history_returned_items(env_feedback),
-                    "internal_step": step_index,
-                },
-            }
-        )
+        history_content = {
+            "action_type": agent_action.action_type,
+            "action_payload": dict(agent_action.action_payload or {}),
+            "env_result": copy.deepcopy(env_feedback.result or {}),
+            "page_type": (env_feedback.observation or {}).get("page_type"),
+            "selected_asin": (env_feedback.observation or {}).get("selected_asin"),
+            "selected_options": copy.deepcopy((env_feedback.observation or {}).get("selected_options") or {}),
+            "returned_items": _history_returned_items(env_feedback),
+            "internal_step": step_index,
+        }
+        if str((env_feedback.observation or {}).get("domain") or "").lower() == "travelplanner":
+            history_content.update(
+                {
+                    "tool_name": (env_feedback.observation or {}).get("tool_name"),
+                    "tool_argument": (env_feedback.observation or {}).get("tool_argument"),
+                    "tool_result": copy.deepcopy((env_feedback.observation or {}).get("tool_result")),
+                    "notebook_size": (env_feedback.observation or {}).get("notebook_size")
+                    or len((env_feedback.observation or {}).get("notebook") or []),
+                }
+            )
+        working_history.append({"role": "assistant", "content": history_content})
 
         final_action = agent_action
         final_feedback = env_feedback
@@ -1372,20 +1447,11 @@ def _build_runtime_components(
     executor_type: str,
     reranker_config: Optional[RerankerConfig] = None,
 ) -> Tuple[Any, Any, HumanSimulator, Any]:
-    try:
-        llm_client = AzureOpenAIChatClient.from_env(api_version=azure_api_version)
-    except ValueError:
-        if domain == "travelplanner" and parse_bool(os.getenv("ALLOW_LLM_FALLBACK", "false")):
-            print(
-                "Warning: Azure OpenAI settings are missing; running TravelPlanner with fallback planning only."
-            )
-            llm_client = None
-        else:
-            raise
+    llm_client = create_llm_client_from_env(azure_api_version=azure_api_version)
     if domain == "travelplanner":
         env = TravelPlannerEnvAdapter()
         agent = TravelPlannerExecutor(llm_client=llm_client)
-        human = HumanSimulator(llm_client=llm_client)
+        human = TravelPlannerUserSimulator(llm_client=llm_client)
         return env, agent, human, env
 
     configure_webshop_dataset(webshop_num_products)
@@ -1411,8 +1477,44 @@ def _build_runtime_components(
     if executor_type not in {"gold", "llm"}:
         raise ValueError("simulation/simulation/run_simulation.py only supports the gold BM25+reranking executor")
     agent = WebShopExecutor(llm_client=llm_client, reranker_config=reranker_config)
-    human = HumanSimulator(llm_client=llm_client)
+    human = WebShopUserSimulator(llm_client=llm_client)
     return env, agent, human, raw_env
+
+
+def _simulate_task_with_retries(
+    *,
+    domain: str,
+    task: BaseTask,
+    env: Any,
+    execution_agent: Any,
+    human_simulator: HumanSimulator,
+    max_turns: int,
+    max_internal_steps: int,
+    seed: int,
+) -> Optional[DialogueInstance]:
+    max_attempts = 1 + (TRAVELPLANNER_CASE_RETRIES if domain == "travelplanner" else 0)
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return simulate_dialogue_instance(
+                task=task,
+                env=env,
+                execution_agent=execution_agent,
+                human_simulator=human_simulator,
+                max_turns=max_turns,
+                max_internal_steps=max_internal_steps,
+                seed=seed,
+            )
+        except Exception:
+            if domain != "travelplanner":
+                raise
+            status = "retrying" if attempt < max_attempts else "skipping case"
+            print(
+                f"TravelPlanner case {task.instance_id!r} failed on attempt "
+                f"{attempt}/{max_attempts}; {status}.",
+                file=sys.stderr,
+            )
+            traceback.print_exc()
+    return None
 
 
 def _simulate_single_instance(
@@ -1435,7 +1537,8 @@ def _simulate_single_instance(
         reranker_config=reranker_config,
     )
     try:
-        return simulate_dialogue_instance(
+        instance = _simulate_task_with_retries(
+            domain=domain,
             task=task,
             env=env,
             execution_agent=agent,
@@ -1444,6 +1547,9 @@ def _simulate_single_instance(
             max_internal_steps=max_internal_steps,
             seed=seed,
         )
+        if instance is None:
+            raise RuntimeError(f"TravelPlanner case {task.instance_id!r} failed after all retries.")
+        return instance
     finally:
         close_env = getattr(raw_env, "close", None)
         if callable(close_env):
@@ -1472,17 +1578,18 @@ def _simulate_instances_serial(
     try:
         instances = []
         for task_index, task in enumerate(tasks, start=1):
-            instances.append(
-                simulate_dialogue_instance(
-                    task=task,
-                    env=env,
-                    execution_agent=agent,
-                    human_simulator=human,
-                    max_turns=max_turns,
-                    max_internal_steps=max_internal_steps,
-                    seed=seed + task_index - 1,
-                )
+            instance = _simulate_task_with_retries(
+                domain=domain,
+                task=task,
+                env=env,
+                execution_agent=agent,
+                human_simulator=human,
+                max_turns=max_turns,
+                max_internal_steps=max_internal_steps,
+                seed=seed + task_index - 1,
             )
+            if instance is not None:
+                instances.append(instance)
         return instances
     finally:
         close_env = getattr(raw_env, "close", None)
@@ -1512,7 +1619,8 @@ def _simulate_task_batch(
     try:
         instances_by_index = {}
         for task_index, task in indexed_tasks:
-            instances_by_index[task_index] = simulate_dialogue_instance(
+            instance = _simulate_task_with_retries(
+                domain=domain,
                 task=task,
                 env=env,
                 execution_agent=agent,
@@ -1521,6 +1629,8 @@ def _simulate_task_batch(
                 max_internal_steps=max_internal_steps,
                 seed=seed + task_index - 1,
             )
+            if instance is not None:
+                instances_by_index[task_index] = instance
         return instances_by_index
     finally:
         close_env = getattr(raw_env, "close", None)
@@ -1616,7 +1726,12 @@ def main():
     )
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--max_turns", type=int, default=4)
-    parser.add_argument("--max_internal_steps", type=int, default=DEFAULT_MAX_INTERNAL_STEPS)
+    parser.add_argument(
+        "--max_internal_steps",
+        type=int,
+        default=None,
+        help="Per-turn action budget. Defaults to 12 for WebShop and the original TravelPlanner value of 30.",
+    )
     parser.add_argument("--tasks_path", type=str, default=None)
     parser.add_argument(
         "--instance_ids",
@@ -1702,6 +1817,12 @@ def main():
         help="Include compact reranker input and raw LLM output in rerank_info.",
     )
     args = parser.parse_args()
+    if args.max_internal_steps is None:
+        args.max_internal_steps = (
+            DEFAULT_TRAVELPLANNER_MAX_INTERNAL_STEPS
+            if args.domain == "travelplanner"
+            else DEFAULT_MAX_INTERNAL_STEPS
+        )
     print(f"Prompt log path: {get_prompt_log_path()}")
 
     if args.parallelism < 1:

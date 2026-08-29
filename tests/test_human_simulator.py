@@ -10,7 +10,8 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from models import ShiftOp
-from simulators.human_simulator import SEARCH_QUERY_CONTEXT_MARKER, SHIFT_CONTEXT_MARKER, HumanSimulator
+from domains.webshop.user_simulator import WebShopUserSimulator
+from simulation.simulation.base_user_simulator import SEARCH_QUERY_CONTEXT_MARKER, SHIFT_CONTEXT_MARKER
 
 
 class RecordingLLMClient:
@@ -37,7 +38,7 @@ def _shift_context(prompt):
 
 def test_apply_shift_passes_updated_intention_and_delta_to_query_generator():
     llm_client = RecordingLLMClient()
-    simulator = HumanSimulator(llm_client=llm_client)
+    simulator = WebShopUserSimulator(llm_client=llm_client)
     current_intention = {
         "constraints": {
             "category": "running shoes",
@@ -71,7 +72,7 @@ def test_apply_shift_passes_updated_intention_and_delta_to_query_generator():
 
 def test_initial_query_generation_omits_gold_delta():
     llm_client = RecordingLLMClient()
-    simulator = HumanSimulator(llm_client=llm_client)
+    simulator = WebShopUserSimulator(llm_client=llm_client)
 
     simulator.generate_gold_search_query_for_intention(
         {
@@ -85,7 +86,7 @@ def test_initial_query_generation_omits_gold_delta():
 
 
 def test_shift_prompt_passes_full_gold_intention_timeline():
-    simulator = HumanSimulator(llm_client=RecordingLLMClient())
+    simulator = WebShopUserSimulator(llm_client=RecordingLLMClient())
     current_intention = {
         "constraints": {"category": "running shoes", "color": "green"},
         "priority": ["category", "color"],

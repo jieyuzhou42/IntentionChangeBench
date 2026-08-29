@@ -9,7 +9,7 @@ SRC_DIR = Path(__file__).resolve().parents[1] / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from agents.reranker import (
+from simulation.simulation.reranker import (
     build_reranker_prompt,
     compact_candidate_for_reranking,
     rerank_candidates_with_llm,

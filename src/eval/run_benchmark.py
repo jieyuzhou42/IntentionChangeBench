@@ -18,8 +18,8 @@ if str(_SRC_DIR) not in sys.path:
 from eval.benchmark_fixed_rollout import execute_fixed_user_turn
 from eval.evaluators.constraint_importance_eval import attach_instance_evaluations
 from eval.evaluators.runtime_logger import RuntimeLogger
-from common.llm_clients import AzureOpenAIChatClient
-from envs.webshop_env import WebShopEnvAdapter
+from common.llm_clients import create_llm_client_from_env
+from domains.webshop.environment import WebShopEnvAdapter
 from eval.fixed_user_llm_executor import FixedUserLLMWebShopExecutor
 from models import BaseTask, DialogueInstance, TurnRecord
 from prompt_logging import get_prompt_log_path
@@ -83,7 +83,14 @@ def load_local_dotenv(dotenv_path: str | None = None, override: bool = False) ->
         candidate_paths.append(Path(dotenv_path))
     else:
         repo_root = Path(__file__).resolve().parents[2]
-        candidate_paths.extend([Path.cwd() / ".env", repo_root / ".env"])
+        candidate_paths.extend(
+            [
+                Path.cwd() / ".env",
+                repo_root / ".env",
+                Path.cwd() / ".env.llm",
+                repo_root / ".env.llm",
+            ]
+        )
 
     seen = set()
     for path in candidate_paths:
@@ -219,7 +226,7 @@ def _build_runtime_components(
         )
 
     env = WebShopEnvAdapter(webshop_env=raw_env, action_style="auto")
-    llm_client = AzureOpenAIChatClient.from_env(api_version=azure_api_version)
+    llm_client = create_llm_client_from_env(azure_api_version=azure_api_version)
     agent = FixedUserLLMWebShopExecutor(llm_client=llm_client)
     return env, agent, None, raw_env
 

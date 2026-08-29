@@ -11,7 +11,7 @@ Keep these separate. Simulation may expose gold user intention because it is cre
 
 This repository includes the environment source snapshots used by the benchmark:
 
-- `WebShop/`, snapshot `d29ba91`, based on [princeton-nlp/WebShop](https://github.com/princeton-nlp/WebShop) and including the local Jina reranking changes.
+- `WebShop/`, snapshot `d29ba91`, based on [princeton-nlp/WebShop](https://github.com/princeton-nlp/WebShop).
 - `TravelPlanner/`, snapshot `72d34bc`, based on [OSU-NLP-Group/TravelPlanner](https://github.com/OSU-NLP-Group/TravelPlanner).
 
 Large downloaded datasets and generated search indexes are intentionally not stored in Git. Use the recovery steps below after cloning on a new machine.
@@ -30,11 +30,22 @@ IntentionChangeBench/
       execution_agent.py
       llm_clients.py
 
+    domains/
+      travelplanner/
+        environment.py
+        executor.py
+        user_simulator.py
+        run.py
+      webshop/
+        environment.py
+        executor.py
+        user_simulator.py
+        run.py
+
     simulation/
       simulation/
         run_simulation.py
-        human_simulator.py
-        gold_executor.py
+        base_user_simulator.py
         reranker.py
         runtime_logger.py
 
@@ -57,7 +68,36 @@ IntentionChangeBench/
 
 ## Setup
 
-Create `.env` from `.env.example` and fill in the Azure OpenAI settings.
+Create `.env` from `.env.example` and fill in either the public OpenAI or
+Azure OpenAI settings. For a normal OpenAI API key, use:
+
+```text
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your-openai-api-key
+OPENAI_MODEL=your-model-id
+```
+
+The same benchmark prompt is sent when the configured model changes; only the
+model selection changes. Model availability and supported request options
+still depend on the account and model.
+
+For a small DeepSeek test through its OpenAI-compatible Responses API, use:
+
+```text
+LLM_PROVIDER=deepseek
+DEEPSEEK_API_KEY=your-deepseek-api-key
+DEEPSEEK_MODEL=deepseek-v4-flash
+```
+
+This repository also loads the ignored `.env.llm` profile for local testing.
+Select `deepseek` or `openai` there, add the matching key and model, then run:
+
+```powershell
+python .\scripts\test_openai_api.py
+```
+
+To switch the same benchmark back to OpenAI, change `LLM_PROVIDER` to
+`openai` and set `OPENAI_API_KEY` plus `OPENAI_MODEL`.
 
 From the repo root, commands usually need WebShop on `PYTHONPATH`:
 
@@ -141,11 +181,41 @@ $env:PYTHONPATH=(Resolve-Path .\WebShop).Path
   --enable_reranking true
 ```
 
+TravelPlanner uses the original ReAct action vocabulary rather than a one-shot
+sole-planning shortcut:
+
+```text
+CitySearch / FlightSearch / AttractionSearch / AccommodationSearch /
+RestaurantSearch / GoogleDistanceMatrix / NotebookWrite / Planner
+```
+
+TravelPlanner smoke run (30 internal steps is the original agent budget and is
+the domain default):
+
+```powershell
+..\.venv38-webshop\Scripts\python.exe .\src\domains\travelplanner\run.py `
+  --tasks_path .\data\simulation\_travelplanner_smoke_task.json `
+  --output .\data\simulation\_travelplanner_sim_smoke.json `
+  --num_instances 1 `
+  --max_turns 4 `
+  --parallelism 1
+```
+
+Each search produces an environment observation. `NotebookWrite` records that
+observation, and `Planner` is the terminal action that constructs and evaluates
+the itinerary. The full sequence is stored in each turn's `rollout_trace`.
+TravelPlanner `env_feedback.search_results` groups the real search pages into
+attractions, accommodations, restaurants, transportation, and cities. Each
+page exposes up to 10 real items and explicitly reports when no results exist.
+The submitted itinerary is kept separately; TravelPlanner does not use
+`candidate_items`.
+
 Important simulation args:
 
 - `--num_instances`: number of tasks/goals to simulate.
 - `--max_turns`: number of user turns after the initial turn.
-- `--max_internal_steps`: max gold executor internal steps per turn.
+- `--max_internal_steps`: max gold executor internal steps per turn (default 12
+  for WebShop and 30 for TravelPlanner).
 - `--webshop_num_products`: `100`, `1000`, `100000`, or `all`.
 - `--parallelism`: number of instances to run concurrently.
 - `--enable_reranking`: whether to rerank BM25 candidates with the LLM.
