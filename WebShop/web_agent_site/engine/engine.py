@@ -15,7 +15,6 @@ from flask import render_template_string
 from rich import print
 from pyserini.search.lucene import LuceneSearcher
 
-from web_agent_site.engine.jina_reranker import maybe_wrap_with_jina_reranker
 from web_agent_site.utils import (
     BASE_DIR,
     DEFAULT_FILE_PATH,
@@ -204,8 +203,7 @@ def init_search_engine(num_products=None):
         indexes = 'indexes'
     else:
         raise NotImplementedError(f'num_products being {num_products} is not supported yet.')
-    search_engine = LuceneSearcher(os.path.join(BASE_DIR, f'../search_engine/{indexes}'))
-    return maybe_wrap_with_jina_reranker(search_engine)
+    return LuceneSearcher(os.path.join(BASE_DIR, f'../search_engine/{indexes}'))
 
 
 def clean_product_keys(products):
