@@ -114,15 +114,32 @@ class HumanSimulator:
             return None
 
         observation = env_feedback.observation or {}
-        return {
+        is_travelplanner = str(observation.get("domain") or "").lower() == "travelplanner"
+        payload = {
             "feedback_type": observation.get("feedback_type") or "candidate_items",
             "domain": observation.get("domain"),
             "status": env_feedback.status,
             "page_type": observation.get("page_type"),
-            "candidate_items": copy.deepcopy(list(observation.get("candidate_items") or [])[:10]),
-            "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
-            "rerank_info": copy.deepcopy(observation.get("rerank_info")),
         }
+        if is_travelplanner:
+            payload.update(
+                {
+                    "submitted_plan": copy.deepcopy(observation.get("submitted_plan")),
+                    "search_results": copy.deepcopy(observation.get("search_results") or {}),
+                    "satisfied_constraints": list(env_feedback.satisfied_constraints or []),
+                    "violated_constraints": list(env_feedback.violated_constraints or []),
+                    "constraint_debug": copy.deepcopy(observation.get("constraint_debug") or {}),
+                }
+            )
+        else:
+            payload.update(
+                {
+                    "candidate_items": copy.deepcopy(list(observation.get("candidate_items") or [])[:10]),
+                    "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
+                    "rerank_info": copy.deepcopy(observation.get("rerank_info")),
+                }
+            )
+        return payload
 
     def _serialize_intention_timeline(
         self,
@@ -194,11 +211,17 @@ Allowed change categories:
 Task:
 - Feel free to change the trip constraints based on your preferences or on the plan you just saw.
 - You are currently dissatisfied or curious enough to change the plan. You MUST either add a new constraint, relax a constraint, override an existing one, reprioritize constraints, or clarify the trip scope.
+- search_results is grouped into attractions, accommodations, restaurants, transportation, and cities.
+- Each category contains separate search pages with their query, status, and up to 10 sampled real items. Empty pages are marked no_results.
+- Inspect the concrete restaurant, accommodation, attraction, and transportation evidence before deciding how to change the intention.
+- The submitted plan may use the closest available real result when no exact match exists. Inspect closest_match_substitutions before reacting.
 
 Rules:
 - Use TravelPlanner fields such as budget, days, people_number, transportation, cuisine, room_type, house_rule, org, and dest.
 - Use condition="user_preference" when the user changes or adds preferences because of what they just saw.
 - Use condition="real_world_feasibility" when exact constraints seem hard to satisfy.
+- Ground changes prompted by the environment in search_results, submitted_plan, or constraint_debug. Do not claim a search result has a property that is absent from the evidence.
+- Treat a closest-match substitution as an explicit environment limitation: relax, override, or reprioritize only when that response is consistent with the evidence.
 - Do not repeatedly toggle between two values across turns.
 
 Required JSON schema:
@@ -385,13 +408,18 @@ Examples:
             return query
         return self._query_from_intention(gold_intention)
 
-    def _call_llm_for_shift(self, prompt: str) -> Optional[Dict[str, Any]]:
+    def _call_llm_for_shift(self, prompt: str, *, strict: bool = False) -> Optional[Dict[str, Any]]:
         log_prompt("simulator.shift", prompt)
         try:
             raw_output = self.llm_client.generate_json(prompt)
         except Exception:
+            if strict:
+                raise
             return None
-        return _parse_json_like(raw_output)
+        parsed = _parse_json_like(raw_output)
+        if strict and not parsed:
+            raise ValueError(f"TravelPlanner user simulator returned invalid shift JSON: {raw_output!r}")
+        return parsed
 
     def _parse_shift_output(
         self,
@@ -545,9 +573,16 @@ Examples:
             intention_history=intention_history,
             current_gold_delta=current_gold_delta,
         )
-        llm_output = self._call_llm_for_shift(prompt)
+        is_travelplanner = self._infer_domain(current_intention, env_feedback) == "travelplanner"
+        llm_output = self._call_llm_for_shift(prompt, strict=is_travelplanner)
         if llm_output is None:
-            return self._fallback_shift_decision(current_intention, env_feedback)
+            return ShiftOp(
+                op="none",
+                intention_changed=False,
+                condition="none",
+                change_category="none",
+                rationale="invalid_llm_output",
+            )
         if (
             llm_output
             and not bool(llm_output.get("intention_changed", True))
@@ -557,7 +592,7 @@ Examples:
                 f"{prompt}\n\n"
                 "CRITICAL: You are too satisfied. Find a reason to change your mind or goal NOW."
             )
-            llm_output = self._call_llm_for_shift(prompt)
+            llm_output = self._call_llm_for_shift(prompt, strict=is_travelplanner)
         shift = self._parse_shift_output(llm_output, current_intention, env_feedback=env_feedback)
         return shift
 
@@ -587,147 +622,6 @@ Examples:
         if any(field in constraints for field in travel_fields):
             return "travelplanner"
         return "webshop"
-
-    def _fallback_shift_decision(
-        self,
-        current_intention: Dict[str, Any],
-        env_feedback: Optional[EnvFeedback] = None,
-    ) -> ShiftOp:
-        if self._infer_domain(current_intention, env_feedback) != "travelplanner":
-            return ShiftOp(
-                op="none",
-                intention_changed=False,
-                condition="none",
-                change_category="none",
-                rationale="invalid_llm_output",
-            )
-
-        constraints = self._constraints_from_state(current_intention)
-        priority = self._priority_from_state(current_intention, constraints)
-
-        if constraints.get("cuisine") is None:
-            return ShiftOp(
-                op="add",
-                intention_changed=True,
-                condition="user_preference",
-                change_category="add",
-                field="cuisine",
-                old_value=None,
-                value=["Italian"],
-                rationale="Fallback TravelPlanner simulator adds a cuisine preference.",
-                utterance_plan={"style": "explicit", "directness": "direct", "mention_old_value": False},
-            )
-
-        if constraints.get("room_type") is None and constraints.get("room type") is None:
-            return ShiftOp(
-                op="add",
-                intention_changed=True,
-                condition="user_preference",
-                change_category="add",
-                field="room_type",
-                old_value=None,
-                value="private room",
-                rationale="Fallback TravelPlanner simulator adds a room type preference.",
-                utterance_plan={"style": "partial", "directness": "direct", "mention_old_value": False},
-            )
-
-        if constraints.get("transportation") is None:
-            return ShiftOp(
-                op="add",
-                intention_changed=True,
-                condition="user_preference",
-                change_category="add",
-                field="transportation",
-                old_value=None,
-                value="no flight",
-                rationale="Fallback TravelPlanner simulator adds a transportation constraint.",
-                utterance_plan={"style": "explicit", "directness": "direct", "mention_old_value": False},
-            )
-
-        if constraints.get("house_rule") is None and constraints.get("house rule") is None:
-            return ShiftOp(
-                op="add",
-                intention_changed=True,
-                condition="user_preference",
-                change_category="add",
-                field="house_rule",
-                old_value=None,
-                value="pets",
-                rationale="Fallback TravelPlanner simulator adds a house-rule preference.",
-                utterance_plan={"style": "partial", "directness": "direct", "mention_old_value": False},
-            )
-
-        if constraints.get("attraction_preference") is None:
-            return ShiftOp(
-                op="add",
-                intention_changed=True,
-                condition="user_preference",
-                change_category="add",
-                field="attraction_preference",
-                old_value=None,
-                value="park or outdoor landmark",
-                rationale="Fallback TravelPlanner simulator adds an attraction preference.",
-                utterance_plan={"style": "elliptical", "directness": "direct", "mention_old_value": False},
-            )
-
-        if constraints.get("pace") is None:
-            return ShiftOp(
-                op="add",
-                intention_changed=True,
-                condition="user_preference",
-                change_category="add",
-                field="pace",
-                old_value=None,
-                value="relaxed",
-                rationale="Fallback TravelPlanner simulator asks for a more relaxed itinerary pace.",
-                utterance_plan={"style": "partial", "directness": "direct", "mention_old_value": False},
-            )
-
-        budget = constraints.get("budget", constraints.get("budget_max"))
-        if budget is not None:
-            try:
-                old_budget = float(str(budget).replace(",", ""))
-            except (TypeError, ValueError):
-                old_budget = None
-            if old_budget is not None and old_budget < 100000:
-                return ShiftOp(
-                    op="relax",
-                    intention_changed=True,
-                    condition="real_world_feasibility",
-                    change_category="relax",
-                    field="budget" if "budget" in constraints else "budget_max",
-                    old_value=old_budget,
-                    value=round(old_budget * 1.2, 2),
-                    rationale="Fallback TravelPlanner simulator relaxes the budget after seeing the plan.",
-                    utterance_plan={"style": "explicit", "directness": "direct", "mention_old_value": True},
-                )
-
-        if priority:
-            rotated = priority[1:] + priority[:1]
-            return ShiftOp(
-                op="reprioritize",
-                intention_changed=True,
-                condition="user_preference",
-                change_category="reprioritize",
-                field=rotated[0],
-                old_value=priority,
-                value=rotated,
-                priority_update=rotated,
-                rationale="Fallback TravelPlanner simulator changes which trip constraint matters most.",
-                utterance_plan={"style": "partial", "directness": "direct", "mention_old_value": False},
-            )
-
-        return ShiftOp(
-            op="add",
-            intention_changed=True,
-            condition="user_preference",
-            change_category="add",
-            field="cuisine",
-            old_value=None,
-            value=["Italian"],
-            rationale="Fallback TravelPlanner simulator adds a cuisine preference.",
-            utterance_plan={"style": "explicit", "directness": "direct", "mention_old_value": False},
-        )
 
     def apply_shift(
         self,
@@ -827,17 +721,25 @@ Return plain text only, with no quotes and no JSON.
 
         return f"{instructions}\n\n{REALIZATION_CONTEXT_MARKER}\n{_safe_json_dumps(context)}"
 
-    def _call_llm_for_realization(self, prompt: str) -> Optional[str]:
+    def _call_llm_for_realization(self, prompt: str, *, strict: bool = False) -> Optional[str]:
         log_prompt("simulator.realization", prompt)
         try:
             raw_output = self.llm_client.generate_text(prompt)
         except Exception:
+            if strict:
+                raise
             return None
 
         if not isinstance(raw_output, str):
+            if strict:
+                raise ValueError(
+                    f"TravelPlanner user simulator returned a non-text realization: {raw_output!r}"
+                )
             return None
 
         cleaned = raw_output.strip().strip('"').strip()
+        if strict and not cleaned:
+            raise ValueError("TravelPlanner user simulator returned an empty realization.")
         return cleaned or None
 
     def realize_shift(
@@ -857,7 +759,8 @@ Return plain text only, with no quotes and no JSON.
             intention_history=intention_history,
             current_gold_delta=current_gold_delta,
         )
-        utterance = self._call_llm_for_realization(prompt)
+        is_travelplanner = self._infer_domain(current_intention, env_feedback) == "travelplanner"
+        utterance = self._call_llm_for_realization(prompt, strict=is_travelplanner)
         if utterance:
             return utterance
         return self._fallback_realization(shift, style)
