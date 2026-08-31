@@ -189,13 +189,15 @@ CitySearch / FlightSearch / AttractionSearch / AccommodationSearch /
 RestaurantSearch / GoogleDistanceMatrix / NotebookWrite / Planner
 ```
 
-TravelPlanner smoke run (30 internal steps is the original agent budget and is
-the domain default):
+TravelPlanner full-dataset smoke run (30 internal steps is the original agent
+budget and is the domain default). The query is loaded from the Hugging Face
+validation split and paired by row index with the structured local
+`TravelPlanner/database/validation_ref_info.jsonl` evidence:
 
 ```powershell
 ..\.venv38-webshop\Scripts\python.exe .\src\domains\travelplanner\run.py `
-  --tasks_path .\data\simulation\_travelplanner_smoke_task.json `
-  --output .\data\simulation\_travelplanner_sim_smoke.json `
+  --travelplanner_set_type validation `
+  --output .\data\simulation\_travelplanner_full_api_smoke.json `
   --num_instances 1 `
   --max_turns 4 `
   --parallelism 1
@@ -219,6 +221,17 @@ Important simulation args:
 - `--webshop_num_products`: `100`, `1000`, `100000`, or `all`.
 - `--parallelism`: number of instances to run concurrently.
 - `--enable_reranking`: whether to rerank BM25 candidates with the LLM.
+- `--multi_change_rate`: fraction of WebShop shift slots that prefer a
+  naturally sampled multi-change candidate (default `0.30`).
+- `--multi_candidate_samples` / `--max_multi_candidate_samples`: initial and
+  maximum candidate samples used by multi-preferred WebShop turns. These
+  values limit candidate calls, not the number of changes in a selected turn.
+- `--shift_distribution_baseline`: optional v1 dataset used to initialize the
+  category/condition deficit controller. Candidate selection then favors
+  underrepresented categories and conditions without putting them in the LLM
+  prompt.
+- `--distribution_balance_strength`: strength of that candidate-selection
+  preference (`0` means uniform selection within the eligible candidate pool).
 
 ## Annotated Dataset
 
@@ -227,6 +240,25 @@ The benchmark input should live at:
 ```text
 data/simulation/annotated_dataset.json
 ```
+
+### Annotator replay page
+
+The replay server detects the dataset domain automatically. For a
+TravelPlanner rollout it shows structured attraction, accommodation,
+restaurant, transportation, and city search pages; the submitted itinerary
+and tool-action trace are shown separately. Annotators can edit and save each
+turn's user utterance, constraints, and constraint priorities.
+
+```powershell
+..\.venv38-webshop\Scripts\python.exe .\src\replay_server.py `
+  --dataset .\data\simulation\_travelplanner_full_api_smoke.json `
+  --host 127.0.0.1 `
+  --port 7860 `
+  --skip_full_catalog
+```
+
+Open `http://127.0.0.1:7860`. Edits are written back to the file passed to
+`--dataset`; use a working copy when the source rollout must remain immutable.
 
 This file is the gold trajectory dataset used by eval. Each turn should include:
 

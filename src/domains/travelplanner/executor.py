@@ -382,6 +382,17 @@ Return one JSON object only with an itinerary list. Every day must contain day, 
 breakfast, lunch, dinner, attraction, and accommodation. Use '-' when a field is unnecessary. Include available
 flight numbers, prices, room types, and house rules. Respect the latest current intention.
 
+Entity-level planning:
+- current_intention.constraints applies to the whole party.
+- current_intention.entities contains opaque entity_N IDs, free-form natural references, and person-specific constraints.
+- If any entity has a non-empty constraints object, include participant_assignments in every relevant itinerary day.
+- participant_assignments must be an object keyed by the exact stable entity_id. Each value may contain
+  transportation, breakfast, lunch, dinner, attraction, accommodation, or another explicitly requested field.
+- Shared itinerary fields remain the group default. A participant assignment records only that person's differing
+  or explicitly constrained choice; use the same grounded Notebook item when people share an option.
+- Do not silently collapse conflicting person-specific constraints into one group preference.
+- Never surface an opaque entity_N ID to the user; use the entity's natural reference in prose.
+
 Selection rules:
 - Prefer an exact constraint match from Notebook.
 - If no exact match exists, select the semantically closest real result from the same search category.

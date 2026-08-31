@@ -31,6 +31,16 @@ The final user-simulator feedback groups every search page under
 pages remain explicit. TravelPlanner does not expose generated plans as
 candidate items.
 
+TravelPlanner intentions additionally support named traveler entities. Shared
+requirements remain in `constraints`; person-specific requirements live under
+`entities.<entity_N>.constraints`. All person-level changes use the single
+`category=entity` label plus the ordinary add/relax/override/reprioritize/
+scope-correction operation. Membership changes keep `people_number`
+synchronized, and stable opaque entity paths appear in `gold_delta`. Plans with person-specific
+requirements use per-day `participant_assignments`, which the TravelPlanner
+environment evaluates separately for each traveler. This entity schema is not
+used by the WebShop domain.
+
 Allowed:
 - Expose and update gold user intention.
 - Use the selected domain's `user_simulator.py` to create user shifts and annotations.

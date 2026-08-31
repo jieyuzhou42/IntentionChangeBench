@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import copy
 import json
+import math
 import random
 import re
+import threading
 from dataclasses import asdict
 from typing import Any, Dict, List, Optional, Protocol, Tuple
 
@@ -33,6 +35,114 @@ SHIFT_CONTEXT_MARKER = "SHIFT_CONTEXT_JSON:"
 SEARCH_QUERY_CONTEXT_MARKER = "SEARCH_QUERY_CONTEXT_JSON:"
 REALIZATION_CONTEXT_MARKER = "REALIZATION_CONTEXT_JSON:"
 FORCED_SHIFT_RETRY_PROBABILITY = 0.5
+
+
+class ShiftDistributionController:
+    """Thread-safe, deficit-weighted selection over independently sampled shifts."""
+
+    def __init__(
+        self,
+        category_counts: Optional[Dict[str, int]] = None,
+        condition_counts: Optional[Dict[str, int]] = None,
+        category_targets: Optional[Dict[str, float]] = None,
+        condition_targets: Optional[Dict[str, float]] = None,
+        balance_strength: float = 6.0,
+    ):
+        categories = [
+            "add",
+            "relax",
+            "override",
+            "reprioritize",
+            "scope_correction",
+        ]
+        self.category_counts = {
+            category: int((category_counts or {}).get(category, 0))
+            for category in categories
+        }
+        self.condition_counts = {
+            condition: int((condition_counts or {}).get(condition, 0))
+            for condition in ("user_preference", "real_world_feasibility")
+        }
+        self.category_targets = category_targets or {
+            category: 1.0 / len(categories) for category in categories
+        }
+        self.condition_targets = condition_targets or {
+            "user_preference": 0.5,
+            "real_world_feasibility": 0.5,
+        }
+        self.balance_strength = max(0.0, float(balance_strength))
+        self._lock = threading.Lock()
+
+    @staticmethod
+    def _categories_for_shift(shift: ShiftOp) -> List[str]:
+        changes = shift.changes or [shift]
+        return [
+            str(change.change_category or change.op)
+            for change in changes
+            if str(change.change_category or change.op) in ALLOWED_CHANGE_CATEGORIES
+            and str(change.change_category or change.op) != "none"
+        ]
+
+    @staticmethod
+    def _share(counts: Dict[str, int], key: str) -> float:
+        total = sum(counts.values())
+        return counts.get(key, 0) / total if total else 0.0
+
+    def select(
+        self,
+        candidates: List[ShiftOp],
+        rng: random.Random,
+    ) -> Tuple[ShiftOp, Dict[str, Any]]:
+        with self._lock:
+            weights: List[float] = []
+            diagnostics: List[Dict[str, Any]] = []
+            for candidate in candidates:
+                categories = self._categories_for_shift(candidate)
+                category_gaps = [
+                    self.category_targets.get(category, 0.0)
+                    - self._share(self.category_counts, category)
+                    for category in categories
+                ]
+                category_gap = (
+                    sum(category_gaps) / len(category_gaps) if category_gaps else 0.0
+                )
+                condition = str(candidate.condition or "none")
+                condition_gap = self.condition_targets.get(condition, 0.0) - self._share(
+                    self.condition_counts,
+                    condition,
+                )
+                balance_score = category_gap + condition_gap
+                weight = math.exp(self.balance_strength * balance_score)
+                weights.append(weight)
+                diagnostics.append(
+                    {
+                        "categories": categories,
+                        "condition": condition,
+                        "category_gap": category_gap,
+                        "condition_gap": condition_gap,
+                        "selection_weight": weight,
+                    }
+                )
+
+            selected_index = rng.choices(range(len(candidates)), weights=weights, k=1)[0]
+            selected = candidates[selected_index]
+            selected_categories = self._categories_for_shift(selected)
+            for category in selected_categories:
+                if category in self.category_counts:
+                    self.category_counts[category] += 1
+            selected_condition = str(selected.condition or "none")
+            if selected_condition in self.condition_counts:
+                self.condition_counts[selected_condition] += 1
+
+            return selected, {
+                "balance_score": diagnostics[selected_index]["category_gap"]
+                + diagnostics[selected_index]["condition_gap"],
+                "selection_weight": weights[selected_index],
+                "selected_categories": selected_categories,
+                "selected_condition": selected_condition,
+                "category_counts_after_selection": copy.deepcopy(self.category_counts),
+                "condition_counts_after_selection": copy.deepcopy(self.condition_counts),
+            }
 
 
 class LLMClientProtocol(Protocol):
@@ -283,7 +393,8 @@ Allowed change categories:
 
 Task:
 - Feel free to change your primary goal or constraints entirely based on your whims or what you see on the page. Your initial goal is just a starting point, not a contract.
-- You are currently dissatisfied. You MUST either add a new constraint, relax a constrain, override an existing one, reprioritize some constrains over others, or shift your entire focus.
+- You are currently dissatisfied. You MUST make one or more changes: add constraints, relax constraints, override existing ones, reprioritize constraints, or shift your entire focus.
+- A realistic user can change multiple constraints in the same turn. Include every change that belongs in the next utterance; do not artificially limit the turn to one field.
 
 Rules:
 - Treat searching status as a low-level environment signal, not ground truth. Use the candidate items and their constraint matches as the main evidence.
@@ -298,11 +409,16 @@ Required JSON schema:
 {
   "intention_changed": true,
   "condition": "user_preference | real_world_feasibility",
-  "category": "add | relax | override | reprioritize | scope_correction",
-  "field": "constraint field name or null",
-  "old_value": "previous value or null",
-  "value": "new value or null",
-  "priority_update": ["ordered", "priority", "fields"] or null,
+  "changes": [
+    {
+      "category": "add | relax | override | reprioritize | scope_correction",
+      "field": "constraint field name or null",
+      "old_value": "previous value or null",
+      "value": "new value or null",
+      "priority_update": ["ordered", "priority", "fields"] or null,
+      "rationale": "short explanation for this change"
+    }
+  ],
   "rationale": "short explanation",
   "utterance_plan": {
     "style": "explicit | partial | elliptical",
@@ -315,22 +431,19 @@ Examples:
 {
   "intention_changed": true,
   "condition": "user_preference",
-  "category": "override",
-  "field": "color",
-  "old_value": "green stripe",
-  "value": "navy",
-  "priority_update": null,
-  "rationale": "After seeing the pattern, the user now prefers a different color.",
+  "changes": [
+    {"category": "override", "field": "color", "old_value": "green stripe", "value": "navy", "priority_update": null, "rationale": "The user prefers navy."},
+    {"category": "add", "field": "material", "old_value": null, "value": "leather", "priority_update": null, "rationale": "The user also wants leather."}
+  ],
+  "rationale": "After seeing the options, the user changed both color and material preferences.",
   "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": false}
 }
 {
   "intention_changed": true,
   "condition": "real_world_feasibility",
-  "category": "relax",
-  "field": "color",
-  "old_value": "green stripe",
-  "value": null,
-  "priority_update": null,
+  "changes": [
+    {"category": "relax", "field": "color", "old_value": "green stripe", "value": null, "priority_update": null, "rationale": "The exact color seems unavailable."}
+  ],
   "rationale": "The exact option does not seem available, so something close is acceptable.",
   "utterance_plan": {"style": "partial", "directness": "direct", "mention_old_value": true}
 }
@@ -429,6 +542,17 @@ Examples:
     ) -> ShiftOp:
         if not llm_output:
             return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
+
+        raw_changes = llm_output.get("changes")
+        if (
+            self._infer_domain(current_intention, env_feedback) == "webshop"
+            and isinstance(raw_changes, list)
+        ):
+            return self._parse_webshop_multi_shift_output(
+                llm_output,
+                current_intention,
+                env_feedback=env_feedback,
+            )
 
         constraints = self._constraints_from_state(current_intention)
         priority = self._priority_from_state(current_intention, constraints)
@@ -560,12 +684,84 @@ Examples:
             gold_search_query=gold_search_query,
         )
 
+    def _parse_webshop_multi_shift_output(
+        self,
+        llm_output: Dict[str, Any],
+        current_intention: Dict[str, Any],
+        env_feedback: Optional[EnvFeedback] = None,
+    ) -> ShiftOp:
+        """Parse one or more WebShop changes while retaining the legacy shape."""
+        if llm_output.get("intention_changed") is False:
+            return ShiftOp(
+                op="none",
+                intention_changed=False,
+                condition="none",
+                change_category="none",
+                rationale=_clean_string(llm_output.get("rationale", "")) or "llm_decision",
+            )
+
+        working_intention = copy.deepcopy(current_intention)
+        parsed_changes: List[ShiftOp] = []
+        common_condition = llm_output.get("condition")
+        common_plan = llm_output.get("utterance_plan")
+        for raw_change in llm_output.get("changes", []):
+            if not isinstance(raw_change, dict):
+                continue
+            child_payload = copy.deepcopy(raw_change)
+            child_payload["intention_changed"] = True
+            child_payload.setdefault("condition", common_condition)
+            child_payload.setdefault("utterance_plan", common_plan)
+            child = self._parse_shift_output(
+                child_payload,
+                working_intention,
+                env_feedback=env_feedback,
+            )
+            if child.op == "none":
+                continue
+            parsed_changes.append(child)
+
+            if child.op in {"add", "relax", "override", "scope_correction"} and child.field:
+                working_intention.setdefault("constraints", {})[child.field] = copy.deepcopy(child.value)
+            if child.priority_update:
+                working_intention["priority"] = copy.deepcopy(child.priority_update)
+
+        if not parsed_changes:
+            return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
+
+        first = parsed_changes[0]
+        is_multiple = len(parsed_changes) > 1
+        categories = {change.change_category for change in parsed_changes}
+        top_category = "multiple" if len(categories) > 1 or is_multiple else first.change_category
+        rationale = _clean_string(llm_output.get("rationale", "")) or first.rationale
+        normalized_condition = self._normalize_shift_condition(common_condition)
+        if normalized_condition == "none":
+            normalized_condition = first.condition
+        return ShiftOp(
+            op="multiple" if is_multiple else first.op,
+            intention_changed=True,
+            condition=normalized_condition,
+            change_category=top_category,
+            field=None if is_multiple else first.field,
+            old_value=None if is_multiple else copy.deepcopy(first.old_value),
+            value=None if is_multiple else copy.deepcopy(first.value),
+            rationale=rationale,
+            priority_update=None if is_multiple else copy.deepcopy(first.priority_update),
+            utterance_plan=self._normalize_utterance_plan(common_plan) or first.utterance_plan,
+            gold_search_query=self._normalize_gold_search_query(llm_output.get("gold_search_query")),
+            changes=parsed_changes,
+        )
+
     def decide_shift(
         self,
         current_intention: Dict[str, Any],
         env_feedback: Optional[EnvFeedback] = None,
         intention_history: Optional[List[Dict[str, Any]]] = None,
         current_gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
+        candidate_samples: int = 1,
+        max_candidate_samples: Optional[int] = None,
+        prefer_multi: bool = False,
+        rng: Optional[random.Random] = None,
+        distribution_controller: Optional[ShiftDistributionController] = None,
     ) -> ShiftOp:
         prompt = self._build_shift_prompt(
             current_intention,
@@ -574,27 +770,105 @@ Examples:
             current_gold_delta=current_gold_delta,
         )
         is_travelplanner = self._infer_domain(current_intention, env_feedback) == "travelplanner"
-        llm_output = self._call_llm_for_shift(prompt, strict=is_travelplanner)
-        if llm_output is None:
-            return ShiftOp(
-                op="none",
-                intention_changed=False,
-                condition="none",
-                change_category="none",
-                rationale="invalid_llm_output",
-            )
-        if (
-            llm_output
-            and not bool(llm_output.get("intention_changed", True))
-            and random.random() < FORCED_SHIFT_RETRY_PROBABILITY
-        ):
-            prompt = (
-                f"{prompt}\n\n"
-                "CRITICAL: You are too satisfied. Find a reason to change your mind or goal NOW."
-            )
+        if is_travelplanner:
+            candidate_samples = 1
+            max_candidate_samples = 1
+            prefer_multi = False
+
+        initial_sample_count = max(1, int(candidate_samples))
+        sample_limit = max(
+            initial_sample_count,
+            int(max_candidate_samples or initial_sample_count),
+        )
+        chooser = rng or random
+        candidates: List[ShiftOp] = []
+        sampled_count = 0
+
+        while sampled_count < sample_limit:
             llm_output = self._call_llm_for_shift(prompt, strict=is_travelplanner)
-        shift = self._parse_shift_output(llm_output, current_intention, env_feedback=env_feedback)
-        return shift
+            sampled_count += 1
+            if llm_output is None:
+                candidate = ShiftOp(
+                    op="none",
+                    intention_changed=False,
+                    condition="none",
+                    change_category="none",
+                    rationale="invalid_llm_output",
+                )
+            else:
+                if (
+                    not bool(llm_output.get("intention_changed", True))
+                    and random.random() < FORCED_SHIFT_RETRY_PROBABILITY
+                ):
+                    retry_prompt = (
+                        f"{prompt}\n\n"
+                        "CRITICAL: You are too satisfied. Find a reason to change your mind or goal NOW."
+                    )
+                    retried_output = self._call_llm_for_shift(retry_prompt, strict=is_travelplanner)
+                    if retried_output is not None:
+                        llm_output = retried_output
+                candidate = self._parse_shift_output(
+                    llm_output,
+                    current_intention,
+                    env_feedback=env_feedback,
+                )
+            candidates.append(candidate)
+
+            # Always collect the configured initial batch.  A multi-preferred
+            # turn then uses rejection sampling only when that batch contains
+            # no natural multi-change candidate.  No change count is put in
+            # the prompt and there is deliberately no maximum change count.
+            if sampled_count < initial_sample_count:
+                continue
+            if not prefer_multi or any(self._shift_change_count(item) >= 2 for item in candidates):
+                break
+
+        valid_candidates = [item for item in candidates if item.op != "none"]
+        multi_candidates = [
+            item for item in valid_candidates if self._shift_change_count(item) >= 2
+        ]
+        single_candidates = [
+            item for item in valid_candidates if self._shift_change_count(item) == 1
+        ]
+
+        if prefer_multi and multi_candidates:
+            selection_pool = multi_candidates
+            selection_mode = "multi"
+        elif not prefer_multi and single_candidates:
+            selection_pool = single_candidates
+            selection_mode = "single"
+        elif valid_candidates:
+            selection_pool = valid_candidates
+            selection_mode = "fallback"
+        else:
+            selection_pool = candidates
+            selection_mode = "invalid_fallback"
+
+        balance_metadata: Dict[str, Any] = {}
+        if distribution_controller is not None and selection_mode not in {"invalid_fallback"}:
+            selected, balance_metadata = distribution_controller.select(
+                selection_pool,
+                chooser,
+            )
+        else:
+            selected = chooser.choice(selection_pool)
+        selected.sampling_metadata = {
+            "candidate_samples": sampled_count,
+            "valid_candidates": len(valid_candidates),
+            "single_candidates": len(single_candidates),
+            "multi_candidates": len(multi_candidates),
+            "prefer_multi": bool(prefer_multi),
+            "selection_mode": selection_mode,
+            "selected_change_count": self._shift_change_count(selected),
+            "distribution_balance": balance_metadata,
+        }
+        return selected
+
+    @staticmethod
+    def _shift_change_count(shift: ShiftOp) -> int:
+        if shift.op == "none":
+            return 0
+        return len(shift.changes) if shift.changes else 1
 
     def _infer_domain(
         self,
@@ -640,31 +914,33 @@ Examples:
             )
             return new_state, delta
 
-        if shift.op in {"add", "relax", "override", "scope_correction"} and shift.field:
-            old_value = new_state["constraints"].get(shift.field)
-            new_state["constraints"][shift.field] = shift.value
-            delta[shift.field] = {
-                "op": shift.op,
-                "old": old_value,
-                "new": shift.value,
-                "rationale": shift.rationale,
-            }
-
-        if shift.priority_update:
-            normalized_priority = self._normalize_priority_update(
-                shift.priority_update,
-                new_state["constraints"],
-                new_state.get("priority", []),
-            )
-            if normalized_priority and normalized_priority != new_state.get("priority", []):
-                old_priority = list(new_state.get("priority", []))
-                new_state["priority"] = normalized_priority
-                delta["priority"] = {
-                    "op": "reprioritize",
-                    "old": old_priority,
-                    "new": normalized_priority,
-                    "rationale": shift.rationale,
+        effective_changes = shift.changes or [shift]
+        for change in effective_changes:
+            if change.op in {"add", "relax", "override", "scope_correction"} and change.field:
+                old_value = new_state["constraints"].get(change.field)
+                new_state["constraints"][change.field] = change.value
+                delta[change.field] = {
+                    "op": change.op,
+                    "old": old_value,
+                    "new": change.value,
+                    "rationale": change.rationale,
                 }
+
+            if change.priority_update:
+                normalized_priority = self._normalize_priority_update(
+                    change.priority_update,
+                    new_state["constraints"],
+                    new_state.get("priority", []),
+                )
+                if normalized_priority and normalized_priority != new_state.get("priority", []):
+                    old_priority = list(new_state.get("priority", []))
+                    new_state["priority"] = normalized_priority
+                    delta["priority"] = {
+                        "op": "reprioritize",
+                        "old": old_priority,
+                        "new": normalized_priority,
+                        "rationale": change.rationale,
+                    }
 
         if self._infer_domain(new_state) == "travelplanner":
             new_state.pop("gold_search_query", None)
@@ -696,11 +972,16 @@ Examples:
             "shift": asdict(shift),
             "latest_env_feedback": self._serialize_env_feedback(env_feedback),
         }
+        context["shift"].pop("sampling_metadata", None)
+        for change in context["shift"].get("changes", []):
+            if isinstance(change, dict):
+                change.pop("sampling_metadata", None)
 
         instructions = """
 Write the user's next utterance as a single short sentence.
 Ground the utterance strictly in the structured shift decision.
 Do not invent new constraints or changes that are not present in the shift object.
+When shift.changes contains multiple entries, express all of them naturally in the same sentence.
 Make the utterance responsive to the current page feedback when that context is relevant.
 The utterance should sound consistent with the chosen change_category:
 - add: add one more preference naturally
@@ -766,6 +1047,13 @@ Return plain text only, with no quotes and no JSON.
         return self._fallback_realization(shift, style)
 
     def _fallback_realization(self, shift: ShiftOp, style: str) -> str:
+        if len(shift.changes) > 1:
+            parts = [
+                self._fallback_realization(change, style).strip().rstrip(".")
+                for change in shift.changes
+            ]
+            return "; and ".join(parts) + "."
+
         effective_style = style if style in ALLOWED_STYLES else "explicit"
         plan = shift.utterance_plan or {}
         mention_old_value = bool(plan.get("mention_old_value"))

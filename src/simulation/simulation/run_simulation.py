@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import concurrent.futures
 import copy
 import json
@@ -9,9 +10,9 @@ import random
 import re
 import sys
 import traceback
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 _SRC_DIR = Path(__file__).resolve().parents[2]
 if str(_SRC_DIR) not in sys.path:
@@ -22,7 +23,7 @@ from models import AgentAction, BaseTask, DialogueInstance, EnvFeedback, TurnRec
 from prompt_logging import get_prompt_log_path, log_prompt
 from simulation.simulation.reranker import RerankerConfig
 from simulation.simulation.runtime_logger import RuntimeLogger
-from simulation.simulation.base_user_simulator import HumanSimulator
+from simulation.simulation.base_user_simulator import HumanSimulator, ShiftDistributionController
 from domains.travelplanner import (
     TravelPlannerEnvAdapter,
     TravelPlannerExecutor,
@@ -32,6 +33,72 @@ from domains.travelplanner import (
 from domains.webshop import WebShopEnvAdapter, WebShopExecutor, WebShopUserSimulator
 
 STYLE_POOL = ["explicit", "partial", "elliptical"]
+
+
+@dataclass(frozen=True)
+class ShiftSamplingConfig:
+    """WebShop candidate-selection settings; generation prompts stay count-free."""
+
+    multi_change_rate: float = 0.0
+    multi_candidate_samples: int = 1
+    max_multi_candidate_samples: int = 1
+    distribution_controller: Optional[ShiftDistributionController] = None
+
+
+def _balanced_style_schedule(num_shifts: int, rng: random.Random) -> List[str]:
+    schedule = [STYLE_POOL[index % len(STYLE_POOL)] for index in range(num_shifts)]
+    rng.shuffle(schedule)
+    return schedule
+
+
+def _multi_preference_schedule(
+    num_shifts: int,
+    rate: float,
+    rng: random.Random,
+) -> Set[int]:
+    """Choose approximately `rate` slots without specifying a change count."""
+    if num_shifts <= 0 or rate <= 0:
+        return set()
+    expected = min(1.0, rate) * num_shifts
+    count = int(expected)
+    if rng.random() < expected - count:
+        count += 1
+    return set(rng.sample(range(num_shifts), k=min(count, num_shifts)))
+
+
+def _distribution_controller_from_baseline(
+    baseline_path: str,
+    balance_strength: float,
+) -> ShiftDistributionController:
+    with open(baseline_path, "r", encoding="utf-8") as handle:
+        instances = json.load(handle)
+
+    category_counts: Dict[str, int] = {}
+    condition_counts: Dict[str, int] = {}
+    for instance in instances:
+        for turn in instance.get("turns", []):
+            shift_condition = turn.get("shift_condition") or {}
+            if not shift_condition:
+                continue
+            condition = str(shift_condition.get("type") or "none")
+            condition_counts[condition] = condition_counts.get(condition, 0) + 1
+            details = shift_condition.get("details") or {}
+            changes = details.get("changes") or []
+            categories = [
+                str(change.get("change_category") or change.get("op") or "none")
+                for change in changes
+                if isinstance(change, dict)
+            ]
+            if not categories:
+                categories = [str(details.get("change_category") or details.get("op") or "none")]
+            for category in categories:
+                category_counts[category] = category_counts.get(category, 0) + 1
+
+    return ShiftDistributionController(
+        category_counts=category_counts,
+        condition_counts=condition_counts,
+        balance_strength=balance_strength,
+    )
 DEFAULT_MAX_INTERNAL_STEPS = 12
 DEFAULT_TRAVELPLANNER_MAX_INTERNAL_STEPS = 30
 TRAVELPLANNER_CASE_RETRIES = 3
@@ -339,6 +406,15 @@ def load_webshop_tasks(
 def _travelplanner_initial_intention(raw_task: Dict[str, Any]) -> Dict[str, Any]:
     query_data = raw_task.get("travelplanner_query_data") or raw_task
     local_constraint = copy.deepcopy(query_data.get("local_constraint") or {})
+    if isinstance(local_constraint, str):
+        try:
+            local_constraint = ast.literal_eval(local_constraint)
+        except (SyntaxError, ValueError) as exc:
+            raise ValueError(
+                "TravelPlanner local_constraint must be a mapping or a Python/JSON mapping string"
+            ) from exc
+    if not isinstance(local_constraint, dict):
+        raise ValueError("TravelPlanner local_constraint must resolve to a mapping")
     constraints: Dict[str, Any] = {}
     for source, target in (
         ("budget", "budget"),
@@ -362,6 +438,12 @@ def _travelplanner_initial_intention(raw_task: Dict[str, Any]) -> Dict[str, Any]
         if local_constraint.get(source) is not None:
             constraints[target] = copy.deepcopy(local_constraint[source])
 
+    request = str(query_data.get("query") or raw_task.get("query") or "").strip()
+    if constraints.get("people_number") is None:
+        inferred_people = _travelplanner_people_number_from_query(request)
+        if inferred_people is not None:
+            constraints["people_number"] = inferred_people
+
     priority = [
         field
         for field in (
@@ -375,12 +457,49 @@ def _travelplanner_initial_intention(raw_task: Dict[str, Any]) -> Dict[str, Any]
         )
         if constraints.get(field) is not None
     ]
-    request = str(query_data.get("query") or raw_task.get("query") or "").strip()
-    return {
+    intention = {
         "request": request,
         "constraints": constraints,
         "priority": priority,
     }
+    from domains.travelplanner.entity_intention import ensure_entity_state
+
+    return ensure_entity_state(intention)
+
+
+def _travelplanner_people_number_from_query(query: str) -> Optional[int]:
+    text = str(query or "").strip().lower()
+    if not text:
+        return None
+    if any(phrase in text for phrase in ("solo traveler", "solo trip", "lone traveler")):
+        return 1
+    number_words = {
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": 4,
+        "five": 5,
+        "six": 6,
+        "seven": 7,
+        "eight": 8,
+        "nine": 9,
+        "ten": 10,
+        "a": 1,
+    }
+    patterns = (
+        r"(?:for|party of|group of)\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|a)\s+(?:people|persons?|travelers?|individuals?)\b",
+        r"\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+(?:people|persons?|travelers?|individuals?)\b",
+        r"(?:itinerary|trip|journey|plan)\s+for\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\b(?!\s*(?:days?|nights?|cities)\b)",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, text)
+        if not match:
+            continue
+        token = match.group(1)
+        if token.isdigit():
+            return max(1, int(token))
+        return number_words[token]
+    return None
 
 
 def _travelplanner_task_from_payload(
@@ -393,6 +512,16 @@ def _travelplanner_task_from_payload(
         raise ValueError(f"TravelPlanner task #{fallback_index} must be a JSON object")
 
     query_data = copy.deepcopy(raw_task.get("travelplanner_query_data") or raw_task)
+    for field in ("local_constraint", "date"):
+        value = query_data.get(field)
+        if not isinstance(value, str) or not value.strip().startswith(("{", "[")):
+            continue
+        try:
+            query_data[field] = ast.literal_eval(value)
+        except (SyntaxError, ValueError) as exc:
+            raise ValueError(
+                f"TravelPlanner {field} must contain a valid Python/JSON literal"
+            ) from exc
     ref_info = raw_task.get("reference_information")
     if ref_info is None:
         ref_info = reference_information
@@ -407,6 +536,10 @@ def _travelplanner_task_from_payload(
     initial_intention = raw_task.get("initial_intention")
     if not isinstance(initial_intention, dict):
         initial_intention = _travelplanner_initial_intention(query_data)
+    else:
+        from domains.travelplanner.entity_intention import ensure_entity_state
+
+        initial_intention = ensure_entity_state(initial_intention)
 
     return BaseTask(
         instance_id=str(raw_task.get("instance_id") or f"travelplanner_{fallback_index:05d}"),
@@ -455,7 +588,15 @@ def load_travelplanner_tasks(
 
             dataset = load_dataset("osunlp/TravelPlanner", set_type)[set_type]
             limit = num_instances or 10
-            raw_tasks = [dict(dataset[index]) for index in range(min(limit, len(dataset)))]
+            raw_tasks = []
+            for index in range(min(limit, len(dataset))):
+                row = dict(dataset[index])
+                # Hugging Face stores reference_information as a large Python-
+                # literal string containing rendered tables. Prefer the local
+                # structured *_ref_info.jsonl row, which is index-aligned with
+                # the query split and is directly searchable by the executor.
+                row.pop("reference_information", None)
+                raw_tasks.append(row)
         except Exception as exc:
             raise RuntimeError(
                 "TravelPlanner tasks require --tasks_path, or an available cached/online "
@@ -1280,8 +1421,17 @@ def simulate_dialogue_instance(
     max_turns: int = 4,
     max_internal_steps: int = DEFAULT_MAX_INTERNAL_STEPS,
     seed: int = 7,
+    shift_sampling_config: Optional[ShiftSamplingConfig] = None,
 ) -> DialogueInstance:
     rng = random.Random(seed)
+    sampling_config = shift_sampling_config or ShiftSamplingConfig()
+    schedule_rng = random.Random(f"webshop-shift-schedule:{seed}")
+    style_schedule = _balanced_style_schedule(max_turns, schedule_rng)
+    multi_preferred_turns = _multi_preference_schedule(
+        max_turns,
+        sampling_config.multi_change_rate,
+        schedule_rng,
+    )
     turns: List[TurnRecord] = []
 
     current_intention = copy.deepcopy(task.initial_intention)
@@ -1368,12 +1518,34 @@ def simulate_dialogue_instance(
         if turn_id >= max_turns:
             break
 
-        style = rng.choice(STYLE_POOL)
+        style = style_schedule[turn_id]
+        prefer_multi = domain != "travelplanner" and turn_id in multi_preferred_turns
+        use_candidate_pool = (
+            domain != "travelplanner"
+            and sampling_config.distribution_controller is not None
+        )
         shift = human_simulator.decide_shift(
             current_intention,
             env_feedback=env_feedback,
             intention_history=intention_history[:-1],
             current_gold_delta=gold_delta,
+            candidate_samples=(
+                sampling_config.multi_candidate_samples
+                if prefer_multi or use_candidate_pool
+                else 1
+            ),
+            max_candidate_samples=(
+                sampling_config.max_multi_candidate_samples
+                if prefer_multi
+                else (
+                    sampling_config.multi_candidate_samples
+                    if use_candidate_pool
+                    else 1
+                )
+            ),
+            prefer_multi=prefer_multi,
+            rng=rng,
+            distribution_controller=sampling_config.distribution_controller,
         )
         new_intention, delta = human_simulator.apply_shift(current_intention, shift)
         user_utt = human_simulator.realize_shift(
@@ -1410,6 +1582,8 @@ def simulate_dialogue_instance(
                     "old_value": shift.old_value,
                     "value": shift.value,
                     "priority_update": shift.priority_update,
+                    "changes": [asdict(change) for change in shift.changes],
+                    "candidate_sampling": copy.deepcopy(shift.sampling_metadata),
                 },
             }
             trigger_evidence = {
@@ -1420,6 +1594,8 @@ def simulate_dialogue_instance(
                     "op": shift.op,
                     "field": shift.field,
                     "rationale": shift.rationale,
+                    "changes": [asdict(change) for change in shift.changes],
+                    "candidate_sampling": copy.deepcopy(shift.sampling_metadata),
                 },
             }
 
@@ -1500,6 +1676,7 @@ def _simulate_task_with_retries(
     max_turns: int,
     max_internal_steps: int,
     seed: int,
+    shift_sampling_config: Optional[ShiftSamplingConfig] = None,
 ) -> Optional[DialogueInstance]:
     max_attempts = 1 + (TRAVELPLANNER_CASE_RETRIES if domain == "travelplanner" else 0)
     for attempt in range(1, max_attempts + 1):
@@ -1512,6 +1689,7 @@ def _simulate_task_with_retries(
                 max_turns=max_turns,
                 max_internal_steps=max_internal_steps,
                 seed=seed,
+                shift_sampling_config=shift_sampling_config,
             )
         except Exception:
             if domain != "travelplanner":
@@ -1537,6 +1715,7 @@ def _simulate_single_instance(
     webshop_num_products: Optional[int],
     executor_type: str,
     reranker_config: RerankerConfig,
+    shift_sampling_config: Optional[ShiftSamplingConfig] = None,
 ) -> DialogueInstance:
     env, agent, human, raw_env = _build_runtime_components(
         domain=domain,
@@ -1555,6 +1734,7 @@ def _simulate_single_instance(
             max_turns=max_turns,
             max_internal_steps=max_internal_steps,
             seed=seed,
+            shift_sampling_config=shift_sampling_config,
         )
         if instance is None:
             raise RuntimeError(f"TravelPlanner case {task.instance_id!r} failed after all retries.")
@@ -1576,6 +1756,7 @@ def _simulate_instances_serial(
     webshop_num_products: Optional[int],
     executor_type: str,
     reranker_config: RerankerConfig,
+    shift_sampling_config: ShiftSamplingConfig,
 ) -> List[DialogueInstance]:
     env, agent, human, raw_env = _build_runtime_components(
         domain=domain,
@@ -1596,6 +1777,7 @@ def _simulate_instances_serial(
                 max_turns=max_turns,
                 max_internal_steps=max_internal_steps,
                 seed=seed + task_index - 1,
+                shift_sampling_config=shift_sampling_config,
             )
             if instance is not None:
                 instances.append(instance)
@@ -1617,6 +1799,7 @@ def _simulate_task_batch(
     webshop_num_products: Optional[int],
     executor_type: str,
     reranker_config: RerankerConfig,
+    shift_sampling_config: ShiftSamplingConfig,
 ) -> Dict[int, DialogueInstance]:
     env, agent, human, raw_env = _build_runtime_components(
         domain=domain,
@@ -1637,6 +1820,7 @@ def _simulate_task_batch(
                 max_turns=max_turns,
                 max_internal_steps=max_internal_steps,
                 seed=seed + task_index - 1,
+                shift_sampling_config=shift_sampling_config,
             )
             if instance is not None:
                 instances_by_index[task_index] = instance
@@ -1673,6 +1857,7 @@ def _simulate_instances(
     executor_type: str,
     parallelism: int,
     reranker_config: RerankerConfig,
+    shift_sampling_config: ShiftSamplingConfig,
 ) -> List[DialogueInstance]:
     if parallelism <= 1:
         return _simulate_instances_serial(
@@ -1685,6 +1870,7 @@ def _simulate_instances(
             webshop_num_products=webshop_num_products,
             executor_type=executor_type,
             reranker_config=reranker_config,
+            shift_sampling_config=shift_sampling_config,
         )
 
     effective_parallelism = min(parallelism, len(tasks))
@@ -1703,6 +1889,7 @@ def _simulate_instances(
                 webshop_num_products=webshop_num_products,
                 executor_type=executor_type,
                 reranker_config=reranker_config,
+                shift_sampling_config=shift_sampling_config,
             ): batch_index
             for batch_index, batch in enumerate(task_batches, start=1)
         }
@@ -1781,6 +1968,42 @@ def main():
         help="Number of tasks to simulate concurrently. Use the same value as the number of selected tasks for one task per worker.",
     )
     parser.add_argument(
+        "--multi_change_rate",
+        type=float,
+        default=0.30,
+        help=(
+            "Fraction of WebShop shift slots that prefer a naturally sampled multi-change candidate. "
+            "This does not put a change count in the LLM prompt."
+        ),
+    )
+    parser.add_argument(
+        "--multi_candidate_samples",
+        type=int,
+        default=4,
+        help="Initial number of independent shift candidates sampled for a multi-preferred WebShop turn.",
+    )
+    parser.add_argument(
+        "--max_multi_candidate_samples",
+        type=int,
+        default=12,
+        help="Maximum candidates sampled when a multi-preferred turn has not yet produced a natural multi change.",
+    )
+    parser.add_argument(
+        "--shift_distribution_baseline",
+        type=str,
+        default=os.getenv("SHIFT_DISTRIBUTION_BASELINE"),
+        help=(
+            "Optional v1 dataset whose category/condition counts initialize the WebShop "
+            "deficit-weighted candidate selector. Category targets are uniform and condition targets are 50/50."
+        ),
+    )
+    parser.add_argument(
+        "--distribution_balance_strength",
+        type=float,
+        default=6.0,
+        help="Strength of deficit-weighted candidate selection; 0 chooses uniformly from the eligible pool.",
+    )
+    parser.add_argument(
         "--azure_api_version",
         type=str,
         default=os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21"),
@@ -1836,6 +2059,16 @@ def main():
 
     if args.parallelism < 1:
         raise ValueError("--parallelism must be at least 1")
+    if not 0.0 <= args.multi_change_rate <= 1.0:
+        raise ValueError("--multi_change_rate must be between 0 and 1")
+    if args.multi_candidate_samples < 1:
+        raise ValueError("--multi_candidate_samples must be at least 1")
+    if args.max_multi_candidate_samples < args.multi_candidate_samples:
+        raise ValueError(
+            "--max_multi_candidate_samples cannot be smaller than --multi_candidate_samples"
+        )
+    if args.distribution_balance_strength < 0:
+        raise ValueError("--distribution_balance_strength cannot be negative")
     if args.rerank_top_n < 1:
         raise ValueError("--rerank_top_n must be at least 1")
     if args.rerank_return_k < 1:
@@ -1871,6 +2104,22 @@ def main():
         reranker_model=args.reranker_model,
         reranker_debug=args.reranker_debug,
     )
+    distribution_controller = None
+    if args.domain == "webshop" and args.shift_distribution_baseline:
+        distribution_controller = _distribution_controller_from_baseline(
+            args.shift_distribution_baseline,
+            balance_strength=args.distribution_balance_strength,
+        )
+    shift_sampling_config = ShiftSamplingConfig(
+        multi_change_rate=args.multi_change_rate if args.domain == "webshop" else 0.0,
+        multi_candidate_samples=(
+            args.multi_candidate_samples if args.domain == "webshop" else 1
+        ),
+        max_multi_candidate_samples=(
+            args.max_multi_candidate_samples if args.domain == "webshop" else 1
+        ),
+        distribution_controller=distribution_controller,
+    )
 
     instances = _simulate_instances(
         domain=args.domain,
@@ -1883,6 +2132,7 @@ def main():
         executor_type=args.executor_type,
         parallelism=effective_parallelism,
         reranker_config=reranker_config,
+        shift_sampling_config=shift_sampling_config,
     )
     for instance in instances:
         logger.log_instance(instance)
@@ -1891,7 +2141,7 @@ def main():
     print(
         f"Saved {len(logger.instances)} instances to {args.output} "
         f"(domain={args.domain}, parallelism={effective_parallelism}, webshop_num_products={args.webshop_num_products}, "
-        f"executor_type={args.executor_type})"
+        f"executor_type={args.executor_type}, multi_change_rate={shift_sampling_config.multi_change_rate})"
     )
     return
 
