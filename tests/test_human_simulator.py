@@ -35,8 +35,10 @@ class SequenceLLMClient:
     def __init__(self, outputs):
         self.outputs = list(outputs)
         self.calls = 0
+        self.prompts = []
 
-    def generate_json(self, _prompt):
+    def generate_json(self, prompt):
+        self.prompts.append(prompt)
         output = self.outputs[self.calls]
         self.calls += 1
         return output
@@ -254,6 +256,7 @@ def test_distribution_controller_uses_v1_counts_to_favor_missing_directions():
             "real_world_feasibility": 569,
         },
         balance_strength=6.0,
+        control_mode="selection",
     )
     overrepresented = ShiftOp(
         op="add",
@@ -280,6 +283,85 @@ def test_distribution_controller_uses_v1_counts_to_favor_missing_directions():
     assert selected is underrepresented
     assert metadata["selected_categories"] == ["scope_correction"]
     assert metadata["selected_condition"] == "real_world_feasibility"
+
+
+def test_prompt_controller_exposes_v1_deficits_as_soft_guidance():
+    controller = ShiftDistributionController(
+        category_counts={
+            "add": 1270,
+            "relax": 450,
+            "override": 193,
+            "reprioritize": 68,
+            "scope_correction": 59,
+        },
+        condition_counts={
+            "user_preference": 1471,
+            "real_world_feasibility": 569,
+        },
+        control_mode="prompt",
+    )
+
+    guidance = controller.prompt_guidance(compound_update_preferred=True)
+
+    assert guidance["preferred_change_categories_when_natural"] == [
+        "scope_correction",
+        "reprioritize",
+        "override",
+        "relax",
+    ]
+    assert guidance["preferred_conditions_when_natural"] == [
+        "real_world_feasibility"
+    ]
+    assert guidance["compound_update_preferred_when_natural"] is True
+
+
+def test_prompt_mode_injects_live_distribution_guidance_into_shift_prompt():
+    llm_client = SequenceLLMClient([_single_shift()])
+    simulator = WebShopUserSimulator(llm_client=llm_client)
+    controller = ShiftDistributionController(
+        category_counts={"add": 10, "relax": 2},
+        condition_counts={"user_preference": 10, "real_world_feasibility": 2},
+        control_mode="prompt",
+    )
+
+    shift = simulator.decide_shift(
+        {"constraints": {"color": "blue"}, "priority": ["color"]},
+        prefer_multi=True,
+        distribution_controller=controller,
+        rng=random.Random(7),
+    )
+
+    instructions, _ = llm_client.prompts[0].split(SHIFT_CONTEXT_MARKER, 1)
+    context = _shift_context(llm_client.prompts[0])
+    guidance = context["distribution_guidance"]
+    assert guidance["preferred_conditions_when_natural"] == [
+        "real_world_feasibility"
+    ]
+    assert guidance["compound_update_preferred_when_natural"] is True
+    assert "soft diversity preference" in instructions
+    assert shift.sampling_metadata["prompt_distribution_guidance"] == guidance
+
+
+def test_none_like_field_is_not_treated_as_a_new_constraint_name():
+    simulator = WebShopUserSimulator(llm_client=RecordingLLMClient())
+
+    shift = simulator._parse_shift_output(
+        {
+            "intention_changed": True,
+            "condition": "user_preference",
+            "category": "reprioritize",
+            "field": "none",
+            "priority_update": ["budget_max", "category"],
+            "rationale": "Budget matters more now.",
+        },
+        {
+            "constraints": {"category": "running shoes", "budget_max": 80},
+            "priority": ["category", "budget_max"],
+        },
+    )
+
+    assert shift.op == "reprioritize"
+    assert shift.field is None
 
 
 def test_shift_prompt_passes_full_gold_intention_timeline():

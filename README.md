@@ -232,6 +232,9 @@ Important simulation args:
   prompt.
 - `--distribution_balance_strength`: strength of that candidate-selection
   preference (`0` means uniform selection within the eligible candidate pool).
+- `--distribution_control_mode`: `prompt` adds dynamic soft guidance from the
+  observed deficits, `selection` only reweights sampled candidates, and
+  `hybrid` applies both. The default is `prompt`.
 
 ## Annotated Dataset
 

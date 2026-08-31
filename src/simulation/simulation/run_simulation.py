@@ -69,6 +69,7 @@ def _multi_preference_schedule(
 def _distribution_controller_from_baseline(
     baseline_path: str,
     balance_strength: float,
+    control_mode: str = "prompt",
 ) -> ShiftDistributionController:
     with open(baseline_path, "r", encoding="utf-8") as handle:
         instances = json.load(handle)
@@ -98,6 +99,7 @@ def _distribution_controller_from_baseline(
         category_counts=category_counts,
         condition_counts=condition_counts,
         balance_strength=balance_strength,
+        control_mode=control_mode,
     )
 DEFAULT_MAX_INTERNAL_STEPS = 12
 DEFAULT_TRAVELPLANNER_MAX_INTERNAL_STEPS = 30
@@ -2004,6 +2006,15 @@ def main():
         help="Strength of deficit-weighted candidate selection; 0 chooses uniformly from the eligible pool.",
     )
     parser.add_argument(
+        "--distribution_control_mode",
+        choices=["prompt", "selection", "hybrid"],
+        default="prompt",
+        help=(
+            "How v1 deficits affect generation: prompt adds soft dynamic guidance, "
+            "selection only reweights candidates, and hybrid does both."
+        ),
+    )
+    parser.add_argument(
         "--azure_api_version",
         type=str,
         default=os.getenv("AZURE_OPENAI_API_VERSION", "2024-10-21"),
@@ -2109,6 +2120,7 @@ def main():
         distribution_controller = _distribution_controller_from_baseline(
             args.shift_distribution_baseline,
             balance_strength=args.distribution_balance_strength,
+            control_mode=args.distribution_control_mode,
         )
     shift_sampling_config = ShiftSamplingConfig(
         multi_change_rate=args.multi_change_rate if args.domain == "webshop" else 0.0,
