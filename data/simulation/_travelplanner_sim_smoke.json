@@ -52,14 +52,15 @@
         "turn_id": 0,
         "user_utterance": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room.",
         "agent_action": {
-          "action_type": "submit_plan",
+          "action_type": "Planner",
           "action_payload": {
+            "query": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room.",
             "plan": {
               "itinerary": [
                 {
                   "day": 1,
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -67,8 +68,9 @@
                   "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                 }
               ],
-              "rationale": "Fallback plan generated from user request: Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
-            }
+              "rationale": "Fallback Planner result built from collected Notebook data for: Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
+            },
+            "argument": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
           }
         },
         "env_feedback": {
@@ -118,8 +120,8 @@
               },
               "itinerary_preview": [
                 {
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -172,8 +174,8 @@
             },
             "itinerary_preview": [
               {
-                "current_city": "Boston",
-                "transportation": "Self-driving from New York to Boston",
+                "current_city": "from New York to Boston",
+                "transportation": "self-driving, from New York to Boston, no valid information.",
                 "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -214,22 +216,291 @@
         },
         "linguistic_style": "explicit",
         "action_implication": "start_search",
-        "num_internal_steps": 1,
-        "num_rollout_search_actions": 0,
-        "rollout_search_queries": [],
-        "stop_reason": "direct_execute",
+        "num_internal_steps": 11,
+        "num_rollout_search_actions": 5,
+        "rollout_search_queries": [
+          "AttractionSearch[Boston]",
+          "AccommodationSearch[Boston]",
+          "RestaurantSearch[Boston]",
+          "GoogleDistanceMatrix[New York, Boston, self-driving]",
+          "GoogleDistanceMatrix[Boston, New York, self-driving]"
+        ],
+        "stop_reason": "env_done",
         "rollout_trace": [
           {
             "step_index": 1,
             "action": {
-              "action_type": "submit_plan",
+              "action_type": "AttractionSearch",
               "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AttractionSearch[Boston]",
+              "rationale": "Collect attraction information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AttractionSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Attractions in Boston",
+              "content": [
+                {
+                  "name": "Boston Common",
+                  "city": "Boston"
+                }
+              ]
+            },
+            "notebook_size": 0,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 2,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AttractionSearch[Boston]",
+                "argument": "AttractionSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AttractionSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 3,
+            "action": {
+              "action_type": "AccommodationSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AccommodationSearch[Boston]",
+              "rationale": "Collect accommodation information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AccommodationSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Accommodations in Boston",
+              "content": [
+                {
+                  "name": "Boston Private Stay",
+                  "city": "Boston",
+                  "room_type": "private room",
+                  "price": 180
+                }
+              ]
+            },
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 4,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AccommodationSearch[Boston]",
+                "argument": "AccommodationSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AccommodationSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 5,
+            "action": {
+              "action_type": "RestaurantSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "RestaurantSearch[Boston]",
+              "rationale": "Collect restaurant information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "RestaurantSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Restaurants in Boston",
+              "content": [
+                {
+                  "name": "North End Italian Kitchen",
+                  "city": "Boston",
+                  "cuisine": "Italian",
+                  "average_cost": 35
+                }
+              ]
+            },
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 6,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "RestaurantSearch[Boston]",
+                "argument": "RestaurantSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[RestaurantSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 7,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "New York",
+                "destination": "Boston",
+                "mode": "self-driving",
+                "argument": "New York, Boston, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "New York, Boston, self-driving",
+            "tool_result": "self-driving, from New York to Boston, no valid information.",
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 8,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+                "argument": "GoogleDistanceMatrix[New York, Boston, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[New York, Boston, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 9,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "Boston",
+                "destination": "New York",
+                "mode": "self-driving",
+                "argument": "Boston, New York, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "Boston, New York, self-driving",
+            "tool_result": "self-driving, from Boston to New York, no valid information.",
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 10,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+                "argument": "GoogleDistanceMatrix[Boston, New York, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[Boston, New York, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 11,
+            "action": {
+              "action_type": "Planner",
+              "action_payload": {
+                "query": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room.",
                 "plan": {
                   "itinerary": [
                     {
                       "day": 1,
-                      "current_city": "Boston",
-                      "transportation": "Self-driving from New York to Boston",
+                      "current_city": "from New York to Boston",
+                      "transportation": "self-driving, from New York to Boston, no valid information.",
                       "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -237,18 +508,24 @@
                       "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                     }
                   ],
-                  "rationale": "Fallback plan generated from user request: Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
-                }
+                  "rationale": "Fallback Planner result built from collected Notebook data for: Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
+                },
+                "argument": "Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room."
               },
-              "rationale": null,
+              "original_action": "Planner[Plan a 1-day trip from New York to Boston for 1 person under a budget of 500 dollars. I prefer Italian food and a private room.]",
+              "rationale": "All required information has been recorded; construct the final itinerary.",
               "predicted_current_intention": null
             },
             "page_type": "plan",
             "selected_asin": null,
             "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
             "state_changed": true,
             "made_progress": true,
-            "stop_reason": "direct_execute"
+            "stop_reason": "env_done"
           }
         ],
         "agent_intention_prediction": null,
@@ -258,14 +535,15 @@
         "turn_id": 1,
         "user_utterance": "Also, pets would be nice.",
         "agent_action": {
-          "action_type": "submit_plan",
+          "action_type": "Planner",
           "action_payload": {
+            "query": "Also, pets would be nice.",
             "plan": {
               "itinerary": [
                 {
                   "day": 1,
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -273,8 +551,9 @@
                   "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                 }
               ],
-              "rationale": "Fallback plan generated from user request: Also, pets would be nice."
-            }
+              "rationale": "Fallback Planner result built from collected Notebook data for: Also, pets would be nice."
+            },
+            "argument": "Also, pets would be nice."
           }
         },
         "env_feedback": {
@@ -324,8 +603,8 @@
               },
               "itinerary_preview": [
                 {
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -378,8 +657,8 @@
             },
             "itinerary_preview": [
               {
-                "current_city": "Boston",
-                "transportation": "Self-driving from New York to Boston",
+                "current_city": "from New York to Boston",
+                "transportation": "self-driving, from New York to Boston, no valid information.",
                 "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -455,22 +734,291 @@
         },
         "linguistic_style": "partial",
         "action_implication": "continue",
-        "num_internal_steps": 1,
-        "num_rollout_search_actions": 0,
-        "rollout_search_queries": [],
-        "stop_reason": "direct_execute",
+        "num_internal_steps": 11,
+        "num_rollout_search_actions": 5,
+        "rollout_search_queries": [
+          "AttractionSearch[Boston]",
+          "AccommodationSearch[Boston]",
+          "RestaurantSearch[Boston]",
+          "GoogleDistanceMatrix[New York, Boston, self-driving]",
+          "GoogleDistanceMatrix[Boston, New York, self-driving]"
+        ],
+        "stop_reason": "env_done",
         "rollout_trace": [
           {
             "step_index": 1,
             "action": {
-              "action_type": "submit_plan",
+              "action_type": "AttractionSearch",
               "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AttractionSearch[Boston]",
+              "rationale": "Collect attraction information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AttractionSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Attractions in Boston",
+              "content": [
+                {
+                  "name": "Boston Common",
+                  "city": "Boston"
+                }
+              ]
+            },
+            "notebook_size": 0,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 2,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AttractionSearch[Boston]",
+                "argument": "AttractionSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AttractionSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 3,
+            "action": {
+              "action_type": "AccommodationSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AccommodationSearch[Boston]",
+              "rationale": "Collect accommodation information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AccommodationSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Accommodations in Boston",
+              "content": [
+                {
+                  "name": "Boston Private Stay",
+                  "city": "Boston",
+                  "room_type": "private room",
+                  "price": 180
+                }
+              ]
+            },
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 4,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AccommodationSearch[Boston]",
+                "argument": "AccommodationSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AccommodationSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 5,
+            "action": {
+              "action_type": "RestaurantSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "RestaurantSearch[Boston]",
+              "rationale": "Collect restaurant information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "RestaurantSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Restaurants in Boston",
+              "content": [
+                {
+                  "name": "North End Italian Kitchen",
+                  "city": "Boston",
+                  "cuisine": "Italian",
+                  "average_cost": 35
+                }
+              ]
+            },
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 6,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "RestaurantSearch[Boston]",
+                "argument": "RestaurantSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[RestaurantSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 7,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "New York",
+                "destination": "Boston",
+                "mode": "self-driving",
+                "argument": "New York, Boston, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "New York, Boston, self-driving",
+            "tool_result": "self-driving, from New York to Boston, no valid information.",
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 8,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+                "argument": "GoogleDistanceMatrix[New York, Boston, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[New York, Boston, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 9,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "Boston",
+                "destination": "New York",
+                "mode": "self-driving",
+                "argument": "Boston, New York, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "Boston, New York, self-driving",
+            "tool_result": "self-driving, from Boston to New York, no valid information.",
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 10,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+                "argument": "GoogleDistanceMatrix[Boston, New York, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[Boston, New York, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 11,
+            "action": {
+              "action_type": "Planner",
+              "action_payload": {
+                "query": "Also, pets would be nice.",
                 "plan": {
                   "itinerary": [
                     {
                       "day": 1,
-                      "current_city": "Boston",
-                      "transportation": "Self-driving from New York to Boston",
+                      "current_city": "from New York to Boston",
+                      "transportation": "self-driving, from New York to Boston, no valid information.",
                       "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -478,18 +1026,24 @@
                       "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                     }
                   ],
-                  "rationale": "Fallback plan generated from user request: Also, pets would be nice."
-                }
+                  "rationale": "Fallback Planner result built from collected Notebook data for: Also, pets would be nice."
+                },
+                "argument": "Also, pets would be nice."
               },
-              "rationale": null,
+              "original_action": "Planner[Also, pets would be nice.]",
+              "rationale": "All required information has been recorded; construct the final itinerary.",
               "predicted_current_intention": null
             },
             "page_type": "plan",
             "selected_asin": null,
             "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
             "state_changed": true,
             "made_progress": true,
-            "stop_reason": "direct_execute"
+            "stop_reason": "env_done"
           }
         ],
         "agent_intention_prediction": null,
@@ -499,14 +1053,15 @@
         "turn_id": 2,
         "user_utterance": "Also, I'd prefer attraction preference park or outdoor landmark.",
         "agent_action": {
-          "action_type": "submit_plan",
+          "action_type": "Planner",
           "action_payload": {
+            "query": "Also, I'd prefer attraction preference park or outdoor landmark.",
             "plan": {
               "itinerary": [
                 {
                   "day": 1,
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -514,8 +1069,9 @@
                   "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                 }
               ],
-              "rationale": "Fallback plan generated from user request: Also, I'd prefer attraction preference park or outdoor landmark."
-            }
+              "rationale": "Fallback Planner result built from collected Notebook data for: Also, I'd prefer attraction preference park or outdoor landmark."
+            },
+            "argument": "Also, I'd prefer attraction preference park or outdoor landmark."
           }
         },
         "env_feedback": {
@@ -565,8 +1121,8 @@
               },
               "itinerary_preview": [
                 {
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -619,8 +1175,8 @@
             },
             "itinerary_preview": [
               {
-                "current_city": "Boston",
-                "transportation": "Self-driving from New York to Boston",
+                "current_city": "from New York to Boston",
+                "transportation": "self-driving, from New York to Boston, no valid information.",
                 "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -698,22 +1254,291 @@
         },
         "linguistic_style": "explicit",
         "action_implication": "continue",
-        "num_internal_steps": 1,
-        "num_rollout_search_actions": 0,
-        "rollout_search_queries": [],
-        "stop_reason": "direct_execute",
+        "num_internal_steps": 11,
+        "num_rollout_search_actions": 5,
+        "rollout_search_queries": [
+          "AttractionSearch[Boston]",
+          "AccommodationSearch[Boston]",
+          "RestaurantSearch[Boston]",
+          "GoogleDistanceMatrix[New York, Boston, self-driving]",
+          "GoogleDistanceMatrix[Boston, New York, self-driving]"
+        ],
+        "stop_reason": "env_done",
         "rollout_trace": [
           {
             "step_index": 1,
             "action": {
-              "action_type": "submit_plan",
+              "action_type": "AttractionSearch",
               "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AttractionSearch[Boston]",
+              "rationale": "Collect attraction information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AttractionSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Attractions in Boston",
+              "content": [
+                {
+                  "name": "Boston Common",
+                  "city": "Boston"
+                }
+              ]
+            },
+            "notebook_size": 0,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 2,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AttractionSearch[Boston]",
+                "argument": "AttractionSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AttractionSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 3,
+            "action": {
+              "action_type": "AccommodationSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AccommodationSearch[Boston]",
+              "rationale": "Collect accommodation information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AccommodationSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Accommodations in Boston",
+              "content": [
+                {
+                  "name": "Boston Private Stay",
+                  "city": "Boston",
+                  "room_type": "private room",
+                  "price": 180
+                }
+              ]
+            },
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 4,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AccommodationSearch[Boston]",
+                "argument": "AccommodationSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AccommodationSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 5,
+            "action": {
+              "action_type": "RestaurantSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "RestaurantSearch[Boston]",
+              "rationale": "Collect restaurant information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "RestaurantSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Restaurants in Boston",
+              "content": [
+                {
+                  "name": "North End Italian Kitchen",
+                  "city": "Boston",
+                  "cuisine": "Italian",
+                  "average_cost": 35
+                }
+              ]
+            },
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 6,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "RestaurantSearch[Boston]",
+                "argument": "RestaurantSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[RestaurantSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 7,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "New York",
+                "destination": "Boston",
+                "mode": "self-driving",
+                "argument": "New York, Boston, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "New York, Boston, self-driving",
+            "tool_result": "self-driving, from New York to Boston, no valid information.",
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 8,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+                "argument": "GoogleDistanceMatrix[New York, Boston, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[New York, Boston, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 9,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "Boston",
+                "destination": "New York",
+                "mode": "self-driving",
+                "argument": "Boston, New York, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "Boston, New York, self-driving",
+            "tool_result": "self-driving, from Boston to New York, no valid information.",
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 10,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+                "argument": "GoogleDistanceMatrix[Boston, New York, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[Boston, New York, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 11,
+            "action": {
+              "action_type": "Planner",
+              "action_payload": {
+                "query": "Also, I'd prefer attraction preference park or outdoor landmark.",
                 "plan": {
                   "itinerary": [
                     {
                       "day": 1,
-                      "current_city": "Boston",
-                      "transportation": "Self-driving from New York to Boston",
+                      "current_city": "from New York to Boston",
+                      "transportation": "self-driving, from New York to Boston, no valid information.",
                       "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -721,18 +1546,24 @@
                       "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                     }
                   ],
-                  "rationale": "Fallback plan generated from user request: Also, I'd prefer attraction preference park or outdoor landmark."
-                }
+                  "rationale": "Fallback Planner result built from collected Notebook data for: Also, I'd prefer attraction preference park or outdoor landmark."
+                },
+                "argument": "Also, I'd prefer attraction preference park or outdoor landmark."
               },
-              "rationale": null,
+              "original_action": "Planner[Also, I'd prefer attraction preference park or outdoor landmark.]",
+              "rationale": "All required information has been recorded; construct the final itinerary.",
               "predicted_current_intention": null
             },
             "page_type": "plan",
             "selected_asin": null,
             "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
             "state_changed": true,
             "made_progress": true,
-            "stop_reason": "direct_execute"
+            "stop_reason": "env_done"
           }
         ],
         "agent_intention_prediction": null,
@@ -742,14 +1573,15 @@
         "turn_id": 3,
         "user_utterance": "Also, relaxed would be nice.",
         "agent_action": {
-          "action_type": "submit_plan",
+          "action_type": "Planner",
           "action_payload": {
+            "query": "Also, relaxed would be nice.",
             "plan": {
               "itinerary": [
                 {
                   "day": 1,
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -757,8 +1589,9 @@
                   "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                 }
               ],
-              "rationale": "Fallback plan generated from user request: Also, relaxed would be nice."
-            }
+              "rationale": "Fallback Planner result built from collected Notebook data for: Also, relaxed would be nice."
+            },
+            "argument": "Also, relaxed would be nice."
           }
         },
         "env_feedback": {
@@ -808,8 +1641,8 @@
               },
               "itinerary_preview": [
                 {
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -862,8 +1695,8 @@
             },
             "itinerary_preview": [
               {
-                "current_city": "Boston",
-                "transportation": "Self-driving from New York to Boston",
+                "current_city": "from New York to Boston",
+                "transportation": "self-driving, from New York to Boston, no valid information.",
                 "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -943,22 +1776,291 @@
         },
         "linguistic_style": "partial",
         "action_implication": "continue",
-        "num_internal_steps": 1,
-        "num_rollout_search_actions": 0,
-        "rollout_search_queries": [],
-        "stop_reason": "direct_execute",
+        "num_internal_steps": 11,
+        "num_rollout_search_actions": 5,
+        "rollout_search_queries": [
+          "AttractionSearch[Boston]",
+          "AccommodationSearch[Boston]",
+          "RestaurantSearch[Boston]",
+          "GoogleDistanceMatrix[New York, Boston, self-driving]",
+          "GoogleDistanceMatrix[Boston, New York, self-driving]"
+        ],
+        "stop_reason": "env_done",
         "rollout_trace": [
           {
             "step_index": 1,
             "action": {
-              "action_type": "submit_plan",
+              "action_type": "AttractionSearch",
               "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AttractionSearch[Boston]",
+              "rationale": "Collect attraction information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AttractionSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Attractions in Boston",
+              "content": [
+                {
+                  "name": "Boston Common",
+                  "city": "Boston"
+                }
+              ]
+            },
+            "notebook_size": 0,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 2,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AttractionSearch[Boston]",
+                "argument": "AttractionSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AttractionSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 3,
+            "action": {
+              "action_type": "AccommodationSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AccommodationSearch[Boston]",
+              "rationale": "Collect accommodation information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AccommodationSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Accommodations in Boston",
+              "content": [
+                {
+                  "name": "Boston Private Stay",
+                  "city": "Boston",
+                  "room_type": "private room",
+                  "price": 180
+                }
+              ]
+            },
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 4,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AccommodationSearch[Boston]",
+                "argument": "AccommodationSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AccommodationSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 5,
+            "action": {
+              "action_type": "RestaurantSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "RestaurantSearch[Boston]",
+              "rationale": "Collect restaurant information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "RestaurantSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Restaurants in Boston",
+              "content": [
+                {
+                  "name": "North End Italian Kitchen",
+                  "city": "Boston",
+                  "cuisine": "Italian",
+                  "average_cost": 35
+                }
+              ]
+            },
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 6,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "RestaurantSearch[Boston]",
+                "argument": "RestaurantSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[RestaurantSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 7,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "New York",
+                "destination": "Boston",
+                "mode": "self-driving",
+                "argument": "New York, Boston, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "New York, Boston, self-driving",
+            "tool_result": "self-driving, from New York to Boston, no valid information.",
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 8,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+                "argument": "GoogleDistanceMatrix[New York, Boston, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[New York, Boston, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 9,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "Boston",
+                "destination": "New York",
+                "mode": "self-driving",
+                "argument": "Boston, New York, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "Boston, New York, self-driving",
+            "tool_result": "self-driving, from Boston to New York, no valid information.",
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 10,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+                "argument": "GoogleDistanceMatrix[Boston, New York, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[Boston, New York, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 11,
+            "action": {
+              "action_type": "Planner",
+              "action_payload": {
+                "query": "Also, relaxed would be nice.",
                 "plan": {
                   "itinerary": [
                     {
                       "day": 1,
-                      "current_city": "Boston",
-                      "transportation": "Self-driving from New York to Boston",
+                      "current_city": "from New York to Boston",
+                      "transportation": "self-driving, from New York to Boston, no valid information.",
                       "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -966,18 +2068,24 @@
                       "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                     }
                   ],
-                  "rationale": "Fallback plan generated from user request: Also, relaxed would be nice."
-                }
+                  "rationale": "Fallback Planner result built from collected Notebook data for: Also, relaxed would be nice."
+                },
+                "argument": "Also, relaxed would be nice."
               },
-              "rationale": null,
+              "original_action": "Planner[Also, relaxed would be nice.]",
+              "rationale": "All required information has been recorded; construct the final itinerary.",
               "predicted_current_intention": null
             },
             "page_type": "plan",
             "selected_asin": null,
             "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
             "state_changed": true,
             "made_progress": true,
-            "stop_reason": "direct_execute"
+            "stop_reason": "env_done"
           }
         ],
         "agent_intention_prediction": null,
@@ -987,14 +2095,15 @@
         "turn_id": 4,
         "user_utterance": "Close is fine.",
         "agent_action": {
-          "action_type": "submit_plan",
+          "action_type": "Planner",
           "action_payload": {
+            "query": "Close is fine.",
             "plan": {
               "itinerary": [
                 {
                   "day": 1,
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -1002,8 +2111,9 @@
                   "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                 }
               ],
-              "rationale": "Fallback plan generated from user request: Close is fine."
-            }
+              "rationale": "Fallback Planner result built from collected Notebook data for: Close is fine."
+            },
+            "argument": "Close is fine."
           }
         },
         "env_feedback": {
@@ -1053,8 +2163,8 @@
               },
               "itinerary_preview": [
                 {
-                  "current_city": "Boston",
-                  "transportation": "Self-driving from New York to Boston",
+                  "current_city": "from New York to Boston",
+                  "transportation": "self-driving, from New York to Boston, no valid information.",
                   "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                   "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -1107,8 +2217,8 @@
             },
             "itinerary_preview": [
               {
-                "current_city": "Boston",
-                "transportation": "Self-driving from New York to Boston",
+                "current_city": "from New York to Boston",
+                "transportation": "self-driving, from New York to Boston, no valid information.",
                 "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                 "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -1188,22 +2298,291 @@
         },
         "linguistic_style": "elliptical",
         "action_implication": "continue",
-        "num_internal_steps": 1,
-        "num_rollout_search_actions": 0,
-        "rollout_search_queries": [],
-        "stop_reason": "direct_execute",
+        "num_internal_steps": 11,
+        "num_rollout_search_actions": 5,
+        "rollout_search_queries": [
+          "AttractionSearch[Boston]",
+          "AccommodationSearch[Boston]",
+          "RestaurantSearch[Boston]",
+          "GoogleDistanceMatrix[New York, Boston, self-driving]",
+          "GoogleDistanceMatrix[Boston, New York, self-driving]"
+        ],
+        "stop_reason": "env_done",
         "rollout_trace": [
           {
             "step_index": 1,
             "action": {
-              "action_type": "submit_plan",
+              "action_type": "AttractionSearch",
               "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AttractionSearch[Boston]",
+              "rationale": "Collect attraction information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AttractionSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Attractions in Boston",
+              "content": [
+                {
+                  "name": "Boston Common",
+                  "city": "Boston"
+                }
+              ]
+            },
+            "notebook_size": 0,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 2,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AttractionSearch[Boston]",
+                "argument": "AttractionSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AttractionSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 3,
+            "action": {
+              "action_type": "AccommodationSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "AccommodationSearch[Boston]",
+              "rationale": "Collect accommodation information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "AccommodationSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Accommodations in Boston",
+              "content": [
+                {
+                  "name": "Boston Private Stay",
+                  "city": "Boston",
+                  "room_type": "private room",
+                  "price": 180
+                }
+              ]
+            },
+            "notebook_size": 1,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 4,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "AccommodationSearch[Boston]",
+                "argument": "AccommodationSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[AccommodationSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 5,
+            "action": {
+              "action_type": "RestaurantSearch",
+              "action_payload": {
+                "city": "Boston",
+                "argument": "Boston"
+              },
+              "original_action": "RestaurantSearch[Boston]",
+              "rationale": "Collect restaurant information for Boston.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "RestaurantSearch",
+            "tool_argument": "Boston",
+            "tool_result": {
+              "description": "Restaurants in Boston",
+              "content": [
+                {
+                  "name": "North End Italian Kitchen",
+                  "city": "Boston",
+                  "cuisine": "Italian",
+                  "average_cost": 35
+                }
+              ]
+            },
+            "notebook_size": 2,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 6,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "RestaurantSearch[Boston]",
+                "argument": "RestaurantSearch[Boston]"
+              },
+              "original_action": "NotebookWrite[RestaurantSearch[Boston]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 7,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "New York",
+                "destination": "Boston",
+                "mode": "self-driving",
+                "argument": "New York, Boston, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "New York, Boston, self-driving",
+            "tool_result": "self-driving, from New York to Boston, no valid information.",
+            "notebook_size": 3,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 8,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[New York, Boston, self-driving]",
+                "argument": "GoogleDistanceMatrix[New York, Boston, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[New York, Boston, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 9,
+            "action": {
+              "action_type": "GoogleDistanceMatrix",
+              "action_payload": {
+                "origin": "Boston",
+                "destination": "New York",
+                "mode": "self-driving",
+                "argument": "Boston, New York, self-driving"
+              },
+              "original_action": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+              "rationale": "Collect transportation information for the next route leg.",
+              "predicted_current_intention": null
+            },
+            "page_type": "tool_result",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": "GoogleDistanceMatrix",
+            "tool_argument": "Boston, New York, self-driving",
+            "tool_result": "self-driving, from Boston to New York, no valid information.",
+            "notebook_size": 4,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 10,
+            "action": {
+              "action_type": "NotebookWrite",
+              "action_payload": {
+                "description": "GoogleDistanceMatrix[Boston, New York, self-driving]",
+                "argument": "GoogleDistanceMatrix[Boston, New York, self-driving]"
+              },
+              "original_action": "NotebookWrite[GoogleDistanceMatrix[Boston, New York, self-driving]]",
+              "rationale": "Record the latest tool result before continuing, as in the original TravelPlanner agent.",
+              "predicted_current_intention": null
+            },
+            "page_type": "notebook",
+            "selected_asin": null,
+            "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
+            "state_changed": true,
+            "made_progress": true,
+            "stop_reason": null
+          },
+          {
+            "step_index": 11,
+            "action": {
+              "action_type": "Planner",
+              "action_payload": {
+                "query": "Close is fine.",
                 "plan": {
                   "itinerary": [
                     {
                       "day": 1,
-                      "current_city": "Boston",
-                      "transportation": "Self-driving from New York to Boston",
+                      "current_city": "from New York to Boston",
+                      "transportation": "self-driving, from New York to Boston, no valid information.",
                       "breakfast": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "lunch": "North End Italian Kitchen, Boston, Italian, cost: 35",
                       "dinner": "North End Italian Kitchen, Boston, Italian, cost: 35",
@@ -1211,18 +2590,24 @@
                       "accommodation": "Boston Private Stay, Boston, private room, price: 180"
                     }
                   ],
-                  "rationale": "Fallback plan generated from user request: Close is fine."
-                }
+                  "rationale": "Fallback Planner result built from collected Notebook data for: Close is fine."
+                },
+                "argument": "Close is fine."
               },
-              "rationale": null,
+              "original_action": "Planner[Close is fine.]",
+              "rationale": "All required information has been recorded; construct the final itinerary.",
               "predicted_current_intention": null
             },
             "page_type": "plan",
             "selected_asin": null,
             "selected_options": {},
+            "tool_name": null,
+            "tool_argument": null,
+            "tool_result": null,
+            "notebook_size": 5,
             "state_changed": true,
             "made_progress": true,
-            "stop_reason": "direct_execute"
+            "stop_reason": "env_done"
           }
         ],
         "agent_intention_prediction": null,

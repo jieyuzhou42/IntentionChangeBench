@@ -9,6 +9,8 @@ from typing import Any, Dict, List, Optional, Tuple
 from envs.base_env import BaseEnv
 from models import AgentAction, EnvFeedback
 
+from .entity_intention import entity_constraint_path, iter_entity_constraints
+
 
 PLAN_FIELDS = (
     "current_city",
@@ -545,6 +547,20 @@ class TravelPlannerEnvAdapter(BaseEnv):
                 satisfied.append(field)
             elif passed is False:
                 violated.append(field)
+        for entity_id, entity, field, desired in iter_entity_constraints(user_state):
+            constraint_path = entity_constraint_path(entity_id, field)
+            passed, reason = self._check_entity_constraint(
+                entity_id,
+                entity,
+                field,
+                desired,
+                days,
+            )
+            debug[constraint_path] = {"passed": passed, "reason": reason}
+            if passed is True:
+                satisfied.append(constraint_path)
+            elif passed is False:
+                violated.append(constraint_path)
         estimated_cost = self._estimate_total_cost(days, query_data)
         if "valid_cost" in debug:
             debug["valid_cost"]["estimated_cost"] = estimated_cost
@@ -558,6 +574,98 @@ class TravelPlannerEnvAdapter(BaseEnv):
             "constraint_debug": debug,
         }
 
+    def _check_entity_constraint(
+        self,
+        entity_id: str,
+        entity: Dict[str, Any],
+        field: str,
+        desired: Any,
+        days: List[Dict[str, Any]],
+    ) -> Tuple[Optional[bool], Optional[str]]:
+        assignment_texts: List[str] = []
+        for day in days:
+            assignments = day.get("participant_assignments") or day.get("entity_assignments")
+            if not isinstance(assignments, dict):
+                continue
+            assignment = assignments.get(entity_id)
+            if assignment is not None:
+                assignment_texts.append(self._value_text(assignment))
+
+        display_name = str(entity.get("reference") or entity.get("display_name") or entity_id)
+        if not assignment_texts:
+            return (
+                False,
+                f"No participant_assignments were provided for {display_name} ({entity_id}).",
+            )
+
+        text = " ".join(assignment_texts).lower()
+        desired_values = self._as_list(desired)
+        if not desired_values:
+            return (None, None)
+
+        if field == "transportation":
+            for value in desired_values:
+                desired_text = str(value).strip().lower()
+                if desired_text.startswith("no "):
+                    forbidden = desired_text[3:].strip()
+                    if forbidden and forbidden in text:
+                        return (False, f"{display_name}'s assignment should not use {forbidden}.")
+                elif desired_text not in text:
+                    return (False, f"{display_name}'s assignment should include {value}.")
+            return (True, None)
+
+        if field in {"budget", "budget_max"}:
+            try:
+                maximum = float(desired)
+            except (TypeError, ValueError):
+                return (None, None)
+            entity_cost = sum(
+                self._extract_cost(value)
+                for day in days
+                for value in self._entity_assignment_values(day, entity_id)
+            )
+            if entity_cost <= maximum:
+                return (True, None)
+            return (
+                False,
+                f"{display_name}'s assigned cost {entity_cost:.2f} exceeds {maximum:.2f}.",
+            )
+
+        aliases = {
+            "entire room": ["entire room", "entire home", "entire home/apt"],
+            "private room": ["private room"],
+            "shared room": ["shared room"],
+            "not shared room": ["private room", "entire room", "entire home", "entire home/apt"],
+        }
+        missing = []
+        for value in desired_values:
+            desired_text = str(value).strip().lower()
+            accepted = aliases.get(desired_text, [desired_text]) if field in {"room_type", "room type"} else [desired_text]
+            if not any(candidate and candidate in text for candidate in accepted):
+                missing.append(str(value))
+        if missing:
+            return (
+                False,
+                f"{display_name}'s {field} assignment is missing: {', '.join(missing)}.",
+            )
+        return (True, None)
+
+    def _entity_assignment_values(self, day: Dict[str, Any], entity_id: str) -> List[Any]:
+        assignments = day.get("participant_assignments") or day.get("entity_assignments")
+        if not isinstance(assignments, dict):
+            return []
+        assignment = assignments.get(entity_id)
+        if isinstance(assignment, dict):
+            return list(assignment.values())
+        return [assignment] if assignment is not None else []
+
+    def _value_text(self, value: Any) -> str:
+        if isinstance(value, dict):
+            return " ".join(self._value_text(item) for item in value.values())
+        if isinstance(value, list):
+            return " ".join(self._value_text(item) for item in value)
+        return str(value or "")
+
     def _merged_query_data(self, user_state: Dict[str, Any]) -> Dict[str, Any]:
         query_data = copy.deepcopy(self.query_data)
         constraints = user_state.get("constraints", {}) if isinstance(user_state, dict) else {}
@@ -567,6 +675,10 @@ class TravelPlannerEnvAdapter(BaseEnv):
             query_data["budget"] = constraints["budget_max"]
         if constraints.get("days") is not None:
             query_data["days"] = constraints["days"]
+        if constraints.get("people_number") is not None:
+            query_data["people_number"] = constraints["people_number"]
+        elif constraints.get("party_size") is not None:
+            query_data["people_number"] = constraints["party_size"]
         local = query_data.setdefault("local_constraint", {})
         aliases = {
             "cuisine": "cuisine",
@@ -773,7 +885,12 @@ class TravelPlannerEnvAdapter(BaseEnv):
 
     def _active_constraint_fields(self, user_state: Dict[str, Any]) -> List[str]:
         constraints = user_state.get("constraints", {}) if isinstance(user_state, dict) else {}
-        return [field for field, value in constraints.items() if value is not None]
+        active = [field for field, value in constraints.items() if value is not None]
+        active.extend(
+            entity_constraint_path(entity_id, field)
+            for entity_id, _entity, field, _value in iter_entity_constraints(user_state)
+        )
+        return active
 
     def _plan_text(self, days: List[Dict[str, Any]]) -> str:
         return json.dumps(days, ensure_ascii=False, sort_keys=True)

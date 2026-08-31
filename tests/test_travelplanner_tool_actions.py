@@ -85,6 +85,39 @@ def _smoke_task() -> BaseTask:
     )
 
 
+def test_travelplanner_initial_intention_parses_huggingface_constraint_string():
+    from simulation.simulation.run_simulation import (
+        _travelplanner_initial_intention,
+        _travelplanner_task_from_payload,
+    )
+
+    payload = {
+        "query": "Plan a trip.",
+        "org": "Washington",
+        "dest": "Myrtle Beach",
+        "days": 3,
+        "date": "['2022-03-13', '2022-03-14', '2022-03-15']",
+        "people_number": 1,
+        "budget": 1400,
+        "local_constraint": (
+            "{'house rule': None, 'cuisine': ['Seafood'], "
+            "'room type': 'Entire home/apt', 'transportation': None}"
+        ),
+    }
+    intention = _travelplanner_initial_intention(payload)
+    task = _travelplanner_task_from_payload(
+        payload,
+        fallback_index=1,
+        reference_information={"Attractions in Myrtle Beach": []},
+    )
+
+    assert intention["constraints"]["cuisine"] == ["Seafood"]
+    assert intention["constraints"]["room_type"] == "Entire home/apt"
+    query_data = task.world_state["travelplanner_query_data"]
+    assert query_data["local_constraint"]["cuisine"] == ["Seafood"]
+    assert query_data["date"] == ["2022-03-13", "2022-03-14", "2022-03-15"]
+
+
 def test_llm_executor_uses_original_travelplanner_actions_before_planner():
     task = _smoke_task()
     env = TravelPlannerEnvAdapter()

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field, field as dataclass_field, asdict
 from typing import Any, Dict, List, Optional
 
 
@@ -22,7 +22,7 @@ class ShiftCondition:
 
 @dataclass
 class ShiftOp:
-    op: str  # add / relax / override / reprioritize / scope_correction / none
+    op: str  # add / relax / override / reprioritize / scope_correction / multiple / none
     intention_changed: Optional[bool] = None
     condition: Optional[str] = None  # none / user_preference / real_world_feasibility / agent_misunderstanding
     change_category: Optional[str] = None  # mirrors op when a change occurs
@@ -33,6 +33,10 @@ class ShiftOp:
     priority_update: Optional[List[str]] = None
     utterance_plan: Optional[Dict[str, Any]] = None
     gold_search_query: Optional[str] = None
+    # WebShop may change several constraints in one user turn.  The scalar
+    # fields above remain supported for old datasets and single-change callers.
+    changes: List["ShiftOp"] = dataclass_field(default_factory=list)
+    sampling_metadata: Dict[str, Any] = dataclass_field(default_factory=dict)
 
 
 @dataclass

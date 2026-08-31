@@ -23,7 +23,7 @@ HTML = r"""
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WebShop Replay</title>
+  <title>Dataset Replay</title>
   <style>
     :root {
       --bg: #f5f6f8;
@@ -343,6 +343,68 @@ HTML = r"""
       background: #fff;
       border-radius: 0 0 6px 6px;
     }
+    .travel-category {
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+      padding: 14px;
+    }
+    .travel-category:last-child { border-bottom: 0; border-radius: 0 0 6px 6px; }
+    .travel-category-head, .trace-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .travel-category-title { margin: 0; font-size: 17px; text-transform: capitalize; }
+    .search-page {
+      border: 1px solid #e0e4e8;
+      border-radius: 6px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .search-page-head {
+      padding: 8px 10px;
+      background: #f7f9fb;
+      border-bottom: 1px solid #e0e4e8;
+      color: var(--muted);
+    }
+    .travel-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px;
+      padding: 9px;
+    }
+    .travel-card {
+      border: 1px solid #e0e4e8;
+      border-radius: 5px;
+      padding: 10px;
+      background: #fff;
+    }
+    .travel-card-title { margin: 0 0 7px; color: var(--blue); font-size: 15px; }
+    .kv { display: grid; grid-template-columns: minmax(90px, 0.35fr) 1fr; gap: 5px 9px; }
+    .kv-key { color: var(--muted); font-size: 12px; }
+    .kv-value { overflow-wrap: anywhere; }
+    .itinerary-wrap { overflow-x: auto; }
+    .itinerary-table { width: 100%; border-collapse: collapse; min-width: 980px; }
+    .itinerary-table th, .itinerary-table td {
+      border: 1px solid #dfe4ea;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+    .itinerary-table th { background: #f7f9fb; color: var(--muted); font-size: 12px; }
+    .substitution {
+      border-left: 3px solid var(--amber);
+      padding: 8px 10px;
+      margin-top: 8px;
+      background: #fff9e8;
+    }
+    .trace-list { display: grid; gap: 8px; }
+    .trace-step { border: 1px solid #e0e4e8; border-radius: 5px; padding: 9px 10px; }
+    .trace-step details { margin-top: 6px; }
+    .trace-step summary { color: var(--blue); cursor: pointer; }
     @media (max-width: 820px) {
       .toolbar {
         grid-template-columns: 1fr 1fr;
@@ -409,6 +471,10 @@ HTML = r"""
         <h2 class="section-title">Rationale</h2>
         <div id="rationale" class="rationale-list"></div>
       </section>
+      <section id="planPanel" class="panel panel-pad" style="margin-bottom:16px; display:none;">
+        <h2 class="section-title">Submitted Itinerary</h2>
+        <div id="itinerary"></div>
+      </section>
       <section class="panel">
         <div class="results-head">
           <div>
@@ -419,10 +485,15 @@ HTML = r"""
         </div>
         <div id="results"></div>
       </section>
+      <section id="tracePanel" class="panel panel-pad" style="margin-top:16px; display:none;">
+        <h2 class="section-title">Tool Action Trace</h2>
+        <div id="trace" class="trace-list"></div>
+      </section>
     </div>
   </main>
   <script>
     const state = {{ state_json | safe }};
+    document.title = state.domain === "travelplanner" ? "TravelPlanner Replay" : "WebShop Replay";
     const instanceSelect = document.getElementById("instanceSelect");
     const turnSelect = document.getElementById("turnSelect");
     const utterance = document.getElementById("utterance");
@@ -438,6 +509,10 @@ HTML = r"""
     const query = document.getElementById("query");
     const prevTurn = document.getElementById("prevTurn");
     const nextTurn = document.getElementById("nextTurn");
+    const planPanel = document.getElementById("planPanel");
+    const itinerary = document.getElementById("itinerary");
+    const tracePanel = document.getElementById("tracePanel");
+    const trace = document.getElementById("trace");
     const priorityLevels = [
       ["high", "High"],
       ["medium", "Medium"],
@@ -613,6 +688,7 @@ HTML = r"""
 
       renderEditor(turn);
       meta.innerHTML = [
+        pill(state.domain),
         pill(inst.instance_id),
         pill(`turn ${turn.turn_id ?? turnIndex}`),
         turn.shift_condition?.type ? pill(turn.shift_condition.type, "warn") : "",
@@ -625,6 +701,15 @@ HTML = r"""
         ? rationales.map(text => `<div class="rationale">${esc(text)}</div>`).join("")
         : `<div class="rationale">No rationale recorded for this turn.</div>`;
 
+      if (state.domain === "travelplanner") {
+        renderTravelPlanner(turn, feedback, actionPayload);
+        prevTurn.disabled = turnIndex <= 0;
+        nextTurn.disabled = turnIndex >= inst.turns.length - 1;
+        return;
+      }
+
+      planPanel.style.display = "none";
+      tracePanel.style.display = "none";
       const queryText = firstNonEmpty(
         feedback.gold_search_query,
         gold.gold_search_query,
@@ -642,6 +727,96 @@ HTML = r"""
       }
       prevTurn.disabled = turnIndex <= 0;
       nextTurn.disabled = turnIndex >= inst.turns.length - 1;
+    }
+    function prettyKey(value) {
+      return String(value || "").replaceAll("_", " ").replace(/\b\w/g, ch => ch.toUpperCase());
+    }
+    function travelItemTitle(item, category) {
+      return firstNonEmpty(
+        item.name, item.Name, item.flight_number, item.FlightNumber,
+        item.description, item.Description, `${prettyKey(category)} result`
+      );
+    }
+    function renderTravelCard(item, category) {
+      const ignored = new Set(["name", "Name", "flight_number", "FlightNumber", "result_index"]);
+      const rows = Object.entries(item || {}).filter(([key, value]) => !ignored.has(key) && value !== null && value !== "");
+      return `<article class="travel-card">
+        <h4 class="travel-card-title">${esc(travelItemTitle(item, category))}</h4>
+        <div class="kv">${rows.map(([key, value]) => `
+          <div class="kv-key">${esc(prettyKey(key))}</div>
+          <div class="kv-value">${esc(valueToText(value))}</div>
+        `).join("")}</div>
+      </article>`;
+    }
+    function renderSearchCategory(category, pages) {
+      const pageList = Array.isArray(pages) ? pages : [];
+      const total = pageList.reduce((sum, page) => sum + ((page && page.items) || []).length, 0);
+      return `<section class="travel-category">
+        <div class="travel-category-head">
+          <h3 class="travel-category-title">${esc(prettyKey(category))}</h3>
+          ${pill(`${total} items`)}
+        </div>
+        ${pageList.length ? pageList.map(page => {
+          const items = (page && page.items) || [];
+          const statusClass = page.status === "no_results" ? "bad" : "good";
+          return `<div class="search-page">
+            <div class="search-page-head">
+              ${pill(page.source_action || "Search")} ${pill(page.status || "observed", statusClass)}
+              <strong>${esc(page.query || "")}</strong>
+              ${page.message ? `<div>${esc(page.message)}</div>` : ""}
+            </div>
+            ${items.length ? `<div class="travel-items">${items.map(item => renderTravelCard(item, category)).join("")}</div>`
+              : `<div class="empty">No results returned for this search page.</div>`}
+          </div>`;
+        }).join("") : `<div class="empty">No ${esc(category)} search was recorded for this turn.</div>`}
+      </section>`;
+    }
+    function renderItinerary(actionPayload) {
+      const plan = actionPayload.plan || {};
+      const days = plan.itinerary || plan.days || [];
+      const fields = ["day", "current_city", "transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
+      const table = days.length ? `<div class="itinerary-wrap"><table class="itinerary-table">
+        <thead><tr>${fields.map(field => `<th>${esc(prettyKey(field))}</th>`).join("")}</tr></thead>
+        <tbody>${days.map(day => `<tr>${fields.map(field => `<td>${esc(valueToText(day[field] ?? "-"))}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table></div>` : `<div class="empty">No itinerary was submitted.</div>`;
+      const substitutions = plan.closest_match_substitutions || [];
+      itinerary.innerHTML = table + (substitutions.length ? `
+        <h3 class="small-title">Closest-match substitutions</h3>
+        ${substitutions.map(item => `<div class="substitution">
+          <strong>${esc(item.constraint || "Substitution")}</strong>: ${esc(item.selected_value || "-")}
+          <div>${esc(item.reason || "")}</div>
+        </div>`).join("")}` : "");
+    }
+    function renderTrace(turn) {
+      const steps = turn.rollout_trace || [];
+      trace.innerHTML = steps.length ? steps.map(step => {
+        const action = step.action || {};
+        return `<article class="trace-step">
+          <div class="trace-head">
+            <strong>#${esc(step.step_index)} ${esc(action.action_type || step.tool_name || "Action")}</strong>
+            <span>${step.notebook_size !== undefined ? esc(`notebook: ${step.notebook_size}`) : ""}</span>
+          </div>
+          <div>${esc(action.original_action || step.tool_argument || "")}</div>
+          ${action.rationale ? `<div class="details">${esc(action.rationale)}</div>` : ""}
+          ${step.tool_result !== null && step.tool_result !== undefined ? `<details><summary>Tool result</summary><pre>${esc(JSON.stringify(step.tool_result, null, 2))}</pre></details>` : ""}
+        </article>`;
+      }).join("") : `<div class="empty">No rollout trace recorded.</div>`;
+    }
+    function renderTravelPlanner(turn, feedback, actionPayload) {
+      const searchResults = feedback.search_results || {};
+      const order = ["attractions", "accommodations", "restaurants", "transportation", "cities"];
+      const categories = [...order.filter(key => key in searchResults), ...Object.keys(searchResults).filter(key => !order.includes(key))];
+      const total = categories.reduce((sum, key) => sum + (searchResults[key] || []).reduce((n, page) => n + ((page && page.items) || []).length, 0), 0);
+      resultsTitle.textContent = "Travel Search Evidence";
+      resultCount.textContent = `${total} items`;
+      query.textContent = actionPayload.query ? `Planner query: ${actionPayload.query}` : "";
+      results.innerHTML = categories.length
+        ? categories.map(category => renderSearchCategory(category, searchResults[category])).join("")
+        : `<div class="empty">No structured search_results found in env_feedback for this turn.</div>`;
+      planPanel.style.display = "block";
+      tracePanel.style.display = "block";
+      renderItinerary(actionPayload);
+      renderTrace(turn);
     }
     function renderItem(item) {
       const imageUrl = item.image_url || state.no_image_url;
@@ -939,24 +1114,32 @@ def prepare_state(instances: List[Dict[str, Any]], image_map: Dict[str, str]) ->
     prepared = []
     for instance in instances:
         instance_copy = dict(instance)
+        instance_domain = str((instance.get("world_state") or {}).get("domain") or "webshop").lower()
         turns = []
         for turn in instance.get("turns") or []:
             turn_copy = dict(turn)
             feedback = dict(turn_copy.get("env_feedback") or {})
-            items = []
-            for item in feedback.get("candidate_items") or []:
-                item_copy = dict(item)
-                asin = str(item_copy.get("asin") or "").strip()
-                item_copy["image_url"] = image_map.get(asin, "")
-                items.append(item_copy)
-            feedback["candidate_items"] = items
+            if instance_domain == "webshop":
+                items = []
+                for item in feedback.get("candidate_items") or []:
+                    item_copy = dict(item)
+                    asin = str(item_copy.get("asin") or "").strip()
+                    item_copy["image_url"] = image_map.get(asin, "")
+                    items.append(item_copy)
+                feedback["candidate_items"] = items
             turn_copy["env_feedback"] = feedback
             turn_copy["rationales"] = rationales_for_turn(turn)
             turns.append(turn_copy)
         instance_copy["turns"] = turns
         prepared.append(instance_copy)
 
+    domain = "webshop"
+    if prepared:
+        world_state = prepared[0].get("world_state") or {}
+        domain = str(world_state.get("domain") or domain).strip().lower()
+
     return {
+        "domain": domain,
         "instances": prepared,
         "no_image_url": "/static-webshop/images/no-image-available.png",
     }
@@ -1048,7 +1231,7 @@ def create_app(state: Dict[str, Any], instances: List[Dict[str, Any]], dataset_p
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Replay WebShop simulated dataset with images.")
+    parser = argparse.ArgumentParser(description="Replay WebShop or TravelPlanner simulated data for annotation review.")
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET_PATH)
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=7860)
