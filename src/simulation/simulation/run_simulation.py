@@ -37,7 +37,7 @@ STYLE_POOL = ["explicit", "partial", "elliptical"]
 
 @dataclass(frozen=True)
 class ShiftSamplingConfig:
-    """WebShop candidate-selection settings; generation prompts stay count-free."""
+    """Domain-aware shift sampling and distribution-control settings."""
 
     multi_change_rate: float = 0.0
     multi_candidate_samples: int = 1
@@ -70,6 +70,7 @@ def _distribution_controller_from_baseline(
     baseline_path: str,
     balance_strength: float,
     control_mode: str = "prompt",
+    domain: str = "webshop",
 ) -> ShiftDistributionController:
     with open(baseline_path, "r", encoding="utf-8") as handle:
         instances = json.load(handle)
@@ -93,11 +94,26 @@ def _distribution_controller_from_baseline(
             if not categories:
                 categories = [str(details.get("change_category") or details.get("op") or "none")]
             for category in categories:
+                if domain == "travelplanner" and category == "scope_correction":
+                    category = "entity"
                 category_counts[category] = category_counts.get(category, 0) + 1
+
+    if domain == "travelplanner":
+        controlled_categories = ["add", "relax", "override", "reprioritize", "entity"]
+        controlled_conditions = [
+            "user_preference",
+            "real_world_feasibility",
+            "agent_misunderstanding",
+        ]
+    else:
+        controlled_categories = ["add", "relax", "override", "reprioritize"]
+        controlled_conditions = ["user_preference", "real_world_feasibility"]
 
     return ShiftDistributionController(
         category_counts=category_counts,
         condition_counts=condition_counts,
+        categories=controlled_categories,
+        conditions=controlled_conditions,
         balance_strength=balance_strength,
         control_mode=control_mode,
     )
@@ -1521,10 +1537,14 @@ def simulate_dialogue_instance(
             break
 
         style = style_schedule[turn_id]
-        prefer_multi = domain != "travelplanner" and turn_id in multi_preferred_turns
+        prefer_multi = turn_id in multi_preferred_turns
         use_candidate_pool = (
-            domain != "travelplanner"
-            and sampling_config.distribution_controller is not None
+            sampling_config.distribution_controller is not None
+            and (
+                domain != "travelplanner"
+                or sampling_config.distribution_controller.control_mode
+                in {"selection", "hybrid"}
+            )
         )
         shift = human_simulator.decide_shift(
             current_intention,
@@ -1979,10 +1999,22 @@ def main():
         ),
     )
     parser.add_argument(
+        "--travelplanner_multi_change_rate",
+        type=float,
+        default=0.30,
+        help=(
+            "Fraction of TravelPlanner shift slots that softly prefer one coherent "
+            "multi-intention update. The prompt never requires an exact change count."
+        ),
+    )
+    parser.add_argument(
         "--multi_candidate_samples",
         type=int,
         default=4,
-        help="Initial number of independent shift candidates sampled for a multi-preferred WebShop turn.",
+        help=(
+            "Initial independent candidates for a multi-preferred WebShop turn, "
+            "or for TravelPlanner when distribution mode is selection/hybrid."
+        ),
     )
     parser.add_argument(
         "--max_multi_candidate_samples",
@@ -1995,8 +2027,9 @@ def main():
         type=str,
         default=os.getenv("SHIFT_DISTRIBUTION_BASELINE"),
         help=(
-            "Optional v1 dataset whose category/condition counts initialize the WebShop "
-            "deficit-weighted candidate selector. Category targets are uniform and condition targets are 50/50."
+            "Optional baseline dataset whose category/condition counts initialize the "
+            "domain-specific deficit controller. WebShop balances four change categories "
+            "and two conditions; TravelPlanner also balances entity and agent_misunderstanding."
         ),
     )
     parser.add_argument(
@@ -2072,6 +2105,8 @@ def main():
         raise ValueError("--parallelism must be at least 1")
     if not 0.0 <= args.multi_change_rate <= 1.0:
         raise ValueError("--multi_change_rate must be between 0 and 1")
+    if not 0.0 <= args.travelplanner_multi_change_rate <= 1.0:
+        raise ValueError("--travelplanner_multi_change_rate must be between 0 and 1")
     if args.multi_candidate_samples < 1:
         raise ValueError("--multi_candidate_samples must be at least 1")
     if args.max_multi_candidate_samples < args.multi_candidate_samples:
@@ -2116,19 +2151,36 @@ def main():
         reranker_debug=args.reranker_debug,
     )
     distribution_controller = None
-    if args.domain == "webshop" and args.shift_distribution_baseline:
+    if args.shift_distribution_baseline:
         distribution_controller = _distribution_controller_from_baseline(
             args.shift_distribution_baseline,
             balance_strength=args.distribution_balance_strength,
             control_mode=args.distribution_control_mode,
+            domain=args.domain,
         )
     shift_sampling_config = ShiftSamplingConfig(
-        multi_change_rate=args.multi_change_rate if args.domain == "webshop" else 0.0,
+        multi_change_rate=(
+            args.multi_change_rate
+            if args.domain == "webshop"
+            else args.travelplanner_multi_change_rate
+        ),
         multi_candidate_samples=(
-            args.multi_candidate_samples if args.domain == "webshop" else 1
+            args.multi_candidate_samples
+            if args.domain == "webshop"
+            or (
+                distribution_controller is not None
+                and distribution_controller.control_mode in {"selection", "hybrid"}
+            )
+            else 1
         ),
         max_multi_candidate_samples=(
-            args.max_multi_candidate_samples if args.domain == "webshop" else 1
+            args.max_multi_candidate_samples
+            if args.domain == "webshop"
+            or (
+                distribution_controller is not None
+                and distribution_controller.control_mode in {"selection", "hybrid"}
+            )
+            else 1
         ),
         distribution_controller=distribution_controller,
     )

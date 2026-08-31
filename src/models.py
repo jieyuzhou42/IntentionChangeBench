@@ -33,7 +33,7 @@ class ShiftOp:
     priority_update: Optional[List[str]] = None
     utterance_plan: Optional[Dict[str, Any]] = None
     gold_search_query: Optional[str] = None
-    # WebShop may change several constraints in one user turn.  The scalar
+    # A domain may change several constraints in one user turn. The scalar
     # fields above remain supported for old datasets and single-change callers.
     changes: List["ShiftOp"] = dataclass_field(default_factory=list)
     sampling_metadata: Dict[str, Any] = dataclass_field(default_factory=dict)
