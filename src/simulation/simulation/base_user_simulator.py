@@ -47,6 +47,7 @@ class ShiftDistributionController:
         category_targets: Optional[Dict[str, float]] = None,
         condition_targets: Optional[Dict[str, float]] = None,
         balance_strength: float = 6.0,
+        control_mode: str = "prompt",
     ):
         categories = [
             "add",
@@ -71,6 +72,9 @@ class ShiftDistributionController:
             "real_world_feasibility": 0.5,
         }
         self.balance_strength = max(0.0, float(balance_strength))
+        if control_mode not in {"prompt", "selection", "hybrid"}:
+            raise ValueError("control_mode must be prompt, selection, or hybrid")
+        self.control_mode = control_mode
         self._lock = threading.Lock()
 
     @staticmethod
@@ -112,7 +116,11 @@ class ShiftDistributionController:
                     condition,
                 )
                 balance_score = category_gap + condition_gap
-                weight = math.exp(self.balance_strength * balance_score)
+                weight = (
+                    math.exp(self.balance_strength * balance_score)
+                    if self.control_mode in {"selection", "hybrid"}
+                    else 1.0
+                )
                 weights.append(weight)
                 diagnostics.append(
                     {
@@ -135,6 +143,7 @@ class ShiftDistributionController:
                 self.condition_counts[selected_condition] += 1
 
             return selected, {
+                "control_mode": self.control_mode,
                 "balance_score": diagnostics[selected_index]["category_gap"]
                 + diagnostics[selected_index]["condition_gap"],
                 "selection_weight": weights[selected_index],
@@ -142,6 +151,36 @@ class ShiftDistributionController:
                 "selected_condition": selected_condition,
                 "category_counts_after_selection": copy.deepcopy(self.category_counts),
                 "condition_counts_after_selection": copy.deepcopy(self.condition_counts),
+            }
+
+    def prompt_guidance(self, compound_update_preferred: bool = False) -> Dict[str, Any]:
+        """Describe current raw-count deficits without prescribing an exact output."""
+        with self._lock:
+            max_category_count = max(self.category_counts.values(), default=0)
+            preferred_categories = [
+                category
+                for category, count in sorted(
+                    self.category_counts.items(),
+                    key=lambda item: (item[1], item[0]),
+                )
+                if count < max_category_count
+            ]
+            max_condition_count = max(self.condition_counts.values(), default=0)
+            preferred_conditions = [
+                condition
+                for condition, count in sorted(
+                    self.condition_counts.items(),
+                    key=lambda item: (item[1], item[0]),
+                )
+                if count < max_condition_count
+            ]
+            return {
+                "preferred_change_categories_when_natural": preferred_categories,
+                "preferred_conditions_when_natural": preferred_conditions,
+                "compound_update_preferred_when_natural": bool(compound_update_preferred),
+                "category_counts_observed": copy.deepcopy(self.category_counts),
+                "condition_counts_observed": copy.deepcopy(self.condition_counts),
+                "guidance_is_soft": True,
             }
 
 
@@ -291,6 +330,7 @@ class HumanSimulator:
         env_feedback: Optional[EnvFeedback] = None,
         intention_history: Optional[List[Dict[str, Any]]] = None,
         current_gold_delta: Optional[Dict[str, Dict[str, Any]]] = None,
+        distribution_guidance: Optional[Dict[str, Any]] = None,
     ) -> str:
         context = {
             "intention_timeline": self._serialize_intention_timeline(
@@ -300,6 +340,8 @@ class HumanSimulator:
             ),
             "latest_env_feedback": self._serialize_env_feedback(env_feedback),
         }
+        if distribution_guidance:
+            context["distribution_guidance"] = copy.deepcopy(distribution_guidance)
 
         domain = self._infer_domain(current_intention, env_feedback)
         if domain == "travelplanner":
@@ -403,6 +445,9 @@ Rules:
 - Do not introduce correction, termination, or no_change_continue as top-level reaction classes.
 - Do not mention rating/review/star/customer-score constraints. Those signals are unavailable to the executor and are out of scope for this simulator run
 - Do not repeatedly toggle between two values across turns.
+- Treat distribution_guidance as a soft diversity preference, never as a factual requirement. Prefer its underrepresented categories or conditions only when they fit the current intention and page evidence naturally.
+- When compound_update_preferred_when_natural is true, favor one coherent update spanning several related aspects. Do not force unrelated changes and do not target a specific number of changes.
+- Never mention dataset distributions, counters, balancing, or this guidance in the user-facing rationale or utterance.
 
 
 Required JSON schema:
@@ -763,13 +808,28 @@ Examples:
         rng: Optional[random.Random] = None,
         distribution_controller: Optional[ShiftDistributionController] = None,
     ) -> ShiftOp:
+        is_travelplanner = self._infer_domain(current_intention, env_feedback) == "travelplanner"
+        distribution_guidance: Optional[Dict[str, Any]] = None
+        if (
+            not is_travelplanner
+            and distribution_controller is not None
+            and distribution_controller.control_mode in {"prompt", "hybrid"}
+        ):
+            distribution_guidance = distribution_controller.prompt_guidance(
+                compound_update_preferred=prefer_multi,
+            )
+        elif not is_travelplanner and prefer_multi:
+            distribution_guidance = {
+                "compound_update_preferred_when_natural": True,
+                "guidance_is_soft": True,
+            }
         prompt = self._build_shift_prompt(
             current_intention,
             env_feedback=env_feedback,
             intention_history=intention_history,
             current_gold_delta=current_gold_delta,
+            distribution_guidance=distribution_guidance,
         )
-        is_travelplanner = self._infer_domain(current_intention, env_feedback) == "travelplanner"
         if is_travelplanner:
             candidate_samples = 1
             max_candidate_samples = 1
@@ -861,6 +921,7 @@ Examples:
             "selection_mode": selection_mode,
             "selected_change_count": self._shift_change_count(selected),
             "distribution_balance": balance_metadata,
+            "prompt_distribution_guidance": copy.deepcopy(distribution_guidance or {}),
         }
         return selected
 
@@ -1181,7 +1242,10 @@ Return plain text only, with no quotes and no JSON.
         return None
 
     def _normalize_new_field_name(self, raw_field: Any) -> Optional[str]:
-        candidate = _clean_string(raw_field)
+        normalized_raw = _normalize_none_like(raw_field)
+        if normalized_raw is None:
+            return None
+        candidate = _clean_string(normalized_raw)
         if not candidate:
             return None
         normalized = candidate.replace(" ", "_").lower()
