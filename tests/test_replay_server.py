@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import json
 
-from src.replay_server import create_app, prepare_state
+import pytest
+
+from src.replay_server import (
+    annotation_input_path,
+    create_app,
+    default_annotation_path,
+    prepare_state,
+)
 
 
 def _travelplanner_instance():
@@ -16,6 +23,22 @@ def _travelplanner_instance():
                 "gold_current_intention": {
                     "constraints": {"dest": "Boston", "budget": 500},
                     "priority": ["dest", "budget"],
+                    "entities": {
+                        "entity_1": {"reference": "me", "constraints": {}},
+                        "entity_2": {
+                            "reference": "my friend",
+                            "constraints": {"cuisine": {"avoid": ["Seafood"]}},
+                        },
+                    },
+                },
+                "gold_delta": {
+                    "budget": {"op": "override", "old": 400, "new": 500},
+                    "entities.entity_2.constraints.cuisine": {
+                        "op": "add",
+                        "category": "entity",
+                        "old": None,
+                        "new": {"avoid": ["Seafood"]},
+                    },
                 },
                 "agent_action": {
                     "action_type": "Planner",
@@ -97,10 +120,17 @@ def test_prepare_state_keeps_webshop_candidate_image_behavior():
 
 def test_travelplanner_replay_page_renders_and_saves_annotations(tmp_path):
     instances = [_travelplanner_instance()]
-    dataset_path = tmp_path / "travelplanner.json"
-    dataset_path.write_text(json.dumps(instances), encoding="utf-8")
-    state = prepare_state(instances, image_map={})
-    app = create_app(state, instances, dataset_path)
+    source_path = tmp_path / "travelplanner.json"
+    annotation_path = default_annotation_path(source_path)
+    source_path.write_text(json.dumps(instances), encoding="utf-8")
+    original_source = source_path.read_bytes()
+    state = prepare_state(
+        instances,
+        image_map={},
+        source_path=source_path,
+        annotation_path=annotation_path,
+    )
+    app = create_app(state, instances, annotation_path)
     client = app.test_client()
 
     page = client.get("/")
@@ -108,6 +138,8 @@ def test_travelplanner_replay_page_renders_and_saves_annotations(tmp_path):
     assert b"Submitted Itinerary" in page.data
     assert b"Travel Search Evidence" in page.data
     assert b"Tool Action Trace" in page.data
+    assert b"Entity Intentions &amp; Gold Changes" in page.data
+    assert b"renderEntityIntentions" in page.data
 
     response = client.post(
         "/api/update_turn",
@@ -120,8 +152,22 @@ def test_travelplanner_replay_page_renders_and_saves_annotations(tmp_path):
         },
     )
     assert response.status_code == 200
-    saved = json.loads(dataset_path.read_text(encoding="utf-8"))
+    saved = json.loads(annotation_path.read_text(encoding="utf-8"))
     turn = saved[0]["turns"][0]
     assert turn["user_utterance"] == "Plan a cheaper Boston trip."
     assert turn["gold_current_intention"]["constraints"]["budget"] == 400
     assert turn["gold_current_intention"]["priority"]["high"] == ["budget"]
+    assert turn["gold_current_intention"]["entities"]["entity_2"]["reference"] == "my friend"
+    assert source_path.read_bytes() == original_source
+
+
+def test_annotation_input_resumes_output_and_rejects_source_overwrite(tmp_path):
+    source_path = tmp_path / "rollout.json"
+    annotation_path = default_annotation_path(source_path)
+    source_path.write_text("[]", encoding="utf-8")
+
+    assert annotation_input_path(source_path, annotation_path) == source_path
+    annotation_path.write_text("[]", encoding="utf-8")
+    assert annotation_input_path(source_path, annotation_path) == annotation_path
+    with pytest.raises(ValueError, match="must differ"):
+        annotation_input_path(source_path, source_path)

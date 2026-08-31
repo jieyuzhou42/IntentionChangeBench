@@ -15,6 +15,7 @@ domains/
     executor.py
     user_simulator.py
 ```
+webshop and travel planner should use different virtual environment
 
 `simulation/simulation/run_simulation.py` contains only shared orchestration
 and selects one complete domain bundle. Each domain owns its `run.py` entrypoint;
@@ -40,6 +41,12 @@ synchronized, and stable opaque entity paths appear in `gold_delta`. Plans with 
 requirements use per-day `participant_assignments`, which the TravelPlanner
 environment evaluates separately for each traveler. This entity schema is not
 used by the WebShop domain.
+
+TravelPlanner shifts use an ordered `changes` array. A single turn may combine
+shared-party and person-specific changes, including adding a traveler before a
+later change assigns that traveler a separate constraint. The default
+`--travelplanner_multi_change_rate 0.30` only supplies a soft preference for a
+coherent compound update; it never asks the LLM for a fixed change count.
 
 Allowed:
 - Expose and update gold user intention.

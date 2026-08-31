@@ -4,7 +4,7 @@ import argparse
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Optional
 
 from flask import Flask, jsonify, render_template_string, request, send_from_directory
 
@@ -467,6 +467,10 @@ HTML = r"""
           <div id="priorityBoard" class="priority-board"></div>
         </section>
       </div>
+      <section id="entityPanel" class="panel panel-pad" style="margin-bottom:16px; display:none;">
+        <h2 class="section-title">Entity Intentions &amp; Gold Changes</h2>
+        <div id="entityState"></div>
+      </section>
       <section class="panel panel-pad" style="margin-bottom:16px;">
         <h2 class="section-title">Rationale</h2>
         <div id="rationale" class="rationale-list"></div>
@@ -499,6 +503,8 @@ HTML = r"""
     const utterance = document.getElementById("utterance");
     const constraints = document.getElementById("constraints");
     const priorityBoard = document.getElementById("priorityBoard");
+    const entityPanel = document.getElementById("entityPanel");
+    const entityState = document.getElementById("entityState");
     const saveEdit = document.getElementById("saveEdit");
     const saveStatus = document.getElementById("saveStatus");
     const rationale = document.getElementById("rationale");
@@ -687,9 +693,11 @@ HTML = r"""
       const actionPayload = action.action_payload || {};
 
       renderEditor(turn);
+      renderEntityIntentions(turn);
       meta.innerHTML = [
         pill(state.domain),
         pill(inst.instance_id),
+        state.annotation_output ? pill(`save → ${state.annotation_output}`, "good") : "",
         pill(`turn ${turn.turn_id ?? turnIndex}`),
         turn.shift_condition?.type ? pill(turn.shift_condition.type, "warn") : "",
         turn.action_implication ? pill(turn.action_implication) : "",
@@ -801,6 +809,35 @@ HTML = r"""
           ${step.tool_result !== null && step.tool_result !== undefined ? `<details><summary>Tool result</summary><pre>${esc(JSON.stringify(step.tool_result, null, 2))}</pre></details>` : ""}
         </article>`;
       }).join("") : `<div class="empty">No rollout trace recorded.</div>`;
+    }
+    function renderEntityIntentions(turn) {
+      if (state.domain !== "travelplanner") {
+        entityPanel.style.display = "none";
+        entityState.innerHTML = "";
+        return;
+      }
+      entityPanel.style.display = "block";
+      const gold = turn.gold_current_intention || {};
+      const entities = Object.entries(gold.entities || {});
+      const changes = Object.entries(turn.gold_delta || {});
+      const entityCards = entities.length
+        ? entities.map(([entityId, entity]) => `<article class="travel-card">
+            <h3 class="travel-card-title">${esc(entity.reference || "Traveler")} <span class="details">(${esc(entityId)})</span></h3>
+            <pre>${esc(JSON.stringify(entity.constraints || {}, null, 2))}</pre>
+          </article>`).join("")
+        : `<div class="empty">No entity-level intention recorded for this turn.</div>`;
+      const changeCards = changes.length
+        ? changes.map(([path, change]) => `<article class="travel-card">
+            <h3 class="travel-card-title">${esc(path)}</h3>
+            <div class="chips">${pill(change.category || change.op || "change", change.category === "entity" ? "warn" : "")}</div>
+            <pre>${esc(JSON.stringify({old: change.old, new: change.new, rationale: change.rationale}, null, 2))}</pre>
+          </article>`).join("")
+        : `<div class="empty">Initial turn: no gold changes.</div>`;
+      entityState.innerHTML = `
+        <div class="small-title">Travelers and person-specific constraints</div>
+        <div class="travel-items">${entityCards}</div>
+        <div class="small-title">This turn's gold changes (${changes.length})</div>
+        <div class="travel-items">${changeCards}</div>`;
     }
     function renderTravelPlanner(turn, feedback, actionPayload) {
       const searchResults = feedback.search_results || {};
@@ -1110,7 +1147,13 @@ def rationales_for_turn(turn: Dict[str, Any]) -> List[str]:
     return rationales
 
 
-def prepare_state(instances: List[Dict[str, Any]], image_map: Dict[str, str]) -> Dict[str, Any]:
+def prepare_state(
+    instances: List[Dict[str, Any]],
+    image_map: Dict[str, str],
+    *,
+    source_path: Optional[Path] = None,
+    annotation_path: Optional[Path] = None,
+) -> Dict[str, Any]:
     prepared = []
     for instance in instances:
         instance_copy = dict(instance)
@@ -1142,6 +1185,8 @@ def prepare_state(instances: List[Dict[str, Any]], image_map: Dict[str, str]) ->
         "domain": domain,
         "instances": prepared,
         "no_image_url": "/static-webshop/images/no-image-available.png",
+        "source_dataset": str(source_path) if source_path else "",
+        "annotation_output": str(annotation_path) if annotation_path else "",
     }
 
 
@@ -1172,7 +1217,7 @@ def normalize_priority_payload(priority: Any, constraint_keys: List[str]) -> Dic
     return normalized
 
 
-def create_app(state: Dict[str, Any], instances: List[Dict[str, Any]], dataset_path: Path) -> Flask:
+def create_app(state: Dict[str, Any], instances: List[Dict[str, Any]], annotation_path: Path) -> Flask:
     app = Flask(__name__)
 
     @app.route("/")
@@ -1220,7 +1265,7 @@ def create_app(state: Dict[str, Any], instances: List[Dict[str, Any]], dataset_p
         state_gold["constraints"] = constraints_clean
         state_gold["priority"] = priority_clean
 
-        save_json(dataset_path, instances)
+        save_json(annotation_path, instances)
         return jsonify({"ok": True, "turn": state_turn})
 
     @app.route("/static-webshop/images/<path:filename>")
@@ -1233,6 +1278,15 @@ def create_app(state: Dict[str, Any], instances: List[Dict[str, Any]], dataset_p
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Replay WebShop or TravelPlanner simulated data for annotation review.")
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET_PATH)
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help=(
+            "Writable annotation JSON. Defaults to <dataset_stem>_annotated.json. "
+            "If it already exists, annotation resumes from that file."
+        ),
+    )
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=7860)
     parser.add_argument("--cache", type=Path, default=DEFAULT_CACHE_PATH)
@@ -1244,19 +1298,40 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def default_annotation_path(dataset_path: Path) -> Path:
+    return dataset_path.with_name(f"{dataset_path.stem}_annotated{dataset_path.suffix}")
+
+
+def annotation_input_path(dataset_path: Path, annotation_path: Path) -> Path:
+    if dataset_path.resolve() == annotation_path.resolve():
+        raise ValueError("--output must differ from --dataset so the source rollout remains unchanged")
+    return annotation_path if annotation_path.is_file() else dataset_path
+
+
 def main() -> None:
     args = parse_args()
-    instances = load_json(args.dataset)
+    annotation_path = args.output or default_annotation_path(args.dataset)
+    input_path = annotation_input_path(args.dataset, annotation_path)
+    instances = load_json(input_path)
     if not isinstance(instances, list):
-        raise ValueError(f"Expected dataset JSON list, got {type(instances).__name__}")
+        raise ValueError(f"Expected dataset JSON list in {input_path}, got {type(instances).__name__}")
     asins = collect_asins(instances)
     image_map = load_catalog_images(
         asins,
         cache_path=args.cache,
         scan_full_catalog=not args.skip_full_catalog,
     )
-    state = prepare_state(instances, image_map)
-    app = create_app(state, instances, args.dataset)
+    state = prepare_state(
+        instances,
+        image_map,
+        source_path=args.dataset,
+        annotation_path=annotation_path,
+    )
+    app = create_app(state, instances, annotation_path)
+    print(f"Source dataset (read-only): {args.dataset.resolve()}")
+    print(f"Annotation output: {annotation_path.resolve()}")
+    if input_path == annotation_path:
+        print("Resuming from existing annotation output.")
     app.run(host=args.host, port=args.port, debug=False)
 
 

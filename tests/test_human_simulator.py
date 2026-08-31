@@ -249,7 +249,6 @@ def test_distribution_controller_uses_v1_counts_to_favor_missing_directions():
             "relax": 450,
             "override": 193,
             "reprioritize": 68,
-            "scope_correction": 59,
         },
         condition_counts={
             "user_preference": 1471,
@@ -267,12 +266,13 @@ def test_distribution_controller_uses_v1_counts_to_favor_missing_directions():
         value="leather",
     )
     underrepresented = ShiftOp(
-        op="scope_correction",
+        op="reprioritize",
         intention_changed=True,
         condition="real_world_feasibility",
-        change_category="scope_correction",
+        change_category="reprioritize",
         field="size",
-        value="wide",
+        value=["size", "material"],
+        priority_update=["size", "material"],
     )
 
     selected, metadata = controller.select(
@@ -281,7 +281,7 @@ def test_distribution_controller_uses_v1_counts_to_favor_missing_directions():
     )
 
     assert selected is underrepresented
-    assert metadata["selected_categories"] == ["scope_correction"]
+    assert metadata["selected_categories"] == ["reprioritize"]
     assert metadata["selected_condition"] == "real_world_feasibility"
 
 
@@ -292,7 +292,6 @@ def test_prompt_controller_exposes_v1_deficits_as_soft_guidance():
             "relax": 450,
             "override": 193,
             "reprioritize": 68,
-            "scope_correction": 59,
         },
         condition_counts={
             "user_preference": 1471,
@@ -304,15 +303,17 @@ def test_prompt_controller_exposes_v1_deficits_as_soft_guidance():
     guidance = controller.prompt_guidance(compound_update_preferred=True)
 
     assert guidance["preferred_change_categories_when_natural"] == [
-        "scope_correction",
         "reprioritize",
         "override",
-        "relax",
     ]
     assert guidance["preferred_conditions_when_natural"] == [
         "real_world_feasibility"
     ]
     assert guidance["compound_update_preferred_when_natural"] is True
+    assert guidance["use_only_as_tiebreaker"] is True
+    assert guidance["primary_objective"] == "trajectory_coherence"
+    assert "category_counts_observed" not in guidance
+    assert "condition_counts_observed" not in guidance
 
 
 def test_prompt_mode_injects_live_distribution_guidance_into_shift_prompt():
@@ -338,8 +339,32 @@ def test_prompt_mode_injects_live_distribution_guidance_into_shift_prompt():
         "real_world_feasibility"
     ]
     assert guidance["compound_update_preferred_when_natural"] is True
-    assert "soft diversity preference" in instructions
+    assert "coherent trajectory above every diversity objective" in instructions
+    assert "weak tie-breaker" in instructions
     assert shift.sampling_metadata["prompt_distribution_guidance"] == guidance
+
+
+def test_webshop_legacy_scope_correction_is_normalized_to_override():
+    simulator = WebShopUserSimulator(llm_client=RecordingLLMClient())
+    shift = simulator._parse_shift_output(
+        {
+            "intention_changed": True,
+            "condition": "user_preference",
+            "category": "scope_correction",
+            "field": "category",
+            "old_value": "running shoes",
+            "value": "hiking boots",
+            "rationale": "The user now wants a different product type.",
+        },
+        {
+            "domain": "webshop",
+            "constraints": {"category": "running shoes"},
+            "priority": ["category"],
+        },
+    )
+
+    assert shift.op == "override"
+    assert shift.change_category == "override"
 
 
 def test_none_like_field_is_not_treated_as_a_new_constraint_name():

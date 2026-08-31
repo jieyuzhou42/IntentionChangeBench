@@ -223,15 +223,23 @@ Important simulation args:
 - `--enable_reranking`: whether to rerank BM25 candidates with the LLM.
 - `--multi_change_rate`: fraction of WebShop shift slots that prefer a
   naturally sampled multi-change candidate (default `0.30`).
+- `--travelplanner_multi_change_rate`: fraction of TravelPlanner shift slots
+  that softly prefer one coherent multi-intention update (default `0.30`). A
+  turn may mix shared-party and entity-specific changes, and no exact change
+  count is requested from the LLM.
 - `--multi_candidate_samples` / `--max_multi_candidate_samples`: initial and
   maximum candidate samples used by multi-preferred WebShop turns. These
   values limit candidate calls, not the number of changes in a selected turn.
-- `--shift_distribution_baseline`: optional v1 dataset used to initialize the
-  category/condition deficit controller. Candidate selection then favors
-  underrepresented categories and conditions without putting them in the LLM
-  prompt.
-- `--distribution_balance_strength`: strength of that candidate-selection
-  preference (`0` means uniform selection within the eligible candidate pool).
+  The initial value also sizes the TravelPlanner candidate pool in explicit
+  `selection` or `hybrid` mode; default `prompt` mode still uses one candidate.
+- `--shift_distribution_baseline`: optional baseline dataset used to initialize
+  the domain-specific category/condition deficit controller. WebShop balances
+  `add/relax/override/reprioritize`; TravelPlanner additionally balances the
+  single `entity` category. TravelPlanner also includes
+  `agent_misunderstanding` in its condition targets.
+- `--distribution_balance_strength`: strength of candidate-selection weighting
+  in `selection` or `hybrid` mode (`0` means uniform selection within the
+  eligible candidate pool).
 - `--distribution_control_mode`: `prompt` adds dynamic soft guidance from the
   observed deficits, `selection` only reweights sampled candidates, and
   `hybrid` applies both. The default is `prompt`.
@@ -255,13 +263,17 @@ turn's user utterance, constraints, and constraint priorities.
 ```powershell
 ..\.venv38-webshop\Scripts\python.exe .\src\replay_server.py `
   --dataset .\data\simulation\_travelplanner_full_api_smoke.json `
+  --output .\data\simulation\_travelplanner_full_api_smoke_annotated.json `
   --host 127.0.0.1 `
   --port 7860 `
   --skip_full_catalog
 ```
 
-Open `http://127.0.0.1:7860`. Edits are written back to the file passed to
-`--dataset`; use a working copy when the source rollout must remain immutable.
+Open `http://127.0.0.1:7860`. `--dataset` is always treated as read-only;
+annotator edits are written to `--output`. When `--output` is omitted, the
+server uses `<dataset_stem>_annotated.json`. If that annotation file already
+exists, the server resumes from it. The server rejects identical dataset and
+output paths.
 
 This file is the gold trajectory dataset used by eval. Each turn should include:
 

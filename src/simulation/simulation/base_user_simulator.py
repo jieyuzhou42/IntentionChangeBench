@@ -38,7 +38,7 @@ FORCED_SHIFT_RETRY_PROBABILITY = 0.5
 
 
 class ShiftDistributionController:
-    """Thread-safe, deficit-weighted selection over independently sampled shifts."""
+    """Thread-safe soft prompt guidance and optional weighted candidate selection."""
 
     def __init__(
         self,
@@ -46,30 +46,30 @@ class ShiftDistributionController:
         condition_counts: Optional[Dict[str, int]] = None,
         category_targets: Optional[Dict[str, float]] = None,
         condition_targets: Optional[Dict[str, float]] = None,
+        categories: Optional[List[str]] = None,
+        conditions: Optional[List[str]] = None,
         balance_strength: float = 6.0,
         control_mode: str = "prompt",
     ):
-        categories = [
-            "add",
-            "relax",
-            "override",
-            "reprioritize",
-            "scope_correction",
-        ]
+        categories = list(categories or ["add", "relax", "override", "reprioritize"])
+        conditions = list(
+            conditions or ["user_preference", "real_world_feasibility"]
+        )
+        if not categories or not conditions:
+            raise ValueError("categories and conditions must not be empty")
         self.category_counts = {
             category: int((category_counts or {}).get(category, 0))
             for category in categories
         }
         self.condition_counts = {
             condition: int((condition_counts or {}).get(condition, 0))
-            for condition in ("user_preference", "real_world_feasibility")
+            for condition in conditions
         }
         self.category_targets = category_targets or {
             category: 1.0 / len(categories) for category in categories
         }
         self.condition_targets = condition_targets or {
-            "user_preference": 0.5,
-            "real_world_feasibility": 0.5,
+            condition: 1.0 / len(conditions) for condition in conditions
         }
         self.balance_strength = max(0.0, float(balance_strength))
         if control_mode not in {"prompt", "selection", "hybrid"}:
@@ -77,13 +77,12 @@ class ShiftDistributionController:
         self.control_mode = control_mode
         self._lock = threading.Lock()
 
-    @staticmethod
-    def _categories_for_shift(shift: ShiftOp) -> List[str]:
+    def _categories_for_shift(self, shift: ShiftOp) -> List[str]:
         changes = shift.changes or [shift]
         return [
             str(change.change_category or change.op)
             for change in changes
-            if str(change.change_category or change.op) in ALLOWED_CHANGE_CATEGORIES
+            if str(change.change_category or change.op) in self.category_counts
             and str(change.change_category or change.op) != "none"
         ]
 
@@ -154,34 +153,44 @@ class ShiftDistributionController:
             }
 
     def prompt_guidance(self, compound_update_preferred: bool = False) -> Dict[str, Any]:
-        """Describe current raw-count deficits without prescribing an exact output."""
+        """Return a small, count-free tie-breaker for otherwise plausible shifts."""
         with self._lock:
-            max_category_count = max(self.category_counts.values(), default=0)
-            preferred_categories = [
-                category
-                for category, count in sorted(
-                    self.category_counts.items(),
-                    key=lambda item: (item[1], item[0]),
-                )
-                if count < max_category_count
-            ]
-            max_condition_count = max(self.condition_counts.values(), default=0)
-            preferred_conditions = [
-                condition
-                for condition, count in sorted(
-                    self.condition_counts.items(),
-                    key=lambda item: (item[1], item[0]),
-                )
-                if count < max_condition_count
-            ]
+            preferred_categories = self._largest_positive_gaps(
+                self.category_counts,
+                self.category_targets,
+                limit=2,
+            )
+            preferred_conditions = self._largest_positive_gaps(
+                self.condition_counts,
+                self.condition_targets,
+                limit=1,
+            )
             return {
                 "preferred_change_categories_when_natural": preferred_categories,
                 "preferred_conditions_when_natural": preferred_conditions,
                 "compound_update_preferred_when_natural": bool(compound_update_preferred),
-                "category_counts_observed": copy.deepcopy(self.category_counts),
-                "condition_counts_observed": copy.deepcopy(self.condition_counts),
                 "guidance_is_soft": True,
+                "use_only_as_tiebreaker": True,
+                "primary_objective": "trajectory_coherence",
             }
+
+    def _largest_positive_gaps(
+        self,
+        counts: Dict[str, int],
+        targets: Dict[str, float],
+        *,
+        limit: int,
+    ) -> List[str]:
+        if sum(counts.values()) <= 0:
+            return []
+        ranked = sorted(
+            (
+                (targets.get(key, 0.0) - self._share(counts, key), key)
+                for key in counts
+            ),
+            key=lambda item: (-item[0], item[1]),
+        )
+        return [key for gap, key in ranked if gap > 0][:limit]
 
 
 class LLMClientProtocol(Protocol):
@@ -358,11 +367,10 @@ Allowed change categories:
 - relax
 - override
 - reprioritize
-- scope_correction
 
 Task:
 - Feel free to change the trip constraints based on your preferences or on the plan you just saw.
-- You are currently dissatisfied or curious enough to change the plan. You MUST either add a new constraint, relax a constraint, override an existing one, reprioritize constraints, or clarify the trip scope.
+- You are currently dissatisfied or curious enough to change the plan. You MUST either add a new constraint, relax a constraint, override an existing one, or reprioritize constraints.
 - search_results is grouped into attractions, accommodations, restaurants, transportation, and cities.
 - Each category contains separate search pages with their query, status, and up to 10 sampled real items. Empty pages are marked no_results.
 - Inspect the concrete restaurant, accommodation, attraction, and transportation evidence before deciding how to change the intention.
@@ -380,7 +388,7 @@ Required JSON schema:
 {
   "intention_changed": true,
   "condition": "user_preference | real_world_feasibility",
-  "category": "add | relax | override | reprioritize | scope_correction",
+  "category": "add | relax | override | reprioritize",
   "field": "constraint field name or null",
   "old_value": "previous value or null",
   "value": "new value or null",
@@ -431,7 +439,6 @@ Allowed change categories:
 - relax
 - override
 - reprioritize
-- scope_correction
 
 Task:
 - Feel free to change your primary goal or constraints entirely based on your whims or what you see on the page. Your initial goal is just a starting point, not a contract.
@@ -445,8 +452,9 @@ Rules:
 - Do not introduce correction, termination, or no_change_continue as top-level reaction classes.
 - Do not mention rating/review/star/customer-score constraints. Those signals are unavailable to the executor and are out of scope for this simulator run
 - Do not repeatedly toggle between two values across turns.
-- Treat distribution_guidance as a soft diversity preference, never as a factual requirement. Prefer its underrepresented categories or conditions only when they fit the current intention and page evidence naturally.
-- When compound_update_preferred_when_natural is true, favor one coherent update spanning several related aspects. Do not force unrelated changes and do not target a specific number of changes.
+- Preserve a coherent trajectory above every diversity objective: the next change must follow naturally from the current intention, earlier changes, and concrete page evidence.
+- Treat distribution_guidance only as a weak tie-breaker between changes that are already equally plausible. Ignore it when its suggested direction would invent a motive, contradict the trajectory, repeat or toggle a prior change, or fit the evidence less well.
+- When compound_update_preferred_when_natural is true, use multiple changes only when they form one coherent user decision spanning closely related aspects. Prefer a single change over bundling unrelated updates, and never target a specific number of changes.
 - Never mention dataset distributions, counters, balancing, or this guidance in the user-facing rationale or utterance.
 
 
@@ -456,7 +464,7 @@ Required JSON schema:
   "condition": "user_preference | real_world_feasibility",
   "changes": [
     {
-      "category": "add | relax | override | reprioritize | scope_correction",
+      "category": "add | relax | override | reprioritize",
       "field": "constraint field name or null",
       "old_value": "previous value or null",
       "value": "new value or null",
@@ -606,6 +614,11 @@ Examples:
             llm_output.get("category", llm_output.get("change_category"))
         )
         op = self._normalize_change_category(llm_output.get("op"))
+        is_webshop = self._infer_domain(current_intention, env_feedback) == "webshop"
+        if is_webshop and change_category == "scope_correction":
+            change_category = "override"
+        if is_webshop and op == "scope_correction":
+            op = "override"
         if op == "none" and change_category != "none":
             op = change_category
         if change_category == "none" and op != "none":
@@ -656,6 +669,8 @@ Examples:
                 priority_update=priority_update,
             )
             change_category = inferred_category
+        if is_webshop and change_category == "scope_correction":
+            change_category = "override"
         if change_category not in ALLOWED_CHANGE_CATEGORIES or change_category == "none":
             return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
         if op not in ALLOWED_SHIFT_OPS or op == "none":
@@ -811,14 +826,13 @@ Examples:
         is_travelplanner = self._infer_domain(current_intention, env_feedback) == "travelplanner"
         distribution_guidance: Optional[Dict[str, Any]] = None
         if (
-            not is_travelplanner
-            and distribution_controller is not None
+            distribution_controller is not None
             and distribution_controller.control_mode in {"prompt", "hybrid"}
         ):
             distribution_guidance = distribution_controller.prompt_guidance(
                 compound_update_preferred=prefer_multi,
             )
-        elif not is_travelplanner and prefer_multi:
+        elif prefer_multi:
             distribution_guidance = {
                 "compound_update_preferred_when_natural": True,
                 "guidance_is_soft": True,
@@ -831,9 +845,15 @@ Examples:
             distribution_guidance=distribution_guidance,
         )
         if is_travelplanner:
-            candidate_samples = 1
-            max_candidate_samples = 1
-            prefer_multi = False
+            # Keep the default prompt mode trajectory-first and inexpensive.
+            # Explicit selection/hybrid modes may sample a pool so deficit
+            # weights have multiple valid candidates to distinguish.
+            if (
+                distribution_controller is None
+                or distribution_controller.control_mode == "prompt"
+            ):
+                candidate_samples = 1
+                max_candidate_samples = 1
 
         initial_sample_count = max(1, int(candidate_samples))
         sample_limit = max(
