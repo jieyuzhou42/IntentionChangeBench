@@ -113,9 +113,42 @@ def test_travelplanner_initial_intention_parses_huggingface_constraint_string():
 
     assert intention["constraints"]["cuisine"] == ["Seafood"]
     assert intention["constraints"]["room_type"] == "Entire home/apt"
+    assert intention["constraints"]["start_date"] == "2022-03-13"
+    assert intention["constraints"]["end_date"] == "2022-03-15"
     query_data = task.world_state["travelplanner_query_data"]
     assert query_data["local_constraint"]["cuisine"] == ["Seafood"]
     assert query_data["date"] == ["2022-03-13", "2022-03-14", "2022-03-15"]
+
+
+def test_travelplanner_can_reuse_a_simulation_instance_as_a_regression_task():
+    from simulation.simulation.run_simulation import _travelplanner_task_from_payload
+
+    payload = {
+        "instance_id": "travelplanner_test_0009",
+        "world_state": {
+            "domain": "travelplanner",
+            "travelplanner_query_data": {
+                "query": "Plan a three-day solo trip.",
+                "org": "Charleston",
+                "dest": "New York",
+                "days": 3,
+                "people_number": 1,
+                "budget": 1700,
+                "date": ["2022-03-17", "2022-03-18", "2022-03-19"],
+                "local_constraint": {},
+            },
+            "reference_information": {"Attractions in New York": []},
+        },
+        "turns": [{"gold_current_intention": {"constraints": {"days": 99}}}],
+    }
+
+    task = _travelplanner_task_from_payload(payload, fallback_index=1)
+
+    assert task.world_state["reference_information"] == {
+        "Attractions in New York": []
+    }
+    assert task.initial_intention["constraints"]["days"] == 3
+    assert task.initial_intention["constraints"]["start_date"] == "2022-03-17"
 
 
 def test_llm_executor_uses_original_travelplanner_actions_before_planner():

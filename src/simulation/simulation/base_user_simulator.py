@@ -690,6 +690,14 @@ Examples:
                 if field is None:
                     return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
                 priority_update = self._move_field_to_front(field, priority)
+            if priority_update == priority:
+                return ShiftOp(
+                    op="none",
+                    intention_changed=False,
+                    condition="none",
+                    change_category="none",
+                    rationale="no_op_reprioritize",
+                )
             return ShiftOp(
                 op="reprioritize",
                 intention_changed=True,
@@ -719,10 +727,28 @@ Examples:
 
         raw_value = llm_output.get("value")
         value = self._coerce_value(field, raw_value, old_value)
+        if (
+            field == "budget"
+            and op == "override"
+            and isinstance(old_value, (int, float))
+            and isinstance(value, (int, float))
+            and value > old_value
+        ):
+            op = "relax"
+            change_category = "relax"
         if value is None and op == "relax":
             value = self._default_relax_value(field, old_value)
         if op == "add" and old_value is not None:
             return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")
+
+        if op in {"override", "scope_correction"} and value == current_value:
+            return ShiftOp(
+                op="none",
+                intention_changed=False,
+                condition="none",
+                change_category="none",
+                rationale="no_op_constraint_change",
+            )
 
         if op in {"add", "override", "scope_correction"} and value is None:
             return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="invalid_llm_output")

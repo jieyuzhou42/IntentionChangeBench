@@ -24,6 +24,42 @@ def _non_null_fields(constraints: Any) -> List[str]:
     return [str(field) for field, value in constraints.items() if value is not None]
 
 
+def _active_fields(gold: Any) -> List[str]:
+    if not isinstance(gold, dict):
+        return []
+    fields = _non_null_fields(gold.get("constraints"))
+    entities = gold.get("entities")
+    if isinstance(entities, dict):
+        for entity_id, entity in entities.items():
+            if not isinstance(entity, dict):
+                continue
+            for field in _non_null_fields(entity.get("constraints")):
+                _append_once(fields, f"entities.{entity_id}.constraints.{field}")
+    return fields
+
+
+def _explicit_reprioritized_fields(turn: Any, active: set[str]) -> List[str]:
+    if not isinstance(turn, dict):
+        return []
+    details = ((turn.get("shift_condition") or {}).get("details") or {})
+    candidates: List[Any] = []
+    if details.get("change_category") == "reprioritize":
+        candidates.extend(details.get("priority_update") or [])
+    for change in details.get("changes") or []:
+        if isinstance(change, dict) and change.get("op") == "reprioritize":
+            candidates.extend(change.get("priority_update") or [])
+    entity_priority = (turn.get("gold_current_intention") or {}).get("entity_priority")
+    if isinstance(entity_priority, list):
+        candidates.extend(entity_priority[:1])
+    prioritized: List[str] = []
+    for field in candidates:
+        field = str(field)
+        if field in active:
+            _append_once(prioritized, field)
+            break
+    return prioritized
+
+
 def _changed_fields(delta: Any) -> List[str]:
     if not isinstance(delta, dict):
         return []
@@ -48,11 +84,9 @@ def classify_instance(instance: MutableMapping[str, Any]) -> Counter:
         return stats
 
     first_gold = turns[0].get("gold_current_intention") or {}
-    initial_constraints = first_gold.get("constraints") or {}
-    initial_order = _non_null_fields(initial_constraints)
+    initial_order = _active_fields(first_gold)
 
     previously_focused: List[str] = []
-    removed_order: List[str] = []
     previous_priority: Optional[Dict[str, List[str]]] = None
 
     for turn_index, turn in enumerate(turns):
@@ -62,21 +96,20 @@ def classify_instance(instance: MutableMapping[str, Any]) -> Counter:
             continue
 
         constraints = gold.get("constraints") or {}
-        active_order = _non_null_fields(constraints)
+        active_order = _active_fields(gold)
         active = set(active_order)
         delta = turn.get("gold_delta") or {}
         changed = [] if turn_index == 0 else _changed_fields(delta)
         removed_now = [field for field in changed if _is_removed(field, delta, constraints)]
         active_focus = [field for field in changed if field in active and field not in removed_now]
 
-        # Reintroduced fields are active again and must no longer be represented as abandoned.
-        removed_order = [field for field in removed_order if field not in active_focus]
-        for field in removed_now:
-            _append_once(removed_order, field)
-
+        reprioritized = _explicit_reprioritized_fields(turn, active)
         high: List[str] = []
         if "category" in active:
             high.append("category")
+        for field in reprioritized:
+            if field != "category":
+                _append_once(high, field)
         for field in active_focus:
             if field != "category":
                 _append_once(high, field)
@@ -88,12 +121,13 @@ def classify_instance(instance: MutableMapping[str, Any]) -> Counter:
 
         low: List[str] = []
         for field in initial_order:
-            if field != "category" and field not in high and field not in medium:
+            if (
+                field in active
+                and field != "category"
+                and field not in high
+                and field not in medium
+            ):
                 _append_once(low, field)
-        for field in removed_order:
-            if field != "category" and field not in high and field not in medium:
-                _append_once(low, field)
-
         # Keep the output exhaustive if a malformed trajectory introduces a field
         # without recording the corresponding delta.
         for field in active_order:
@@ -118,7 +152,7 @@ def classify_instance(instance: MutableMapping[str, Any]) -> Counter:
             priority_delta["new"] = _copy_priority(priority)
             stats["priority_deltas_updated"] += 1
 
-        for field in active_focus:
+        for field in reprioritized + active_focus:
             _append_once(previously_focused, field)
         previous_priority = priority
 
