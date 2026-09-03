@@ -278,6 +278,97 @@ def test_travelplanner_decide_shift_accepts_shared_prompt_guidance_interface():
     assert shift.field == "entities.entity_2.constraints.cuisine"
 
 
+def test_solo_first_person_entity_constraint_is_promoted_to_shared_scope():
+    simulator = TravelPlannerUserSimulator(NoopLLM())
+    current = {
+        "domain": "travelplanner",
+        "constraints": {"people_number": 1},
+        "priority": [],
+        "entities": {"entity_1": {"reference": "me", "constraints": {}}},
+    }
+    shift = simulator._parse_shift_output(
+        {
+            "condition": "user_preference",
+            "category": "entity",
+            "op": "add",
+            "entity_id": "entity_1",
+            "reference": "me",
+            "field": "room_type",
+            "value": "Entire home/apt",
+            "rationale": "I want an entire apartment.",
+        },
+        current,
+    )
+
+    updated, delta = simulator.apply_shift(current, shift)
+
+    assert shift.change_category == "add"
+    assert shift.field == "room_type"
+    assert updated["constraints"]["room_type"] == "Entire home/apt"
+    assert updated["entities"]["entity_1"]["constraints"] == {}
+    assert set(delta) == {"room_type"}
+
+
+def test_budget_increase_is_normalized_to_relax_and_null_relax_is_deleted():
+    simulator = TravelPlannerUserSimulator(NoopLLM())
+    current = {
+        "domain": "travelplanner",
+        "constraints": {"people_number": 1, "budget": 1000, "room_type": "Entire home/apt"},
+        "priority": ["budget", "room_type"],
+    }
+    budget_shift = simulator._parse_shift_output(
+        {
+            "condition": "real_world_feasibility",
+            "category": "override",
+            "field": "budget",
+            "value": 1400,
+            "rationale": "More budget makes the trip feasible.",
+        },
+        current,
+    )
+    assert budget_shift.op == "relax"
+
+    room_shift = simulator._parse_shift_output(
+        {
+            "condition": "real_world_feasibility",
+            "category": "relax",
+            "field": "room_type",
+            "value": None,
+            "rationale": "A private room is acceptable.",
+        },
+        current,
+    )
+    updated, _ = simulator.apply_shift(current, room_shift)
+    assert "room_type" not in updated["constraints"]
+    assert "room_type" not in updated["priority"]
+
+
+def test_duration_change_with_fixed_dates_requires_compound_date_update():
+    simulator = TravelPlannerUserSimulator(NoopLLM())
+    current = {
+        "domain": "travelplanner",
+        "constraints": {
+            "people_number": 1,
+            "days": 3,
+            "start_date": "2022-03-12",
+            "end_date": "2022-03-14",
+        },
+        "priority": ["start_date", "end_date", "days"],
+    }
+    shift = simulator._parse_shift_output(
+        {
+            "condition": "user_preference",
+            "changes": [
+                {"category": "override", "field": "days", "value": 4},
+            ],
+            "rationale": "Stay one more day.",
+        },
+        current,
+    )
+    assert shift.op == "none"
+    assert shift.rationale == "duration_change_requires_date_update"
+
+
 def test_travelplanner_mixed_multi_shift_applies_shared_and_entity_changes():
     simulator = TravelPlannerUserSimulator(NoopLLM())
     current = _entity_intention()
@@ -320,7 +411,7 @@ def test_travelplanner_mixed_multi_shift_applies_shared_and_entity_changes():
 
     assert shift.op == "multiple"
     assert [change.change_category for change in shift.changes] == [
-        "override",
+        "relax",
         "entity",
     ]
     updated, delta = simulator.apply_shift(current, shift)

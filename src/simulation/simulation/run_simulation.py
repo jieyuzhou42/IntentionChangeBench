@@ -445,6 +445,21 @@ def _travelplanner_initial_intention(raw_task: Dict[str, Any]) -> Dict[str, Any]
         if query_data.get(source) is not None:
             constraints[target] = copy.deepcopy(query_data[source])
 
+    raw_dates = query_data.get("date")
+    if isinstance(raw_dates, str):
+        try:
+            raw_dates = ast.literal_eval(raw_dates)
+        except (SyntaxError, ValueError):
+            raw_dates = None
+    if isinstance(raw_dates, (list, tuple)) and raw_dates:
+        constraints["start_date"] = copy.deepcopy(raw_dates[0])
+        constraints["end_date"] = copy.deepcopy(raw_dates[-1])
+    else:
+        if query_data.get("start_date") is not None:
+            constraints["start_date"] = copy.deepcopy(query_data["start_date"])
+        if query_data.get("end_date") is not None:
+            constraints["end_date"] = copy.deepcopy(query_data["end_date"])
+
     for source, target in (
         ("cuisine", "cuisine"),
         ("room type", "room_type"),
@@ -466,6 +481,8 @@ def _travelplanner_initial_intention(raw_task: Dict[str, Any]) -> Dict[str, Any]
         field
         for field in (
             "dest",
+            "start_date",
+            "end_date",
             "days",
             "budget",
             "transportation",
@@ -529,7 +546,14 @@ def _travelplanner_task_from_payload(
     if not isinstance(raw_task, dict):
         raise ValueError(f"TravelPlanner task #{fallback_index} must be a JSON object")
 
-    query_data = copy.deepcopy(raw_task.get("travelplanner_query_data") or raw_task)
+    supplied_world_state = raw_task.get("world_state")
+    if not isinstance(supplied_world_state, dict):
+        supplied_world_state = {}
+    query_data = copy.deepcopy(
+        raw_task.get("travelplanner_query_data")
+        or supplied_world_state.get("travelplanner_query_data")
+        or raw_task
+    )
     for field in ("local_constraint", "date"):
         value = query_data.get(field)
         if not isinstance(value, str) or not value.strip().startswith(("{", "[")):
@@ -542,8 +566,10 @@ def _travelplanner_task_from_payload(
             ) from exc
     ref_info = raw_task.get("reference_information")
     if ref_info is None:
+        ref_info = supplied_world_state.get("reference_information")
+    if ref_info is None:
         ref_info = reference_information
-    world_state = copy.deepcopy(raw_task.get("world_state") or {})
+    world_state = copy.deepcopy(supplied_world_state)
     world_state.update(
         {
             "domain": "travelplanner",
@@ -552,6 +578,11 @@ def _travelplanner_task_from_payload(
         }
     )
     initial_intention = raw_task.get("initial_intention")
+    # A prior simulation dataset is a convenient, self-contained task source
+    # for regression runs. Rebuild its initial state from authoritative query
+    # data so stale generated priority/entity state is not carried forward.
+    if not isinstance(initial_intention, dict) and isinstance(raw_task.get("turns"), list):
+        initial_intention = _travelplanner_initial_intention(query_data)
     if not isinstance(initial_intention, dict):
         initial_intention = _travelplanner_initial_intention(query_data)
     else:
@@ -1634,6 +1665,9 @@ def simulate_dialogue_instance(
                 "user_utterance": user_utterance,
                 "gold_intention": copy.deepcopy(current_intention),
                 "gold_delta": copy.deepcopy(gold_delta),
+                "shift_condition": condition if intention_changed else "none",
+                "change_category": change_category if intention_changed else "none",
+                "shift_rationale": shift.rationale,
             }
         )
 

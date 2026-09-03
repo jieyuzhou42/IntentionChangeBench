@@ -36,6 +36,42 @@ class TravelPlannerEntityShift(ShiftOp):
 class TravelPlannerUserSimulator(HumanSimulator):
     """TravelPlanner-only user simulator with fail-fast LLM behavior."""
 
+    def _parse_shared_shift_output(
+        self,
+        payload: Dict[str, Any],
+        current_intention: Dict[str, Any],
+        env_feedback: Optional[EnvFeedback],
+    ) -> ShiftOp:
+        shift = super()._parse_shift_output(payload, current_intention, env_feedback)
+        constraints = (current_intention or {}).get("constraints") or {}
+        if (
+            shift.op == "relax"
+            and shift.field in {"days", "start_date", "end_date"}
+            and shift.value is None
+        ):
+            return ShiftOp(
+                op="none",
+                intention_changed=False,
+                condition="none",
+                change_category="none",
+                rationale="persistent_date_constraint",
+            )
+        if (
+            shift.field == "days"
+            and shift.op != "none"
+            and constraints.get("start_date")
+            and constraints.get("end_date")
+            and not payload.get("_compound_child")
+        ):
+            return ShiftOp(
+                op="none",
+                intention_changed=False,
+                condition="none",
+                change_category="none",
+                rationale="duration_change_requires_date_update",
+            )
+        return shift
+
     def _build_shift_prompt(
         self,
         current_intention: Dict[str, Any],
@@ -64,9 +100,37 @@ class TravelPlannerUserSimulator(HumanSimulator):
                 "existing": list(normalized_current.get("entities") or {}),
                 "next_for_add": next_entity_id(normalized_current.get("entities") or {}),
             },
+            "party_size": len(normalized_current.get("entities") or {}),
+            "recent_shift_conditions": [
+                {
+                    "turn_id": turn.get("turn_id"),
+                    "condition": turn.get("shift_condition"),
+                    "category": turn.get("change_category"),
+                    "rationale": turn.get("shift_rationale"),
+                }
+                for turn in normalized_history[-4:]
+                if turn.get("shift_condition")
+            ],
         }
         if distribution_guidance:
-            context["distribution_guidance"] = copy.deepcopy(distribution_guidance)
+            safe_guidance = copy.deepcopy(distribution_guidance)
+            if len(normalized_current.get("entities") or {}) <= 1:
+                safe_guidance["preferred_change_categories_when_natural"] = [
+                    item
+                    for item in safe_guidance.get(
+                        "preferred_change_categories_when_natural", []
+                    )
+                    if item != "entity"
+                ]
+            if normalized_history and normalized_history[-1].get("shift_condition") == "agent_misunderstanding":
+                safe_guidance["preferred_conditions_when_natural"] = [
+                    item
+                    for item in safe_guidance.get(
+                        "preferred_conditions_when_natural", []
+                    )
+                    if item != "agent_misunderstanding"
+                ]
+            context["distribution_guidance"] = safe_guidance
         instructions = """
 Pretend you are a real user working with a travel planning assistant.
 Return a single JSON object only. You MUST make one or more meaningful changes.
@@ -92,7 +156,8 @@ Rules:
 - Multiple changes are allowed in the same turn when they form one coherent user decision. Shared-party changes and person-specific entity changes may appear together.
 - Changes are applied in array order, so a traveler may be added before a later change assigns that traveler a separate constraint.
 - Do not bundle unrelated changes merely to increase the number of changes.
-- Actively consider whether the next change belongs to one traveler rather than the whole party; when that is plausible, prefer category="entity" while keeping the person's reference unconstrained.
+- Use category="entity" only when two or more travelers have genuinely different needs, or when a traveler joins, leaves, or is replaced.
+- In a one-person trip, I/me/my refers to the whole itinerary. Represent room type, dining, activities, flights, and schedule as top-level shared constraints, never as entities.entity_1 constraints or scope corrections.
 - Use category="entity" for every change whose target is an individual traveler, their identity/reference, or their separate part of the plan.
 - For category="entity", use op to describe the ordinary operation: add, relax, override, reprioritize, or scope_correction.
 - entity_id is an opaque internal ID. Copy an existing ID exactly, or use entity_id_guidance.next_for_add when a new traveler joins.
@@ -105,7 +170,15 @@ Rules:
 - Adding/removing/replacing a traveler updates people_number deterministically.
 - A person's constraints may differ from group constraints or another person's constraints.
 - Use fields grounded in travel planning, such as cuisine, activity, accessibility, mobility, room_type, house_rule, transportation, budget, and schedule.
-- Ground environment-driven changes in search_results, submitted_plan, or constraint_debug.
+- Ground environment-driven changes in actual travel availability from search_results or submitted_plan. constraint_debug is diagnostic metadata, not a user motive.
+- agent_misunderstanding is allowed only when the assistant semantically ignored or contradicted an unsatisfied user requirement. Never use it to correct field names, scopes, participant assignments, exact validator wording, search-result provenance, or itinerary formatting.
+- Never generate agent_misunderstanding twice in a row. After one correction, move to a genuinely different preference or feasibility issue.
+- Do not restate, make mandatory, add an address to, re-scope, or rename the same requirement in later turns. Each turn must be a real change in what trip the user wants.
+- A requirement remains in the intention after the itinerary satisfies it. Relax or remove it only when the user genuinely no longer wants it, never because the submitted plan currently complies.
+- Treat the dataset city field as authoritative. Do not infer a different city from an accommodation name, request a "verifiable address", or create a shift to repair suspicious listing wording.
+- Dates are persistent constraints. Never relax days/start_date/end_date to null. A duration change must update end_date in the same changes array so the date range remains consistent.
+- Increasing a maximum travel budget is category/op=relax; decreasing it is override.
+- Reprioritize must actually move the named top priority to the first position. Never emit the current priority unchanged.
 - Do not repeatedly toggle between the same two values.
 - Preserve a coherent trajectory above every diversity objective: the next change must follow naturally from the current intention, earlier changes, and concrete environment evidence.
 - Treat distribution_guidance only as a weak tie-breaker between changes that are already equally plausible. Ignore it when its suggested direction would invent a motive, contradict the trajectory, repeat or toggle a prior change, or fit the evidence less well.
@@ -191,7 +264,9 @@ Entity example:
                     env_feedback,
                 )
         if category != ENTITY_CHANGE_CATEGORY:
-            return super()._parse_shift_output(llm_output, current_intention, env_feedback)
+            return self._parse_shared_shift_output(
+                llm_output or {}, current_intention, env_feedback
+            )
 
         payload = llm_output or {}
         if payload.get("intention_changed") is False:
@@ -222,6 +297,31 @@ Entity example:
         value = copy.deepcopy(payload.get("value"))
         replacement_id = normalize_entity_id(payload.get("replacement_entity_id"))
 
+        # In a solo trip, first-person wording describes the itinerary, not a
+        # participant-specific sub-plan. Convert accidental entity_1 fields to
+        # ordinary shared constraints. A new entity_N with op=add still means a
+        # real traveler is joining and remains an entity operation.
+        if field and len(entities) == 1 and entity_id in entities:
+            if op == "scope_correction":
+                return ShiftOp(
+                    op="none",
+                    intention_changed=False,
+                    condition="none",
+                    change_category="none",
+                    rationale="solo_trip_scope_correction",
+                )
+            shared_payload = copy.deepcopy(payload)
+            shared_payload["category"] = op
+            shared_payload["field"] = field
+            shared_payload.pop("entity_id", None)
+            shared_payload.pop("replacement_entity_id", None)
+            shared_payload.pop("reference", None)
+            return self._parse_shared_shift_output(
+                shared_payload,
+                current_intention,
+                env_feedback,
+            )
+
         if field:
             if entity_id not in entities and not (op == "add" and entity_id == expected_new_id):
                 return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="unknown_entity")
@@ -233,6 +333,14 @@ Entity example:
             )
             if op == "add" and old_value is not None:
                 op = "override"
+            if op in {"override", "scope_correction"} and old_value == value:
+                return ShiftOp(
+                    op="none",
+                    intention_changed=False,
+                    condition="none",
+                    change_category="none",
+                    rationale="no_op_entity_change",
+                )
             if op in {"add", "override", "scope_correction"} and value is None:
                 return ShiftOp(op="none", intention_changed=False, condition="none", change_category="none", rationale="missing_entity_value")
             priority_update = payload.get("priority_update") if op == "reprioritize" else None
@@ -298,6 +406,7 @@ Entity example:
             if not isinstance(raw_change, dict):
                 continue
             child_payload = copy.deepcopy(raw_change)
+            child_payload["_compound_child"] = True
             child_payload["intention_changed"] = True
             child_payload.setdefault("condition", common_condition)
             child_payload.setdefault("utterance_plan", common_plan)
@@ -321,6 +430,23 @@ Entity example:
                 condition="none",
                 change_category="none",
                 rationale="invalid_llm_output",
+            )
+
+        duration_changed = any(change.field == "days" for change in parsed_changes)
+        fixed_dates = bool(
+            working_intention.get("constraints", {}).get("start_date")
+            and working_intention.get("constraints", {}).get("end_date")
+        )
+        date_changed = any(
+            change.field in {"start_date", "end_date"} for change in parsed_changes
+        )
+        if duration_changed and fixed_dates and not date_changed:
+            return ShiftOp(
+                op="none",
+                intention_changed=False,
+                condition="none",
+                change_category="none",
+                rationale="duration_change_requires_date_update",
             )
         if len(parsed_changes) == 1:
             return parsed_changes[0]
@@ -353,7 +479,20 @@ Entity example:
             return new_state, combined_delta
 
         if shift.change_category != ENTITY_CHANGE_CATEGORY:
-            return super().apply_shift(current_intention, shift)
+            new_state, delta = super().apply_shift(current_intention, shift)
+            constraints = new_state.get("constraints", {})
+            for field, change in list(delta.items()):
+                if (
+                    field != "priority"
+                    and isinstance(change, dict)
+                    and change.get("op") == "relax"
+                    and change.get("new") is None
+                ):
+                    constraints.pop(field, None)
+                    new_state["priority"] = [
+                        item for item in new_state.get("priority", []) if item != field
+                    ]
+            return ensure_entity_state(new_state), delta
 
         new_state = ensure_entity_state(current_intention)
         entities = new_state["entities"]
@@ -454,6 +593,7 @@ Entity example:
 Write the user's next utterance as one concise, natural sentence or tightly connected pair of sentences.
 Express every entry in shift.changes, preserving their array order and combining them as one coherent decision.
 Do not invent changes that are absent from shift.changes.
+For reprioritize changes, state only the natural comparison that motivated the change (for example, lodging matters more than activities). Never recite the complete priority_update list, internal field names, or phrases such as "old priority order".
 For entity changes, use entity_reference to identify the traveler naturally and preserve ownership of that person's constraint.
 Never expose opaque IDs such as entity_1 in the utterance.
 Shared-party constraints must remain shared; person-specific constraints must remain assigned only to that person.
@@ -463,7 +603,7 @@ Return plain text only, with no quotes and no JSON.
             return f"{instructions}\n\n{REALIZATION_CONTEXT_MARKER}\n{_safe_json_dumps(context)}"
 
         if shift.change_category != ENTITY_CHANGE_CATEGORY:
-            return super()._build_realization_prompt(
+            prompt = super()._build_realization_prompt(
                 shift,
                 current_intention,
                 style,
@@ -471,6 +611,15 @@ Return plain text only, with no quotes and no JSON.
                 intention_history=intention_history,
                 current_gold_delta=current_gold_delta,
             )
+            instructions, marker_and_context = prompt.split(
+                REALIZATION_CONTEXT_MARKER, 1
+            )
+            instructions = (
+                instructions.rstrip()
+                + "\nFor reprioritize changes, express only which user-facing preference matters more. "
+                "Never recite priority_update, internal field names, or the full ordering.\n"
+            )
+            return f"{instructions}\n{REALIZATION_CONTEXT_MARKER}{marker_and_context}"
         normalized_current = ensure_entity_state(current_intention)
         context = {
             "requested_style": style,
