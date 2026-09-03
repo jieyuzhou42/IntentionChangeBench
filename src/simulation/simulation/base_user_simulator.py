@@ -293,6 +293,7 @@ class HumanSimulator:
             payload.update(
                 {
                     "candidate_items": copy.deepcopy(list(observation.get("candidate_items") or [])[:10]),
+                    "candidate_diversity": copy.deepcopy(observation.get("candidate_diversity")),
                     "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
                     "rerank_info": copy.deepcopy(observation.get("rerank_info")),
                 }
@@ -918,6 +919,13 @@ Examples:
                     current_intention,
                     env_feedback=env_feedback,
                 )
+                candidate = self._postprocess_shift_candidate(
+                    llm_output,
+                    candidate,
+                    current_intention=current_intention,
+                    env_feedback=env_feedback,
+                    intention_history=intention_history,
+                )
             candidates.append(candidate)
 
             # Always collect the configured initial batch.  A multi-preferred
@@ -925,6 +933,12 @@ Examples:
             # no natural multi-change candidate.  No change count is put in
             # the prompt and there is deliberately no maximum change count.
             if sampled_count < initial_sample_count:
+                continue
+            if self._should_resample_shift_candidate(
+                candidate,
+                sampled_count=sampled_count,
+                sample_limit=sample_limit,
+            ):
                 continue
             if not prefer_multi or any(self._shift_change_count(item) >= 2 for item in candidates):
                 break
@@ -950,6 +964,20 @@ Examples:
             selection_pool = candidates
             selection_mode = "invalid_fallback"
 
+        original_selection_pool = list(selection_pool)
+        selection_pool, domain_selection_metadata = self._prepare_shift_selection_pool(
+            selection_pool,
+            current_intention=current_intention,
+            env_feedback=env_feedback,
+            intention_history=intention_history,
+        )
+        if not selection_pool:
+            selection_pool = original_selection_pool
+            domain_selection_metadata = {
+                **domain_selection_metadata,
+                "empty_domain_pool_fallback": True,
+            }
+
         balance_metadata: Dict[str, Any] = {}
         if distribution_controller is not None and selection_mode not in {"invalid_fallback"}:
             selected, balance_metadata = distribution_controller.select(
@@ -958,7 +986,9 @@ Examples:
             )
         else:
             selected = chooser.choice(selection_pool)
+        parsed_candidate_metadata = copy.deepcopy(selected.sampling_metadata)
         selected.sampling_metadata = {
+            **parsed_candidate_metadata,
             "candidate_samples": sampled_count,
             "valid_candidates": len(valid_candidates),
             "single_candidates": len(single_candidates),
@@ -968,8 +998,55 @@ Examples:
             "selected_change_count": self._shift_change_count(selected),
             "distribution_balance": balance_metadata,
             "prompt_distribution_guidance": copy.deepcopy(distribution_guidance or {}),
+            "domain_selection": domain_selection_metadata,
         }
+        self._on_shift_selected(
+            selected,
+            current_intention=current_intention,
+            env_feedback=env_feedback,
+            intention_history=intention_history,
+        )
         return selected
+
+    def _postprocess_shift_candidate(
+        self,
+        llm_output: Dict[str, Any],
+        shift: ShiftOp,
+        *,
+        current_intention: Dict[str, Any],
+        env_feedback: Optional[EnvFeedback],
+        intention_history: Optional[List[Dict[str, Any]]],
+    ) -> ShiftOp:
+        return shift
+
+    def _prepare_shift_selection_pool(
+        self,
+        candidates: List[ShiftOp],
+        *,
+        current_intention: Dict[str, Any],
+        env_feedback: Optional[EnvFeedback],
+        intention_history: Optional[List[Dict[str, Any]]],
+    ) -> Tuple[List[ShiftOp], Dict[str, Any]]:
+        return candidates, {}
+
+    def _should_resample_shift_candidate(
+        self,
+        shift: ShiftOp,
+        *,
+        sampled_count: int,
+        sample_limit: int,
+    ) -> bool:
+        return False
+
+    def _on_shift_selected(
+        self,
+        shift: ShiftOp,
+        *,
+        current_intention: Dict[str, Any],
+        env_feedback: Optional[EnvFeedback],
+        intention_history: Optional[List[Dict[str, Any]]],
+    ) -> None:
+        return None
 
     @staticmethod
     def _shift_change_count(shift: ShiftOp) -> int:

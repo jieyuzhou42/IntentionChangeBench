@@ -142,7 +142,7 @@ You are a constraint-aware reranker for WebShop search results.
 Return a single JSON object only.
 
 Task:
-Given the current shopping intention, gold_delta, and candidate items, select the top {top_k} candidates that best match the current intention.
+Given the current shopping intention, gold_delta, and candidate items, select a relevant but differentiated pool of up to {top_k} candidates.
 
 Rerank candidates using this priority order:
 
@@ -172,6 +172,9 @@ Ranking rules:
 - Do not let many weak keyword matches outweigh an explicit violation of the latest user change.
 - A candidate that violates the latest exclusion should not rank above a non-violating plausible candidate unless all plausible candidates violate it.
 - If no candidate perfectly matches all constraints, prefer candidates that match the product family and latest user change, then satisfy the most important remaining constraints.
+- Among plausible results, preserve alternatives that expose a meaningful purchase trade-off in product form, price, core function, durability, or use case.
+- Do not fill the returned pool with color/size variants or near-duplicate titles from one product family when differentiated plausible alternatives exist.
+- A related or adjacent substitute may be kept as a fallback when it is a realistic way to satisfy the underlying use case; label its product-family match accurately.
 
 Return this JSON schema:
 {{
