@@ -1144,6 +1144,7 @@ def _public_env_feedback_payload(env_feedback: Optional[EnvFeedback]) -> Optiona
         "feedback_type": observation.get("feedback_type") or "candidate_items",
         "page_type": observation.get("page_type"),
         "candidate_items": copy.deepcopy(observation.get("candidate_items") or []),
+        "candidate_diversity": copy.deepcopy(observation.get("candidate_diversity")),
         "selected_candidate": copy.deepcopy(observation.get("selected_candidate")),
         "rerank_info": copy.deepcopy(observation.get("rerank_info")),
     }
@@ -1472,6 +1473,9 @@ def simulate_dialogue_instance(
     seed: int = 7,
     shift_sampling_config: Optional[ShiftSamplingConfig] = None,
 ) -> DialogueInstance:
+    reset_trajectory = getattr(human_simulator, "reset_trajectory", None)
+    if callable(reset_trajectory):
+        reset_trajectory()
     rng = random.Random(seed)
     sampling_config = shift_sampling_config or ShiftSamplingConfig()
     schedule_rng = random.Random(f"webshop-shift-schedule:{seed}")

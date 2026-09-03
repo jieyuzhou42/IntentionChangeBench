@@ -153,6 +153,17 @@ Simulation creates gold trajectories. It uses:
 - BM25 search plus optional LLM reranking.
 - Gold/current intention is allowed in this pipeline.
 
+WebShop shifts are generated from result-level purchase trade-offs rather than
+from a hidden target SKU. Each search starts with a larger retrieval pool and
+exposes up to five greedily diversified candidates. The shift generator must
+compare at least two real candidate ASINs, name a decision point (for example,
+complete desk versus desktop converter), and make one or more related changes
+that follow from that decision. Pure color/finish/exact-size comparisons and
+near-duplicate evidence products are rejected. The selected decision point and
+evidence ASINs are recorded under `shift_condition.details.candidate_sampling`.
+If one `chosen_asin` drives two consecutive shifts, later sampled shifts around
+that same SKU are filtered when a valid alternative exists.
+
 Smoke run:
 
 ```powershell
@@ -221,6 +232,9 @@ Important simulation args:
 - `--webshop_num_products`: `100`, `1000`, `100000`, or `all`.
 - `--parallelism`: number of instances to run concurrently.
 - `--enable_reranking`: whether to rerank BM25 candidates with the LLM.
+- `--rerank_return_k`: size of the relevance-ranked intermediate pool. WebShop
+  subsequently backfills and diversifies this pool to at most five candidates
+  for intention-change generation.
 - `--multi_change_rate`: fraction of WebShop shift slots that prefer a
   naturally sampled multi-change candidate (default `0.30`).
 - `--travelplanner_multi_change_rate`: fraction of TravelPlanner shift slots

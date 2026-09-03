@@ -5,6 +5,10 @@ from typing import Any, Dict, List, Optional, Protocol
 
 from common.execution_agent import ExecutionAgent
 from models import AgentAction, EnvFeedback
+from domains.webshop.candidate_diversity import (
+    DEFAULT_DECISION_CANDIDATE_LIMIT,
+    select_diverse_candidates,
+)
 from simulation.simulation.reranker import RerankerConfig, rerank_candidates_with_llm
 
 
@@ -91,12 +95,17 @@ class WebShopExecutor(ExecutionAgent):
         config: RerankerConfig,
     ) -> None:
         observation = env_feedback.observation or {}
-        candidate_items = list(observation.get("candidate_items") or [])[: config.rerank_return_k]
+        raw_candidates = list(observation.get("candidate_items") or [])
+        candidate_items, diversity_info = select_diverse_candidates(
+            raw_candidates,
+            limit=DEFAULT_DECISION_CANDIDATE_LIMIT,
+        )
         observation["candidate_items"] = candidate_items
+        observation["candidate_diversity"] = diversity_info
         observation["rerank_info"] = {
             "enabled": False,
             "gold_search_query": observation.get("gold_search_query"),
-            "raw_candidate_count": len(candidate_items),
+            "raw_candidate_count": len(raw_candidates),
             "returned_candidate_count": len(candidate_items),
             "succeeded": False,
             "fallback_used": False,
@@ -114,6 +123,13 @@ class WebShopExecutor(ExecutionAgent):
         observation = env_feedback.observation or {}
         candidate_items = list(observation.get("candidate_items") or [])
         if not candidate_items:
+            observation["candidate_diversity"] = {
+                "strategy": "rank_relevance_plus_product_distance",
+                "source_candidate_count": 0,
+                "returned_candidate_count": 0,
+                "target_range": [3, DEFAULT_DECISION_CANDIDATE_LIMIT],
+                "selections": [],
+            }
             observation["rerank_info"] = {
                 "enabled": True,
                 "gold_search_query": observation.get("gold_search_query"),
@@ -134,8 +150,25 @@ class WebShopExecutor(ExecutionAgent):
             model=config.reranker_model,
             debug=config.reranker_debug,
         )
+        reranked_asins = {
+            str(item.get("asin") or "").strip().upper()
+            for item in reranked_items
+            if isinstance(item, dict) and item.get("asin")
+        }
+        backfill_items = [
+            item
+            for item in candidate_items
+            if str(item.get("asin") or "").strip().upper() not in reranked_asins
+        ]
+        decision_candidates, diversity_info = select_diverse_candidates(
+            list(reranked_items) + backfill_items,
+            limit=DEFAULT_DECISION_CANDIDATE_LIMIT,
+        )
         rerank_info["gold_search_query"] = observation.get("gold_search_query")
-        observation["candidate_items"] = reranked_items
+        rerank_info["pre_diversity_returned_count"] = len(reranked_items)
+        rerank_info["returned_candidate_count"] = len(decision_candidates)
+        observation["candidate_items"] = decision_candidates
+        observation["candidate_diversity"] = diversity_info
         observation["rerank_info"] = rerank_info
         if rerank_info.get("fallback_used"):
             observation["rerank_failed"] = True

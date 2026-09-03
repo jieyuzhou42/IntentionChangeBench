@@ -6,6 +6,8 @@ from models import AgentAction, EnvFeedback
 from envs.base_env import BaseEnv
 import re
 
+from domains.webshop.candidate_diversity import select_diverse_candidates
+
 
 class WebShopEnvAdapter(BaseEnv):
     """
@@ -174,16 +176,21 @@ class WebShopEnvAdapter(BaseEnv):
                 violated_constraints=active_constraints,
             )
 
-        candidate_items = [
+        retrieval_candidates = [
             self._candidate_item_from_product(product, rank=index)
-            for index, product in enumerate(products[:return_limit], start=1)
+            for index, product in enumerate(products[:search_limit], start=1)
         ]
+        candidate_items, candidate_diversity = select_diverse_candidates(
+            retrieval_candidates,
+            limit=return_limit,
+        )
         self.last_candidate_items = list(candidate_items)
         observation = {
             "feedback_type": "candidate_items",
             "page_type": "search_results",
             "gold_search_query": query_text,
             "candidate_items": candidate_items,
+            "candidate_diversity": candidate_diversity,
             "selected_candidate": None,
         }
         if candidate_items:
