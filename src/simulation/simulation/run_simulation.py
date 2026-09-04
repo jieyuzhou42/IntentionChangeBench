@@ -791,6 +791,44 @@ def _normalize_initial_constraint_value(field: str, value: Any) -> Any:
     return value
 
 
+def _merge_selection_metadata_initial_intention(
+    intention: Dict[str, Any],
+    selection_metadata: Any,
+) -> Dict[str, Any]:
+    """Merge authoritative task attributes/options that the LLM schema may omit."""
+    merged = copy.deepcopy(intention or {})
+    if not isinstance(selection_metadata, dict):
+        return merged
+    constraints = merged.setdefault("constraints", {})
+    if not isinstance(constraints, dict):
+        constraints = {}
+        merged["constraints"] = constraints
+
+    query = str(selection_metadata.get("query") or "").strip()
+    if query:
+        constraints.setdefault("category", query)
+    price_upper = selection_metadata.get("price_upper")
+    if isinstance(price_upper, (int, float)) and float(price_upper) < 1_000_000:
+        constraints.setdefault("budget_max", float(price_upper))
+    for raw_key, value in (selection_metadata.get("options") or {}).items():
+        key = _normalize_initial_constraint_key(raw_key)
+        if key and value not in (None, ""):
+            constraints.setdefault(key, copy.deepcopy(value))
+    for attribute in selection_metadata.get("attributes") or []:
+        key = _normalize_initial_constraint_key(attribute)
+        if key:
+            constraints.setdefault(key, True)
+
+    priority = merged.get("priority")
+    if not isinstance(priority, list):
+        priority = []
+        merged["priority"] = priority
+    for key in constraints:
+        if key not in priority:
+            priority.append(key)
+    return merged
+
+
 def _sanitize_llm_initial_intention(raw_intention: Any, request: str) -> Dict[str, Any]:
     if not isinstance(raw_intention, dict):
         return _fallback_initial_intention(request)
@@ -1502,6 +1540,10 @@ def simulate_dialogue_instance(
             current_intention = llm_initial_intention
         elif real_instruction and real_instruction.strip():
             current_intention = _fallback_initial_intention(_clean_initial_request(real_instruction))
+        current_intention = _merge_selection_metadata_initial_intention(
+            current_intention,
+            (task.world_state or {}).get("webshop_selection_metadata"),
+        )
         initial_gold_search_query = human_simulator.generate_gold_search_query_for_intention(
             {**current_intention, "gold_search_query": None}
         )

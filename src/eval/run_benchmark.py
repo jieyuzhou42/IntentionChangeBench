@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 _SRC_DIR = Path(__file__).resolve().parents[1]
+_PROJECT_ROOT = _SRC_DIR.parent
 if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
@@ -603,7 +604,7 @@ def main() -> None:
         "--tasks_path",
         dest="gold_trajectory_path",
         type=str,
-        default=r".\IntentionChangeBench\data\simulation\annotated_dataset.json",
+        default=str(_PROJECT_ROOT / "annotation" / "data" / "annotated_dataset.json"),
         help="Gold trajectory JSON used to replay fixed user utterances.",
     )
     parser.add_argument(
