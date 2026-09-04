@@ -57,10 +57,16 @@ IntentionChangeBench/
         constraint_importance_eval.py
         runtime_logger.py
 
+  annotation/
+    replay_server.py
+    tests/
+      test_replay_server.py
+    data/
+      annotated_dataset.json
+
   data/
     simulation/
       simulated_dataset.json
-      annotated_dataset.json
 
     eval/
       benchmark_eval.json
@@ -263,7 +269,7 @@ Important simulation args:
 The benchmark input should live at:
 
 ```text
-data/simulation/annotated_dataset.json
+annotation/data/annotated_dataset.json
 ```
 
 ### Annotator replay page
@@ -275,9 +281,9 @@ and tool-action trace are shown separately. Annotators can edit and save each
 turn's user utterance, constraints, and constraint priorities.
 
 ```powershell
-..\.venv38-webshop\Scripts\python.exe .\src\replay_server.py `
+..\.venv38-webshop\Scripts\python.exe .\annotation\replay_server.py `
   --dataset .\data\simulation\_travelplanner_full_api_smoke.json `
-  --output .\data\simulation\_travelplanner_full_api_smoke_annotated.json `
+  --output .\annotation\data\_travelplanner_full_api_smoke_annotated.json `
   --host 127.0.0.1 `
   --port 7860 `
   --skip_full_catalog
@@ -285,7 +291,7 @@ turn's user utterance, constraints, and constraint priorities.
 
 Open `http://127.0.0.1:7860`. `--dataset` is always treated as read-only;
 annotator edits are written to `--output`. When `--output` is omitted, the
-server uses `<dataset_stem>_annotated.json`. If that annotation file already
+server uses `annotation/data/<dataset_stem>_annotated.json`. If that annotation file already
 exists, the server resumes from it. The server rejects identical dataset and
 output paths.
 
@@ -318,7 +324,7 @@ Smoke benchmark:
 ```powershell
 $env:PYTHONPATH=(Resolve-Path .\WebShop).Path
 .\.venv38-webshop\Scripts\python.exe .\src\eval\run_benchmark.py `
-  --gold_trajectory_path .\data\simulation\annotated_dataset.json `
+  --gold_trajectory_path .\annotation\data\annotated_dataset.json `
   --output .\data\eval\_benchmark_eval_smoke.json `
   --num_instances 1 `
   --webshop_num_products 100000 `
@@ -331,7 +337,7 @@ Full benchmark:
 ```powershell
 $env:PYTHONPATH=(Resolve-Path .\WebShop).Path
 .\.venv38-webshop\Scripts\python.exe .\src\eval\run_benchmark.py `
-  --gold_trajectory_path .\data\simulation\annotated_dataset.json `
+  --gold_trajectory_path .\annotation\data\annotated_dataset.json `
   --output .\data\eval\benchmark_eval.json `
   --webshop_num_products 100000 `
   --parallelism 2 `

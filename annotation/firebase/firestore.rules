@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /webshop_annotations/{instanceId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null
+        && request.resource.data.keys().hasOnly([
+          'instance_id', 'shard_index', 'turns_json', 'deleted', 'updated_at'
+        ])
+        && request.resource.data.instance_id == instanceId
+        && request.resource.data.shard_index is int
+        && request.resource.data.shard_index >= 6
+        && request.resource.data.shard_index <= 20
+        && request.resource.data.turns_json is string
+        && request.resource.data.turns_json.size() >= 2
+        && request.resource.data.turns_json.size() <= 900000
+        && request.resource.data.deleted is bool
+        && request.resource.data.updated_at is timestamp;
+      allow delete: if false;
+    }
+  }
+}

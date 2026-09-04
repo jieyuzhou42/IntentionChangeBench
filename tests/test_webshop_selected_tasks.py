@@ -10,7 +10,10 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from domains.webshop.environment import WebShopEnvAdapter
-from simulation.simulation.run_simulation import _task_from_payload
+from simulation.simulation.run_simulation import (
+    _merge_selection_metadata_initial_intention,
+    _task_from_payload,
+)
 
 
 def test_selected_instruction_is_promoted_to_fixed_world_state():
@@ -45,3 +48,36 @@ def test_fixed_price_upper_is_applied_to_webshop_reward_goal():
     adapter._apply_fixed_goal_metadata(task)
 
     assert raw_env.server.user_sessions["42"]["goal"]["price_upper"] == 80.0
+
+
+def test_selection_metadata_restores_attributes_and_options_omitted_by_llm():
+    merged = _merge_selection_metadata_initial_intention(
+        {
+            "request": "Find a pillow",
+            "constraints": {"category": "decorative pillows", "budget_max": 30},
+            "priority": ["category", "budget_max"],
+        },
+        {
+            "query": "decorative pillows",
+            "price_upper": 30.0,
+            "attributes": ["double sided", "machine washable", "printing technology"],
+            "options": {"size": '28" x 28"'},
+        },
+    )
+
+    assert merged["constraints"] == {
+        "category": "decorative pillows",
+        "budget_max": 30,
+        "size": '28" x 28"',
+        "double_sided": True,
+        "machine_washable": True,
+        "printing_technology": True,
+    }
+    assert merged["priority"] == [
+        "category",
+        "budget_max",
+        "size",
+        "double_sided",
+        "machine_washable",
+        "printing_technology",
+    ]

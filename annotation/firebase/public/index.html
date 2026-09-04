@@ -1,0 +1,1725 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dataset Replay</title>
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --panel: #ffffff;
+      --line: #d7dce2;
+      --text: #1f2933;
+      --muted: #5f6b7a;
+      --blue: #1f6feb;
+      --green: #1f7a4d;
+      --red: #b42318;
+      --amber: #8a6100;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+    }
+    .wrap {
+      width: min(1240px, calc(100vw - 32px));
+      margin: 0 auto;
+    }
+    .toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 0;
+    }
+    .toolbar-primary-row, .toolbar-secondary-row, .toolbar-group, .shard-controls, .turn-controls {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .toolbar-primary-row, .toolbar-secondary-row { flex-wrap: wrap; }
+    .toolbar-group {
+      flex-wrap: nowrap;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
+    }
+    .trajectory-group { flex: 1 1 560px; }
+    .trajectory-control { flex: 1 1 260px; min-width: 220px; }
+    .shard-controls, .turn-controls { flex: 0 0 auto; flex-wrap: nowrap; }
+    .shard-controls .pill { height: 34px; min-width: auto; }
+    .shard-picker { width: 96px; }
+    .turn-picker { width: 80px; }
+    .toolbar-secondary-row { align-items: center; }
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    select, button {
+      height: 34px;
+      border: 1px solid #b8c0ca;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+    }
+    select {
+      width: 100%;
+      padding: 0 8px;
+    }
+    input, textarea {
+      width: 100%;
+      border: 1px solid #b8c0ca;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+    }
+    textarea {
+      min-height: 76px;
+      padding: 9px 10px;
+      resize: vertical;
+    }
+    input {
+      height: 34px;
+      padding: 0 8px;
+    }
+    button {
+      min-width: 38px;
+      padding: 0 12px;
+      cursor: pointer;
+    }
+    button.primary {
+      border-color: #1f6feb;
+      background: #1f6feb;
+      color: #fff;
+      font-weight: 700;
+    }
+    button.danger {
+      border-color: #f1aaa4;
+      color: var(--red);
+      background: #fff4f2;
+    }
+    button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    main {
+      padding: 18px 0 32px;
+    }
+    .top-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.75fr) minmax(0, 1.45fr);
+      gap: 14px;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+    .panel-pad { padding: 14px; }
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    .utterance {
+      margin: 0;
+      min-height: 180px;
+      font-size: 19px;
+      font-weight: 700;
+    }
+    .editor-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .editor-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status {
+      min-width: 88px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+    .status.error { color: var(--red); }
+    .status.ok { color: var(--green); }
+    .toolbar-status { min-width: 110px; text-align: left; }
+    .toolbar-save { display: flex; align-items: center; gap: 8px; }
+    .status.unsaved { color: var(--amber); }
+    .constraints {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .constraint-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 0.7fr) minmax(160px, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid #e0e4e8;
+      border-radius: 5px;
+      background: #fbfcfd;
+    }
+    .priority-board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .priority-column {
+      min-height: 92px;
+      border: 1px dashed #b8c0ca;
+      border-radius: 6px;
+      background: #fbfcfd;
+      padding: 8px;
+    }
+    .priority-column.over {
+      border-color: var(--blue);
+      background: #eef5ff;
+    }
+    .priority-title {
+      margin: 0 0 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .priority-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 36px;
+    }
+    .priority-chip {
+      border: 1px solid #cbd3dc;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: #fff;
+      color: #344054;
+      font-size: 12px;
+      cursor: grab;
+    }
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 12px;
+    }
+    .rationale-list {
+      display: grid;
+      gap: 8px;
+    }
+    .rationale {
+      border-left: 3px solid #8a6100;
+      padding-left: 9px;
+      color: #2f3337;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border: 1px solid #cbd3dc;
+      border-radius: 999px;
+      padding: 2px 8px;
+      color: #344054;
+      background: #fff;
+      font-size: 12px;
+    }
+    .pill.good { border-color: #9bd0b5; color: var(--green); background: #f0faf5; }
+    .pill.bad { border-color: #f1aaa4; color: var(--red); background: #fff4f2; }
+    .pill.warn { border-color: #e3c36a; color: var(--amber); background: #fff9e8; }
+    .results-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+      border-radius: 6px 6px 0 0;
+    }
+    .results-title {
+      margin: 0;
+      font-size: 20px;
+    }
+    .query {
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+    .item {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 18px;
+      padding: 16px 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .item:last-child {
+      border-bottom: 0;
+      border-radius: 0 0 6px 6px;
+    }
+    .item.gold-selected { box-shadow: inset 4px 0 0 var(--green); background: #f7fcf9; }
+    .item-action { margin-top: 10px; }
+    .option-summary { margin-top: 7px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .option-summary strong { color: #344054; }
+    .item-evidence { margin-top: 10px; border-top: 1px solid #e0e4e8; padding-top: 8px; }
+    .item-evidence summary { color: var(--blue); cursor: pointer; font-weight: 700; }
+    .bullet-list { margin: 7px 0 0 18px; padding: 0; color: #344054; font-size: 12px; }
+    .bullet-list li { margin-bottom: 4px; }
+    .product-facts { display: grid; grid-template-columns: minmax(120px, 0.35fr) 1fr; gap: 4px 10px; margin-top: 8px; font-size: 12px; }
+    .fact-key { color: var(--muted); }
+    .fact-value { overflow-wrap: anywhere; }
+    .image-box {
+      width: 210px;
+      aspect-ratio: 1 / 1;
+      border: 1px solid #e0e4e8;
+      background: #fafafa;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .asin {
+      margin: 0 0 4px;
+      color: var(--blue);
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .title {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .price {
+      margin: 0 0 10px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .details {
+      color: var(--muted);
+      margin-bottom: 9px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0;
+    }
+    .small-title {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+    .empty {
+      padding: 28px 14px;
+      color: var(--muted);
+      background: #fff;
+      border-radius: 0 0 6px 6px;
+    }
+    .travel-category {
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+      padding: 14px;
+    }
+    .travel-category:last-child { border-bottom: 0; border-radius: 0 0 6px 6px; }
+    .travel-category-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .travel-category-title { margin: 0; font-size: 17px; text-transform: capitalize; }
+    .search-page {
+      border: 1px solid #e0e4e8;
+      border-radius: 6px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .search-page-head {
+      padding: 8px 10px;
+      background: #f7f9fb;
+      border-bottom: 1px solid #e0e4e8;
+      color: var(--muted);
+    }
+    .travel-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px;
+      padding: 9px;
+    }
+    .travel-card {
+      border: 1px solid #e0e4e8;
+      border-radius: 5px;
+      padding: 10px;
+      background: #fff;
+    }
+    .travel-card-title { margin: 0 0 7px; color: var(--blue); font-size: 15px; }
+    .kv { display: grid; grid-template-columns: minmax(90px, 0.35fr) 1fr; gap: 5px 9px; }
+    .kv-key { color: var(--muted); font-size: 12px; }
+    .kv-value { overflow-wrap: anywhere; }
+    .day-list { display: grid; gap: 12px; }
+    .day-card { border: 1px solid #dfe4ea; border-radius: 6px; overflow: hidden; background: #fff; }
+    .day-head { padding: 9px 12px; background: #f1f6fc; border-bottom: 1px solid #dfe4ea; font-size: 16px; }
+    .day-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 12px; }
+    .day-field { min-width: 0; }
+    .day-field label { margin-bottom: 3px; }
+    .day-value { overflow-wrap: anywhere; white-space: pre-wrap; }
+    .travel-cost-summary { margin-top: 14px; border: 1px solid #cbd3dc; border-radius: 6px; overflow: hidden; }
+    .travel-cost-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 11px 12px; background: #f1f6fc; border-bottom: 1px solid #cbd3dc; }
+    .travel-cost-head strong { font-size: 17px; }
+    .travel-cost-day { padding: 10px 12px; border-bottom: 1px solid #e0e4e8; }
+    .cost-row { display: grid; grid-template-columns: minmax(110px, .7fr) minmax(170px, 1fr) auto; gap: 10px; padding: 4px 0; align-items: baseline; }
+    .cost-row .cost-formula { color: var(--muted); font-size: 12px; }
+    .cost-row.unavailable { color: var(--amber); }
+    .cost-subtotal { margin-top: 5px; padding-top: 7px; border-top: 1px dashed #cbd3dc; font-weight: 700; }
+    .travel-cost-total { padding: 12px; background: #f7fcf9; }
+    .travel-cost-total.over-budget { background: #fff4f2; }
+    .travel-cost-note { margin-top: 6px; color: var(--muted); font-size: 12px; }
+    .gold-action-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .gold-confirm { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-weight: 700; }
+    .gold-confirm input { width: auto; height: auto; }
+    .gold-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 10px; }
+    .gold-options select { width: 100%; }
+    .substitution {
+      border-left: 3px solid var(--amber);
+      padding: 8px 10px;
+      margin-top: 8px;
+      background: #fff9e8;
+    }
+    @media (max-width: 820px) {
+      .toolbar-primary-row, .toolbar-secondary-row { align-items: flex-end; }
+      .toolbar-group { max-width: 100%; overflow-x: auto; }
+      .trajectory-group { flex-basis: 100%; }
+      .top-grid {
+        grid-template-columns: 1fr;
+      }
+      .priority-board {
+        grid-template-columns: 1fr;
+      }
+      .constraint-row {
+        grid-template-columns: 1fr;
+      }
+      .day-grid, .gold-action-grid, .cost-row { grid-template-columns: 1fr; }
+      .item {
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 12px;
+      }
+      .image-box {
+        width: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap toolbar">
+      <div class="toolbar-primary-row">
+        <div class="toolbar-group trajectory-group">
+          <div class="trajectory-control">
+            <label id="instanceLabel" for="instanceSelect">Trajectories</label>
+            <select id="instanceSelect"></select>
+          </div>
+          <div class="toolbar-save">
+            <button id="saveEdit" class="primary" title="Save every turn in the current instance">Save Trajectory</button>
+            <span id="saveStatus" class="status toolbar-status"></span>
+          </div>
+          <button id="deleteTrajectory" class="danger" title="Permanently delete this entire trajectory from the annotation output">Delete Trajectory</button>
+        </div>
+        <div class="toolbar-group shard-controls">
+          <span id="shardIndicator" class="pill" style="display:none;"></span>
+          <button id="prevShard" title="Switch to previous shard" style="display:none;">&lt; Shard</button>
+          <div id="shardPicker" class="shard-picker" style="display:none;">
+            <label for="shardSelect">Go to shard</label>
+            <select id="shardSelect"></select>
+          </div>
+          <button id="switchShard" class="primary" title="Save current trajectory and switch shard" style="display:none;">Switch Shard</button>
+          <button id="nextShard" title="Switch to next shard" style="display:none;">Shard &gt;</button>
+        </div>
+      </div>
+      <div class="toolbar-secondary-row">
+        <div class="toolbar-group turn-controls">
+          <div class="turn-picker">
+            <label for="turnSelect">Turn</label>
+            <select id="turnSelect"></select>
+          </div>
+          <button id="prevTurn" title="Previous turn">&lt;</button>
+          <button id="nextTurn" title="Next turn">&gt;</button>
+          <button id="addTurn" title="Add a blank turn after this one">+ Turn</button>
+          <button id="deleteTurn" class="danger" title="Delete this turn">Delete Turn</button>
+        </div>
+        <button id="exportShard">Export Shard</button>
+        <button id="reload" class="primary">Reload</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="wrap">
+      <div class="top-grid">
+        <section class="panel panel-pad utterance-panel">
+          <div class="editor-head"><h2 class="section-title">User Utterance</h2></div>
+          <textarea id="utterance" class="utterance"></textarea>
+          <div id="meta" class="meta-row"></div>
+        </section>
+        <section class="panel panel-pad constraints-panel">
+          <div class="editor-head">
+            <div><h2 class="section-title">Constraints</h2><div class="details">Changes inherit forward to later turns unless a later turn explicitly overrides the value.</div></div>
+            <button id="addConstraint">Add</button>
+          </div>
+          <div id="constraints" class="constraints"></div>
+          <div id="priorityBoard" class="priority-board"></div>
+        </section>
+      </div>
+      <section id="goldActionPanel" class="panel panel-pad" style="margin-bottom:16px;">
+        <div class="editor-head">
+          <div>
+            <h2 class="section-title">Gold Action Confirmation</h2>
+            <div class="details">Confirm the exact product/options or the exact day-by-day travel selections.</div>
+          </div>
+          <div id="goldActionStatus" class="pill warn">Unconfirmed</div>
+        </div>
+        <div id="goldActionEditor"></div>
+        <div id="entityPanel" style="margin-top:16px; padding-top:16px; border-top:1px solid var(--line); display:none;">
+          <h2 class="section-title">Entity Intentions &amp; Gold Changes</h2>
+          <div id="entityState"></div>
+        </div>
+      </section>
+      <section class="panel panel-pad" style="margin-bottom:16px;">
+        <h2 class="section-title">Rationale</h2>
+        <div id="rationale" class="rationale-list"></div>
+      </section>
+      <section id="webshopGoldPanel" class="panel" style="margin-bottom:16px; display:none;">
+        <div class="results-head">
+          <div>
+            <h2 class="results-title">WebShop Original Gold Item</h2>
+            <div class="query">The source product used by WebShop to create the original goal instruction.</div>
+          </div>
+          <div class="pill good">Turn 0 reference</div>
+        </div>
+        <div id="webshopGoldItem"></div>
+      </section>
+      <section class="panel">
+        <div class="results-head">
+          <div>
+            <h2 id="resultsTitle" class="results-title">Search Results</h2>
+            <div id="query" class="query"></div>
+          </div>
+          <div id="resultCount" class="pill"></div>
+        </div>
+        <div id="results"></div>
+      </section>
+    </div>
+  </main>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+  <script src="/__/firebase/init.js"></script>
+  <script type="module">
+
+    const nativeFetch = window.fetch.bind(window);
+    const params = new URLSearchParams(window.location.search);
+    const requestedShard = Number(params.get("shard") || 6);
+    const shardIndex = Number.isInteger(requestedShard) && requestedShard >= 6 && requestedShard <= 20
+      ? requestedShard
+      : 6;
+    const shardName = String(shardIndex).padStart(3, "0");
+    const stateResponse = await nativeFetch(`/data/shard_${shardName}.json`, { cache: "no-store" });
+    if (!stateResponse.ok) throw new Error(`Unable to load shard ${shardName}`);
+    const state = await stateResponse.json();
+    state.shard_index = shardIndex;
+    state.shard_min = 6;
+    state.shard_max = 20;
+    state.shard_count = 20;
+    state.annotation_output = "Firebase / webshop_annotations";
+
+    await firebase.auth().signInAnonymously();
+    const db = firebase.firestore();
+    const annotations = db.collection("webshop_annotations");
+    const annotationRef = instance => annotations.doc(instance.instance_id);
+    const snapshots = await Promise.all(state.instances.map(instance => annotationRef(instance).get()));
+    state.instances = state.instances.filter((instance, index) => {
+      const snapshot = snapshots[index];
+      if (!snapshot.exists) return true;
+      const saved = snapshot.data();
+      if (saved.deleted === true) return false;
+      if (typeof saved.turns_json === "string") {
+        const savedTurns = JSON.parse(saved.turns_json);
+        if (Array.isArray(savedTurns) && savedTurns.length) instance.turns = savedTurns;
+      } else if (Array.isArray(saved.turns) && saved.turns.length) {
+        // Backward compatibility for documents created by the first deployment.
+        instance.turns = saved.turns;
+      }
+      return true;
+    });
+
+    function cleanTurns(turns) {
+      const cleaned = JSON.parse(JSON.stringify(turns));
+      for (const turn of cleaned) {
+        delete turn.rationales;
+        for (const item of turn.env_feedback?.candidate_items || []) delete item.image_url;
+      }
+      return cleaned;
+    }
+
+    async function persistInstance(instance, extra = {}) {
+      await annotationRef(instance).set({
+        instance_id: instance.instance_id,
+        shard_index: shardIndex,
+        turns_json: JSON.stringify(cleanTurns(instance.turns || [])),
+        deleted: false,
+        updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+        ...extra
+      });
+    }
+
+    function jsonResponse(data, status = 200) {
+      return new Response(JSON.stringify(data), {
+        status,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    let pendingShard = shardIndex;
+    window.fetch = async function(input, init = {}) {
+      const url = typeof input === "string" ? input : input.url;
+      const parsed = new URL(url, window.location.origin);
+      const path = parsed.pathname;
+      if (path === "/api/update_trajectory") {
+        try {
+          const payload = JSON.parse(init.body || "{}");
+          const instance = state.instances[Number(payload.instance_index)];
+          if (!instance || !Array.isArray(payload.turns) || !payload.turns.length) {
+            return jsonResponse({ ok: false, error: "Invalid trajectory payload" }, 400);
+          }
+          instance.turns = payload.turns;
+          await persistInstance(instance);
+          return jsonResponse({ ok: true, turn_count: payload.turns.length });
+        } catch (error) {
+          return jsonResponse({ ok: false, error: error.message }, 500);
+        }
+      }
+      const candidateMatch = path.match(/^\/api\/candidates\/(\d+)\/(\d+)$/);
+      if (candidateMatch) {
+        const instance = state.instances[Number(candidateMatch[1])];
+        const turn = instance?.turns?.[Number(candidateMatch[2])];
+        return jsonResponse({ ok: true, items: turn?.env_feedback?.candidate_items || [] });
+      }
+      const trajectoryMatch = path.match(/^\/api\/trajectories\/(\d+)$/);
+      if (trajectoryMatch && String(init.method || "GET").toUpperCase() === "DELETE") {
+        try {
+          const instance = state.instances[Number(trajectoryMatch[1])];
+          if (!instance) return jsonResponse({ ok: false, error: "Trajectory not found" }, 404);
+          await persistInstance(instance, { deleted: true });
+          return jsonResponse({ ok: true });
+        } catch (error) {
+          return jsonResponse({ ok: false, error: error.message }, 500);
+        }
+      }
+      if (path === "/api/switch_shard") {
+        pendingShard = Number(JSON.parse(init.body || "{}").shard);
+        return jsonResponse({ ok: true });
+      }
+      if (path === "/api/shard_status") {
+        return jsonResponse({ ok: true, shard_index: pendingShard });
+      }
+      return nativeFetch(input, init);
+    };
+
+    document.title = state.domain === "travelplanner" ? "TravelPlanner Replay" : "WebShop Replay";
+    const instanceSelect = document.getElementById("instanceSelect");
+    const instanceLabel = document.getElementById("instanceLabel");
+    const shardIndicator = document.getElementById("shardIndicator");
+    const shardPicker = document.getElementById("shardPicker");
+    const shardSelect = document.getElementById("shardSelect");
+    const switchShardButton = document.getElementById("switchShard");
+    const prevShardButton = document.getElementById("prevShard");
+    const nextShardButton = document.getElementById("nextShard");
+    const turnSelect = document.getElementById("turnSelect");
+    const utterance = document.getElementById("utterance");
+    const constraints = document.getElementById("constraints");
+    const priorityBoard = document.getElementById("priorityBoard");
+    const entityPanel = document.getElementById("entityPanel");
+    const entityState = document.getElementById("entityState");
+    const saveEdit = document.getElementById("saveEdit");
+    const saveStatus = document.getElementById("saveStatus");
+    const deleteTrajectory = document.getElementById("deleteTrajectory");
+    const rationale = document.getElementById("rationale");
+    const meta = document.getElementById("meta");
+    const results = document.getElementById("results");
+    const resultsTitle = document.getElementById("resultsTitle");
+    const resultCount = document.getElementById("resultCount");
+    const query = document.getElementById("query");
+    const prevTurn = document.getElementById("prevTurn");
+    const nextTurn = document.getElementById("nextTurn");
+    const addTurn = document.getElementById("addTurn");
+    const deleteTurn = document.getElementById("deleteTurn");
+    const goldActionEditor = document.getElementById("goldActionEditor");
+    const goldActionStatus = document.getElementById("goldActionStatus");
+    const webshopGoldPanel = document.getElementById("webshopGoldPanel");
+    const webshopGoldItem = document.getElementById("webshopGoldItem");
+    const priorityLevels = [
+      ["high", "Must-have"],
+      ["medium", "Preferred"],
+      ["low", "Optional"]
+    ];
+    let constraintDraft = [];
+    let priorityDraft = { high: [], medium: [], low: [] };
+    let originalConstraints = {};
+    let originalPriority = { high: [], medium: [], low: [] };
+    let goldActionDraft = {};
+    let draggedKey = "";
+    let activeInstanceIndex = 0;
+    let activeTurnIndex = 0;
+    let editDirty = false;
+    let navigationBusy = false;
+    const dirtyInstances = new Set();
+    let displayedItems = [];
+    let candidateRequestToken = 0;
+
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+    function money(value) {
+      if (value === null || value === undefined || value === "") return "";
+      const num = Number(value);
+      return Number.isFinite(num) ? `$${num.toFixed(2)}` : String(value);
+    }
+    function pill(text, cls = "") {
+      return `<span class="pill ${cls}">${esc(text)}</span>`;
+    }
+    function firstNonEmpty(...values) {
+      for (const value of values) {
+        if (value !== undefined && value !== null && String(value).trim() !== "") return value;
+      }
+      return "";
+    }
+    function valueToText(value) {
+      if (value === null || typeof value === "object") return JSON.stringify(value);
+      return String(value);
+    }
+    function textToValue(text) {
+      const trimmed = String(text ?? "").trim();
+      if (trimmed === "") return "";
+      try {
+        return JSON.parse(trimmed);
+      } catch {
+        return text;
+      }
+    }
+    function currentTurn() {
+      return state.instances[activeInstanceIndex].turns[activeTurnIndex];
+    }
+    function markDirty() {
+      editDirty = true;
+      dirtyInstances.add(activeInstanceIndex);
+      saveStatus.textContent = "Unsaved trajectory";
+      saveStatus.className = "status toolbar-status unsaved";
+    }
+    function currentItems() {
+      return displayedItems;
+    }
+    function actionItinerary(action) {
+      return ((((action || {}).action_payload || {}).plan || {}).itinerary || []);
+    }
+    function compactSelection(value) {
+      if (value && typeof value === "object") {
+        return firstNonEmpty(value.name, value.Name, value.flight_number, value["Flight Number"], value.type, valueToText(value));
+      }
+      return valueToText(value ?? "");
+    }
+    function normalizePriority(priority, keys) {
+      const keySet = new Set(keys);
+      const next = { high: [], medium: [], low: [] };
+      if (priority && !Array.isArray(priority) && typeof priority === "object") {
+        for (const level of Object.keys(next)) {
+          for (const key of priority[level] || []) {
+            if (keySet.has(key) && !next[level].includes(key)) next[level].push(key);
+          }
+        }
+      } else if (Array.isArray(priority)) {
+        next.medium = priority.filter(key => keySet.has(key));
+      }
+      const assigned = new Set([...next.high, ...next.medium, ...next.low]);
+      for (const key of keys) {
+        if (!assigned.has(key)) next.medium.push(key);
+      }
+      return next;
+    }
+    function renderEditor(turn) {
+      const gold = turn.gold_current_intention || {};
+      const rawConstraints = gold.constraints || {};
+      originalConstraints = JSON.parse(JSON.stringify(rawConstraints));
+      constraintDraft = Object.entries(rawConstraints).map(([key, value]) => ({
+        key,
+        valueText: valueToText(value)
+      }));
+      priorityDraft = normalizePriority(gold.priority, constraintDraft.map(row => row.key));
+      originalPriority = JSON.parse(JSON.stringify(priorityDraft));
+      utterance.value = turn.user_utterance || "";
+      editDirty = dirtyInstances.has(activeInstanceIndex);
+      saveStatus.textContent = editDirty ? "Unsaved trajectory" : "";
+      saveStatus.className = editDirty ? "status toolbar-status unsaved" : "status toolbar-status";
+      renderConstraints();
+      renderPriorityBoard();
+    }
+    function renderConstraints() {
+      constraints.innerHTML = constraintDraft.map((row, index) => `
+        <div class="constraint-row" data-key="${esc(row.key)}">
+          <input data-role="key" data-index="${index}" value="${esc(row.key)}" placeholder="constraint">
+          <input data-role="value" data-index="${index}" value="${esc(row.valueText)}" placeholder="value, JSON allowed">
+          <button class="danger" data-role="remove" data-index="${index}" title="Remove">Remove</button>
+        </div>
+      `).join("");
+    }
+    function removeFromPriority(key) {
+      for (const level of Object.keys(priorityDraft)) {
+        priorityDraft[level] = priorityDraft[level].filter(item => item !== key);
+      }
+    }
+    function renderPriorityBoard() {
+      priorityDraft = normalizePriority(priorityDraft, constraintDraft.map(row => row.key).filter(Boolean));
+      priorityBoard.innerHTML = priorityLevels.map(([level, label]) => `
+        <div class="priority-column" data-level="${level}">
+          <p class="priority-title">${esc(label)}</p>
+          <div class="priority-list">
+            ${(priorityDraft[level] || []).map(key => `
+              <span class="priority-chip" draggable="true" data-key="${esc(key)}">${esc(key)}</span>
+            `).join("")}
+          </div>
+        </div>
+      `).join("");
+    }
+    function initialGoldAction(turn) {
+      if (turn.gold_action && Object.keys(turn.gold_action).length) {
+        return JSON.parse(JSON.stringify(turn.gold_action));
+      }
+      if (state.domain === "travelplanner") {
+        const proposedDays = actionItinerary(turn.agent_action).map(day => {
+          const next = {};
+          for (const field of ["day", "current_city", "transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"]) {
+            next[field] = compactSelection(day[field]);
+          }
+          return next;
+        });
+        return { action_type: "Planner", confirmed: false, action_payload: { plan: { itinerary: proposedDays } } };
+      }
+      return { action_type: "Buy", confirmed: false, action_payload: { selected_asin: "", selected_options: {} } };
+    }
+    function setGoldStatus() {
+      const confirmed = Boolean(goldActionDraft.confirmed);
+      goldActionStatus.textContent = confirmed ? "Confirmed" : "Unconfirmed";
+      goldActionStatus.className = `pill ${confirmed ? "good" : "warn"}`;
+    }
+    function renderGoldAction(turn) {
+      goldActionDraft = initialGoldAction(turn);
+      if (state.domain === "travelplanner") renderTravelGoldAction();
+      else renderWebshopGoldAction();
+      setGoldStatus();
+    }
+    function renderWebshopGoldAction() {
+      const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
+      const selectedOptions = payload.selected_options || (payload.selected_options = {});
+      const selectedItem = currentItems().find(item => String(item.asin || "") === String(payload.selected_asin || ""));
+      const availableOptions = (selectedItem && selectedItem.options) || {};
+      const optionKeys = [...new Set([...Object.keys(availableOptions), ...Object.keys(selectedOptions)])];
+      goldActionEditor.innerHTML = `
+        <div class="gold-action-grid">
+          <div><label>Selected product ASIN</label><input data-gold-role="asin" value="${esc(payload.selected_asin || "")}" placeholder="Choose an item below or enter its ASIN"></div>
+          <div><label>Action</label><input value="Buy / select product" disabled></div>
+        </div>
+        <div class="gold-options">${optionKeys.map(key => {
+          const values = Array.isArray(availableOptions[key]) ? availableOptions[key] : [];
+          const current = selectedOptions[key] ?? "";
+          return `<div><label>${esc(prettyKey(key))}</label>${values.length
+            ? `<select data-gold-role="option" data-option-key="${esc(key)}"><option value="">Not selected</option>${values.map(value => `<option value="${esc(value)}" ${String(value) === String(current) ? "selected" : ""}>${esc(value)}</option>`).join("")}</select>`
+            : `<input data-gold-role="option" data-option-key="${esc(key)}" value="${esc(current)}" placeholder="Selected value">`}</div>`;
+        }).join("")}</div>
+        <label class="gold-confirm"><input type="checkbox" data-gold-role="confirmed" ${goldActionDraft.confirmed ? "checked" : ""}> I confirm this is the gold product and these are the exact options.</label>`;
+    }
+    function renderTravelGoldAction() {
+      const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
+      const plan = payload.plan || (payload.plan = {});
+      const days = plan.itinerary || (plan.itinerary = []);
+      const fields = ["day", "current_city", "transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
+      goldActionEditor.innerHTML = `
+        <div class="day-list">${days.map((day, dayIndex) => `
+          <article class="day-card">
+            <div class="day-head editor-head"><strong>${esc(day.day || `Day ${dayIndex + 1}`)}</strong><button class="danger" data-gold-role="remove-day" data-day-index="${dayIndex}">Remove day</button></div>
+            <div class="day-grid">${fields.map(field => `<div class="day-field"><label>${esc(prettyKey(field))}</label><input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
+          </article>`).join("")}</div>
+        ${days.length ? "" : `<div class="empty">No proposed days. Add a day to define the gold itinerary.</div>`}
+        <div id="travelCostSummary"></div>
+        <div class="editor-actions" style="margin-top:10px;"><button data-gold-role="add-day">+ Day</button></div>
+        <label class="gold-confirm"><input type="checkbox" data-gold-role="confirmed" ${goldActionDraft.confirmed ? "checked" : ""}> I confirm every day's exact transportation, restaurants, attraction, and hotel.</label>`;
+      renderTravelCostSummary();
+    }
+    function draftConstraintNumber(keys, fallback) {
+      for (const key of keys) {
+        const row = constraintDraft.find(item => item.key.trim() === key);
+        if (!row) continue;
+        const parsed = textToValue(row.valueText);
+        const number = Number(String(parsed).replace(/[$,]/g, ""));
+        if (Number.isFinite(number)) return number;
+      }
+      return fallback;
+    }
+    function extractTravelUnitCost(value) {
+      if (value && typeof value === "object") {
+        for (const key of ["cost", "price", "Average Cost", "Price"]) {
+          const number = Number(String(value[key] ?? "").replace(/[$,]/g, ""));
+          if (Number.isFinite(number)) return number;
+        }
+      }
+      const text = valueToText(value ?? "");
+      const match = text.match(/(?:average cost|listed price|cost|price)\s*[:=]?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)/i)
+        || text.match(/\$\s*([0-9][0-9,]*(?:\.[0-9]+)?)/);
+      return match ? Number(match[1].replaceAll(",", "")) : null;
+    }
+    function extractMaximumOccupancy(value) {
+      if (value && typeof value === "object") {
+        for (const key of ["maximum occupancy", "maximum_occupancy", "max_occupancy"]) {
+          const number = Number(value[key]);
+          if (Number.isFinite(number) && number > 0) return number;
+        }
+      }
+      const match = valueToText(value ?? "").match(/maximum occupancy\s*:?\s*([0-9]+)/i);
+      return match ? Number(match[1]) : null;
+    }
+    function travelCostItem(field, value, people) {
+      const text = valueToText(value ?? "").trim();
+      const label = prettyKey(field);
+      if (field === "attraction") {
+        return { label, subtotal: 0, formula: "$0.00 (not costed by the benchmark)", unavailable: false };
+      }
+      if (!text || text === "-") {
+        return { label, subtotal: 0, formula: "$0.00 (not selected)", unavailable: false };
+      }
+      const unit = extractTravelUnitCost(value);
+      if (unit === null) {
+        return { label, subtotal: 0, formula: "Price unavailable — excluded from total", unavailable: true };
+      }
+      let multiplier = people;
+      let unitLabel = `${people} traveler${people === 1 ? "" : "s"}`;
+      const lower = text.toLowerCase();
+      if (field === "transportation" && lower.includes("taxi")) {
+        multiplier = Math.ceil(people / 4);
+        unitLabel = `${multiplier} taxi${multiplier === 1 ? "" : "s"} (4 travelers each)`;
+      } else if (field === "transportation" && (lower.includes("self-driving") || lower.includes("self driving"))) {
+        multiplier = Math.ceil(people / 5);
+        unitLabel = `${multiplier} car${multiplier === 1 ? "" : "s"} (5 travelers each)`;
+      } else if (field === "accommodation") {
+        const occupancy = extractMaximumOccupancy(value);
+        multiplier = occupancy ? Math.ceil(people / occupancy) : 1;
+        unitLabel = occupancy
+          ? `${multiplier} room${multiplier === 1 ? "" : "s"} (max ${occupancy} each)`
+          : "1 room (occupancy unavailable)";
+      }
+      return { label, subtotal: unit * multiplier, formula: `${money(unit)} × ${unitLabel}`, unavailable: false };
+    }
+    function renderTravelCostSummary() {
+      const container = document.getElementById("travelCostSummary");
+      if (!container) return;
+      const days = (((goldActionDraft.action_payload || {}).plan || {}).itinerary || []);
+      if (!days.length) {
+        container.innerHTML = "";
+        return;
+      }
+      const people = Math.max(1, Math.floor(draftConstraintNumber(["people_number", "party_size"], 1)));
+      const budget = draftConstraintNumber(["budget", "budget_max"], null);
+      const costFields = ["transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
+      let total = 0;
+      let unavailableCount = 0;
+      const daySections = days.map((day, dayIndex) => {
+        const items = costFields.map(field => travelCostItem(field, day[field], people));
+        const subtotal = items.reduce((sum, item) => sum + item.subtotal, 0);
+        total += subtotal;
+        unavailableCount += items.filter(item => item.unavailable).length;
+        return `<div class="travel-cost-day">
+          <strong>${esc(day.day || `Day ${dayIndex + 1}`)}</strong>
+          ${items.map(item => `<div class="cost-row ${item.unavailable ? "unavailable" : ""}">
+            <span>${esc(item.label)}</span><span class="cost-formula">${esc(item.formula)}</span><strong>${item.unavailable ? "—" : esc(money(item.subtotal))}</strong>
+          </div>`).join("")}
+          <div class="cost-row cost-subtotal"><span>Day subtotal</span><span></span><strong>${esc(money(subtotal))}</strong></div>
+        </div>`;
+      }).join("");
+      const hasBudget = Number.isFinite(budget);
+      const difference = hasBudget ? budget - total : null;
+      container.innerHTML = `<section class="travel-cost-summary">
+        <div class="travel-cost-head"><div><div class="small-title" style="margin-top:0;">Proposed itinerary cost breakdown</div><strong>${people} traveler${people === 1 ? "" : "s"}</strong></div><strong>${esc(money(total))} total</strong></div>
+        ${daySections}
+        <div class="travel-cost-total ${hasBudget && difference < 0 ? "over-budget" : ""}">
+          <div class="cost-row"><strong>Estimated total</strong><span></span><strong>${esc(money(total))}</strong></div>
+          ${hasBudget ? `<div class="cost-row"><span>Budget</span><span>${difference >= 0 ? "Remaining" : "Over budget"}</span><strong>${esc(money(Math.abs(difference)))}</strong></div>` : ""}
+          <div class="travel-cost-note">Flights and meals are per traveler; taxis use 4 travelers per vehicle, self-driving uses 5, and lodging uses maximum occupancy. Attractions are not included in the benchmark cost.${unavailableCount ? ` ${unavailableCount} selected item${unavailableCount === 1 ? " has" : "s have"} no extractable price and ${unavailableCount === 1 ? "is" : "are"} excluded.` : ""}</div>
+        </div>
+      </section>`;
+    }
+    function collectEditPayload() {
+      const cleanRows = constraintDraft
+        .map(row => ({ key: row.key.trim(), valueText: row.valueText }))
+        .filter(row => row.key);
+      const constraintsPayload = {};
+      for (const row of cleanRows) constraintsPayload[row.key] = textToValue(row.valueText);
+      const keys = cleanRows.map(row => row.key);
+      const priorityPayload = normalizePriority(priorityDraft, keys);
+      return {
+        user_utterance: utterance.value,
+        constraints: constraintsPayload,
+        priority: priorityPayload,
+        gold_action: goldActionDraft
+      };
+    }
+    function sameValue(left, right) {
+      return JSON.stringify(left) === JSON.stringify(right);
+    }
+    function cloneValue(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+    function priorityLevel(priority, key) {
+      for (const level of ["high", "medium", "low"]) {
+        if ((priority[level] || []).includes(key)) return level;
+      }
+      return "";
+    }
+    function movePriority(priority, key, level) {
+      for (const candidate of ["high", "medium", "low"]) {
+        priority[candidate] = (priority[candidate] || []).filter(item => item !== key);
+      }
+      if (level) priority[level].push(key);
+    }
+    function propagateConstraintChanges(nextConstraints, nextPriority) {
+      const keys = new Set([...Object.keys(originalConstraints), ...Object.keys(nextConstraints)]);
+      const currentIndex = activeTurnIndex;
+      const laterTurns = state.instances[activeInstanceIndex].turns.slice(currentIndex + 1);
+      for (const key of keys) {
+        const existedBefore = Object.prototype.hasOwnProperty.call(originalConstraints, key);
+        const existsNow = Object.prototype.hasOwnProperty.call(nextConstraints, key);
+        const valueChanged = existedBefore && existsNow && !sameValue(originalConstraints[key], nextConstraints[key]);
+        const added = !existedBefore && existsNow;
+        const removed = existedBefore && !existsNow;
+        const oldLevel = priorityLevel(originalPriority, key);
+        const newLevel = priorityLevel(nextPriority, key);
+        const priorityChanged = oldLevel !== newLevel;
+
+        for (const laterTurn of laterTurns) {
+          const gold = laterTurn.gold_current_intention || (laterTurn.gold_current_intention = {});
+          const constraints = gold.constraints || (gold.constraints = {});
+          const laterHadKey = Object.prototype.hasOwnProperty.call(constraints, key);
+          let inherited = false;
+
+          if (added && !laterHadKey) {
+            constraints[key] = cloneValue(nextConstraints[key]);
+            inherited = true;
+          } else if (valueChanged && laterHadKey && sameValue(constraints[key], originalConstraints[key])) {
+            constraints[key] = cloneValue(nextConstraints[key]);
+            inherited = true;
+          } else if (removed && laterHadKey && sameValue(constraints[key], originalConstraints[key])) {
+            delete constraints[key];
+            inherited = true;
+          }
+
+          const laterPriority = normalizePriority(gold.priority, Object.keys(constraints));
+          const laterLevel = priorityLevel(laterPriority, key);
+          if (existsNow && ((added && inherited) || (priorityChanged && laterLevel === oldLevel))) {
+            movePriority(laterPriority, key, newLevel || "medium");
+          }
+          gold.priority = laterPriority;
+        }
+      }
+    }
+    function commitCurrentDraft() {
+      const turn = currentTurn();
+      const payload = collectEditPayload();
+      propagateConstraintChanges(payload.constraints, payload.priority);
+      turn.user_utterance = payload.user_utterance;
+      turn.gold_current_intention = turn.gold_current_intention || {};
+      turn.gold_current_intention.constraints = payload.constraints;
+      turn.gold_current_intention.priority = payload.priority;
+      turn.gold_action = payload.gold_action;
+      originalConstraints = cloneValue(payload.constraints);
+      originalPriority = cloneValue(payload.priority);
+    }
+    async function saveTrajectory(force = false) {
+      commitCurrentDraft();
+      if (!dirtyInstances.has(activeInstanceIndex) && !force) return true;
+      const instIndex = activeInstanceIndex;
+      saveEdit.disabled = true;
+      saveStatus.textContent = "Saving trajectory...";
+      saveStatus.className = "status toolbar-status";
+      try {
+        const response = await fetch("/api/update_trajectory", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ instance_index: instIndex, turns: state.instances[instIndex].turns })
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "Trajectory save failed");
+        dirtyInstances.delete(instIndex);
+        editDirty = false;
+        saveStatus.textContent = `Trajectory saved (${data.turn_count} turns)`;
+        saveStatus.className = "status toolbar-status ok";
+        return true;
+      } catch (error) {
+        saveStatus.textContent = error.message;
+        saveStatus.className = "status toolbar-status error";
+        return false;
+      } finally {
+        saveEdit.disabled = false;
+      }
+    }
+    function renderSelectors() {
+      instanceLabel.textContent = `Trajectories (${state.instances.length})`;
+      if (state.shard_index) {
+        shardIndicator.textContent = `Shard ${state.shard_index} / ${state.shard_count || "?"}`;
+        shardIndicator.style.display = "inline-flex";
+        if (state.shard_count) {
+          shardPicker.style.display = "block";
+          switchShardButton.style.display = "inline-block";
+          prevShardButton.style.display = "inline-block";
+          nextShardButton.style.display = "inline-block";
+          shardSelect.innerHTML = Array.from({ length: state.shard_max - state.shard_min + 1 }, (_, index) => {
+            const shard = state.shard_min + index;
+            return `<option value="${shard}">Shard ${shard}</option>`;
+          }).join("");
+          shardSelect.value = String(state.shard_index);
+          prevShardButton.disabled = state.shard_index <= state.shard_min;
+          nextShardButton.disabled = state.shard_index >= state.shard_max;
+        }
+      }
+      instanceSelect.innerHTML = state.instances.map((inst, index) => {
+        const label = inst.instance_id || `trajectory_${index}`;
+        return `<option value="${index}">${esc(label)}</option>`;
+      }).join("");
+      renderTurnOptions();
+    }
+    function renderTurnOptions() {
+      const inst = state.instances[Number(instanceSelect.value || 0)];
+      turnSelect.innerHTML = inst.turns.map((turn, index) => {
+        const label = `Turn ${turn.turn_id ?? index}`;
+        return `<option value="${index}">${esc(label)}</option>`;
+      }).join("");
+    }
+    function render() {
+      const instIndex = Number(instanceSelect.value || 0);
+      const turnIndex = Number(turnSelect.value || 0);
+      activeInstanceIndex = instIndex;
+      activeTurnIndex = turnIndex;
+      const inst = state.instances[instIndex];
+      const turn = inst.turns[turnIndex];
+      const feedback = turn.env_feedback || {};
+      const items = feedback.candidate_items || [];
+      const gold = turn.gold_current_intention || {};
+      const action = turn.agent_action || {};
+      const actionPayload = action.action_payload || {};
+      displayedItems = items;
+
+      renderEditor(turn);
+      renderGoldAction(turn);
+      renderEntityIntentions(turn);
+      const originalGoldItem = inst.webshop_gold_item;
+      if (state.domain === "webshop" && turnIndex === 0 && originalGoldItem) {
+        webshopGoldPanel.style.display = "block";
+        webshopGoldItem.innerHTML = renderItem(originalGoldItem, { originalGoldReference: true });
+      } else {
+        webshopGoldPanel.style.display = "none";
+        webshopGoldItem.innerHTML = "";
+      }
+      meta.innerHTML = [
+        pill(state.domain),
+        pill(inst.instance_id),
+        state.annotation_output ? pill(`save → ${state.annotation_output}`, "good") : "",
+        pill(`turn ${turn.turn_id ?? turnIndex}`),
+        turn.shift_condition?.type ? pill(turn.shift_condition.type, "warn") : "",
+        turn.action_implication ? pill(turn.action_implication) : "",
+        turn.stop_reason ? pill(`stop: ${turn.stop_reason}`) : ""
+      ].join("");
+
+      const rationales = turn.rationales || [];
+      rationale.innerHTML = rationales.length
+        ? rationales.map(text => `<div class="rationale">${esc(text)}</div>`).join("")
+        : `<div class="rationale">No rationale recorded for this turn.</div>`;
+      deleteTurn.disabled = inst.turns.length <= 1;
+      deleteTrajectory.disabled = state.instances.length <= 1;
+
+      if (state.domain === "travelplanner") {
+        renderTravelPlanner(turn, feedback, actionPayload);
+        prevTurn.disabled = turnIndex <= 0;
+        nextTurn.disabled = turnIndex >= inst.turns.length - 1;
+        return;
+      }
+
+      const queryText = firstNonEmpty(
+        feedback.gold_search_query,
+        gold.gold_search_query,
+        actionPayload.query,
+        (turn.rollout_search_queries || [])[0]
+      );
+      resultsTitle.textContent = "Loading 15 candidates...";
+      resultCount.textContent = "";
+      query.textContent = queryText ? `Search query: ${queryText}` : "";
+      results.innerHTML = `<div class="empty">Loading full candidate set...</div>`;
+      loadWebshopCandidates(instIndex, turnIndex, items);
+      prevTurn.disabled = turnIndex <= 0;
+      nextTurn.disabled = turnIndex >= inst.turns.length - 1;
+    }
+    async function loadWebshopCandidates(instanceIndex, turnIndex, fallbackItems) {
+      const requestToken = ++candidateRequestToken;
+      try {
+        const response = await fetch(`/api/candidates/${instanceIndex}/${turnIndex}`, { cache: "no-store" });
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "Candidate load failed");
+        if (requestToken !== candidateRequestToken || instanceIndex !== activeInstanceIndex || turnIndex !== activeTurnIndex) return;
+        displayedItems = data.items || [];
+        resultsTitle.textContent = `Candidates (Total results: ${displayedItems.length})`;
+        resultCount.textContent = `${displayedItems.length} items`;
+        results.innerHTML = displayedItems.length
+          ? displayedItems.map(item => renderItem(item)).join("")
+          : `<div class="empty">No candidates found for this turn.</div>`;
+        renderWebshopGoldAction();
+      } catch (error) {
+        if (requestToken !== candidateRequestToken) return;
+        displayedItems = fallbackItems;
+        resultsTitle.textContent = `Candidates (Total results: ${fallbackItems.length})`;
+        resultCount.textContent = `${fallbackItems.length} items`;
+        results.innerHTML = fallbackItems.length
+          ? fallbackItems.map(item => renderItem(item)).join("")
+          : `<div class="empty">${esc(error.message)}</div>`;
+      }
+    }
+    function prettyKey(value) {
+      return String(value || "").replaceAll("_", " ").replace(/\b\w/g, ch => ch.toUpperCase());
+    }
+    function travelItemTitle(item, category) {
+      return firstNonEmpty(
+        item.name, item.Name, item.flight_number, item.FlightNumber,
+        item.description, item.Description, `${prettyKey(category)} result`
+      );
+    }
+    function renderTravelCard(item, category) {
+      const ignored = new Set(["name", "Name", "flight_number", "FlightNumber", "result_index"]);
+      const rows = Object.entries(item || {}).filter(([key, value]) => !ignored.has(key) && value !== null && value !== "");
+      return `<article class="travel-card">
+        <h4 class="travel-card-title">${esc(travelItemTitle(item, category))}</h4>
+        <div class="kv">${rows.map(([key, value]) => `
+          <div class="kv-key">${esc(prettyKey(key))}</div>
+          <div class="kv-value">${esc(valueToText(value))}</div>
+        `).join("")}</div>
+      </article>`;
+    }
+    function renderSearchCategory(category, pages) {
+      const pageList = Array.isArray(pages) ? pages : [];
+      const total = pageList.reduce((sum, page) => sum + ((page && page.items) || []).length, 0);
+      return `<section class="travel-category">
+        <div class="travel-category-head">
+          <h3 class="travel-category-title">${esc(prettyKey(category))}</h3>
+          ${pill(`${total} items`)}
+        </div>
+        ${pageList.length ? pageList.map(page => {
+          const items = (page && page.items) || [];
+          const statusClass = page.status === "no_results" ? "bad" : "good";
+          return `<div class="search-page">
+            <div class="search-page-head">
+              ${pill(page.source_action || "Search")} ${pill(page.status || "observed", statusClass)}
+              <strong>${esc(page.query || "")}</strong>
+              ${page.message ? `<div>${esc(page.message)}</div>` : ""}
+            </div>
+            ${items.length ? `<div class="travel-items">${items.map(item => renderTravelCard(item, category)).join("")}</div>`
+              : `<div class="empty">No results returned for this search page.</div>`}
+          </div>`;
+        }).join("") : `<div class="empty">No ${esc(category)} search was recorded for this turn.</div>`}
+      </section>`;
+    }
+    function renderEntityIntentions(turn) {
+      const gold = turn.gold_current_intention || {};
+      const entities = Object.entries(gold.entities || {});
+      if (state.domain !== "travelplanner" || entities.length <= 1) {
+        entityPanel.style.display = "none";
+        entityState.innerHTML = "";
+        return;
+      }
+      entityPanel.style.display = "block";
+      const changes = Object.entries(turn.gold_delta || {});
+      const entityCards = entities.map(([entityId, entity]) => `<article class="travel-card">
+            <h3 class="travel-card-title">${esc(entity.reference || "Traveler")} <span class="details">(${esc(entityId)})</span></h3>
+            <pre>${esc(JSON.stringify(entity.constraints || {}, null, 2))}</pre>
+          </article>`).join("");
+      const changeCards = changes.length
+        ? changes.map(([path, change]) => `<article class="travel-card">
+            <h3 class="travel-card-title">${esc(path)}</h3>
+            <div class="chips">${pill(change.category || change.op || "change", change.category === "entity" ? "warn" : "")}</div>
+            <pre>${esc(JSON.stringify({old: change.old, new: change.new, rationale: change.rationale}, null, 2))}</pre>
+          </article>`).join("")
+        : `<div class="empty">Initial turn: no gold changes.</div>`;
+      entityState.innerHTML = `
+        <div class="small-title">Travelers and person-specific constraints</div>
+        <div class="travel-items">${entityCards}</div>
+        <div class="small-title">This turn's gold changes (${changes.length})</div>
+        <div class="travel-items">${changeCards}</div>`;
+    }
+    function renderTravelPlanner(turn, feedback, actionPayload) {
+      const searchResults = feedback.search_results || {};
+      const order = ["attractions", "accommodations", "restaurants", "transportation", "cities"];
+      const categories = [...order.filter(key => key in searchResults), ...Object.keys(searchResults).filter(key => !order.includes(key))];
+      const total = categories.reduce((sum, key) => sum + (searchResults[key] || []).reduce((n, page) => n + ((page && page.items) || []).length, 0), 0);
+      resultsTitle.textContent = "Travel Search Evidence";
+      resultCount.textContent = `${total} items`;
+      query.textContent = actionPayload.query ? `Planner query: ${actionPayload.query}` : "";
+      results.innerHTML = categories.length
+        ? categories.map(category => renderSearchCategory(category, searchResults[category])).join("")
+        : `<div class="empty">No structured search_results found in env_feedback for this turn.</div>`;
+    }
+    function renderItem(item, renderOptions = {}) {
+      const originalGoldReference = renderOptions?.originalGoldReference === true;
+      const imageUrl = item.image_url || state.no_image_url;
+      const rankBits = [
+        item.rerank_rank ? `rerank #${item.rerank_rank}` : "",
+        item.original_rank ? `original #${item.original_rank}` : "",
+        item.rank ? `rank #${item.rank}` : ""
+      ].filter(Boolean);
+      const matched = item.rerank_matched_constraints || [];
+      const missing = item.rerank_missing_or_uncertain_constraints || [];
+      const mismatches = item.rerank_mismatch_reasons || [];
+      const attrs = item.attributes || [];
+      const options = item.options || {};
+      const goldOptions = item.gold_selected_options || {};
+      const bullets = item.bullet_points || [];
+      const facts = Object.entries(item.product_information || {}).filter(([, value]) => valueToText(value).trim());
+      const detailBits = [
+        item.brand ? `Brand: ${valueToText(item.brand)}` : "",
+        item.color ? `Color: ${valueToText(item.color)}` : "",
+        item.average_rating ? `Rating: ${valueToText(item.average_rating)}` : "",
+        item.total_reviews ? `Reviews: ${valueToText(item.total_reviews)}` : "",
+        item.availability_status ? valueToText(item.availability_status) : "",
+        item.seller_name ? `Seller: ${valueToText(item.seller_name)}` : ""
+      ].filter(Boolean);
+      const selectedAsin = String(((goldActionDraft.action_payload || {}).selected_asin) || "");
+      const isGoldSelected = selectedAsin && selectedAsin === String(item.asin || "");
+      return `
+        <article class="item ${isGoldSelected || originalGoldReference ? "gold-selected" : ""}">
+          <div class="image-box"><img src="${esc(imageUrl)}" alt=""></div>
+          <div>
+            <h3 class="asin">${originalGoldReference ? "Original gold · " : ""}${esc(item.asin || "")}</h3>
+            <h4 class="title">${esc(item.title || item.Title || "")}</h4>
+            <p class="price">${esc(money(firstNonEmpty(item.price, item.Price)))}</p>
+            <div class="details">
+              ${rankBits.map(x => esc(x)).join(" | ")}
+              ${item.category ? ` | ${esc(item.category)}` : ""}
+              ${item.product_category ? `<br>${esc(item.product_category)}` : ""}
+              ${detailBits.length ? `<br>${detailBits.map(esc).join(" &middot; ")}` : ""}
+            </div>
+            <div class="chips">
+              ${item.rerank_decision ? pill(item.rerank_decision, item.rerank_decision === "keep" ? "good" : "warn") : ""}
+              ${item.rerank_constraint_match_level ? pill(item.rerank_constraint_match_level) : ""}
+              ${item.rerank_product_family_match ? pill(`family: ${item.rerank_product_family_match}`) : ""}
+            </div>
+            ${matched.length ? `<div class="small-title">Matched constraints</div><div class="chips">${matched.map(x => pill(x, "good")).join("")}</div>` : ""}
+            ${missing.length ? `<div class="small-title">Missing or uncertain</div><div class="chips">${missing.map(x => pill(x, "warn")).join("")}</div>` : ""}
+            ${mismatches.length ? `<div class="small-title">Mismatch reasons</div><div class="chips">${mismatches.map(x => pill(x, "bad")).join("")}</div>` : ""}
+            ${attrs.length ? `<div class="small-title">Attributes</div><div class="chips">${attrs.slice(0, 12).map(x => pill(x)).join("")}</div>` : ""}
+            ${Object.keys(options).length ? `<div class="option-summary"><strong>Options:</strong> ${Object.entries(options).map(([key, values]) => `${esc(prettyKey(key))}: ${esc(Array.isArray(values) ? values.join(", ") : valueToText(values))}`).join(" · ")}</div>` : ""}
+            ${Object.keys(goldOptions).length ? `<div class="option-summary"><strong>Gold options:</strong> ${Object.entries(goldOptions).map(([key, value]) => `${esc(prettyKey(key))}: ${esc(valueToText(value))}`).join(" · ")}</div>` : ""}
+            ${(item.description || bullets.length || facts.length) ? `<details class="item-evidence" open>
+              <summary>Product evidence</summary>
+              ${item.description ? `<div class="small-title">Description</div><div>${esc(item.description)}</div>` : ""}
+              ${bullets.length ? `<div class="small-title">Product highlights</div><ul class="bullet-list">${bullets.map(value => `<li>${esc(valueToText(value))}</li>`).join("")}</ul>` : ""}
+              ${facts.length ? `<div class="small-title">Product information</div><div class="product-facts">${facts.map(([key, value]) => `<div class="fact-key">${esc(prettyKey(key))}</div><div class="fact-value">${esc(valueToText(value))}</div>`).join("")}</div>` : ""}
+            </details>` : ""}
+            ${originalGoldReference
+              ? `<div class="item-action">${pill("WebShop source gold product", "good")}</div>`
+              : `<div class="item-action"><button data-select-gold-asin="${esc(item.asin || "")}" class="${isGoldSelected ? "primary" : ""}">${isGoldSelected ? "Gold product selected" : "Select as gold product"}</button></div>`}
+          </div>
+        </article>`;
+    }
+
+    async function navigateTo(instanceIndex, turnIndex) {
+      if (navigationBusy) return;
+      navigationBusy = true;
+      try {
+        instanceSelect.value = String(activeInstanceIndex);
+        renderTurnOptions();
+        turnSelect.value = String(activeTurnIndex);
+        commitCurrentDraft();
+        if (instanceIndex !== activeInstanceIndex && dirtyInstances.has(activeInstanceIndex)) {
+          if (!(await saveTrajectory())) return;
+        }
+        instanceSelect.value = String(instanceIndex);
+        renderTurnOptions();
+        const turns = state.instances[instanceIndex].turns;
+        turnSelect.value = String(Math.min(Math.max(0, turnIndex), turns.length - 1));
+        render();
+      } finally {
+        navigationBusy = false;
+      }
+    }
+    instanceSelect.addEventListener("change", async () => {
+      const requestedInstance = Number(instanceSelect.value || 0);
+      await navigateTo(requestedInstance, 0);
+    });
+    turnSelect.addEventListener("change", async () => {
+      const requestedTurn = Number(turnSelect.value || 0);
+      await navigateTo(activeInstanceIndex, requestedTurn);
+    });
+    prevTurn.addEventListener("click", async () => {
+      await navigateTo(activeInstanceIndex, Math.max(0, activeTurnIndex - 1));
+    });
+    nextTurn.addEventListener("click", async () => {
+      const inst = state.instances[activeInstanceIndex];
+      await navigateTo(activeInstanceIndex, Math.min(inst.turns.length - 1, activeTurnIndex + 1));
+    });
+    function makeClientAnnotationTurn(previousTurn) {
+      return {
+        turn_id: 0,
+        user_utterance: "",
+        gold_current_intention: JSON.parse(JSON.stringify(previousTurn.gold_current_intention || {})),
+        gold_delta: {},
+        gold_action: {},
+        agent_action: {},
+        env_feedback: {},
+        rollout_trace: [],
+        rationales: []
+      };
+    }
+    addTurn.addEventListener("click", () => {
+      commitCurrentDraft();
+      const instanceIndex = activeInstanceIndex;
+      const afterTurnIndex = activeTurnIndex;
+      const turns = state.instances[instanceIndex].turns;
+      const insertAt = afterTurnIndex + 1;
+      turns.splice(insertAt, 0, makeClientAnnotationTurn(turns[afterTurnIndex]));
+      turns.forEach((turn, index) => { turn.turn_id = index; });
+      renderTurnOptions();
+      turnSelect.value = String(insertAt);
+      render();
+      markDirty();
+    });
+    deleteTurn.addEventListener("click", () => {
+      const instanceIndex = activeInstanceIndex;
+      const turnIndex = activeTurnIndex;
+      const turns = state.instances[instanceIndex].turns;
+      if (turns.length <= 1) return;
+      if (!window.confirm(`Remove Turn ${turnIndex} from this trajectory draft? Click Save Trajectory to persist it.`)) return;
+      turns.splice(turnIndex, 1);
+      turns.forEach((turn, index) => { turn.turn_id = index; });
+      renderTurnOptions();
+      turnSelect.value = String(Math.min(turnIndex, turns.length - 1));
+      render();
+      markDirty();
+    });
+    deleteTrajectory.addEventListener("click", async () => {
+      if (state.instances.length <= 1) return;
+      const instanceIndex = activeInstanceIndex;
+      const instanceId = state.instances[instanceIndex].instance_id || `#${instanceIndex + 1}`;
+
+      deleteTrajectory.disabled = true;
+      saveEdit.disabled = true;
+      saveStatus.textContent = "Deleting trajectory...";
+      saveStatus.className = "status toolbar-status";
+      try {
+        const response = await fetch(`/api/trajectories/${instanceIndex}`, { method: "DELETE" });
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "Trajectory deletion failed");
+
+        state.instances.splice(instanceIndex, 1);
+        const shiftedDirty = [...dirtyInstances]
+          .filter(index => index !== instanceIndex)
+          .map(index => index > instanceIndex ? index - 1 : index);
+        dirtyInstances.clear();
+        shiftedDirty.forEach(index => dirtyInstances.add(index));
+        candidateRequestToken += 1;
+        activeInstanceIndex = Math.max(0, instanceIndex - 1);
+        activeTurnIndex = 0;
+        renderSelectors();
+        instanceSelect.value = String(activeInstanceIndex);
+        renderTurnOptions();
+        turnSelect.value = "0";
+        render();
+        saveStatus.textContent = `Deleted trajectory ${instanceId}`;
+        saveStatus.className = "status toolbar-status ok";
+      } catch (error) {
+        saveStatus.textContent = error.message;
+        saveStatus.className = "status toolbar-status error";
+      } finally {
+        saveEdit.disabled = false;
+        deleteTrajectory.disabled = state.instances.length <= 1;
+      }
+    });
+    function updateGoldDraft(target) {
+      const role = target.dataset.goldRole;
+      if (!role) return;
+      if (role === "confirmed") {
+        goldActionDraft.confirmed = target.checked;
+        setGoldStatus();
+        markDirty();
+        return;
+      }
+      const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
+      if (role === "asin") payload.selected_asin = target.value.trim();
+      if (role === "option") {
+        const options = payload.selected_options || (payload.selected_options = {});
+        const key = target.dataset.optionKey;
+        if (target.value === "") delete options[key];
+        else options[key] = target.value;
+      }
+      if (role === "travel-field") {
+        const plan = payload.plan || (payload.plan = {});
+        const days = plan.itinerary || (plan.itinerary = []);
+        const day = days[Number(target.dataset.dayIndex)];
+        if (day) day[target.dataset.field] = target.value;
+        renderTravelCostSummary();
+      }
+      goldActionDraft.confirmed = false;
+      const confirmBox = goldActionEditor.querySelector('[data-gold-role="confirmed"]');
+      if (confirmBox) confirmBox.checked = false;
+      setGoldStatus();
+      markDirty();
+    }
+    goldActionEditor.addEventListener("input", event => {
+      const target = event.target;
+      if (target instanceof HTMLInputElement || target instanceof HTMLSelectElement) updateGoldDraft(target);
+    });
+    goldActionEditor.addEventListener("change", event => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
+      updateGoldDraft(target);
+      if (target.dataset.goldRole === "asin") renderWebshopGoldAction();
+    });
+    goldActionEditor.addEventListener("click", event => {
+      const target = event.target;
+      if (!(target instanceof HTMLButtonElement)) return;
+      const role = target.dataset.goldRole;
+      const plan = (goldActionDraft.action_payload || {}).plan || {};
+      const days = plan.itinerary || (plan.itinerary = []);
+      if (role === "add-day") {
+        days.push({ day: `Day ${days.length + 1}`, current_city: "", transportation: "", breakfast: "", lunch: "", dinner: "", attraction: "", accommodation: "" });
+        goldActionDraft.confirmed = false;
+        renderTravelGoldAction();
+      } else if (role === "remove-day") {
+        days.splice(Number(target.dataset.dayIndex), 1);
+        goldActionDraft.confirmed = false;
+        renderTravelGoldAction();
+      }
+      setGoldStatus();
+      if (role === "add-day" || role === "remove-day") markDirty();
+    });
+    results.addEventListener("click", event => {
+      const target = event.target;
+      if (!(target instanceof HTMLButtonElement) || !target.dataset.selectGoldAsin) return;
+      const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
+      if (payload.selected_asin !== target.dataset.selectGoldAsin) payload.selected_options = {};
+      payload.selected_asin = target.dataset.selectGoldAsin;
+      goldActionDraft.confirmed = false;
+      renderWebshopGoldAction();
+      results.innerHTML = currentItems().map(item => renderItem(item)).join("");
+      setGoldStatus();
+      markDirty();
+    });
+    utterance.addEventListener("input", markDirty);
+    document.getElementById("addConstraint").addEventListener("click", () => {
+      let index = constraintDraft.length + 1;
+      let key = `constraint_${index}`;
+      const existing = new Set(constraintDraft.map(row => row.key));
+      while (existing.has(key)) {
+        index += 1;
+        key = `constraint_${index}`;
+      }
+      constraintDraft.push({ key, valueText: "" });
+      priorityDraft.medium.push(key);
+      renderConstraints();
+      renderPriorityBoard();
+      markDirty();
+    });
+    constraints.addEventListener("input", event => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      const index = Number(target.dataset.index);
+      if (!Number.isInteger(index) || !constraintDraft[index]) return;
+      if (target.dataset.role === "key") {
+        const oldKey = constraintDraft[index].key;
+        const newKey = target.value;
+        constraintDraft[index].key = newKey;
+        const rowEl = target.closest(".constraint-row");
+        if (rowEl) rowEl.dataset.key = newKey;
+        for (const level of Object.keys(priorityDraft)) {
+          priorityDraft[level] = priorityDraft[level].map(key => key === oldKey ? newKey : key);
+        }
+        renderPriorityBoard();
+      } else if (target.dataset.role === "value") {
+        constraintDraft[index].valueText = target.value;
+      }
+      if (state.domain === "travelplanner") renderTravelCostSummary();
+      markDirty();
+    });
+    constraints.addEventListener("click", event => {
+      const target = event.target;
+      if (!(target instanceof HTMLButtonElement) || target.dataset.role !== "remove") return;
+      const index = Number(target.dataset.index);
+      const row = constraintDraft[index];
+      if (!row) return;
+      removeFromPriority(row.key);
+      constraintDraft.splice(index, 1);
+      renderConstraints();
+      renderPriorityBoard();
+      markDirty();
+    });
+    document.addEventListener("dragstart", event => {
+      const target = event.target;
+      const chip = target instanceof Element ? target.closest(".priority-chip") : null;
+      if (!(chip instanceof HTMLElement)) return;
+      const key = chip.dataset.key;
+      if (!key) return;
+      draggedKey = key;
+      event.dataTransfer.setData("text/plain", key);
+      chip.classList.add("dragging");
+    });
+    document.addEventListener("dragend", event => {
+      const target = event.target;
+      if (target instanceof HTMLElement) target.classList.remove("dragging");
+      draggedKey = "";
+      document.querySelectorAll(".priority-column.over").forEach(el => el.classList.remove("over"));
+    });
+    priorityBoard.addEventListener("dragover", event => {
+      const target = event.target;
+      const column = target instanceof Element ? target.closest(".priority-column") : null;
+      if (!column) return;
+      event.preventDefault();
+      column.classList.add("over");
+    });
+    priorityBoard.addEventListener("dragleave", event => {
+      const target = event.target;
+      const column = target instanceof Element ? target.closest(".priority-column") : null;
+      if (column) column.classList.remove("over");
+    });
+    priorityBoard.addEventListener("drop", event => {
+      const target = event.target;
+      const column = target instanceof Element ? target.closest(".priority-column") : null;
+      if (!column) return;
+      event.preventDefault();
+      const key = draggedKey;
+      const level = column.dataset.level;
+      const validKeys = new Set(constraintDraft.map(row => row.key));
+      if (!key || !validKeys.has(key) || !priorityDraft[level]) return;
+      removeFromPriority(key);
+      priorityDraft[level].push(key);
+      renderPriorityBoard();
+      markDirty();
+    });
+    saveEdit.addEventListener("click", () => saveTrajectory(true));
+    async function switchToShard(targetShard) {
+      const target = Number(targetShard);
+      if (!Number.isInteger(target) || target < state.shard_min || target > state.shard_max || target === state.shard_index) return;
+      if (!(await saveTrajectory())) return;
+
+      switchShardButton.disabled = true;
+      prevShardButton.disabled = true;
+      nextShardButton.disabled = true;
+      saveStatus.textContent = `Switching to Shard ${target}...`;
+      saveStatus.className = "status toolbar-status";
+      try {
+        const response = await fetch("/api/switch_shard", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ shard: target })
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "Shard switch failed");
+
+        await new Promise(resolve => setTimeout(resolve, 1800));
+        for (let attempt = 0; attempt < 40; attempt += 1) {
+          try {
+            const statusResponse = await fetch(`/api/shard_status?t=${Date.now()}`, { cache: "no-store" });
+            const status = await statusResponse.json();
+            if (status.ok && status.shard_index === target) {
+              window.location.href = `/?shard=${String(target).padStart(3, "0")}`;
+              return;
+            }
+          } catch (_) {
+            // The old server is expected to disappear briefly during the switch.
+          }
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        throw new Error(`Shard ${target} did not become ready`);
+      } catch (error) {
+        saveStatus.textContent = error.message;
+        saveStatus.className = "status toolbar-status error";
+        switchShardButton.disabled = false;
+        prevShardButton.disabled = state.shard_index <= state.shard_min;
+        nextShardButton.disabled = state.shard_index >= state.shard_max;
+      }
+    }
+    switchShardButton.addEventListener("click", () => switchToShard(shardSelect.value));
+    prevShardButton.addEventListener("click", () => switchToShard(state.shard_index - 1));
+    nextShardButton.addEventListener("click", () => switchToShard(state.shard_index + 1));
+
+    document.getElementById("exportShard").addEventListener("click", () => {
+      commitCurrentDraft();
+      const blob = new Blob([JSON.stringify(state.instances, null, 2)], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `shard_${String(state.shard_index).padStart(3, "0")}_human_annotated.json`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+
+    document.getElementById("reload").addEventListener("click", async () => {
+      if (await saveTrajectory()) location.reload();
+    });
+    window.addEventListener("beforeunload", event => {
+      if (!dirtyInstances.size) return;
+      event.preventDefault();
+      event.returnValue = "";
+    });
+
+    const initialInstanceId = new URLSearchParams(window.location.search).get("instance_id");
+    const initialInstanceIndex = initialInstanceId
+      ? state.instances.findIndex(instance => instance.instance_id === initialInstanceId)
+      : 0;
+    renderSelectors();
+    if (initialInstanceIndex >= 0) {
+      instanceSelect.value = String(initialInstanceIndex);
+      renderTurnOptions();
+      turnSelect.value = "0";
+    }
+    render();
+  </script>
+</body>
+</html>
