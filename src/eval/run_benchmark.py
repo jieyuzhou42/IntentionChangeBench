@@ -61,12 +61,18 @@ def configure_webshop_dataset(num_products: Optional[int]) -> None:
     if dataset_mode != "all":
         return
 
-    repo_root = Path(__file__).resolve().parents[3]
+    repo_root = Path(__file__).resolve().parents[2]
     data_dir = repo_root / "WebShop" / "data"
+    attr_dataset = os.getenv("WEBSHOP_ATTR_DATASET", "small").strip().lower()
+    attr_filename = (
+        "items_ins_v2.json"
+        if attr_dataset in {"all", "full", "large"}
+        else "items_ins_v2_1000.json"
+    )
     search_index_name = "indexes" if num_products is None else "indexes_100k"
     required_paths = [
         data_dir / "items_shuffle.json",
-        data_dir / "items_ins_v2_1000.json",
+        data_dir / attr_filename,
         repo_root / "WebShop" / "search_engine" / search_index_name,
     ]
     missing = [str(path) for path in required_paths if not path.exists()]
