@@ -107,6 +107,8 @@ def _decision_output(chosen_asin="CONVERTER1", dimension="product form and price
         "intention_changed": True,
         "condition": "user_preference",
         "decision_point": {
+            "stable_purchase_goal": "a height-adjustable workstation",
+            "evidence_role": "trigger_only",
             "dimension": dimension,
             "options_compared": [
                 {
@@ -126,19 +128,12 @@ def _decision_output(chosen_asin="CONVERTER1", dimension="product form and price
         },
         "changes": [
             {
-                "category": "override",
+                "category": "relax",
                 "field": "category",
                 "old_value": "standing desk",
-                "value": "standing desk converter",
+                "value": "standing desk or desktop converter",
                 "rationale": "the smaller form serves the same working use case",
-            },
-            {
-                "category": "add",
-                "field": "monitor_capacity",
-                "old_value": None,
-                "value": "two monitors",
-                "rationale": "the converter still needs enough workspace",
-            },
+            }
         ],
         "rationale": "A converter is more practical if it holds both monitors.",
     }
@@ -176,7 +171,8 @@ def test_shift_prompt_requires_cross_product_decision_point_and_carries_diversit
     assert '"decision_point"' in instructions
     assert "compare at least two distinct ASINs" in instructions
     assert "not a task of gradually revealing attributes" in instructions
-    assert "change multiple constraints in the same turn" in instructions.lower()
+    assert "trigger evidence, never the new target answer" in instructions
+    assert "exactly one primary substantive change" in instructions
     assert context["latest_env_feedback"]["candidate_diversity"] == {
         "target_range": [3, 5]
     }
@@ -236,10 +232,164 @@ def test_valid_decision_evidence_is_saved_in_sampling_metadata():
         rng=random.Random(7),
     )
 
-    assert shift.op == "multiple"
+    assert shift.op == "relax"
     assert shift.sampling_metadata["evidence_asins"] == ["CONVERTER1", "FULLDESK01"]
     assert shift.sampling_metadata["chosen_asin"] == "CONVERTER1"
     assert shift.sampling_metadata["decision_validation"]["valid"] is True
+    assert shift.sampling_metadata["decision_point"]["evidence_role"] == "trigger_only"
+    assert shift.sampling_metadata["tradeoff_validation"]["substantive_change_count"] == 1
+
+
+def test_product_evidence_cannot_expand_into_multiple_target_attributes():
+    output = _decision_output()
+    output["changes"].extend(
+        [
+            {
+                "category": "add",
+                "field": "monitor_capacity",
+                "old_value": None,
+                "value": "two monitors",
+                "rationale": "copied from the supporting converter",
+            },
+            {
+                "category": "add",
+                "field": "lift_method",
+                "old_value": None,
+                "value": "manual lift",
+                "rationale": "another feature of the supporting converter",
+            },
+        ]
+    )
+    llm = RecordingLLM(json_outputs=[output, output, output])
+    simulator = WebShopUserSimulator(llm)
+
+    shift = simulator.decide_shift(
+        {"constraints": {"category": "standing desk"}, "priority": ["category"]},
+        env_feedback=_feedback(),
+        rng=random.Random(7),
+    )
+
+    assert shift.op == "none"
+    assert "multiple_substantive_changes" in shift.rationale
+    assert len(llm.json_prompts) == 3
+
+
+def test_identity_change_is_rejected_during_commitment_cooldown():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_tradeoff_scope(
+        ShiftOp(
+            op="override",
+            field="product_form",
+            value="complete electric desk",
+        ),
+        decision_point={
+            "stable_purchase_goal": "a height-adjustable workstation",
+            "evidence_role": "trigger_only",
+        },
+        intention_history=[
+            {
+                "turn_id": 1,
+                "gold_delta": {
+                    "category": {
+                        "op": "relax",
+                        "old": "standing desk",
+                        "new": "standing desk or desktop converter",
+                    }
+                },
+            }
+        ],
+    )
+
+    assert validation["valid"] is False
+    assert validation["reason"] == "identity_goal_changed_too_recently"
+
+
+def test_tradeoff_scope_rejects_consecutive_attribute_additions():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_tradeoff_scope(
+        ShiftOp(op="add", field="protein_min", value=15),
+        decision_point={
+            "stable_purchase_goal": "a complete recovery breakfast",
+            "evidence_role": "trigger_only",
+            "chosen_asin": "SECOND",
+        },
+        intention_history=[
+            {"gold_delta": {"preparation": {"op": "add", "new": "ready to eat"}}}
+        ],
+    )
+
+    assert validation["valid"] is False
+    assert validation["reason"] == "consecutive_attribute_addition"
+
+
+def test_tradeoff_scope_tolerates_string_shift_condition_history():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_tradeoff_scope(
+        ShiftOp(op="override", field="budget_max", value=40),
+        decision_point={
+            "stable_purchase_goal": "organized cosmetic storage",
+            "evidence_role": "trigger_only",
+            "chosen_asin": "NEW-ASIN",
+        },
+        intention_history=[
+            {
+                "gold_delta": {"size": {"op": "override", "new": "two tiers"}},
+                "shift_condition": "user_preference",
+            }
+        ],
+    )
+
+    assert validation["valid"] is True
+
+
+def test_tradeoff_scope_rejects_reused_recent_product_evidence():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_tradeoff_scope(
+        ShiftOp(op="override", field="budget_max", value=40),
+        decision_point={
+            "stable_purchase_goal": "organized cosmetic storage",
+            "evidence_role": "trigger_only",
+            "chosen_asin": "SAME-ASIN",
+        },
+        intention_history=[
+            {
+                "gold_delta": {"size": {"op": "override", "new": "two tiers"}},
+                "shift_condition": {
+                    "details": {
+                        "candidate_sampling": {"chosen_asin": "SAME-ASIN"}
+                    }
+                },
+            }
+        ],
+    )
+
+    assert validation["valid"] is False
+    assert validation["reason"] == "reused_recent_product_evidence"
+
+
+def test_tradeoff_scope_allows_one_primary_change_plus_reprioritization():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_tradeoff_scope(
+        ShiftOp(
+            op="multiple",
+            changes=[
+                ShiftOp(op="relax", field="budget_max", value=180),
+                ShiftOp(
+                    op="reprioritize",
+                    priority_update=["budget_max", "category"],
+                ),
+            ],
+        ),
+        decision_point={
+            "stable_purchase_goal": "a height-adjustable workstation",
+            "evidence_role": "trigger_only",
+        },
+        intention_history=[],
+    )
+
+    assert validation["valid"] is True
+    assert validation["substantive_change_count"] == 1
+    assert validation["priority_change_count"] == 1
 
 
 def test_two_turn_sku_dominance_filters_another_change_from_same_product():
@@ -271,6 +421,156 @@ def test_two_turn_sku_dominance_filters_another_change_from_same_product():
     assert pool == [alternative]
     assert metadata["dominated_asin"] == "CONVERTER1"
     assert metadata["filtered_repeated_dominant_candidates"] == 1
+
+
+def test_trajectory_guard_rejects_return_to_recent_value():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_trajectory_candidate(
+        ShiftOp(op="override", field="category", value="standing desk"),
+        current_intention={"constraints": {"category": "standing desk converter"}},
+        intention_history=[
+            {
+                "turn_id": 1,
+                "gold_delta": {
+                    "category": {
+                        "op": "override",
+                        "old": "standing desk",
+                        "new": "standing desk converter",
+                    }
+                },
+            }
+        ],
+    )
+
+    assert validation["valid"] is False
+    assert validation["reason"] == "returns_to_recent_value"
+    assert validation["field"] == "category"
+
+
+def test_trajectory_guard_rejects_immediate_numeric_direction_reversal():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_trajectory_candidate(
+        ShiftOp(op="override", field="budget_max", value=40),
+        current_intention={"constraints": {"budget_max": 50}},
+        intention_history=[
+            {
+                "turn_id": 2,
+                "gold_delta": {
+                    "budget_max": {"op": "override", "old": 30, "new": 50}
+                },
+            }
+        ],
+    )
+
+    assert validation["valid"] is False
+    assert validation["reason"] == "immediate_numeric_direction_reversal"
+
+
+def test_trajectory_guard_rejects_third_consecutive_field_change():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_trajectory_candidate(
+        ShiftOp(op="override", field="category", value="electric standing desk"),
+        current_intention={"constraints": {"category": "manual standing desk"}},
+        intention_history=[
+            {
+                "turn_id": 1,
+                "gold_delta": {
+                    "category": {
+                        "op": "override",
+                        "old": "standing desk",
+                        "new": "standing desk converter",
+                    }
+                },
+            },
+            {
+                "turn_id": 2,
+                "gold_delta": {
+                    "category": {
+                        "op": "override",
+                        "old": "standing desk converter",
+                        "new": "manual standing desk",
+                    }
+                },
+            },
+        ],
+    )
+
+    assert validation["valid"] is False
+    assert validation["reason"] == "third_consecutive_field_change"
+
+
+def test_trajectory_guard_allows_a_new_decision_dimension():
+    simulator = WebShopUserSimulator(RecordingLLM())
+    validation = simulator._validate_trajectory_candidate(
+        ShiftOp(op="add", field="monitor_capacity", value="two monitors"),
+        current_intention={"constraints": {"category": "standing desk converter"}},
+        intention_history=[
+            {
+                "turn_id": 1,
+                "gold_delta": {
+                    "category": {
+                        "op": "override",
+                        "old": "standing desk",
+                        "new": "standing desk converter",
+                    }
+                },
+            }
+        ],
+    )
+
+    assert validation["valid"] is True
+    assert validation["reason"] == "ok"
+
+
+def test_invalid_trajectory_candidate_is_resampled():
+    reversal = _decision_output(chosen_asin="FULLDESK01")
+    reversal["changes"] = [
+        {
+            "category": "override",
+            "field": "category",
+            "old_value": "standing desk converter",
+            "value": "standing desk",
+            "rationale": "switch back to the earlier form",
+        }
+    ]
+    valid = _decision_output()
+    valid["changes"] = [
+        {
+            "category": "add",
+            "field": "monitor_capacity",
+            "old_value": None,
+            "value": "two monitors",
+            "rationale": "the converter still needs enough workspace",
+        }
+    ]
+    llm = RecordingLLM(json_outputs=[reversal, valid])
+    simulator = WebShopUserSimulator(llm)
+
+    shift = simulator.decide_shift(
+        {
+            "constraints": {"category": "standing desk converter"},
+            "priority": ["category"],
+        },
+        env_feedback=_feedback(),
+        intention_history=[
+            {
+                "turn_id": 1,
+                "gold_delta": {
+                    "category": {
+                        "op": "override",
+                        "old": "standing desk",
+                        "new": "standing desk converter",
+                    }
+                },
+            }
+        ],
+        rng=random.Random(7),
+    )
+
+    assert shift.op == "add"
+    assert shift.field == "monitor_capacity"
+    assert shift.sampling_metadata["trajectory_validation"]["valid"] is True
+    assert len(llm.json_prompts) == 2
 
 
 def test_title_copy_is_retried_and_purchase_reason_is_used():

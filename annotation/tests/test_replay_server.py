@@ -12,17 +12,12 @@ from annotation.replay_server import (
     candidate_item_from_catalog,
     create_app,
     collect_webshop_goal_asins,
-    collect_travel_attraction_names,
     default_annotation_path,
     expanded_candidate_items,
     infer_shard_context,
     enrich_webshop_constraints_from_metadata,
     prepare_state,
-    normalize_stored_gold_action_attractions,
-    normalize_replay_action_attractions,
-    normalize_travel_attraction_value,
     set_initial_constraints_must_have,
-    strip_travelplanner_context_constraints,
 )
 
 
@@ -35,44 +30,6 @@ def test_constraint_inputs_are_not_draggable_priority_sources():
     assert '<div class="constraint-row" draggable="true"' not in HTML
     assert 'target.closest(".priority-chip")' in HTML
     assert "const key = draggedKey;" in HTML
-
-
-def test_travel_attraction_editor_separates_names_from_constraint_prose():
-    assert 'key.toLowerCase().startsWith("attraction")' in HTML
-    assert "no (?:scheduled )?(?:sightseeing|attraction)" in HTML
-    assert 'if (matches.length) return matches.join("; ");' in HTML
-
-
-def test_travel_attraction_normalization_keeps_only_catalog_names():
-    names = ["Museum of Fine Arts, Boston", "Museum of Science", "New England Aquarium"]
-
-    assert normalize_travel_attraction_value(
-        "Museum of Fine Arts, Boston, 465 Huntington Ave. Limit the visit to this one "
-        "major attraction, use a relaxed pace, and schedule regular seated breaks.",
-        names,
-    ) == "Museum of Fine Arts, Boston"
-    assert normalize_travel_attraction_value(
-        "Museum of Science, Museum Of Science Driveway; regular seated breaks.", names
-    ) == "Museum of Science"
-    assert normalize_travel_attraction_value(
-        "No attraction scheduled; rest at the lodging after arrival.", names
-    ) == "-"
-
-
-def test_replay_copy_normalizes_fallback_agent_attractions_without_rewriting_source():
-    instances = [_travelplanner_instance()]
-    turn = instances[0]["turns"][0]
-    turn["agent_action"]["action_payload"]["plan"]["itinerary"][0]["attraction"] = (
-        "Boston Common, 139 Tremont St. Keep this as the only attraction."
-    )
-    original = json.loads(json.dumps(instances))
-    display = json.loads(json.dumps(instances))
-
-    names = collect_travel_attraction_names(instances) + ["Boston Common"]
-    normalize_replay_action_attractions(display, names)
-
-    assert display[0]["turns"][0]["agent_action"]["action_payload"]["plan"]["itinerary"][0]["attraction"] == "Boston Common"
-    assert instances == original
 
 
 def _travelplanner_instance():
@@ -158,28 +115,6 @@ def test_prepare_state_detects_travelplanner_and_preserves_search_results():
     feedback = state["instances"][0]["turns"][0]["env_feedback"]
     assert feedback["search_results"]["attractions"][0]["items"][0]["name"] == "Boston Common"
     assert "candidate_items" not in feedback
-
-
-def test_travelplanner_context_is_removed_from_constraints_delta_and_priority():
-    instances = [_travelplanner_instance()]
-    turn = instances[0]["turns"][0]
-    turn["gold_current_intention"]["constraints"].update(
-        {"org": "Tampa", "start_date": "2026-09-10", "end_date": "2026-09-12"}
-    )
-    turn["gold_current_intention"]["priority"] = {
-        "high": ["dest", "start_date", "budget"],
-        "medium": ["org"],
-        "low": ["end_date"],
-    }
-    turn["gold_delta"]["dest"] = {"op": "add", "new": "Boston"}
-
-    removed = strip_travelplanner_context_constraints(instances)
-
-    gold = turn["gold_current_intention"]
-    assert removed == 4
-    assert gold["constraints"] == {"budget": 500}
-    assert gold["priority"] == {"high": ["budget"], "medium": [], "low": []}
-    assert "dest" not in turn["gold_delta"]
 
 
 def test_prepare_state_keeps_webshop_candidate_image_behavior():
@@ -423,10 +358,10 @@ def test_travelplanner_replay_page_renders_and_saves_annotations(tmp_path):
     assert b"Tool Action Trace" not in page.data
     assert b"Proposed itinerary cost breakdown" in page.data
     assert b"renderTravelCostSummary" in page.data
-    assert b"data-cost-field" in page.data
-    assert b"data-day-subtotal" in page.data
     assert b"maximum occupancy" in page.data
-    assert b"Entity Intentions &amp; Gold Changes" not in page.data
+    assert b"Entity Intentions &amp; Gold Changes" in page.data
+    assert b"renderEntityIntentions" in page.data
+    assert b"entities.length <= 1" in page.data
 
     response = client.post(
         "/api/update_turn",
@@ -463,7 +398,6 @@ def test_travelplanner_replay_page_renders_and_saves_annotations(tmp_path):
     turn = saved[0]["turns"][0]
     assert turn["user_utterance"] == "Plan a cheaper Boston trip."
     assert turn["gold_current_intention"]["constraints"]["budget"] == 400
-    assert "dest" not in turn["gold_current_intention"]["constraints"]
     assert turn["gold_current_intention"]["priority"]["high"] == ["budget"]
     assert turn["gold_current_intention"]["entities"]["entity_2"]["reference"] == "my friend"
     assert turn["gold_action"]["confirmed"] is True
@@ -483,7 +417,7 @@ def test_turns_can_be_added_deleted_and_renumbered(tmp_path):
     saved = json.loads(annotation_path.read_text(encoding="utf-8"))
     assert [turn["turn_id"] for turn in saved[0]["turns"]] == [0, 1]
     assert saved[0]["turns"][1]["user_utterance"] == ""
-    assert saved[0]["turns"][1]["gold_current_intention"]["constraints"] == {"budget": 500}
+    assert saved[0]["turns"][1]["gold_current_intention"]["constraints"]["dest"] == "Boston"
     assert saved[0]["turns"][1]["env_feedback"] == {}
 
     deleted = client.delete("/api/turns/0/0")
@@ -690,40 +624,3 @@ def test_switch_shard_endpoint_launches_delayed_background_switch(tmp_path, monk
 
     response = client.post("/api/switch_shard", json={"shard": 36})
     assert response.status_code == 400
-
-
-def test_switch_travelplanner_shard_uses_generic_launcher(tmp_path, monkeypatch):
-    shard_dir = tmp_path / "travel_shards"
-    shard_dir.mkdir()
-    source_path = shard_dir / "shard_001.json"
-    target_path = shard_dir / "shard_002.json"
-    source_path.write_text("[]", encoding="utf-8")
-    target_path.write_text("[]", encoding="utf-8")
-    instances = [
-        {
-            "instance_id": "travel_0",
-            "world_state": {"domain": "travelplanner"},
-            "turns": [{"turn_id": 0, "gold_current_intention": {"constraints": {}, "priority": []}}],
-        }
-    ]
-    state = prepare_state(instances, image_map={}, source_path=source_path)
-    state.update({"shard_index": 1, "shard_count": 2, "server_port": 7862})
-    launched = {}
-
-    def fake_popen(arguments, **kwargs):
-        launched["arguments"] = arguments
-        launched["kwargs"] = kwargs
-        return object()
-
-    monkeypatch.setattr("annotation.replay_server.subprocess.Popen", fake_popen)
-    output_path = tmp_path / "annotations" / "shard_001_annotated.json"
-    client = create_app(state, instances, output_path).test_client()
-
-    response = client.post("/api/switch_shard", json={"shard": 2})
-
-    assert response.status_code == 200
-    arguments = launched["arguments"]
-    assert "start_replay_shard.ps1" in " ".join(arguments)
-    assert str(target_path) in arguments
-    assert str(tmp_path / "annotations" / "shard_002_annotated.json") in arguments
-    assert "7862" in arguments

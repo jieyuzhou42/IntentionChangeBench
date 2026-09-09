@@ -36,6 +36,10 @@ class ShiftOp:
     # A domain may change several constraints in one user turn. The scalar
     # fields above remain supported for old datasets and single-change callers.
     changes: List["ShiftOp"] = dataclass_field(default_factory=list)
+    # Optional domain-specific explanation of a genuine multi-constraint
+    # trade-off. This stays structured for trajectory auditing and is not
+    # exposed verbatim in the simulated user's utterance.
+    tradeoff: Optional[Dict[str, Any]] = None
     sampling_metadata: Dict[str, Any] = dataclass_field(default_factory=dict)
 
 

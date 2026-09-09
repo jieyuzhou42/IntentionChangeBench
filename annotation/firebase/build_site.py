@@ -12,19 +12,12 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 FIREBASE_DIR = Path(__file__).resolve().parent
 PUBLIC_DIR = FIREBASE_DIR / "public"
 DATA_DIR = PUBLIC_DIR / "data"
-LEGACY_SHARD_DIR = (
+SHARD_DIR = (
     PROJECT_ROOT
     / "data"
     / "simulation"
     / "webshop_v2_350_formal_priority_classified_shards"
 )
-SHARD_DIR = (
-    PROJECT_ROOT
-    / "data"
-    / "simulation"
-    / "webshop_v7_full_350_priority_classified_shards"
-)
-PRESERVED_IDS_PATH = FIREBASE_DIR / "preserved_instance_ids.json"
 SHARD_MIN = 6
 SHARD_MAX = 20
 
@@ -50,27 +43,6 @@ FIREBASE_BOOTSTRAP = r'''
     const db = firebase.firestore();
     const annotations = db.collection("webshop_annotations");
     const annotationRef = instance => annotations.doc(instance.instance_id);
-    const imageUrlByAsin = new Map();
-    for (const instance of state.instances) {
-      if (instance.webshop_gold_item?.asin && instance.webshop_gold_item?.image_url) {
-        imageUrlByAsin.set(instance.webshop_gold_item.asin, instance.webshop_gold_item.image_url);
-      }
-      for (const turn of instance.turns || []) {
-        for (const item of turn.env_feedback?.candidate_items || []) {
-          if (item.asin && item.image_url) imageUrlByAsin.set(item.asin, item.image_url);
-        }
-      }
-    }
-    function restoreImageUrls(turns) {
-      for (const turn of turns || []) {
-        for (const item of turn.env_feedback?.candidate_items || []) {
-          if (!item.image_url && imageUrlByAsin.has(item.asin)) {
-            item.image_url = imageUrlByAsin.get(item.asin);
-          }
-        }
-      }
-      return turns;
-    }
     const snapshots = await Promise.all(state.instances.map(instance => annotationRef(instance).get()));
     state.instances = state.instances.filter((instance, index) => {
       const snapshot = snapshots[index];
@@ -79,10 +51,10 @@ FIREBASE_BOOTSTRAP = r'''
       if (saved.deleted === true) return false;
       if (typeof saved.turns_json === "string") {
         const savedTurns = JSON.parse(saved.turns_json);
-        if (Array.isArray(savedTurns) && savedTurns.length) instance.turns = restoreImageUrls(savedTurns);
+        if (Array.isArray(savedTurns) && savedTurns.length) instance.turns = savedTurns;
       } else if (Array.isArray(saved.turns) && saved.turns.length) {
         // Backward compatibility for documents created by the first deployment.
-        instance.turns = restoreImageUrls(saved.turns);
+        instance.turns = saved.turns;
       }
       return true;
     });
@@ -91,6 +63,7 @@ FIREBASE_BOOTSTRAP = r'''
       const cleaned = JSON.parse(JSON.stringify(turns));
       for (const turn of cleaned) {
         delete turn.rationales;
+        for (const item of turn.env_feedback?.candidate_items || []) delete item.image_url;
       }
       return cleaned;
     }
@@ -171,27 +144,6 @@ def build_states() -> None:
         index: load_instances(SHARD_DIR / f"shard_{index:03d}.json")
         for index in range(SHARD_MIN, SHARD_MAX + 1)
     }
-    preserved_ids: set[str] = set()
-    if PRESERVED_IDS_PATH.is_file():
-        preserved_manifest = json.loads(PRESERVED_IDS_PATH.read_text(encoding="utf-8"))
-        preserved_ids = {
-            item["instance_id"] for item in preserved_manifest.get("instances") or []
-        }
-    if preserved_ids:
-        legacy_by_id = {}
-        for index in range(SHARD_MIN, SHARD_MAX + 1):
-            for instance in load_instances(LEGACY_SHARD_DIR / f"shard_{index:03d}.json"):
-                legacy_by_id[instance["instance_id"]] = instance
-        missing = preserved_ids - legacy_by_id.keys()
-        if missing:
-            raise ValueError(f"Preserved instances missing from legacy shards: {sorted(missing)}")
-        for index, instances in shards.items():
-            shards[index] = [
-                copy.deepcopy(legacy_by_id[instance["instance_id"]])
-                if instance["instance_id"] in preserved_ids
-                else instance
-                for instance in instances
-            ]
     all_instances = [instance for instances in shards.values() for instance in instances]
     target_asins = replay_server.collect_raw_candidate_asins(all_instances)
     target_asins.update(replay_server.collect_webshop_goal_asins(all_instances))
@@ -221,12 +173,6 @@ def build_states() -> None:
                 "shard_min": SHARD_MIN,
                 "shard_max": SHARD_MAX,
                 "shard_count": SHARD_MAX,
-                "firebase_source_versions": {
-                    instance["instance_id"]: (
-                        "v2_preserved" if instance["instance_id"] in preserved_ids else "v7"
-                    )
-                    for instance in state["instances"]
-                },
             }
         )
         output = DATA_DIR / f"shard_{index:03d}.json"
@@ -242,11 +188,6 @@ def build_index() -> None:
         '<button id="reload" class="primary">Reload</button>',
         '<button id="exportShard">Export Shard</button>\n'
         '        <button id="reload" class="primary">Reload</button>',
-    )
-    html = html.replace(
-        '<div class="image-box"><img src="${esc(imageUrl)}" alt=""></div>',
-        '<div class="image-box"><img src="${esc(imageUrl)}" alt="" loading="lazy" '
-        'onerror="this.onerror=null;this.src=\'/no-image.svg\'"></div>',
     )
     html = html.replace(
         "  <script>\n    const state = {{ state_json | safe }};",
@@ -300,7 +241,7 @@ def build_index() -> None:
 def main() -> None:
     build_states()
     build_index()
-    print(f"Built v7 shards {SHARD_MIN}-{SHARD_MAX} in {PUBLIC_DIR}")
+    print(f"Built shards {SHARD_MIN}-{SHARD_MAX} in {PUBLIC_DIR}")
 
 
 if __name__ == "__main__":

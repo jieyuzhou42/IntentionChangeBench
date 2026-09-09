@@ -29,6 +29,18 @@ class BadLLMClient:
         return "{not valid json"
 
 
+class RetryLLMClient:
+    def __init__(self, payload):
+        self.payload = payload
+        self.calls = 0
+
+    def generate_json_text(self, prompt):
+        self.calls += 1
+        if self.calls == 1:
+            return "{not valid json"
+        return json.dumps(self.payload)
+
+
 def _fake_candidate(index, *, family="dress"):
     return {
         "asin": f"ASIN{index:03d}",
@@ -130,6 +142,38 @@ def test_rerank_candidates_uses_order_and_attaches_metadata():
     assert reranked[0]["rerank_constraint_match_level"] == "strong"
     assert reranked[0]["rerank_decision"] == "keep"
     assert reranked[0]["rerank_matched_constraints"] == ["green", "size L"]
+    assert info["succeeded"] is True
+    assert info["fallback_used"] is False
+
+
+def test_rerank_candidates_retries_invalid_output():
+    candidates = [_fake_candidate(i) for i in range(1, 31)]
+    payload = {
+        "reranked_candidates": [
+            {
+                "asin": "ASIN005",
+                "new_rank": 1,
+                "product_family_match": "exact",
+                "latest_delta_match": "satisfies",
+                "constraint_match_level": "strong",
+                "decision": "keep",
+                "matched_constraints": ["green"],
+                "missing_or_uncertain_constraints": [],
+                "mismatch_reasons": [],
+            }
+        ]
+    }
+    client = RetryLLMClient(payload)
+
+    reranked, info = rerank_candidates_with_llm(
+        llm_client=client,
+        current_intention={"gold_search_query": "green dress"},
+        candidates=candidates,
+        top_k=10,
+    )
+
+    assert client.calls == 2
+    assert [item["asin"] for item in reranked] == ["ASIN005"]
     assert info["succeeded"] is True
     assert info["fallback_used"] is False
 

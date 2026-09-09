@@ -7,6 +7,8 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from common.execution_agent import ExecutionAgent
 from models import AgentAction
 
+from .date_utils import sync_query_dates
+
 
 ORIGINAL_ACTION_TYPES = (
     "FlightSearch",
@@ -135,7 +137,7 @@ The only valid action_type values and payloads are:
 - AccommodationSearch: {{"city": "city"}}
 - RestaurantSearch: {{"city": "city"}}
 - CitySearch: {{"state": "state name"}}
-- GoogleDistanceMatrix: {{"origin": "city", "destination": "city", "mode": "self-driving or taxi"}}
+- GoogleDistanceMatrix: {{"origin": "city", "destination": "city", "mode": "self-driving"}}
 - NotebookWrite: {{"description": "short description of the immediately preceding tool result"}}
 - Planner: {{"query": "the current travel request"}}
 
@@ -144,6 +146,7 @@ Rules:
 - If pending_notebook is true, use NotebookWrite before another search.
 - Search attractions, accommodations, and restaurants for every selected destination city.
 - Search transportation for every required route leg.
+- For GoogleDistanceMatrix, mode must be exactly "self-driving" or exactly "taxi", never a combined phrase.
 - Use CitySearch when the destination is a state/region and multiple cities must be chosen.
 - Invoke Planner only after the required information has been collected.
 - missing_required_actions is authoritative: complete every listed action before Planner.
@@ -163,6 +166,12 @@ Context:
         payload = raw.get("action_payload") or raw.get("payload") or {}
         if not isinstance(payload, dict):
             payload = {"argument": str(payload)}
+        if action_type == "GoogleDistanceMatrix":
+            mode = str(payload.get("mode") or "").strip().lower()
+            if "taxi" in mode and "self" not in mode and "driv" not in mode:
+                payload["mode"] = "taxi"
+            elif mode:
+                payload["mode"] = "self-driving"
         if action_type == "Planner" and "plan" not in payload:
             if isinstance(raw.get("plan"), (dict, list)):
                 payload["plan"] = copy.deepcopy(raw["plan"])
@@ -276,6 +285,7 @@ Context:
         for source, target in aliases.items():
             if constraints.get(source) is not None:
                 query_data[target] = copy.deepcopy(constraints[source])
+        sync_query_dates(query_data, constraints)
         local = query_data.setdefault("local_constraint", {})
         for source, target in {
             "cuisine": "cuisine",
@@ -381,6 +391,17 @@ You are the original TravelPlanner Planner tool. Use only information collected 
 Return one JSON object only with an itinerary list. Every day must contain day, current_city, transportation,
 breakfast, lunch, dinner, attraction, and accommodation. Use '-' when a field is unnecessary. Include available
 flight numbers, prices, room types, and house rules. Respect the latest current intention.
+
+Intention-following rules:
+- Treat every non-null entry in current_intention.constraints as an active user requirement, including open-ended
+  fields such as accommodation, activity, dining, return_transportation, schedule, accessibility, and rating.
+- Map each requirement to the relevant itinerary fields and satisfy its meaning, not merely its field name.
+- Before returning, silently check every active requirement against the complete itinerary and revise any conflicting
+  day. Do not repeat a restaurant when dining diversity is requested, and place named flights, stays, or attractions
+  on the correct route or day.
+- The latest current_intention overrides both the original request and older dialogue turns.
+- For a one-person trip, first-person requests are shared itinerary requirements. Do not create
+  participant_assignments unless a traveler has a genuinely separate non-empty entity constraint.
 
 Entity-level planning:
 - current_intention.constraints applies to the whole party.

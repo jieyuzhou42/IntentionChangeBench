@@ -255,8 +255,8 @@ Important simulation args:
 - `--shift_distribution_baseline`: optional baseline dataset used to initialize
   the domain-specific category/condition deficit controller. WebShop balances
   `add/relax/override/reprioritize`; TravelPlanner additionally balances the
-  single `entity` category. TravelPlanner also includes
-  `agent_misunderstanding` in its condition targets.
+  single `entity` category. Both domains use preference and real-world
+  feasibility as intention-change conditions.
 - `--distribution_balance_strength`: strength of candidate-selection weighting
   in `selection` or `hybrid` mode (`0` means uniform selection within the
   eligible candidate pool).

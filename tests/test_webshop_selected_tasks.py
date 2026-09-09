@@ -50,6 +50,34 @@ def test_fixed_price_upper_is_applied_to_webshop_reward_goal():
     assert raw_env.server.user_sessions["42"]["goal"]["price_upper"] == 80.0
 
 
+def test_budget_constraint_accepts_numeric_text_without_type_error():
+    adapter = WebShopEnvAdapter(None)
+
+    satisfied, violated, debug = adapter._check_constraints(
+        {"price": 59.99},
+        {"constraints": {"budget_max": "$80 dollars"}},
+        include_debug=True,
+    )
+
+    assert satisfied == ["budget_max"]
+    assert violated == []
+    assert debug["budget_max"]["normalized_desired"] == 80.0
+    assert debug["budget_max"]["matched"] is True
+
+
+def test_invalid_budget_constraint_is_ignored_without_type_error():
+    adapter = WebShopEnvAdapter(None)
+
+    satisfied, violated, debug = adapter._check_constraints(
+        {"price": 59.99},
+        {"constraints": {"budget_max": "a little more"}},
+        include_debug=True,
+    )
+
+    assert satisfied == []
+    assert violated == []
+    assert debug["budget_max"]["normalized_desired"] is None
+    assert debug["budget_max"]["matched"] is None
 def test_selection_metadata_restores_attributes_and_options_omitted_by_llm():
     merged = _merge_selection_metadata_initial_intention(
         {

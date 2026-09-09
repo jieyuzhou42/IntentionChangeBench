@@ -1171,6 +1171,22 @@ class WebShopEnvAdapter(BaseEnv):
         except ValueError:
             return None
 
+    def _normalize_price_value(self, value: Any) -> Optional[float]:
+        if isinstance(value, bool):
+            return None
+        if isinstance(value, (int, float)):
+            return float(value)
+        if not isinstance(value, str):
+            return None
+
+        match = re.search(r"[-+]?[0-9]+(?:\.[0-9]+)?", value.replace(",", ""))
+        if not match:
+            return None
+        try:
+            return float(match.group(0))
+        except ValueError:
+            return None
+
     def _copy_selected_options(self, selected_options: Any) -> Dict[str, Any]:
         return dict(selected_options) if isinstance(selected_options, dict) else {}
 
@@ -1396,16 +1412,25 @@ class WebShopEnvAdapter(BaseEnv):
                 continue
 
             if field == "budget_max":
-                price = result.get("price")
+                raw_price = result.get("price")
+                price = self._normalize_price_value(raw_price)
+                normalized_desired = self._normalize_price_value(desired)
+                matched = (
+                    None
+                    if price is None or normalized_desired is None
+                    else price <= normalized_desired
+                )
                 debug[field] = {
                     "desired": desired,
-                    "actual": price,
+                    "normalized_desired": normalized_desired,
+                    "actual": raw_price,
+                    "normalized_actual": price,
                     "actual_source": "price",
-                    "matched": None if price is None else price <= desired,
+                    "matched": matched,
                 }
-                if price is None:
+                if matched is None:
                     continue
-                if price <= desired:
+                if matched:
                     satisfied.append(field)
                 else:
                     violated.append(field)
