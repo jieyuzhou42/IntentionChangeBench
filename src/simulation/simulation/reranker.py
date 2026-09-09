@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 import re
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
@@ -86,22 +87,26 @@ def rerank_candidates_with_llm(
     )
 
     raw_output: Any = None
-    try:
-        parsed, raw_output = _call_reranker_llm(llm_client, prompt)
-        reranked_items, reranked_summary = _apply_reranker_output(
-            parsed=parsed,
-            candidates=candidates,
-            top_k=target_k,
-        )
-    except Exception as exc:
-        return _fallback_candidates(
-            candidates,
-            top_k=target_k,
-            error=f"{type(exc).__name__}: {exc}",
-            raw_output=raw_output,
-            compact_candidates=compact_candidates,
-            debug=debug,
-        )
+    max_retries = max(int(os.getenv("RERANKER_MAX_RETRIES", "2")), 0)
+    for attempt in range(max_retries + 1):
+        try:
+            parsed, raw_output = _call_reranker_llm(llm_client, prompt)
+            reranked_items, reranked_summary = _apply_reranker_output(
+                parsed=parsed,
+                candidates=candidates,
+                top_k=target_k,
+            )
+            break
+        except Exception as exc:
+            if attempt >= max_retries:
+                return _fallback_candidates(
+                    candidates,
+                    top_k=target_k,
+                    error=f"{type(exc).__name__}: {exc}",
+                    raw_output=raw_output,
+                    compact_candidates=compact_candidates,
+                    debug=debug,
+                )
 
     info = {
         "enabled": True,

@@ -44,6 +44,10 @@ def clean_turns(turns: list[dict]) -> list[dict]:
     cleaned = json.loads(json.dumps(turns, ensure_ascii=False))
     for turn in cleaned:
         turn.pop("rationales", None)
+        feedback = turn.get("env_feedback") or {}
+        for item in feedback.get("candidate_items") or []:
+            if isinstance(item, dict):
+                item.pop("image_url", None)
     return cleaned
 
 

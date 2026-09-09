@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from envs.base_env import BaseEnv
 from models import AgentAction, EnvFeedback
 
+from .date_utils import sync_query_dates
 from .entity_intention import entity_constraint_path, iter_entity_constraints
 
 
@@ -467,6 +468,7 @@ class TravelPlannerEnvAdapter(BaseEnv):
         for key in ("org", "dest", "date", "visiting_city_number"):
             if constraints.get(key) is not None:
                 query_data[key] = constraints[key]
+        sync_query_dates(query_data, constraints)
         return query_data
 
     def _normalize_plan_payload(self, payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -669,18 +671,23 @@ class TravelPlannerEnvAdapter(BaseEnv):
     def _merged_query_data(self, user_state: Dict[str, Any]) -> Dict[str, Any]:
         query_data = copy.deepcopy(self.query_data)
         constraints = user_state.get("constraints", {}) if isinstance(user_state, dict) else {}
-        if constraints.get("budget") is not None:
-            query_data["budget"] = constraints["budget"]
-        if constraints.get("budget_max") is not None:
-            query_data["budget"] = constraints["budget_max"]
-        if constraints.get("days") is not None:
-            query_data["days"] = constraints["days"]
-        if constraints.get("people_number") is not None:
-            query_data["people_number"] = constraints["people_number"]
-        elif constraints.get("party_size") is not None:
-            query_data["people_number"] = constraints["party_size"]
-        local = query_data.setdefault("local_constraint", {})
         aliases = {
+            "budget": "budget",
+            "budget_max": "budget",
+            "days": "days",
+            "people_number": "people_number",
+            "party_size": "people_number",
+            "org": "org",
+            "dest": "dest",
+            "date": "date",
+            "visiting_city_number": "visiting_city_number",
+        }
+        for source, target in aliases.items():
+            if constraints.get(source) is not None:
+                query_data[target] = copy.deepcopy(constraints[source])
+        sync_query_dates(query_data, constraints)
+        local = query_data.setdefault("local_constraint", {})
+        local_aliases = {
             "cuisine": "cuisine",
             "room_type": "room type",
             "room type": "room type",
@@ -688,7 +695,7 @@ class TravelPlannerEnvAdapter(BaseEnv):
             "house rule": "house rule",
             "transportation": "transportation",
         }
-        for source, target in aliases.items():
+        for source, target in local_aliases.items():
             if constraints.get(source) is not None:
                 local[target] = constraints[source]
         return query_data
@@ -722,6 +729,19 @@ class TravelPlannerEnvAdapter(BaseEnv):
         desired = (query_data.get("local_constraint") or {}).get("cuisine")
         desired_values = self._as_list(desired)
         if not desired_values:
+            return (None, None)
+        if any(
+            cue in str(value).lower()
+            for value in desired_values
+            for cue in (
+                "sit-down",
+                "sit down",
+                "local restaurant",
+                "fast-food",
+                "fast food",
+                "service style",
+            )
+        ):
             return (None, None)
         plan_text = self._plan_text(days).lower()
         missing = [value for value in desired_values if str(value).lower() not in plan_text]
@@ -762,6 +782,12 @@ class TravelPlannerEnvAdapter(BaseEnv):
             return (None, None)
         text = self._plan_text(days).lower()
         desired_text = str(desired).lower()
+        if "entire" in desired_text or "whole apartment" in desired_text:
+            desired_text = "entire home/apt"
+        elif "private" in desired_text:
+            desired_text = "private room"
+        elif "shared" in desired_text:
+            desired_text = "shared room"
         aliases = {
             "entire room": ["entire room", "entire home", "entire home/apt"],
             "private room": ["private room"],

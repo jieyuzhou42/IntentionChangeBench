@@ -12,7 +12,7 @@ import sys
 import traceback
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 _SRC_DIR = Path(__file__).resolve().parents[2]
 if str(_SRC_DIR) not in sys.path:
@@ -39,9 +39,7 @@ STYLE_POOL = ["explicit", "partial", "elliptical"]
 class ShiftSamplingConfig:
     """Domain-aware shift sampling and distribution-control settings."""
 
-    multi_change_rate: float = 0.0
     multi_candidate_samples: int = 1
-    max_multi_candidate_samples: int = 1
     distribution_controller: Optional[ShiftDistributionController] = None
 
 
@@ -49,21 +47,6 @@ def _balanced_style_schedule(num_shifts: int, rng: random.Random) -> List[str]:
     schedule = [STYLE_POOL[index % len(STYLE_POOL)] for index in range(num_shifts)]
     rng.shuffle(schedule)
     return schedule
-
-
-def _multi_preference_schedule(
-    num_shifts: int,
-    rate: float,
-    rng: random.Random,
-) -> Set[int]:
-    """Choose approximately `rate` slots without specifying a change count."""
-    if num_shifts <= 0 or rate <= 0:
-        return set()
-    expected = min(1.0, rate) * num_shifts
-    count = int(expected)
-    if rng.random() < expected - count:
-        count += 1
-    return set(rng.sample(range(num_shifts), k=min(count, num_shifts)))
 
 
 def _distribution_controller_from_baseline(
@@ -103,7 +86,6 @@ def _distribution_controller_from_baseline(
         controlled_conditions = [
             "user_preference",
             "real_world_feasibility",
-            "agent_misunderstanding",
         ]
     else:
         controlled_categories = ["add", "relax", "override", "reprioritize"]
@@ -120,6 +102,7 @@ def _distribution_controller_from_baseline(
 DEFAULT_MAX_INTERNAL_STEPS = 12
 DEFAULT_TRAVELPLANNER_MAX_INTERNAL_STEPS = 30
 TRAVELPLANNER_CASE_RETRIES = 3
+WEBSHOP_CASE_RETRIES = 2
 DEFAULT_WEBSHOP_NUM_PRODUCTS = "100000"
 ROLLOUT_CONSTRAINT_FIELDS = ("category", "color", "size", "brand")
 SELECTABLE_CONSTRAINT_FIELDS = ("color", "size", "brand")
@@ -187,11 +170,17 @@ def configure_webshop_dataset(num_products: Optional[int]) -> None:
     if dataset_mode != "all":
         return
 
-    repo_root = Path(__file__).resolve().parents[4]
+    repo_root = Path(__file__).resolve().parents[3]
     data_dir = repo_root / "WebShop" / "data"
+    attr_dataset = os.getenv("WEBSHOP_ATTR_DATASET", "small").strip().lower()
+    attr_filename = (
+        "items_ins_v2.json"
+        if attr_dataset in {"all", "full", "large"}
+        else "items_ins_v2_1000.json"
+    )
     required_files = [
         data_dir / "items_shuffle.json",
-        data_dir / "items_ins_v2_1000.json",
+        data_dir / attr_filename,
     ]
     search_index_name = "indexes" if num_products is None else "indexes_100k"
     required_dirs = [
@@ -1173,6 +1162,7 @@ def _public_env_feedback_payload(env_feedback: Optional[EnvFeedback]) -> Optiona
             "feedback_type": observation.get("feedback_type") or "travel_search_results",
             "page_type": observation.get("page_type"),
             "search_results": copy.deepcopy(observation.get("search_results") or {}),
+            "submitted_plan": copy.deepcopy(observation.get("submitted_plan")),
             "satisfied_constraints": list(env_feedback.satisfied_constraints or []),
             "violated_constraints": list(env_feedback.violated_constraints or []),
             "constraint_debug": copy.deepcopy(observation.get("constraint_debug") or {}),
@@ -1518,11 +1508,6 @@ def simulate_dialogue_instance(
     sampling_config = shift_sampling_config or ShiftSamplingConfig()
     schedule_rng = random.Random(f"webshop-shift-schedule:{seed}")
     style_schedule = _balanced_style_schedule(max_turns, schedule_rng)
-    multi_preferred_turns = _multi_preference_schedule(
-        max_turns,
-        sampling_config.multi_change_rate,
-        schedule_rng,
-    )
     turns: List[TurnRecord] = []
 
     current_intention = copy.deepcopy(task.initial_intention)
@@ -1564,6 +1549,7 @@ def simulate_dialogue_instance(
             "user_utterance": user_utterance,
             "gold_intention": copy.deepcopy(current_intention),
             "gold_delta": copy.deepcopy(gold_delta),
+            "shift_targets": [],
         }
     ]
 
@@ -1614,7 +1600,6 @@ def simulate_dialogue_instance(
             break
 
         style = style_schedule[turn_id]
-        prefer_multi = turn_id in multi_preferred_turns
         use_candidate_pool = (
             sampling_config.distribution_controller is not None
             and (
@@ -1626,23 +1611,13 @@ def simulate_dialogue_instance(
         shift = human_simulator.decide_shift(
             current_intention,
             env_feedback=env_feedback,
-            intention_history=intention_history[:-1],
+            intention_history=intention_history,
             current_gold_delta=gold_delta,
             candidate_samples=(
                 sampling_config.multi_candidate_samples
-                if prefer_multi or use_candidate_pool
+                if use_candidate_pool
                 else 1
             ),
-            max_candidate_samples=(
-                sampling_config.max_multi_candidate_samples
-                if prefer_multi
-                else (
-                    sampling_config.multi_candidate_samples
-                    if use_candidate_pool
-                    else 1
-                )
-            ),
-            prefer_multi=prefer_multi,
             rng=rng,
             distribution_controller=sampling_config.distribution_controller,
         )
@@ -1652,7 +1627,7 @@ def simulate_dialogue_instance(
             current_intention,
             style,
             env_feedback=env_feedback,
-            intention_history=intention_history[:-1],
+            intention_history=intention_history,
             current_gold_delta=gold_delta,
         )
         if env.done and not delta and domain != "travelplanner":
@@ -1681,6 +1656,7 @@ def simulate_dialogue_instance(
                     "old_value": shift.old_value,
                     "value": shift.value,
                     "priority_update": shift.priority_update,
+                    "tradeoff": copy.deepcopy(shift.tradeoff),
                     "changes": [asdict(change) for change in shift.changes],
                     "candidate_sampling": copy.deepcopy(shift.sampling_metadata),
                 },
@@ -1693,6 +1669,7 @@ def simulate_dialogue_instance(
                     "op": shift.op,
                     "field": shift.field,
                     "rationale": shift.rationale,
+                    "tradeoff": copy.deepcopy(shift.tradeoff),
                     "changes": [asdict(change) for change in shift.changes],
                     "candidate_sampling": copy.deepcopy(shift.sampling_metadata),
                 },
@@ -1705,15 +1682,31 @@ def simulate_dialogue_instance(
         action_implication = "continue"
 
         history.append({"role": "user", "content": user_utterance})
+        effective_changes = shift.changes or [shift]
+        shift_targets = [
+            str(
+                change.field
+                or (
+                    change.priority_update[0]
+                    if change.op == "reprioritize" and change.priority_update
+                    else ""
+                )
+            )
+            for change in effective_changes
+            if change.field
+            or (change.op == "reprioritize" and change.priority_update)
+        ]
         intention_history.append(
             {
                 "turn_id": turn_id + 1,
                 "user_utterance": user_utterance,
                 "gold_intention": copy.deepcopy(current_intention),
                 "gold_delta": copy.deepcopy(gold_delta),
+                "shift_targets": shift_targets,
                 "shift_condition": condition if intention_changed else "none",
                 "change_category": change_category if intention_changed else "none",
                 "shift_rationale": shift.rationale,
+                "tradeoff": copy.deepcopy(shift.tradeoff),
             }
         )
 
@@ -1780,7 +1773,12 @@ def _simulate_task_with_retries(
     seed: int,
     shift_sampling_config: Optional[ShiftSamplingConfig] = None,
 ) -> Optional[DialogueInstance]:
-    max_attempts = 1 + (TRAVELPLANNER_CASE_RETRIES if domain == "travelplanner" else 0)
+    retry_count = (
+        TRAVELPLANNER_CASE_RETRIES
+        if domain == "travelplanner"
+        else WEBSHOP_CASE_RETRIES
+    )
+    max_attempts = 1 + retry_count
     for attempt in range(1, max_attempts + 1):
         try:
             return simulate_dialogue_instance(
@@ -1794,15 +1792,22 @@ def _simulate_task_with_retries(
                 shift_sampling_config=shift_sampling_config,
             )
         except Exception:
-            if domain != "travelplanner":
-                raise
-            status = "retrying" if attempt < max_attempts else "skipping case"
+            final_attempt = attempt >= max_attempts
+            status = (
+                "skipping case"
+                if final_attempt and domain == "travelplanner"
+                else "failing case"
+                if final_attempt
+                else "retrying"
+            )
             print(
-                f"TravelPlanner case {task.instance_id!r} failed on attempt "
+                f"{domain} case {task.instance_id!r} failed on attempt "
                 f"{attempt}/{max_attempts}; {status}.",
                 file=sys.stderr,
             )
             traceback.print_exc()
+            if final_attempt and domain != "travelplanner":
+                raise
     return None
 
 
@@ -2074,8 +2079,8 @@ def main():
         type=float,
         default=0.30,
         help=(
-            "Fraction of WebShop shift slots that prefer a naturally sampled multi-change candidate. "
-            "This does not put a change count in the LLM prompt."
+            "Deprecated compatibility option. Multi-change counts are now chosen freely "
+            "by the user simulator and this value is ignored."
         ),
     )
     parser.add_argument(
@@ -2083,8 +2088,8 @@ def main():
         type=float,
         default=0.30,
         help=(
-            "Fraction of TravelPlanner shift slots that softly prefer one coherent "
-            "multi-intention update. The prompt never requires an exact change count."
+            "Deprecated compatibility option. Multi-change counts are now chosen freely "
+            "by the user simulator and this value is ignored."
         ),
     )
     parser.add_argument(
@@ -2092,15 +2097,18 @@ def main():
         type=int,
         default=4,
         help=(
-            "Initial independent candidates for a multi-preferred WebShop turn, "
-            "or for TravelPlanner when distribution mode is selection/hybrid."
+            "Independent candidates used only when distribution mode is selection/hybrid. "
+            "Candidate generation does not target any change count."
         ),
     )
     parser.add_argument(
         "--max_multi_candidate_samples",
         type=int,
         default=12,
-        help="Maximum candidates sampled when a multi-preferred turn has not yet produced a natural multi change.",
+        help=(
+            "Deprecated compatibility option. The simulator no longer rejection-samples "
+            "for a multi-change candidate."
+        ),
     )
     parser.add_argument(
         "--shift_distribution_baseline",
@@ -2109,7 +2117,7 @@ def main():
         help=(
             "Optional baseline dataset whose category/condition counts initialize the "
             "domain-specific deficit controller. WebShop balances four change categories "
-            "and two conditions; TravelPlanner also balances entity and agent_misunderstanding."
+            "and two conditions; TravelPlanner additionally balances entity changes."
         ),
     )
     parser.add_argument(
@@ -2183,16 +2191,8 @@ def main():
 
     if args.parallelism < 1:
         raise ValueError("--parallelism must be at least 1")
-    if not 0.0 <= args.multi_change_rate <= 1.0:
-        raise ValueError("--multi_change_rate must be between 0 and 1")
-    if not 0.0 <= args.travelplanner_multi_change_rate <= 1.0:
-        raise ValueError("--travelplanner_multi_change_rate must be between 0 and 1")
     if args.multi_candidate_samples < 1:
         raise ValueError("--multi_candidate_samples must be at least 1")
-    if args.max_multi_candidate_samples < args.multi_candidate_samples:
-        raise ValueError(
-            "--max_multi_candidate_samples cannot be smaller than --multi_candidate_samples"
-        )
     if args.distribution_balance_strength < 0:
         raise ValueError("--distribution_balance_strength cannot be negative")
     if args.rerank_top_n < 1:
@@ -2239,22 +2239,8 @@ def main():
             domain=args.domain,
         )
     shift_sampling_config = ShiftSamplingConfig(
-        multi_change_rate=(
-            args.multi_change_rate
-            if args.domain == "webshop"
-            else args.travelplanner_multi_change_rate
-        ),
         multi_candidate_samples=(
             args.multi_candidate_samples
-            if args.domain == "webshop"
-            or (
-                distribution_controller is not None
-                and distribution_controller.control_mode in {"selection", "hybrid"}
-            )
-            else 1
-        ),
-        max_multi_candidate_samples=(
-            args.max_multi_candidate_samples
             if args.domain == "webshop"
             or (
                 distribution_controller is not None
@@ -2285,7 +2271,7 @@ def main():
     print(
         f"Saved {len(logger.instances)} instances to {args.output} "
         f"(domain={args.domain}, parallelism={effective_parallelism}, webshop_num_products={args.webshop_num_products}, "
-        f"executor_type={args.executor_type}, multi_change_rate={shift_sampling_config.multi_change_rate})"
+        f"executor_type={args.executor_type}, change_count_policy=unrestricted)"
     )
     return
 

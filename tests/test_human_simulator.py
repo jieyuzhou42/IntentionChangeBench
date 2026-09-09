@@ -157,7 +157,7 @@ def test_webshop_shift_prompt_requests_a_changes_list():
     )
 
     assert '"changes": [' in prompt
-    assert "change multiple constraints in the same turn" in prompt
+    assert "exactly one primary substantive change" in prompt
 
 
 def _single_shift(field="color", value="green"):
@@ -190,51 +190,29 @@ def _multi_shift(change_count):
     }
 
 
-def test_multi_preferred_sampling_keeps_sampling_until_a_multi_candidate_appears():
-    llm_client = SequenceLLMClient(
-        [_single_shift(), _single_shift("brand", "other"), _multi_shift(3)]
-    )
+def test_sampling_does_not_reject_candidates_based_on_change_count():
+    llm_client = SequenceLLMClient([_single_shift(), _multi_shift(3)])
     simulator = WebShopUserSimulator(llm_client=llm_client)
 
     shift = simulator.decide_shift(
         {"constraints": {"color": "blue"}, "priority": ["color"]},
         candidate_samples=2,
-        max_candidate_samples=5,
-        prefer_multi=True,
-        rng=random.Random(7),
+        rng=random.Random(0),
     )
 
     assert len(shift.changes) == 3
-    assert llm_client.calls == 3
-    assert shift.sampling_metadata["selection_mode"] == "multi"
-    assert shift.sampling_metadata["candidate_samples"] == 3
+    assert llm_client.calls == 2
+    assert shift.sampling_metadata["selection_mode"] == "unrestricted"
+    assert shift.sampling_metadata["candidate_samples"] == 2
 
 
-def test_normal_sampling_prefers_single_candidate_from_the_same_candidate_pool():
-    llm_client = SequenceLLMClient([_multi_shift(2), _single_shift(), _multi_shift(4)])
-    simulator = WebShopUserSimulator(llm_client=llm_client)
-
-    shift = simulator.decide_shift(
-        {"constraints": {"color": "blue"}, "priority": ["color"]},
-        candidate_samples=3,
-        prefer_multi=False,
-        rng=random.Random(7),
-    )
-
-    assert shift.field == "color"
-    assert not shift.changes
-    assert shift.sampling_metadata["selection_mode"] == "single"
-
-
-def test_multi_sampling_does_not_impose_a_maximum_change_count():
+def test_sampling_does_not_impose_a_maximum_change_count():
     llm_client = SequenceLLMClient([_multi_shift(5)])
     simulator = WebShopUserSimulator(llm_client=llm_client)
 
     shift = simulator.decide_shift(
         {"constraints": {}, "priority": []},
         candidate_samples=1,
-        max_candidate_samples=1,
-        prefer_multi=True,
         rng=random.Random(7),
     )
 
@@ -300,7 +278,7 @@ def test_prompt_controller_exposes_v1_deficits_as_soft_guidance():
         control_mode="prompt",
     )
 
-    guidance = controller.prompt_guidance(compound_update_preferred=True)
+    guidance = controller.prompt_guidance()
 
     assert guidance["preferred_change_categories_when_natural"] == [
         "reprioritize",
@@ -309,7 +287,6 @@ def test_prompt_controller_exposes_v1_deficits_as_soft_guidance():
     assert guidance["preferred_conditions_when_natural"] == [
         "real_world_feasibility"
     ]
-    assert guidance["compound_update_preferred_when_natural"] is True
     assert guidance["use_only_as_tiebreaker"] is True
     assert guidance["primary_objective"] == "trajectory_coherence"
     assert "category_counts_observed" not in guidance
@@ -327,7 +304,6 @@ def test_prompt_mode_injects_live_distribution_guidance_into_shift_prompt():
 
     shift = simulator.decide_shift(
         {"constraints": {"color": "blue"}, "priority": ["color"]},
-        prefer_multi=True,
         distribution_controller=controller,
         rng=random.Random(7),
     )
@@ -338,9 +314,9 @@ def test_prompt_mode_injects_live_distribution_guidance_into_shift_prompt():
     assert guidance["preferred_conditions_when_natural"] == [
         "real_world_feasibility"
     ]
-    assert guidance["compound_update_preferred_when_natural"] is True
     assert "coherent trajectory above every diversity objective" in instructions
     assert "weak tie-breaker" in instructions
+    assert "exactly one primary substantive change" in instructions
     assert shift.sampling_metadata["prompt_distribution_guidance"] == guidance
 
 
@@ -387,6 +363,14 @@ def test_none_like_field_is_not_treated_as_a_new_constraint_name():
 
     assert shift.op == "reprioritize"
     assert shift.field is None
+
+
+def test_budget_shift_values_are_normalized_to_numbers():
+    simulator = WebShopUserSimulator(llm_client=RecordingLLMClient())
+
+    assert simulator._coerce_value("budget_max", "$80", 40.0) == 80.0
+    assert simulator._coerce_value("budget_max", "120 dollars", 40.0) == 120.0
+    assert simulator._coerce_value("budget_max", "a little more", 40.0) is None
 
 
 def test_shift_prompt_passes_full_gold_intention_timeline():

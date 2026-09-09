@@ -69,7 +69,17 @@ class SingleAgentTravelPlannerExecutor(TravelPlannerExecutor):
         env_observation: Dict[str, Any],
     ) -> AgentAction:
         prompt = self._build_single_agent_prompt(history, env_observation)
-        raw_action = self.llm_client.generate_json(prompt)
+        last_json_error: Optional[ValueError] = None
+        raw_action: Dict[str, Any] = {}
+        for _ in range(3):
+            try:
+                raw_action = self.llm_client.generate_json(prompt)
+                last_json_error = None
+                break
+            except ValueError as exc:
+                last_json_error = exc
+        if last_json_error is not None:
+            raise last_json_error
         action = self._action_from_llm(raw_action)
         if action is None:
             raise ValueError(f"TravelPlanner agent returned an invalid action: {raw_action!r}")
@@ -98,8 +108,17 @@ Return one JSON object only.
 Required schema:
 {{
   "predicted_current_intention": {{
-    "constraints": {{"semantic_field": "active value"}},
-    "priority": ["most important field", "next field"],
+    "constraints": {{"shared_semantic_field": "active value"}},
+    "entities": {{
+      "entity_1": {{"reference": "the user", "constraints": {{}}}},
+      "entity_2": {{"reference": "natural traveler description", "constraints": {{"schedule": "person-specific value"}}}}
+    }},
+    "priority": {{
+      "high": ["fields introduced or changed in the current turn"],
+      "medium": ["still-active fields introduced or changed one turn earlier"],
+      "low": ["still-active older fields"]
+    }},
+    "entity_priority": ["entities.entity_2.constraints.schedule"],
     "explanation": "brief interpretation"
   }},
   "action_type": "FlightSearch | AttractionSearch | AccommodationSearch | RestaurantSearch | CitySearch | GoogleDistanceMatrix | NotebookWrite | Planner",
@@ -120,7 +139,9 @@ Action payloads:
 Rules:
 - Use only user_utterances and public_environment_observation.
 - Later utterances may add, replace, remove, relax, or reprioritize earlier requirements.
-- Include every active constraint and rank each active field once.
+- Keep shared party requirements in constraints and person-specific requirements in entities. Use stable opaque IDs in first-appearance order and preserve the natural reference for each traveler.
+- Adding or removing a traveler changes people_number; do not collapse that person's separate schedule, mobility, meal, activity, or transport need into a shared constraint.
+- Include every active shared and entity constraint and rank every active field path exactly once across high, medium, and low. Current-turn requirements are high, prior-turn requirements are medium, and older active requirements are low; remove overridden fields.
 - Use real search tools, write their results to Notebook, then submit a grounded plan.
 - If pending_notebook is true, the next action must be NotebookWrite.
 - A Planner action must include the complete itinerary in action_payload.plan.

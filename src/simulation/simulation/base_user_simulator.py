@@ -152,7 +152,7 @@ class ShiftDistributionController:
                 "condition_counts_after_selection": copy.deepcopy(self.condition_counts),
             }
 
-    def prompt_guidance(self, compound_update_preferred: bool = False) -> Dict[str, Any]:
+    def prompt_guidance(self) -> Dict[str, Any]:
         """Return a small, count-free tie-breaker for otherwise plausible shifts."""
         with self._lock:
             preferred_categories = self._largest_positive_gaps(
@@ -168,7 +168,6 @@ class ShiftDistributionController:
             return {
                 "preferred_change_categories_when_natural": preferred_categories,
                 "preferred_conditions_when_natural": preferred_conditions,
-                "compound_update_preferred_when_natural": bool(compound_update_preferred),
                 "guidance_is_soft": True,
                 "use_only_as_tiebreaker": True,
                 "primary_objective": "trajectory_coherence",
@@ -247,6 +246,23 @@ def _normalize_none_like(value: Any) -> Any:
     return value
 
 
+def _parse_numeric_value(value: Any) -> Optional[float]:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if not isinstance(value, str):
+        return None
+
+    match = re.search(r"[-+]?[0-9]+(?:\.[0-9]+)?", value.replace(",", ""))
+    if not match:
+        return None
+    try:
+        return float(match.group(0))
+    except ValueError:
+        return None
+
+
 def _format_value(value: Any) -> str:
     if value is None:
         return "no preference"
@@ -314,10 +330,13 @@ class HumanSimulator:
                     continue
 
                 gold_intention = copy.deepcopy(turn.get("gold_intention") or {})
+                if gold_intention == current_intention:
+                    continue
                 serialized.append(
                     {
                         "turn_id": turn.get("turn_id"),
                         "is_current": False,
+                        "user_utterance": turn.get("user_utterance"),
                         "gold_intention": gold_intention,
                         "gold_delta": copy.deepcopy(turn.get("gold_delta") or {}),
                     }
@@ -455,7 +474,8 @@ Rules:
 - Do not repeatedly toggle between two values across turns.
 - Preserve a coherent trajectory above every diversity objective: the next change must follow naturally from the current intention, earlier changes, and concrete page evidence.
 - Treat distribution_guidance only as a weak tie-breaker between changes that are already equally plausible. Ignore it when its suggested direction would invent a motive, contradict the trajectory, repeat or toggle a prior change, or fit the evidence less well.
-- When compound_update_preferred_when_natural is true, use multiple changes only when they form one coherent user decision spanning closely related aspects. Prefer a single change over bundling unrelated updates, and never target a specific number of changes.
+- Choose the number of changes freely from the situation. A turn may contain one change or any natural combination of changes; there is no target ratio, quota, minimum compound count, or maximum change count.
+- Include multiple changes when that is how a real user would express the next decision, including mixing add, relax, override, and reprioritize in one turn. Do not split a naturally compound decision merely to keep the turn simple, and do not bundle unrelated changes merely to make it compound.
 - Never mention dataset distributions, counters, balancing, or this guidance in the user-facing rationale or utterance.
 
 
@@ -856,14 +876,7 @@ Examples:
             distribution_controller is not None
             and distribution_controller.control_mode in {"prompt", "hybrid"}
         ):
-            distribution_guidance = distribution_controller.prompt_guidance(
-                compound_update_preferred=prefer_multi,
-            )
-        elif prefer_multi:
-            distribution_guidance = {
-                "compound_update_preferred_when_natural": True,
-                "guidance_is_soft": True,
-            }
+            distribution_guidance = distribution_controller.prompt_guidance()
         prompt = self._build_shift_prompt(
             current_intention,
             env_feedback=env_feedback,
@@ -874,13 +887,18 @@ Examples:
         if is_travelplanner:
             # Keep the default prompt mode trajectory-first and inexpensive.
             # Explicit selection/hybrid modes may sample a pool so deficit
-            # weights have multiple valid candidates to distinguish.
+            # weights have multiple valid candidates to distinguish. Prompt
+            # mode may still request a small retry budget for rejected
+            # TravelPlanner candidates.
             if (
                 distribution_controller is None
                 or distribution_controller.control_mode == "prompt"
             ):
                 candidate_samples = 1
-                max_candidate_samples = 1
+                max_candidate_samples = max(
+                    1,
+                    int(max_candidate_samples or 1),
+                )
 
         initial_sample_count = max(1, int(candidate_samples))
         sample_limit = max(
@@ -928,10 +946,9 @@ Examples:
                 )
             candidates.append(candidate)
 
-            # Always collect the configured initial batch.  A multi-preferred
-            # turn then uses rejection sampling only when that batch contains
-            # no natural multi-change candidate.  No change count is put in
-            # the prompt and there is deliberately no maximum change count.
+            # Collect the configured candidate pool, then retry only when the
+            # domain rejects the candidate itself. Change count never affects
+            # whether sampling continues.
             if sampled_count < initial_sample_count:
                 continue
             if self._should_resample_shift_candidate(
@@ -940,8 +957,7 @@ Examples:
                 sample_limit=sample_limit,
             ):
                 continue
-            if not prefer_multi or any(self._shift_change_count(item) >= 2 for item in candidates):
-                break
+            break
 
         valid_candidates = [item for item in candidates if item.op != "none"]
         multi_candidates = [
@@ -951,15 +967,9 @@ Examples:
             item for item in valid_candidates if self._shift_change_count(item) == 1
         ]
 
-        if prefer_multi and multi_candidates:
-            selection_pool = multi_candidates
-            selection_mode = "multi"
-        elif not prefer_multi and single_candidates:
-            selection_pool = single_candidates
-            selection_mode = "single"
-        elif valid_candidates:
+        if valid_candidates:
             selection_pool = valid_candidates
-            selection_mode = "fallback"
+            selection_mode = "unrestricted"
         else:
             selection_pool = candidates
             selection_mode = "invalid_fallback"
@@ -993,7 +1003,6 @@ Examples:
             "valid_candidates": len(valid_candidates),
             "single_candidates": len(single_candidates),
             "multi_candidates": len(multi_candidates),
-            "prefer_multi": bool(prefer_multi),
             "selection_mode": selection_mode,
             "selected_change_count": self._shift_change_count(selected),
             "distribution_balance": balance_metadata,
@@ -1520,23 +1529,16 @@ Return plain text only, with no quotes and no JSON.
             return bool(value)
 
         if isinstance(old_value, int) and not isinstance(old_value, bool):
-            try:
-                parsed = float(value)
-                return int(parsed) if parsed.is_integer() else parsed
-            except (TypeError, ValueError):
-                return value
+            parsed = _parse_numeric_value(value)
+            if parsed is None:
+                return None
+            return int(parsed) if parsed.is_integer() else parsed
 
         if isinstance(old_value, float):
-            try:
-                return float(value)
-            except (TypeError, ValueError):
-                return value
+            return _parse_numeric_value(value)
 
         if field.endswith("_max") or field.endswith("_min"):
-            try:
-                return float(value)
-            except (TypeError, ValueError):
-                return value
+            return _parse_numeric_value(value)
 
         if isinstance(value, str):
             return value.strip()

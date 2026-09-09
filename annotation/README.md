@@ -65,6 +65,3 @@ Build the generated site data from the repository root with:
 ```
 
 The current deployment range is shard 6 through shard 20 (150 trajectories).
-Before replacing the source dataset, run `snapshot_live_annotations.py`; the
-generated `preserved_instance_ids.json` makes the builder retain the legacy source
-trajectory for every already-saved annotation while using v7 for untouched cases.

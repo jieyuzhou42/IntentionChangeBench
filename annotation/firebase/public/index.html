@@ -574,27 +574,6 @@
     const db = firebase.firestore();
     const annotations = db.collection("webshop_annotations");
     const annotationRef = instance => annotations.doc(instance.instance_id);
-    const imageUrlByAsin = new Map();
-    for (const instance of state.instances) {
-      if (instance.webshop_gold_item?.asin && instance.webshop_gold_item?.image_url) {
-        imageUrlByAsin.set(instance.webshop_gold_item.asin, instance.webshop_gold_item.image_url);
-      }
-      for (const turn of instance.turns || []) {
-        for (const item of turn.env_feedback?.candidate_items || []) {
-          if (item.asin && item.image_url) imageUrlByAsin.set(item.asin, item.image_url);
-        }
-      }
-    }
-    function restoreImageUrls(turns) {
-      for (const turn of turns || []) {
-        for (const item of turn.env_feedback?.candidate_items || []) {
-          if (!item.image_url && imageUrlByAsin.has(item.asin)) {
-            item.image_url = imageUrlByAsin.get(item.asin);
-          }
-        }
-      }
-      return turns;
-    }
     const snapshots = await Promise.all(state.instances.map(instance => annotationRef(instance).get()));
     state.instances = state.instances.filter((instance, index) => {
       const snapshot = snapshots[index];
@@ -603,10 +582,10 @@
       if (saved.deleted === true) return false;
       if (typeof saved.turns_json === "string") {
         const savedTurns = JSON.parse(saved.turns_json);
-        if (Array.isArray(savedTurns) && savedTurns.length) instance.turns = restoreImageUrls(savedTurns);
+        if (Array.isArray(savedTurns) && savedTurns.length) instance.turns = savedTurns;
       } else if (Array.isArray(saved.turns) && saved.turns.length) {
         // Backward compatibility for documents created by the first deployment.
-        instance.turns = restoreImageUrls(saved.turns);
+        instance.turns = saved.turns;
       }
       return true;
     });
@@ -615,6 +594,7 @@
       const cleaned = JSON.parse(JSON.stringify(turns));
       for (const turn of cleaned) {
         delete turn.rationales;
+        for (const item of turn.env_feedback?.candidate_items || []) delete item.image_url;
       }
       return cleaned;
     }
@@ -1356,7 +1336,7 @@
       const isGoldSelected = selectedAsin && selectedAsin === String(item.asin || "");
       return `
         <article class="item ${isGoldSelected || originalGoldReference ? "gold-selected" : ""}">
-          <div class="image-box"><img src="${esc(imageUrl)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/no-image.svg'"></div>
+          <div class="image-box"><img src="${esc(imageUrl)}" alt=""></div>
           <div>
             <h3 class="asin">${originalGoldReference ? "Original gold · " : ""}${esc(item.asin || "")}</h3>
             <h4 class="title">${esc(item.title || item.Title || "")}</h4>

@@ -15,7 +15,7 @@ from domains.travelplanner.environment import TravelPlannerEnvAdapter
 from domains.travelplanner.executor import TravelPlannerExecutor
 from models import AgentAction, BaseTask, EnvFeedback
 from simulation.simulation import run_simulation
-from simulation.simulation.run_simulation import execute_turn
+from simulation.simulation.run_simulation import _public_env_feedback_payload, execute_turn
 
 
 class ScriptedLLM:
@@ -224,6 +224,23 @@ def test_executor_without_llm_fails_instead_of_falling_back():
         TravelPlannerExecutor(llm_client=None).act([], "plan a trip", observation)
 
 
+def test_executor_normalizes_ambiguous_distance_matrix_mode():
+    executor = TravelPlannerExecutor(llm_client=object())
+
+    action = executor._action_from_llm(
+        {
+            "action_type": "GoogleDistanceMatrix",
+            "action_payload": {
+                "origin": "Chicago",
+                "destination": "Panama City",
+                "mode": "self-driving or taxi",
+            },
+        }
+    )
+
+    assert action.action_payload["mode"] == "self-driving"
+
+
 def test_planner_prompt_requires_grounded_closest_match_selection():
     task = _smoke_task()
     env = TravelPlannerEnvAdapter()
@@ -234,6 +251,30 @@ def test_planner_prompt_requires_grounded_closest_match_selection():
     assert "Never invent" in prompt
     assert "closest_match_substitutions" in prompt
     assert "no valid information" in prompt
+    assert "every non-null entry" in prompt
+    assert "one-person trip" in prompt
+
+
+def test_public_travel_feedback_keeps_the_submitted_plan():
+    plan = {"itinerary": [{"day": 1, "current_city": "Boston"}]}
+    feedback = EnvFeedback(
+        status="observed",
+        feasible=True,
+        reason=None,
+        observation={
+            "domain": "travelplanner",
+            "page_type": "search_results",
+            "search_results": {},
+            "submitted_plan": plan,
+        },
+        result={},
+        satisfied_constraints=[],
+        violated_constraints=[],
+    )
+
+    public = _public_env_feedback_payload(feedback)
+
+    assert public["submitted_plan"] == plan
 
 
 def test_search_feedback_flattens_samples_and_keeps_empty_page_metadata():
@@ -435,3 +476,65 @@ def test_two_city_task_uses_city_and_flight_tools_with_original_action_names():
         if action["action_type"] == "FlightSearch"
     ]
     assert flight_dates == ["2022-03-03", "2022-03-05", "2022-03-07"]
+
+
+def test_executor_uses_overridden_origin_destination_and_date_range():
+    executor = TravelPlannerExecutor(llm_client=object())
+    query_data = executor._effective_query_data(
+        {
+            "query_data": {
+                "org": "Boston",
+                "dest": "Chicago",
+                "days": 3,
+                "date": ["2022-03-12", "2022-03-13", "2022-03-14"],
+                "local_constraint": {},
+            },
+            "current_intention": {
+                "constraints": {
+                    "org": "Providence",
+                    "dest": "Milwaukee",
+                    "days": 4,
+                    "start_date": "2022-03-20",
+                    "end_date": "2022-03-23",
+                }
+            },
+        }
+    )
+
+    assert query_data["org"] == "Providence"
+    assert query_data["dest"] == "Milwaukee"
+    assert query_data["days"] == 4
+    assert query_data["date"] == [
+        "2022-03-20",
+        "2022-03-21",
+        "2022-03-22",
+        "2022-03-23",
+    ]
+
+
+def test_environment_evaluates_against_overridden_location_and_dates():
+    env = TravelPlannerEnvAdapter()
+    env.query_data = {
+        "org": "Boston",
+        "dest": "Chicago",
+        "days": 3,
+        "date": ["2022-03-12", "2022-03-13", "2022-03-14"],
+        "local_constraint": {},
+    }
+
+    merged = env._merged_query_data(
+        {
+            "constraints": {
+                "org": "Providence",
+                "dest": "Milwaukee",
+                "days": 2,
+                "start_date": "2022-03-20",
+                "end_date": "2022-03-21",
+            }
+        }
+    )
+
+    assert merged["org"] == "Providence"
+    assert merged["dest"] == "Milwaukee"
+    assert merged["days"] == 2
+    assert merged["date"] == ["2022-03-20", "2022-03-21"]

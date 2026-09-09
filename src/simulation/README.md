@@ -44,9 +44,11 @@ used by the WebShop domain.
 
 TravelPlanner shifts use an ordered `changes` array. A single turn may combine
 shared-party and person-specific changes, including adding a traveler before a
-later change assigns that traveler a separate constraint. The default
-`--travelplanner_multi_change_rate 0.30` only supplies a soft preference for a
-coherent compound update; it never asks the LLM for a fixed change count.
+later change assigns that traveler a separate constraint. WebShop and
+TravelPlanner both let the user simulator choose the natural number and mix of
+changes on every turn. The legacy `--multi_change_rate` and
+`--travelplanner_multi_change_rate` options are accepted for command
+compatibility but no longer affect generation.
 
 Allowed:
 - Expose and update gold user intention.

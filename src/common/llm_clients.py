@@ -2,10 +2,34 @@ from __future__ import annotations
 
 import json
 import os
+import random
+import shlex
+import socket
+import subprocess
+import time
 import urllib.parse
 import urllib.error
 import urllib.request
 from typing import Any, Dict, Optional
+
+
+def _parse_json_object(raw_text: str, provider: str) -> Dict[str, Any]:
+    text = raw_text.strip()
+    if text.startswith("```"):
+        if text.startswith("```json"):
+            text = text[len("```json"):]
+        if text.startswith("```"):
+            text = text[3:]
+        text = text.strip()
+        if text.endswith("```"):
+            text = text[:-3].strip()
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{provider} did not return valid JSON") from exc
+    if not isinstance(parsed, dict):
+        raise ValueError(f"{provider} JSON response was not an object")
+    return parsed
 
 
 class OpenAIResponsesClient:
@@ -56,14 +80,7 @@ class OpenAIResponsesClient:
         )
 
     def generate_json(self, prompt: str) -> Dict[str, Any]:
-        raw_text = self.generate_json_text(prompt)
-        try:
-            parsed = json.loads(raw_text)
-        except json.JSONDecodeError as exc:
-            raise ValueError("OpenAI did not return valid JSON") from exc
-        if not isinstance(parsed, dict):
-            raise ValueError("OpenAI JSON response was not an object")
-        return parsed
+        return _parse_json_object(self.generate_json_text(prompt), "OpenAI")
 
     def generate_json_text(self, prompt: str) -> str:
         return self._completion(prompt, json_mode=True)
@@ -80,6 +97,34 @@ class OpenAIResponsesClient:
                 "format": {"type": "json_object" if json_mode else "text"}
             },
         }
+        max_retries = max(int(os.getenv("OPENAI_MAX_RETRIES", "2")), 0)
+        retry_count = 0
+        refreshed_after_401 = False
+        while True:
+            try:
+                result = self._send_request(payload)
+                break
+            except urllib.error.HTTPError as exc:
+                if (
+                    exc.code == 401
+                    and not refreshed_after_401
+                    and self._refresh_api_key()
+                ):
+                    refreshed_after_401 = True
+                    continue
+                if exc.code not in {408, 429, 500, 502, 503, 504}:
+                    raise
+                if retry_count >= max_retries:
+                    raise
+            except (TimeoutError, socket.timeout, urllib.error.URLError):
+                if retry_count >= max_retries:
+                    raise
+            retry_count += 1
+            backoff = float(os.getenv("OPENAI_RETRY_BACKOFF_SECONDS", "1"))
+            time.sleep(max(backoff, 0) * (2 ** (retry_count - 1)))
+        return _extract_responses_text(result, provider="OpenAI-compatible")
+
+    def _send_request(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         request = urllib.request.Request(
             url=f"{self.base_url}/responses",
             data=json.dumps(payload).encode("utf-8"),
@@ -90,8 +135,138 @@ class OpenAIResponsesClient:
             method="POST",
         )
         with urllib.request.urlopen(request, timeout=self.timeout) as response:
-            result = json.loads(response.read().decode("utf-8"))
-        return _extract_responses_text(result, provider="OpenAI-compatible")
+            return json.loads(response.read().decode("utf-8"))
+
+    def _refresh_api_key(self) -> bool:
+        command = os.getenv("OPENAI_API_KEY_REFRESH_COMMAND", "").strip()
+        if not command:
+            return False
+        completed = subprocess.run(
+            shlex.split(command),
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        refreshed_key = completed.stdout.strip()
+        if not refreshed_key:
+            raise ValueError("OPENAI_API_KEY_REFRESH_COMMAND returned an empty API key")
+        self.api_key = refreshed_key.splitlines()[-1].strip()
+        return True
+
+
+class BedrockConverseClient:
+    """Minimal Bedrock Converse client for text and JSON generation."""
+
+    def __init__(
+        self,
+        model: str,
+        region: str = "us-west-2",
+        timeout: int = 300,
+        max_tokens: int = 4096,
+        client: Any = None,
+    ):
+        self.model = model
+        self.region = region
+        self.timeout = timeout
+        self.max_tokens = max_tokens
+        if client is None:
+            import boto3
+            from botocore.config import Config
+
+            client = boto3.client(
+                "bedrock-runtime",
+                region_name=region,
+                config=Config(
+                    connect_timeout=10,
+                    read_timeout=timeout,
+                    max_pool_connections=64,
+                    retries={"max_attempts": 3, "mode": "standard"},
+                ),
+            )
+        self.client = client
+
+    @classmethod
+    def from_env(cls, timeout: int = 60) -> "BedrockConverseClient":
+        model = os.getenv("BEDROCK_MODEL")
+        if not model:
+            raise ValueError("Missing Bedrock setting: BEDROCK_MODEL")
+        region = (
+            os.getenv("BEDROCK_REGION")
+            or os.getenv("AWS_REGION")
+            or os.getenv("AWS_DEFAULT_REGION")
+            or "us-west-2"
+        )
+        read_timeout = int(os.getenv("BEDROCK_READ_TIMEOUT", str(max(timeout, 300))))
+        max_tokens = int(os.getenv("BEDROCK_MAX_TOKENS", "4096"))
+        return cls(
+            model=model,
+            region=region,
+            timeout=read_timeout,
+            max_tokens=max_tokens,
+        )
+
+    def generate_json(self, prompt: str) -> Dict[str, Any]:
+        return _parse_json_object(self.generate_text(prompt), "Bedrock")
+
+    def generate_json_text(self, prompt: str) -> str:
+        return self.generate_text(prompt)
+
+    def generate_text(self, prompt: str) -> str:
+        request: Dict[str, Any] = {
+            "modelId": self.model,
+            "messages": [{"role": "user", "content": [{"text": prompt}]}],
+            "inferenceConfig": {"maxTokens": self.max_tokens},
+        }
+        temperature = os.getenv("BEDROCK_TEMPERATURE")
+        if temperature is not None:
+            request["inferenceConfig"]["temperature"] = float(temperature)
+
+        max_retries = max(int(os.getenv("BEDROCK_MAX_RETRIES", "8")), 0)
+        for attempt in range(max_retries + 1):
+            try:
+                response = self.client.converse(**request)
+                content = (
+                    response.get("output", {})
+                    .get("message", {})
+                    .get("content", [])
+                )
+                text_parts = [
+                    str(block["text"]).strip()
+                    for block in content
+                    if isinstance(block, dict)
+                    and isinstance(block.get("text"), str)
+                    and block["text"].strip()
+                ]
+                if not text_parts:
+                    raise ValueError("Bedrock Converse returned no text output")
+                return "\n".join(text_parts)
+            except Exception as exc:
+                if attempt >= max_retries or not self._is_retryable(exc):
+                    raise
+                base_delay = max(
+                    float(os.getenv("BEDROCK_RETRY_BACKOFF_SECONDS", "2")),
+                    0,
+                )
+                time.sleep(min(base_delay * (2**attempt), 60) + random.uniform(0, 1))
+        raise RuntimeError("Bedrock retry loop exited unexpectedly")
+
+    @staticmethod
+    def _is_retryable(exc: Exception) -> bool:
+        response = getattr(exc, "response", {})
+        code = (
+            response.get("Error", {}).get("Code", "")
+            if isinstance(response, dict)
+            else ""
+        )
+        return code in {
+            "InternalServerException",
+            "ModelNotReadyException",
+            "ModelTimeoutException",
+            "ServiceUnavailableException",
+            "ThrottlingException",
+            "TooManyRequestsException",
+        } or isinstance(exc, (TimeoutError, socket.timeout))
 
 
 class AzureOpenAIChatClient:
@@ -347,12 +522,16 @@ def create_llm_client_from_env(
 ) -> Any:
     """Create the configured LLM client without changing caller prompts.
 
-    LLM_PROVIDER may be ``deepseek``, ``openai``, or ``azure``. In auto mode,
-    DeepSeek/OpenAI keys take priority over the existing Azure configuration.
+    LLM_PROVIDER may be ``bedrock``, ``deepseek``, ``openai``, or ``azure``.
+    In auto mode, DeepSeek/OpenAI keys take priority over Azure configuration.
     """
     provider = os.getenv("LLM_PROVIDER", "auto").strip().lower()
-    if provider not in {"auto", "deepseek", "openai", "azure"}:
-        raise ValueError("LLM_PROVIDER must be one of: auto, deepseek, openai, azure")
+    if provider not in {"auto", "bedrock", "deepseek", "openai", "azure"}:
+        raise ValueError(
+            "LLM_PROVIDER must be one of: auto, bedrock, deepseek, openai, azure"
+        )
+    if provider == "bedrock":
+        return BedrockConverseClient.from_env(timeout=timeout)
     if provider == "deepseek" or (provider == "auto" and os.getenv("DEEPSEEK_API_KEY")):
         return OpenAIResponsesClient.from_env(timeout=timeout, provider="deepseek")
     if provider == "openai" or (provider == "auto" and os.getenv("OPENAI_API_KEY")):
@@ -365,6 +544,7 @@ def create_llm_client_from_env(
 
 __all__ = [
     "AzureOpenAIChatClient",
+    "BedrockConverseClient",
     "OpenAIResponsesClient",
     "create_llm_client_from_env",
 ]

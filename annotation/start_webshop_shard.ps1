@@ -13,13 +13,7 @@ $ErrorActionPreference = "Stop"
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $benchmarkRoot = Split-Path -Parent $repoRoot
 $shardTag = "{0:D3}" -f $Shard
-$shardDataset = if ($Shard -eq 35) {
-    "webshop_v7_full_350_priority_classified_shards"
-}
-else {
-    "webshop_v2_350_formal_priority_classified_shards"
-}
-$shardDir = Join-Path $repoRoot "data\simulation\$shardDataset"
+$shardDir = Join-Path $repoRoot "data\simulation\webshop_v2_350_formal_priority_classified_shards"
 $datasetPath = Join-Path $shardDir "shard_$shardTag.json"
 $outputPath = Join-Path $shardDir "shard_${shardTag}_human_annotated.json"
 $pythonPath = Join-Path $benchmarkRoot ".venv38-webshop\Scripts\python.exe"
