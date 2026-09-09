@@ -19,7 +19,28 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Sequence, Tuple
 
 
-LEVEL_QUOTAS = {"easy": 15, "medium": 35, "hard": 70}
+SAMPLING_PROFILES = {
+    "balanced_days": {
+        3: {"easy": 15, "medium": 35, "hard": 70},
+        5: {"easy": 15, "medium": 35, "hard": 70},
+        7: {"easy": 15, "medium": 35, "hard": 70},
+    },
+    # Focuses evaluation on intention/constraint tracking instead of long-plan
+    # execution.  It keeps 210 Hard tasks while shifting mass toward 3-day
+    # tasks and reducing budget-only Easy tasks.
+    "short_horizon": {
+        3: {"easy": 10, "medium": 60, "hard": 80},
+        5: {"easy": 10, "medium": 35, "hard": 75},
+        7: {"easy": 10, "medium": 25, "hard": 55},
+    },
+    # Exactly 250 multi-person tasks (all Medium/Hard) and 110 single-person
+    # Easy tasks, while retaining the short-horizon and constraint-heavy bias.
+    "short_horizon_250_multi": {
+        3: {"easy": 40, "medium": 30, "hard": 80},
+        5: {"easy": 40, "medium": 20, "hard": 60},
+        7: {"easy": 30, "medium": 10, "hard": 50},
+    },
+}
 CUISINES = (
     "Chinese",
     "American",
@@ -72,6 +93,11 @@ def parse_args() -> argparse.Namespace:
         default=Path("data/travelplanner/diverse_360_manifest.csv"),
     )
     parser.add_argument("--seed", type=int, default=20260831)
+    parser.add_argument(
+        "--profile",
+        choices=tuple(SAMPLING_PROFILES),
+        default="balanced_days",
+    )
     return parser.parse_args()
 
 
@@ -141,6 +167,8 @@ def parse_local_constraint(query: str) -> Dict[str, Any]:
     room_type = None
     if re.search(
         r"(?:not|non)[ -]?shared rooms?|do not include shared|avoid shared|"
+        r"(?:rooms?|accommodations?).{0,35}not (?:be )?shared|not shared with others|"
+        r"private\s*\(not shared\)\s*rooms?|"
         r"rooms?.{0,30}(?:not|aren't|isn't|cannot be|can't be) shared|"
         r"(?:not|never) (?:to )?share (?:our )?(?:rooms?|accommodations?)|"
         r"do not want to share|prefer not to share|won't be sharing|guarantee privacy",
@@ -157,7 +185,7 @@ def parse_local_constraint(query: str) -> Dict[str, Any]:
     house_rule = None
     house_patterns: Sequence[Tuple[str, str]] = (
         ("children under 10", r"children under (?:the age of )?10|child-friendly|young children|traveling with (?:a child|kids)"),
-        ("parties", r"allow(?:ed|ing)? (?:us to host )?part(?:y|ies)|permit(?:s|ted|ting)? parties|parties (?:are )?(?:allowed|permitted)|party-friendly|suitable for parties|open to parties|accommodate parties"),
+        ("parties", r"allow(?:ed|ing)? (?:us to host )?part(?:y|ies)|permit(?:s|ted|ting)? parties|parties (?:are )?(?:allowed|permitted)|party-friendly|suitable for parties|open to parties|accommodate parties|host parties|willing to host parties"),
         ("smoking", r"smoking[- ](?:is )?(?:allowed|permitted)|allow(?:ed|ing)? smoking|permit(?:s|ted|ting)? smoking|smoking-friendly|smoking-allowed|smokers?.{0,45}(?:allow|permit) smoking"),
         ("visitors", r"allow(?:ed|ing)? (?:us to have )?visitors|permit(?:s|ted|ting)? visitors|visitors (?:are )?(?:allowed|permitted)|have visitors|welcome visitors|visitor[- ]friendly|visitors[- ]allowed|expecting visitors|entertain visitors|accommodate visitors|open to visitors|allow guests|lodgings must allow guests"),
         ("pets", r"pet-friendly|allow(?:ed|ing)? pets|pets (?:are )?(?:allowed|permitted)|bringing (?:our )?pets|bring pets|travel(?:ing|ling) with (?:our )?pets|pets.{0,45}allow them|accommodate pets"),
@@ -175,7 +203,7 @@ def parse_local_constraint(query: str) -> Dict[str, Any]:
     )
     flight_mentioned = bool(re.search(r"\b(?:flight|flights|flying|fly|air travel)\b", text))
     self_drive_mentioned = bool(
-        re.search(r"self[- ]driv|drive ourselves|driving ourselves|drive on our own|planning to drive|own driving", text)
+        re.search(r"self[- ]driv|drive ourselves|driving ourselves|drive on our own|planning to drive|own driving|using our own car", text)
     )
     if (flight_mentioned and any(marker in text for marker in negative_markers)) or "ground transportation" in text:
         transportation = "no flight"
@@ -271,7 +299,11 @@ def bin_quotas(total: int) -> List[int]:
     return [base + (1 if index < remainder else 0) for index in range(4)]
 
 
-def select_rows(rows: List[Dict[str, Any]], seed: int) -> List[Dict[str, Any]]:
+def select_rows(
+    rows: List[Dict[str, Any]],
+    seed: int,
+    quotas: Dict[int, Dict[str, int]],
+) -> List[Dict[str, Any]]:
     rng = random.Random(seed)
     selected: List[Dict[str, Any]] = []
     org_counts: Counter[str] = Counter()
@@ -281,7 +313,7 @@ def select_rows(rows: List[Dict[str, Any]], seed: int) -> List[Dict[str, Any]]:
 
     for days in (3, 5, 7):
         for level in ("easy", "medium", "hard"):
-            quota = LEVEL_QUOTAS[level]
+            quota = quotas[days][level]
             group = [
                 row
                 for row in rows
@@ -417,6 +449,8 @@ def build_report(
     selected: List[Dict[str, Any]],
     seed: int,
     parse_errors: List[str],
+    profile: str,
+    quotas: Dict[int, Dict[str, int]],
 ) -> Dict[str, Any]:
     selected_orgs = Counter(row["query_data"]["org"] for row in selected)
     selected_dests = Counter(row["query_data"]["dest"] for row in selected)
@@ -429,13 +463,14 @@ def build_report(
     ref_items = [row["reference_items"] for row in selected]
     return {
         "selection_method": "Hard-heavy stratified diversity sampling",
+        "sampling_profile": profile,
         "seed": seed,
         "source_rows": len(all_rows) + len(parse_errors),
         "eligible_rows_after_strict_parsing": len(all_rows),
         "rejected_rows_after_strict_parsing": len(parse_errors),
         "rejection_reasons": parse_errors,
         "selected_rows": len(selected),
-        "quota_per_days_and_level": LEVEL_QUOTAS,
+        "quota_per_days_and_level": quotas,
         "distribution_days_level": nested_distribution(selected, ("days", "level")),
         "distribution_days_level_reference_quartile": nested_distribution(
             selected, ("days", "level", "reference_bin")
@@ -467,11 +502,12 @@ def main() -> None:
     args = parse_args()
     rows, parse_errors = read_rows(args.csv, args.reference_info)
     assign_reference_bins(rows)
-    selected = select_rows(rows, args.seed)
+    quotas = SAMPLING_PROFILES[args.profile]
+    selected = select_rows(rows, args.seed, quotas)
     if len(selected) != 360:
         raise AssertionError(f"Expected 360 selected rows, got {len(selected)}")
     tasks = make_tasks(selected, args.seed)
-    report = build_report(rows, selected, args.seed, parse_errors)
+    report = build_report(rows, selected, args.seed, parse_errors, args.profile, quotas)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(tasks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

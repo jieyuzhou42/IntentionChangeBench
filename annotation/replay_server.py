@@ -9,7 +9,7 @@ import subprocess
 import threading
 import time
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from flask import Flask, jsonify, render_template_string, request, send_from_directory
 
@@ -20,6 +20,13 @@ DEFAULT_DATASET_PATH = PROJECT_ROOT / "data" / "simulation" / "simulated_dataset
 DEFAULT_CACHE_PATH = ANNOTATION_DATA_DIR / "replay_image_cache.json"
 DEFAULT_ITEM_CACHE_PATH = ANNOTATION_DATA_DIR / "replay_item_cache.json"
 ITEM_CACHE_VERSION = 2
+TRAVELPLANNER_CONTEXT_FIELDS = {
+    "org",
+    "dest",
+    "start_date",
+    "end_date",
+    "visiting_city_number",
+}
 WEBSHOP_ROOT = PROJECT_ROOT / "WebShop"
 if not (WEBSHOP_ROOT / "data" / "items_shuffle_1000.json").is_file():
     WEBSHOP_ROOT = PROJECT_ROOT.parent / "WebShop"
@@ -432,18 +439,17 @@ HTML = r"""
     .day-head { padding: 9px 12px; background: #f1f6fc; border-bottom: 1px solid #dfe4ea; font-size: 16px; }
     .day-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 12px; }
     .day-field { min-width: 0; }
-    .day-field label { margin-bottom: 3px; }
+    .day-field label { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 3px; }
+    .field-cost { color: var(--green); font-size: 11px; font-weight: 700; text-align: right; }
+    .field-cost.unavailable { color: var(--amber); }
     .day-value { overflow-wrap: anywhere; white-space: pre-wrap; }
-    .travel-cost-summary { margin-top: 14px; border: 1px solid #cbd3dc; border-radius: 6px; overflow: hidden; }
-    .travel-cost-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 11px 12px; background: #f1f6fc; border-bottom: 1px solid #cbd3dc; }
+    .day-cost-footer { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; border-top: 1px dashed #cbd3dc; background: #fbfcfd; font-weight: 700; }
+    .travel-cost-summary { margin-bottom: 12px; border: 1px solid #cbd3dc; border-radius: 6px; overflow: hidden; }
+    .travel-cost-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 11px 12px; background: #f1f6fc; }
     .travel-cost-head strong { font-size: 17px; }
-    .travel-cost-day { padding: 10px 12px; border-bottom: 1px solid #e0e4e8; }
-    .cost-row { display: grid; grid-template-columns: minmax(110px, .7fr) minmax(170px, 1fr) auto; gap: 10px; padding: 4px 0; align-items: baseline; }
-    .cost-row .cost-formula { color: var(--muted); font-size: 12px; }
-    .cost-row.unavailable { color: var(--amber); }
-    .cost-subtotal { margin-top: 5px; padding-top: 7px; border-top: 1px dashed #cbd3dc; font-weight: 700; }
     .travel-cost-total { padding: 12px; background: #f7fcf9; }
     .travel-cost-total.over-budget { background: #fff4f2; }
+    .cost-summary-row { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; }
     .travel-cost-note { margin-top: 6px; color: var(--muted); font-size: 12px; }
     .gold-action-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .gold-confirm { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-weight: 700; }
@@ -469,7 +475,7 @@ HTML = r"""
       .constraint-row {
         grid-template-columns: 1fr;
       }
-      .day-grid, .gold-action-grid, .cost-row { grid-template-columns: 1fr; }
+      .day-grid, .gold-action-grid { grid-template-columns: 1fr; }
       .item {
         grid-template-columns: 120px minmax(0, 1fr);
         gap: 12px;
@@ -547,10 +553,6 @@ HTML = r"""
           <div id="goldActionStatus" class="pill warn">Unconfirmed</div>
         </div>
         <div id="goldActionEditor"></div>
-        <div id="entityPanel" style="margin-top:16px; padding-top:16px; border-top:1px solid var(--line); display:none;">
-          <h2 class="section-title">Entity Intentions &amp; Gold Changes</h2>
-          <div id="entityState"></div>
-        </div>
       </section>
       <section class="panel panel-pad" style="margin-bottom:16px;">
         <h2 class="section-title">Rationale</h2>
@@ -593,8 +595,6 @@ HTML = r"""
     const utterance = document.getElementById("utterance");
     const constraints = document.getElementById("constraints");
     const priorityBoard = document.getElementById("priorityBoard");
-    const entityPanel = document.getElementById("entityPanel");
-    const entityState = document.getElementById("entityState");
     const saveEdit = document.getElementById("saveEdit");
     const saveStatus = document.getElementById("saveStatus");
     const deleteTrajectory = document.getElementById("deleteTrajectory");
@@ -680,7 +680,7 @@ HTML = r"""
     }
     function compactSelection(value) {
       if (value && typeof value === "object") {
-        return firstNonEmpty(value.name, value.Name, value.flight_number, value["Flight Number"], value.type, valueToText(value));
+        return firstNonEmpty(value.name, value.Name, value.NAME, value.flight_number, value["Flight Number"], value.type, valueToText(value));
       }
       return valueToText(value ?? "");
     }
@@ -797,15 +797,27 @@ HTML = r"""
       const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
       const plan = payload.plan || (payload.plan = {});
       const days = plan.itinerary || (plan.itinerary = []);
+      days.forEach((day, index) => {
+        for (const field of ["transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"]) {
+          day[field] = travelSelectionName(field, day[field], day);
+        }
+        if (index > 0 && index < days.length - 1 && day.transportation !== "-") {
+          if (day.transportation) goldActionDraft.confirmed = false;
+          day.transportation = "-";
+        }
+      });
       const fields = ["day", "current_city", "transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
+      const costFields = ["transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
       goldActionEditor.innerHTML = `
+        <div id="travelCostSummary"></div>
         <div class="day-list">${days.map((day, dayIndex) => `
           <article class="day-card">
             <div class="day-head editor-head"><strong>${esc(day.day || `Day ${dayIndex + 1}`)}</strong><button class="danger" data-gold-role="remove-day" data-day-index="${dayIndex}">Remove day</button></div>
-            <div class="day-grid">${fields.map(field => `<div class="day-field"><label>${esc(prettyKey(field))}</label><input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
+            <div class="day-grid">${fields.filter(field => field !== "transportation" || dayIndex === 0 || dayIndex === days.length - 1).map(field => `<div class="day-field"><label><span>${esc(prettyKey(field))}</span>${costFields.includes(field) ? `<span class="field-cost" data-cost-day="${dayIndex}" data-cost-field="${field}"></span>` : ""}</label><input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
+            <div class="day-cost-footer"><span>Day subtotal</span><strong data-day-subtotal="${dayIndex}">$0.00</strong></div>
           </article>`).join("")}</div>
         ${days.length ? "" : `<div class="empty">No proposed days. Add a day to define the gold itinerary.</div>`}
-        <div id="travelCostSummary"></div>
+        <div class="day-cost-footer" id="travelGrandTotal" aria-live="polite"></div>
         <div class="editor-actions" style="margin-top:10px;"><button data-gold-role="add-day">+ Day</button></div>
         <label class="gold-confirm"><input type="checkbox" data-gold-role="confirmed" ${goldActionDraft.confirmed ? "checked" : ""}> I confirm every day's exact transportation, restaurants, attraction, and hotel.</label>`;
       renderTravelCostSummary();
@@ -820,9 +832,87 @@ HTML = r"""
       }
       return fallback;
     }
+    function travelSelectionName(field, value, day) {
+      if (Array.isArray(value)) return value.map(item => travelSelectionName(field, item, day)).join("; ");
+      const text = compactSelection(value).trim();
+      if (!text || text === "-") return text;
+      if (field === "transportation") {
+        const flights = text.match(/\bF\d+\b/gi);
+        if (flights) return [...new Set(flights.map(id => id.toUpperCase()))].join("; ");
+        // Ground transport needs route/cost information for its existing calculator.
+        return text;
+      }
+      if (field !== "attraction") {
+        const match = lookupTravelPrice(field, text, day);
+        if (match.record) return String(match.record.NAME || match.record.Name);
+      }
+      // Keep punctuation inside names; remove only clearly separated descriptions.
+      const name = part => part.split(/\s+[—–]\s+|;\s*(?:average cost|price|listed price|rating|room type|maximum occupancy|included|house rules|\$)/i)[0].trim();
+      if (field === "attraction") {
+        // Store only attraction names here. Pace, accessibility, count limits,
+        // and similar prose already belong in the intention constraints.
+        if (/^-\s*(?:\(|$)/.test(text)
+            || /\b(?:no (?:scheduled )?(?:sightseeing|attraction)|no sightseeing scheduled|full rest day)\b/i.test(text)
+            || (/\b(?:arrival|check[ -]?in)\b/i.test(text) && /\b(?:rest|no additional activities)\b/i.test(text))) {
+          return "-";
+        }
+        let positiveText = text;
+        const directNegative = positiveText.search(/\b(?:do not visit|no visit to)\b/i);
+        if (directNegative >= 0) positiveText = positiveText.slice(0, directNegative);
+        const excluded = positiveText.search(/\b(?:are|is)\s+(?:excluded|omitted)\b/i);
+        if (excluded >= 0) {
+          const sentenceStart = positiveText.lastIndexOf(". ", excluded);
+          positiveText = sentenceStart >= 0
+            ? positiveText.slice(0, sentenceStart + 1)
+            : positiveText.slice(0, excluded);
+        }
+
+        const knownNames = [];
+        const collectNames = node => {
+          if (!node || typeof node !== "object") return;
+          if (Array.isArray(node)) { node.forEach(collectNames); return; }
+          const candidate = String(node.Name || node.name || "").trim();
+          if (candidate && !knownNames.includes(candidate)) knownNames.push(candidate);
+          Object.values(node).forEach(collectNames);
+        };
+        for (const instance of state.instances || []) {
+          const reference = (instance.world_state || {}).reference_information || {};
+          for (const [key, value] of Object.entries(reference)) {
+            if (key.toLowerCase().startsWith("attraction")) collectNames(value);
+          }
+          for (const turn of instance.turns || []) {
+            collectNames((((turn.env_feedback || {}).search_results || {}).attractions || []));
+          }
+        }
+        const lower = positiveText.toLowerCase();
+        const intervals = [];
+        for (const candidate of knownNames) {
+          const candidateLower = candidate.toLowerCase();
+          let start = 0;
+          while (start < lower.length) {
+            const index = lower.indexOf(candidateLower, start);
+            if (index < 0) break;
+            intervals.push({ start: index, end: index + candidate.length, name: candidate });
+            start = index + 1;
+          }
+        }
+        intervals.sort((left, right) => left.start - right.start || (right.end - right.start) - (left.end - left.start));
+        const selected = [];
+        for (const interval of intervals) {
+          if (selected.some(other => interval.start < other.end && interval.end > other.start)) continue;
+          selected.push(interval);
+        }
+        selected.sort((left, right) => left.start - right.start);
+        const matches = [...new Set(selected.map(interval => interval.name))];
+        if (matches.length) return matches.join("; ");
+        return text.split(/;\s*/).map(name).join("; ");
+      }
+      return name(text);
+    }
     function extractTravelUnitCost(value) {
       if (value && typeof value === "object") {
         for (const key of ["cost", "price", "Average Cost", "Price"]) {
+          if (value[key] === undefined || value[key] === null || value[key] === "") continue;
           const number = Number(String(value[key] ?? "").replace(/[$,]/g, ""));
           if (Number.isFinite(number)) return number;
         }
@@ -842,7 +932,43 @@ HTML = r"""
       const match = valueToText(value ?? "").match(/maximum occupancy\s*:?\s*([0-9]+)/i);
       return match ? Number(match[1]) : null;
     }
-    function travelCostItem(field, value, people) {
+    function lookupTravelPrice(field, value, day) {
+      const normalize = value => String(value ?? "").normalize("NFKC").toLowerCase().replace(/\s+/g, " ").trim();
+      const text = normalize(value);
+      const instance = state.instances[activeInstanceIndex];
+      const records = [];
+      function collect(node) {
+        if (!node || typeof node !== "object") return;
+        if (Array.isArray(node)) { node.forEach(collect); return; }
+        if (node["Flight Number"] || node.NAME || node.Name) records.push(node);
+        else Object.values(node).forEach(collect);
+      }
+      collect((instance.world_state || {}).reference_information);
+      // Include searches from this turn and earlier turns, never future evidence.
+      instance.turns.slice(0, activeTurnIndex + 1).forEach(turn => collect((turn.env_feedback || {}).search_results));
+      const flightIds = text.match(/\bf\d+\b/g) || [];
+      if (field === "transportation" && flightIds.length > 1) return { error: "Multiple flights: enter one flight per selection" };
+      let matches = records.filter(record => {
+        if (field === "transportation") return flightIds.length && normalize(record["Flight Number"]) === flightIds[0];
+        if (field === "accommodation" ? !record.NAME : record["Average Cost"] === undefined) return false;
+        const name = normalize(record.NAME || record.Name);
+        return name && (text === name || (text.startsWith(name) && /^[\s,;—–-]/.test(text.slice(name.length))));
+      });
+      if (field === "transportation" && !flightIds.length) return {};
+      const date = String(day.day || "").match(/\d{4}-\d{2}-\d{2}/);
+      if (field === "transportation" && date) matches = matches.filter(r => !r.FlightDate || r.FlightDate === date[0]);
+      const cityText = normalize(day.current_city);
+      if (field !== "transportation" && matches.length) {
+        const local = matches.filter(r => cityText.includes(normalize(r.City || r.city)));
+        if (local.length) matches = local;
+      }
+      // Repeated search results describe the same catalog entry.
+      const unique = new Map(matches.map(r => [JSON.stringify([r["Flight Number"] || r.NAME || r.Name, r.City || r.city, r.FlightDate, extractTravelUnitCost(r), extractMaximumOccupancy(r)]), r]));
+      if (unique.size > 1) return { error: "Multiple matches: specify city/date" };
+      if (unique.size === 1) return { record: [...unique.values()][0] };
+      return { error: "No matching record: price unavailable" };
+    }
+    function travelCostItem(field, value, people, day = {}) {
       const text = valueToText(value ?? "").trim();
       const label = prettyKey(field);
       if (field === "attraction") {
@@ -851,9 +977,10 @@ HTML = r"""
       if (!text || text === "-") {
         return { label, subtotal: 0, formula: "$0.00 (not selected)", unavailable: false };
       }
-      const unit = extractTravelUnitCost(value);
+      const lookup = lookupTravelPrice(field, value, day);
+      const unit = lookup.record ? extractTravelUnitCost(lookup.record) : (lookup.error ? null : extractTravelUnitCost(value));
       if (unit === null) {
-        return { label, subtotal: 0, formula: "Price unavailable — excluded from total", unavailable: true };
+        return { label, subtotal: 0, formula: lookup.error || "Price unavailable — excluded from total", unavailable: true };
       }
       let multiplier = people;
       let unitLabel = `${people} traveler${people === 1 ? "" : "s"}`;
@@ -865,7 +992,8 @@ HTML = r"""
         multiplier = Math.ceil(people / 5);
         unitLabel = `${multiplier} car${multiplier === 1 ? "" : "s"} (5 travelers each)`;
       } else if (field === "accommodation") {
-        const occupancy = extractMaximumOccupancy(value);
+        const occupancy = extractMaximumOccupancy(lookup.record || value);
+        if (!occupancy) return { label, subtotal: 0, formula: "Room occupancy unavailable", unavailable: true };
         multiplier = occupancy ? Math.ceil(people / occupancy) : 1;
         unitLabel = occupancy
           ? `${multiplier} room${multiplier === 1 ? "" : "s"} (max ${occupancy} each)`
@@ -886,28 +1014,30 @@ HTML = r"""
       const costFields = ["transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
       let total = 0;
       let unavailableCount = 0;
-      const daySections = days.map((day, dayIndex) => {
-        const items = costFields.map(field => travelCostItem(field, day[field], people));
+      days.forEach((day, dayIndex) => {
+        const items = costFields.map(field => travelCostItem(field, day[field], people, day));
         const subtotal = items.reduce((sum, item) => sum + item.subtotal, 0);
         total += subtotal;
         unavailableCount += items.filter(item => item.unavailable).length;
-        return `<div class="travel-cost-day">
-          <strong>${esc(day.day || `Day ${dayIndex + 1}`)}</strong>
-          ${items.map(item => `<div class="cost-row ${item.unavailable ? "unavailable" : ""}">
-            <span>${esc(item.label)}</span><span class="cost-formula">${esc(item.formula)}</span><strong>${item.unavailable ? "—" : esc(money(item.subtotal))}</strong>
-          </div>`).join("")}
-          <div class="cost-row cost-subtotal"><span>Day subtotal</span><span></span><strong>${esc(money(subtotal))}</strong></div>
-        </div>`;
-      }).join("");
+        items.forEach((item, itemIndex) => {
+          const badge = goldActionEditor.querySelector(`[data-cost-day="${dayIndex}"][data-cost-field="${costFields[itemIndex]}"]`);
+          if (!badge) return;
+          badge.textContent = item.unavailable ? item.formula : `${item.formula} = ${money(item.subtotal)}`;
+          badge.classList.toggle("unavailable", item.unavailable);
+        });
+        const subtotalElement = goldActionEditor.querySelector(`[data-day-subtotal="${dayIndex}"]`);
+        if (subtotalElement) subtotalElement.textContent = money(subtotal);
+      });
       const hasBudget = Number.isFinite(budget);
       const difference = hasBudget ? budget - total : null;
+      const grandTotal = document.getElementById("travelGrandTotal");
+      if (grandTotal) grandTotal.textContent = `${unavailableCount ? "Known costs (incomplete)" : "Total trip cost"}: ${money(total)}`;
       container.innerHTML = `<section class="travel-cost-summary">
-        <div class="travel-cost-head"><div><div class="small-title" style="margin-top:0;">Proposed itinerary cost breakdown</div><strong>${people} traveler${people === 1 ? "" : "s"}</strong></div><strong>${esc(money(total))} total</strong></div>
-        ${daySections}
+        <div class="travel-cost-head"><div><div class="small-title" style="margin-top:0;">Proposed itinerary cost breakdown</div><strong>${people} traveler${people === 1 ? "" : "s"}</strong></div><strong>${unavailableCount ? "Known costs (incomplete)" : "Total trip cost"}: ${esc(money(total))}</strong></div>
         <div class="travel-cost-total ${hasBudget && difference < 0 ? "over-budget" : ""}">
-          <div class="cost-row"><strong>Estimated total</strong><span></span><strong>${esc(money(total))}</strong></div>
-          ${hasBudget ? `<div class="cost-row"><span>Budget</span><span>${difference >= 0 ? "Remaining" : "Over budget"}</span><strong>${esc(money(Math.abs(difference)))}</strong></div>` : ""}
-          <div class="travel-cost-note">Flights and meals are per traveler; taxis use 4 travelers per vehicle, self-driving uses 5, and lodging uses maximum occupancy. Attractions are not included in the benchmark cost.${unavailableCount ? ` ${unavailableCount} selected item${unavailableCount === 1 ? " has" : "s have"} no extractable price and ${unavailableCount === 1 ? "is" : "are"} excluded.` : ""}</div>
+          <div class="cost-summary-row"><strong>${unavailableCount ? "Known costs only" : "Total trip cost"}</strong><strong>${esc(money(total))}</strong></div>
+          ${hasBudget ? `<div class="cost-summary-row"><span>Budget: ${esc(money(budget))}</span><span>${unavailableCount ? "Remaining budget unknown" : `${difference >= 0 ? "Remaining" : "Over budget"}: ${esc(money(Math.abs(difference)))}`}</span></div>` : ""}
+          <div class="travel-cost-note">Enter a flight number, restaurant name or hotel name to look up prices from this case's reference/search records. Lodging is charged once per listed night using room occupancy; flights and meals are per traveler. Attractions are not costed by the benchmark.${unavailableCount ? ` ${unavailableCount} items could not be priced; the full total and remaining budget are not yet known.` : ""}</div>
         </div>
       </section>`;
     }
@@ -1072,7 +1202,6 @@ HTML = r"""
 
       renderEditor(turn);
       renderGoldAction(turn);
-      renderEntityIntentions(turn);
       const originalGoldItem = inst.webshop_gold_item;
       if (state.domain === "webshop" && turnIndex === 0 && originalGoldItem) {
         webshopGoldPanel.style.display = "block";
@@ -1186,35 +1315,39 @@ HTML = r"""
         }).join("") : `<div class="empty">No ${esc(category)} search was recorded for this turn.</div>`}
       </section>`;
     }
-    function renderEntityIntentions(turn) {
-      const gold = turn.gold_current_intention || {};
-      const entities = Object.entries(gold.entities || {});
-      if (state.domain !== "travelplanner" || entities.length <= 1) {
-        entityPanel.style.display = "none";
-        entityState.innerHTML = "";
-        return;
+    function allTransportationPages(reference, searchedPages) {
+      const signature = item => item["Flight Number"]
+        ? `flight:${item["Flight Number"]}:${item.FlightDate || ""}`
+        : String(item.value || JSON.stringify(item)).toLowerCase().replace(/[\s,]+/g, " ").trim();
+      const searched = new Set(searchedPages.flatMap(page => (page.items || []).map(signature)));
+      const seen = new Set();
+      const pages = [];
+      for (const [label, value] of Object.entries(reference || {})) {
+        if (!/^(flight|self[- ]driving|taxi)\s+from\s/i.test(label)) continue;
+        const records = Array.isArray(value) ? value : [value];
+        const items = records.filter(value => value !== null && value !== "").map(value => {
+          const item = typeof value === "object" ? {...value} : {value};
+          const key = signature(item);
+          seen.add(key);
+          return {...item, searched_this_turn: searched.has(key) ? "Yes" : "No"};
+        });
+        pages.push({query: label, source_action: "Reference options", status: "available", items});
       }
-      entityPanel.style.display = "block";
-      const changes = Object.entries(turn.gold_delta || {});
-      const entityCards = entities.map(([entityId, entity]) => `<article class="travel-card">
-            <h3 class="travel-card-title">${esc(entity.reference || "Traveler")} <span class="details">(${esc(entityId)})</span></h3>
-            <pre>${esc(JSON.stringify(entity.constraints || {}, null, 2))}</pre>
-          </article>`).join("");
-      const changeCards = changes.length
-        ? changes.map(([path, change]) => `<article class="travel-card">
-            <h3 class="travel-card-title">${esc(path)}</h3>
-            <div class="chips">${pill(change.category || change.op || "change", change.category === "entity" ? "warn" : "")}</div>
-            <pre>${esc(JSON.stringify({old: change.old, new: change.new, rationale: change.rationale}, null, 2))}</pre>
-          </article>`).join("")
-        : `<div class="empty">Initial turn: no gold changes.</div>`;
-      entityState.innerHTML = `
-        <div class="small-title">Travelers and person-specific constraints</div>
-        <div class="travel-items">${entityCards}</div>
-        <div class="small-title">This turn's gold changes (${changes.length})</div>
-        <div class="travel-items">${changeCards}</div>`;
+      for (const page of searchedPages) {
+        const items = (page.items || []).filter(item => {
+          const key = signature(item);
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        if (items.length || page.status === "no_results") pages.push({...page, items});
+      }
+      return pages;
     }
     function renderTravelPlanner(turn, feedback, actionPayload) {
-      const searchResults = feedback.search_results || {};
+      const searchResults = {...(feedback.search_results || {})};
+      const reference = (state.instances[activeInstanceIndex].world_state || {}).reference_information || {};
+      searchResults.transportation = allTransportationPages(reference, searchResults.transportation || []);
       const order = ["attractions", "accommodations", "restaurants", "transportation", "cities"];
       const categories = [...order.filter(key => key in searchResults), ...Object.keys(searchResults).filter(key => !order.includes(key))];
       const total = categories.reduce((sum, key) => sum + (searchResults[key] || []).reduce((n, page) => n + ((page && page.items) || []).length, 0), 0);
@@ -1957,6 +2090,183 @@ def rationales_for_turn(turn: Dict[str, Any]) -> List[str]:
     return rationales
 
 
+def strip_travelplanner_context_constraints(instances: List[Dict[str, Any]]) -> int:
+    """Keep itinerary context out of editable constraints and priority."""
+    removed = 0
+    for instance in instances:
+        world_state = instance.get("world_state") or {}
+        turns = instance.get("turns") or []
+        first_gold = (turns[0].get("gold_current_intention") or {}) if turns else {}
+        domain = str(world_state.get("domain") or first_gold.get("domain") or "").lower()
+        if domain != "travelplanner":
+            continue
+        for turn in turns:
+            gold = turn.get("gold_current_intention") or {}
+            constraints = gold.get("constraints") or {}
+            if isinstance(constraints, dict):
+                for field in TRAVELPLANNER_CONTEXT_FIELDS:
+                    if field in constraints:
+                        constraints.pop(field)
+                        removed += 1
+            priority = gold.get("priority")
+            if isinstance(priority, dict):
+                for level in ("high", "medium", "low"):
+                    values = priority.get(level)
+                    if isinstance(values, list):
+                        priority[level] = [
+                            value for value in values
+                            if str(value) not in TRAVELPLANNER_CONTEXT_FIELDS
+                        ]
+            elif isinstance(priority, list):
+                gold["priority"] = [
+                    value for value in priority
+                    if str(value) not in TRAVELPLANNER_CONTEXT_FIELDS
+                ]
+            delta = turn.get("gold_delta")
+            if isinstance(delta, dict):
+                for field in TRAVELPLANNER_CONTEXT_FIELDS:
+                    delta.pop(field, None)
+    return removed
+
+
+def collect_travel_attraction_names(instances: List[Dict[str, Any]]) -> List[str]:
+    """Collect canonical attraction names from TravelPlanner reference/search data."""
+    names: List[str] = []
+
+    def collect(node: Any) -> None:
+        if isinstance(node, list):
+            for item in node:
+                collect(item)
+        elif isinstance(node, dict):
+            raw_name = node.get("Name") or node.get("name")
+            name = str(raw_name or "").strip()
+            if name and name not in names:
+                names.append(name)
+            for value in node.values():
+                collect(value)
+
+    for instance in instances:
+        reference = (instance.get("world_state") or {}).get("reference_information") or {}
+        if isinstance(reference, dict):
+            for key, value in reference.items():
+                if str(key).lower().startswith("attraction"):
+                    collect(value)
+        for turn in instance.get("turns") or []:
+            search_results = (turn.get("env_feedback") or {}).get("search_results") or {}
+            if isinstance(search_results, dict):
+                collect(search_results.get("attractions") or [])
+    return names
+
+
+def normalize_travel_attraction_value(value: Any, known_names: Sequence[str]) -> str:
+    """Return only selected attraction names, excluding addresses and plan prose."""
+    if isinstance(value, list):
+        text = "; ".join(
+            str((item.get("name") or item.get("Name") or "") if isinstance(item, dict) else item).strip()
+            for item in value
+        )
+    elif isinstance(value, dict):
+        text = str(value.get("name") or value.get("Name") or "").strip()
+    else:
+        text = str(value or "").strip()
+    if not text:
+        return ""
+    if re.match(r"^-\s*(?:\(|$)", text) or re.search(
+        r"\b(?:no (?:scheduled )?(?:sightseeing|attraction)|no sightseeing scheduled|full rest day)\b",
+        text,
+        flags=re.IGNORECASE,
+    ) or (
+        re.search(r"\b(?:arrival|check[ -]?in)\b", text, flags=re.IGNORECASE)
+        and re.search(r"\b(?:rest|no additional activities)\b", text, flags=re.IGNORECASE)
+    ):
+        return "-"
+
+    positive_text = text
+    direct_negative = re.search(r"\b(?:do not visit|no visit to)\b", positive_text, flags=re.IGNORECASE)
+    if direct_negative:
+        positive_text = positive_text[: direct_negative.start()]
+    excluded = re.search(r"\b(?:are|is)\s+(?:excluded|omitted)\b", positive_text, flags=re.IGNORECASE)
+    if excluded:
+        sentence_start = positive_text.rfind(". ", 0, excluded.start())
+        positive_text = positive_text[: sentence_start + 1] if sentence_start >= 0 else positive_text[: excluded.start()]
+
+    intervals: List[Tuple[int, int, str]] = []
+    lower = positive_text.lower()
+    for raw_name in known_names:
+        name = str(raw_name).strip()
+        if not name:
+            continue
+        name_lower = name.lower()
+        start = 0
+        while True:
+            index = lower.find(name_lower, start)
+            if index < 0:
+                break
+            intervals.append((index, index + len(name), name))
+            start = index + 1
+    intervals.sort(key=lambda item: (item[0], -(item[1] - item[0])))
+
+    selected: List[Tuple[int, int, str]] = []
+    for interval in intervals:
+        start, end, _name = interval
+        if any(start < other_end and end > other_start for other_start, other_end, _ in selected):
+            continue
+        selected.append(interval)
+    selected.sort(key=lambda item: item[0])
+    output: List[str] = []
+    for _start, _end, name in selected:
+        if name not in output:
+            output.append(name)
+    return "; ".join(output) if output else text
+
+
+def _normalize_action_attractions(
+    instances: List[Dict[str, Any]],
+    action_fields: Sequence[str],
+    known_names: Optional[Sequence[str]],
+) -> int:
+    names = list(known_names) if known_names is not None else collect_travel_attraction_names(instances)
+    changed = 0
+    for instance in instances:
+        domain = str((instance.get("world_state") or {}).get("domain") or "").lower()
+        if domain != "travelplanner":
+            continue
+        for turn in instance.get("turns") or []:
+            for action_field in action_fields:
+                itinerary = (
+                    (((turn.get(action_field) or {}).get("action_payload") or {}).get("plan") or {})
+                    .get("itinerary") or []
+                )
+                for day in itinerary:
+                    if not isinstance(day, dict) or "attraction" not in day:
+                        continue
+                    normalized = normalize_travel_attraction_value(day.get("attraction"), names)
+                    if day.get("attraction") != normalized:
+                        day["attraction"] = normalized
+                        changed += 1
+    return changed
+
+
+def normalize_stored_gold_action_attractions(
+    instances: List[Dict[str, Any]],
+    known_names: Optional[Sequence[str]] = None,
+) -> int:
+    """Normalize attraction fields already stored in editable gold actions."""
+    return _normalize_action_attractions(instances, ("gold_action",), known_names)
+
+
+def normalize_replay_action_attractions(
+    instances: List[Dict[str, Any]],
+    known_names: Optional[Sequence[str]] = None,
+) -> int:
+    """Normalize both stored gold and fallback agent actions in the display copy."""
+    return _normalize_action_attractions(
+        instances,
+        ("gold_action", "agent_action"),
+        known_names,
+    )
+
+
 def _metadata_constraint_key(value: Any) -> str:
     key = re.sub(r"[^a-z0-9]+", "_", str(value or "").strip().lower())
     return re.sub(r"_+", "_", key).strip("_")
@@ -2221,6 +2531,11 @@ def create_app(
     annotation_path: Path,
     catalog_items: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> Flask:
+    strip_travelplanner_context_constraints(instances)
+    strip_travelplanner_context_constraints(state.get("instances") or [])
+    attraction_names = collect_travel_attraction_names(instances)
+    normalize_stored_gold_action_attractions(instances, attraction_names)
+    normalize_replay_action_attractions(state.get("instances") or [], attraction_names)
     app = Flask(__name__)
     replay_catalog_items = catalog_items or {}
 
@@ -2268,10 +2583,9 @@ def create_app(
         if target_shard == state.get("shard_index"):
             return jsonify({"ok": True, "shard": target_shard, "already_active": True})
 
-        launcher_path = PROJECT_ROOT / "annotation" / "start_webshop_shard.ps1"
-        creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-        subprocess.Popen(
-            [
+        if state.get("domain") == "webshop":
+            launcher_path = PROJECT_ROOT / "annotation" / "start_webshop_shard.ps1"
+            launcher_arguments = [
                 "powershell.exe",
                 "-NoProfile",
                 "-ExecutionPolicy",
@@ -2283,7 +2597,44 @@ def create_app(
                 "-DelayMilliseconds",
                 "1500",
                 "-NoBrowser",
-            ],
+            ]
+        else:
+            source_path = Path(str(state.get("source_dataset") or ""))
+            target_dataset = source_path.parent / f"shard_{target_shard:03d}.json"
+            if not target_dataset.is_file():
+                return jsonify({"ok": False, "error": f"Shard source not found: {target_dataset}"}), 404
+            target_stem = f"shard_{target_shard:03d}"
+            output_name = re.sub(r"shard_\d+", target_stem, annotation_path.name, count=1)
+            target_output = annotation_path.parent / output_name
+            launcher_path = PROJECT_ROOT / "annotation" / "start_replay_shard.ps1"
+            launcher_arguments = [
+                "powershell.exe",
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                str(launcher_path),
+                "-DatasetPath",
+                str(target_dataset),
+                "-OutputPath",
+                str(target_output),
+                "-CurrentProcessId",
+                str(os.getpid()),
+                "-Port",
+                str(state.get("server_port") or 7860),
+                "-HostAddress",
+                str(state.get("server_host") or "127.0.0.1"),
+                "-DelayMilliseconds",
+                "1500",
+                "-NoBrowser",
+            ]
+            if state.get("skip_constraint_enrichment"):
+                launcher_arguments.append("-SkipConstraintEnrichment")
+            if state.get("skip_full_catalog"):
+                launcher_arguments.append("-SkipFullCatalog")
+        creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        subprocess.Popen(
+            launcher_arguments,
             cwd=str(PROJECT_ROOT),
             creationflags=creation_flags,
             stdout=subprocess.DEVNULL,
@@ -2320,16 +2671,28 @@ def create_app(
         if not isinstance(constraints_payload, dict):
             return jsonify({"ok": False, "error": "constraints must be an object"}), 400
 
+        instance_domain = str(
+            (instances[instance_index].get("world_state") or {}).get("domain") or "webshop"
+        ).lower()
         constraints_clean = {
             str(key).strip(): value
             for key, value in constraints_payload.items()
             if str(key).strip()
+            and not (
+                instance_domain == "travelplanner"
+                and str(key).strip() in TRAVELPLANNER_CONTEXT_FIELDS
+            )
         }
         priority_clean = normalize_priority_payload(payload.get("priority"), list(constraints_clean.keys()))
         has_gold_action = "gold_action" in payload
         gold_action = payload.get("gold_action")
         if has_gold_action:
-            instance_domain = str((instances[instance_index].get("world_state") or {}).get("domain") or "webshop").lower()
+            gold_action_holder = [{
+                "world_state": {"domain": instance_domain},
+                "turns": [{"gold_action": copy.deepcopy(gold_action)}],
+            }]
+            normalize_stored_gold_action_attractions(gold_action_holder, attraction_names)
+            gold_action = gold_action_holder[0]["turns"][0]["gold_action"]
             gold_action_error = validate_gold_action(gold_action, instance_domain)
             if gold_action_error:
                 return jsonify({"ok": False, "error": gold_action_error}), 400
@@ -2418,15 +2781,22 @@ def create_app(
             return jsonify({"ok": False, "error": "Every trajectory turn must be an object"}), 400
 
         domain = str((instances[instance_index].get("world_state") or {}).get("domain") or "webshop").lower()
-        for turn_index, turn in enumerate(submitted_turns):
+        sanitized_instance = {
+            "world_state": {"domain": domain},
+            "turns": copy.deepcopy(submitted_turns),
+        }
+        strip_travelplanner_context_constraints([sanitized_instance])
+        normalize_stored_gold_action_attractions([sanitized_instance], attraction_names)
+        sanitized_turns = sanitized_instance["turns"]
+        for turn_index, turn in enumerate(sanitized_turns):
             gold_action = turn.get("gold_action")
             if gold_action:
                 error = validate_gold_action(gold_action, domain)
                 if error:
                     return jsonify({"ok": False, "error": f"Turn {turn_index}: {error}"}), 400
 
-        prepared_turns = copy.deepcopy(submitted_turns)
-        stored_turns = [annotation_turn_for_storage(turn) for turn in submitted_turns]
+        prepared_turns = copy.deepcopy(sanitized_turns)
+        stored_turns = [annotation_turn_for_storage(turn) for turn in sanitized_turns]
         renumber_turns(prepared_turns)
         renumber_turns(stored_turns)
         for turn in prepared_turns:
@@ -2529,6 +2899,10 @@ def main() -> None:
     instances = load_json(input_path)
     if not isinstance(instances, list):
         raise ValueError(f"Expected dataset JSON list in {input_path}, got {type(instances).__name__}")
+    removed_travel_context = strip_travelplanner_context_constraints(instances)
+    normalized_attractions = normalize_stored_gold_action_attractions(instances)
+    if removed_travel_context or normalized_attractions:
+        save_json(annotation_path, instances)
     enriched_constraints = 0
     if not args.skip_constraint_enrichment:
         enriched_constraints = enrich_webshop_constraints_from_metadata(instances)
@@ -2562,11 +2936,19 @@ def main() -> None:
     shard_index, shard_count = infer_shard_context(args.dataset)
     state["shard_index"] = shard_index
     state["shard_count"] = shard_count
+    state["server_host"] = args.host
+    state["server_port"] = args.port
+    state["skip_constraint_enrichment"] = args.skip_constraint_enrichment
+    state["skip_full_catalog"] = args.skip_full_catalog
     app = create_app(state, instances, annotation_path, catalog_items=catalog_items)
     print(f"Source dataset (read-only): {args.dataset.resolve()}")
     print(f"Annotation output: {annotation_path.resolve()}")
     if enriched_constraints:
         print(f"Restored {enriched_constraints} WebShop constraints from selection metadata.")
+    if removed_travel_context:
+        print(f"Removed {removed_travel_context} TravelPlanner itinerary-context constraints.")
+    if normalized_attractions:
+        print(f"Normalized {normalized_attractions} stored TravelPlanner attraction selections.")
     if attached_gold_items:
         print(f"Attached {attached_gold_items} original WebShop gold products.")
     if input_path == annotation_path:
