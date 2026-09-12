@@ -155,6 +155,131 @@ class OpenAIResponsesClient:
         return True
 
 
+class OpenRouterChatClient:
+    """Minimal OpenRouter client.
+
+    OpenRouter only exposes the chat-completions shape, so this cannot reuse
+    ``OpenAIResponsesClient``, which posts to ``/responses``.
+    """
+
+    def __init__(
+        self,
+        api_key: str,
+        model: str,
+        base_url: str = "https://openrouter.ai/api/v1",
+        timeout: int = 60,
+        max_tokens: int = 8192,
+    ):
+        self.api_key = api_key
+        self.model = model
+        self.base_url = base_url.rstrip("/")
+        self.timeout = timeout
+        self.max_tokens = max_tokens
+
+    @classmethod
+    def from_env(cls, timeout: int = 60) -> "OpenRouterChatClient":
+        api_key = os.getenv("OPENROUTER_API_KEY")
+        model = os.getenv("OPENROUTER_MODEL")
+        missing = []
+        if not api_key:
+            missing.append("OPENROUTER_API_KEY")
+        if not model:
+            missing.append("OPENROUTER_MODEL")
+        if missing:
+            raise ValueError("Missing OpenRouter settings: " + ", ".join(missing))
+        return cls(
+            api_key=api_key,
+            model=model,
+            base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
+            timeout=int(os.getenv("OPENROUTER_READ_TIMEOUT", str(timeout))),
+            max_tokens=int(os.getenv("OPENROUTER_MAX_TOKENS", "8192")),
+        )
+
+    def generate_json(self, prompt: str) -> Dict[str, Any]:
+        return _parse_json_object(self.generate_json_text(prompt), "OpenRouter")
+
+    def generate_json_text(self, prompt: str) -> str:
+        return self._completion(prompt, temperature=0.1, json_mode=True)
+
+    def generate_text(self, prompt: str) -> str:
+        return self._completion(prompt, temperature=0.7, json_mode=False)
+
+    def _completion(self, prompt: str, temperature: float, json_mode: bool) -> str:
+        payload: Dict[str, Any] = {
+            "model": self.model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": temperature,
+            "max_tokens": self.max_tokens,
+        }
+        if json_mode:
+            payload["response_format"] = {"type": "json_object"}
+
+        try:
+            response = self._post(payload)
+        except urllib.error.HTTPError as exc:
+            # Not every routed model advertises response_format support; the
+            # fenced-JSON fallback in _parse_json_object covers the retry.
+            if json_mode and exc.code in {400, 404, 422}:
+                fallback = dict(payload)
+                fallback.pop("response_format", None)
+                response = self._post(fallback)
+            else:
+                raise
+
+        error = response.get("error")
+        if error:
+            raise ValueError(f"OpenRouter returned an error: {error}")
+        choices = response.get("choices") or []
+        if not choices:
+            raise ValueError("OpenRouter returned no choices")
+        content = (choices[0].get("message") or {}).get("content") or ""
+        if isinstance(content, list):
+            content = "".join(
+                part.get("text", "")
+                for part in content
+                if isinstance(part, dict)
+            )
+        return str(content)
+
+    def _post(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        max_retries = max(int(os.getenv("OPENROUTER_MAX_RETRIES", "4")), 0)
+        backoff = float(os.getenv("OPENROUTER_RETRY_BACKOFF_SECONDS", "2"))
+        retry_count = 0
+        while True:
+            try:
+                return self._send_request(payload)
+            except urllib.error.HTTPError as exc:
+                if exc.code not in {408, 429, 500, 502, 503, 504}:
+                    raise
+                if retry_count >= max_retries:
+                    raise
+            except (TimeoutError, socket.timeout, urllib.error.URLError):
+                if retry_count >= max_retries:
+                    raise
+            retry_count += 1
+            time.sleep(max(backoff, 0) * (2 ** (retry_count - 1)) + random.uniform(0, 0.5))
+
+    def _send_request(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+        referer = os.getenv("OPENROUTER_HTTP_REFERER")
+        if referer:
+            headers["HTTP-Referer"] = referer
+        title = os.getenv("OPENROUTER_APP_TITLE")
+        if title:
+            headers["X-Title"] = title
+        request = urllib.request.Request(
+            url=f"{self.base_url}/chat/completions",
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            return json.loads(response.read().decode("utf-8"))
+
+
 class BedrockConverseClient:
     """Minimal Bedrock Converse client for text and JSON generation."""
 
@@ -522,16 +647,22 @@ def create_llm_client_from_env(
 ) -> Any:
     """Create the configured LLM client without changing caller prompts.
 
-    LLM_PROVIDER may be ``bedrock``, ``deepseek``, ``openai``, or ``azure``.
-    In auto mode, DeepSeek/OpenAI keys take priority over Azure configuration.
+    LLM_PROVIDER may be ``bedrock``, ``openrouter``, ``deepseek``, ``openai``,
+    or ``azure``. In auto mode, OpenRouter/DeepSeek/OpenAI keys take priority
+    over Azure configuration.
     """
     provider = os.getenv("LLM_PROVIDER", "auto").strip().lower()
-    if provider not in {"auto", "bedrock", "deepseek", "openai", "azure"}:
+    if provider not in {"auto", "bedrock", "openrouter", "deepseek", "openai", "azure"}:
         raise ValueError(
-            "LLM_PROVIDER must be one of: auto, bedrock, deepseek, openai, azure"
+            "LLM_PROVIDER must be one of: auto, bedrock, openrouter, deepseek, "
+            "openai, azure"
         )
     if provider == "bedrock":
         return BedrockConverseClient.from_env(timeout=timeout)
+    if provider == "openrouter" or (
+        provider == "auto" and os.getenv("OPENROUTER_API_KEY")
+    ):
+        return OpenRouterChatClient.from_env(timeout=timeout)
     if provider == "deepseek" or (provider == "auto" and os.getenv("DEEPSEEK_API_KEY")):
         return OpenAIResponsesClient.from_env(timeout=timeout, provider="deepseek")
     if provider == "openai" or (provider == "auto" and os.getenv("OPENAI_API_KEY")):
@@ -546,5 +677,6 @@ __all__ = [
     "AzureOpenAIChatClient",
     "BedrockConverseClient",
     "OpenAIResponsesClient",
+    "OpenRouterChatClient",
     "create_llm_client_from_env",
 ]
