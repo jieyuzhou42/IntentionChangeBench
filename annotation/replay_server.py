@@ -720,9 +720,16 @@ HTML = r"""
       renderPriorityBoard();
     }
     function renderConstraints() {
-      constraints.innerHTML = constraintDraft.map((row, index) => `
+      const vocab = state.constraint_vocabulary || [];
+      const known = new Set(vocab);
+      constraints.innerHTML = `<datalist id="constraint-vocab">${
+        vocab.map(name => `<option value="${esc(name)}"></option>`).join("")
+      }</datalist>` + constraintDraft.map((row, index) => `
         <div class="constraint-row" data-key="${esc(row.key)}">
-          <input data-role="key" data-index="${index}" value="${esc(row.key)}" placeholder="constraint">
+          <input data-role="key" data-index="${index}" value="${esc(row.key)}" placeholder="constraint"
+                 list="constraint-vocab"${row.key && !known.has(row.key)
+                   ? ' style="border-color:#d97706;background:#fffbeb" title="数据集里没有这个字段名，确认不是手误"'
+                   : ''}>
           <input data-role="value" data-index="${index}" value="${esc(row.valueText)}" placeholder="value, JSON allowed">
           <button class="danger" data-role="remove" data-index="${index}" title="Remove">Remove</button>
         </div>
@@ -793,6 +800,77 @@ HTML = r"""
         }).join("")}</div>
         <label class="gold-confirm"><input type="checkbox" data-gold-role="confirmed" ${goldActionDraft.confirmed ? "checked" : ""}> I confirm this is the gold product and these are the exact options.</label>`;
     }
+    // Candidate pool for the current turn, so gold entries can be picked instead
+    // of transcribed by hand. Hand-typed strings silently break the downstream
+    // parsers when a field like "minimum stay" is omitted or reworded.
+    function travelPool(kind) {
+      const inst = state.instances[activeInstanceIndex] || {};
+      const turn = (inst.turns || [])[activeTurnIndex] || {};
+      const results = ((turn.env_feedback || {}).search_results) || {};
+      const out = [];
+      for (const page of (results[kind] || [])) {
+        for (const item of (page.items || [])) {
+          if (item && typeof item === "object") out.push(item);
+        }
+      }
+      return out;
+    }
+    function nightsInPlan() {
+      const days = (((goldActionDraft.action_payload || {}).plan || {}).itinerary || []);
+      return Math.max(1, days.length - 1);
+    }
+    function renderAccommodationText(item) {
+      const nights = nightsInPlan();
+      const price = Number(item.price || 0);
+      const days = (((goldActionDraft.action_payload || {}).plan || {}).itinerary || []);
+      const checkin = (days[0] || {}).day || "";
+      const checkout = (days[days.length - 1] || {}).day || "";
+      return `${item.NAME}; ${item["room type"]}; rating ${item["review rate number"]}; ` +
+             `$${price.toFixed(0)}/night × ${nights} nights = $${(price * nights).toFixed(0)} for one unit; ` +
+             `minimum stay ${item["minimum nights"]} nights; maximum occupancy ${item["maximum occupancy"]}; ` +
+             `check in ${checkin}, check out ${checkout}; house rules: ${item.house_rules}`;
+    }
+    function renderMealText(item) {
+      const people = Math.max(1, Math.floor(draftConstraintNumber(["people_number", "party_size"], 1)));
+      return `${item.Name}; rating ${item["Aggregate Rating"]}; ` +
+             `listed Average Cost $${item["Average Cost"]} per person × ${people}; Cuisines: ${item.Cuisines}`;
+    }
+    function travelOptions(field) {
+      if (field === "accommodation") {
+        return travelPool("accommodations").map(item => ({
+          label: `$${Number(item.price || 0).toFixed(0)}/晚 · ${item["room type"]} · r${item["review rate number"]} · min${item["minimum nights"]} · ${String(item.NAME).slice(0, 28)}`,
+          text: renderAccommodationText(item),
+        }));
+      }
+      if (["breakfast", "lunch", "dinner"].includes(field)) {
+        return travelPool("restaurants").map(item => ({
+          label: `$${item["Average Cost"]} · r${item["Aggregate Rating"]} · ${String(item.Name).slice(0, 26)}`,
+          text: renderMealText(item),
+        }));
+      }
+      if (field === "attraction") {
+        return travelPool("attractions").map(item => ({
+          label: String(item.Name || item.name || JSON.stringify(item)).slice(0, 40),
+          text: String(item.Name || item.name || ""),
+        }));
+      }
+      if (field === "transportation") {
+        return travelPool("transportation").map(item => ({
+          label: String(item.value || JSON.stringify(item)).slice(0, 60),
+          text: String(item.value || ""),
+        }));
+      }
+      return [];
+    }
+    function travelPicker(field, dayIndex) {
+      const options = travelOptions(field);
+      if (!options.length) return "";
+      return `<select data-gold-role="travel-pick" data-day-index="${dayIndex}" data-field="${field}" class="travel-pick">
+        <option value="">— 从候选池选 (${options.length}) —</option>
+        <option value="__dash__">— 该日不安排 (-)</option>
+        ${options.map((o, i) => `<option value="${i}">${esc(o.label)}</option>`).join("")}
+      </select>`;
+    }
     function renderTravelGoldAction() {
       const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
       const plan = payload.plan || (payload.plan = {});
@@ -802,7 +880,7 @@ HTML = r"""
         <div class="day-list">${days.map((day, dayIndex) => `
           <article class="day-card">
             <div class="day-head editor-head"><strong>${esc(day.day || `Day ${dayIndex + 1}`)}</strong><button class="danger" data-gold-role="remove-day" data-day-index="${dayIndex}">Remove day</button></div>
-            <div class="day-grid">${fields.map(field => `<div class="day-field"><label>${esc(prettyKey(field))}</label><input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
+            <div class="day-grid">${fields.map(field => `<div class="day-field"><label>${esc(prettyKey(field))}</label>${travelPicker(field, dayIndex)}<input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
           </article>`).join("")}</div>
         ${days.length ? "" : `<div class="empty">No proposed days. Add a day to define the gold itinerary.</div>`}
         <div id="travelCostSummary"></div>
@@ -810,6 +888,19 @@ HTML = r"""
         <label class="gold-confirm"><input type="checkbox" data-gold-role="confirmed" ${goldActionDraft.confirmed ? "checked" : ""}> I confirm every day's exact transportation, restaurants, attraction, and hotel.</label>`;
       renderTravelCostSummary();
     }
+    goldActionEditor.addEventListener("change", event => {
+      const select = event.target.closest('[data-gold-role="travel-pick"]');
+      if (!select) return;
+      const dayIndex = Number(select.dataset.dayIndex);
+      const field = select.dataset.field;
+      const days = (((goldActionDraft.action_payload || {}).plan || {}).itinerary || []);
+      if (!days[dayIndex]) return;
+      if (select.value === "") return;
+      days[dayIndex][field] = select.value === "__dash__"
+        ? "-"
+        : (travelOptions(field)[Number(select.value)] || {}).text || "";
+      renderTravelGoldAction();
+    });
     function draftConstraintNumber(keys, fallback) {
       for (const key of keys) {
         const row = constraintDraft.find(item => item.key.trim() === key);
@@ -820,6 +911,14 @@ HTML = r"""
       }
       return fallback;
     }
+    function isUnbookedSlot(text) {
+      // A slot that reports "no feasible option" is an explanation, not a
+      // booking. Those notes quote the prices that make the plan impossible
+      // ("...the 5.0 apartment is $2,080 for two nights..."), so pricing them
+      // charges the trip for a stay it explicitly did not book -- and, because
+      // the note repeats on every night, charges it twice.
+      return /^\s*(no feasible option|not applicable|unknown\b)/i.test(text);
+    }
     function extractTravelUnitCost(value) {
       if (value && typeof value === "object") {
         for (const key of ["cost", "price", "Average Cost", "Price"]) {
@@ -828,6 +927,7 @@ HTML = r"""
         }
       }
       const text = valueToText(value ?? "");
+      if (isUnbookedSlot(text)) return null;
       const match = text.match(/(?:average cost|listed price|cost|price)\s*[:=]?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)/i)
         || text.match(/\$\s*([0-9][0-9,]*(?:\.[0-9]+)?)/);
       return match ? Number(match[1].replaceAll(",", "")) : null;
@@ -2128,7 +2228,26 @@ def prepare_state(
         "no_image_url": "/static-webshop/images/no-image-available.png",
         "source_dataset": str(source_path) if source_path else "",
         "annotation_output": str(annotation_path) if annotation_path else "",
+        "constraint_vocabulary": constraint_vocabulary(instances),
     }
+
+
+def constraint_vocabulary(instances: List[Dict[str, Any]]) -> List[str]:
+    """Field names already used in this dataset, most common first.
+
+    Annotators otherwise have no way to see which names exist, so a typo like
+    accommodation_date vs accommodation_stay silently creates a new field that
+    the scorer and the gold-action checker both miss.
+    """
+    counts: Dict[str, int] = {}
+    for instance in instances:
+        for turn in instance.get("turns") or []:
+            gold = turn.get("gold_current_intention") or {}
+            for field in (gold.get("constraints") or {}):
+                name = str(field).strip()
+                if name:
+                    counts[name] = counts.get(name, 0) + 1
+    return [name for name, _ in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
 
 
 def normalize_priority_payload(priority: Any, constraint_keys: List[str]) -> Dict[str, List[str]]:
@@ -2241,6 +2360,9 @@ def create_app(
 
     @app.route("/api/state")
     def api_state():
+        # Recompute on every read so a field name added in this session shows up
+        # in the autocomplete immediately, without needing a server restart.
+        state["constraint_vocabulary"] = constraint_vocabulary(state.get("instances") or [])
         return jsonify(state)
 
     @app.route("/api/shard_status")
