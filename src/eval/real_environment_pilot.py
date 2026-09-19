@@ -7,11 +7,21 @@ from typing import Any, Dict, List, Sequence
 from domains.travelplanner.environment import TravelPlannerEnvAdapter
 from domains.travelplanner.executor import TravelPlannerExecutor
 from eval.human_annotated_pilot import call_json_with_retries
+from eval.intent_schema import INTENT_RULES, INTENT_SCHEMA_JSON, normalize_intent_prediction, environment_intention
+from eval.action_policy import TRAVEL_SELECTION_RULES
 from models import BaseTask
 from simulation.simulation.run_simulation import (
     _public_env_feedback_payload,
     execute_turn,
 )
+
+
+class EvaluationTravelPlannerExecutor(TravelPlannerExecutor):
+    """Apply evaluation's concrete-selection policy to the separate planner."""
+
+    def _build_plan_prompt(self, history, user_utterance, observation):
+        prompt = super()._build_plan_prompt(history, user_utterance, observation)
+        return prompt + "\n\nEvaluation final-selection policy (takes precedence over exact-match guidance):\n" + TRAVEL_SELECTION_RULES
 
 
 def build_blind_intention_prompt(
@@ -25,21 +35,12 @@ The utterances are ordered oldest to newest. A later utterance may add, relax,
 replace, remove, or reprioritize an earlier requirement.
 
 Return exactly one JSON object:
-{{
-  "constraints": {{
-    "concise_semantic_field_name": "current active value"
-  }},
-  "priority": {{
-    "ranked_fields": ["most important active field", "next field", "..."]
-  }},
-  "explanation": "brief cumulative interpretation"
-}}
+{INTENT_SCHEMA_JSON}
 
 Rules:
 - Include every active requirement and omit superseded requirements.
 - Do not invent requirements.
-- Rank all active fields exactly once.
-- Explicit trade-off and priority language in later utterances overrides older ordering.
+{INTENT_RULES}
 - Use normalized concise field names; semantic equivalence matters more than wording.
 
 DOMAIN: {domain}
@@ -49,21 +50,7 @@ USER_UTTERANCES:
 
 
 def normalize_intention_prediction(raw: Dict[str, Any], *, domain: str) -> Dict[str, Any]:
-    if not isinstance(raw, dict):
-        raise ValueError("Intention prediction must be a JSON object")
-    constraints = raw.get("constraints")
-    if not isinstance(constraints, dict):
-        raise ValueError("Intention prediction must contain a constraints object")
-    priority = raw.get("priority")
-    ranked_fields = priority.get("ranked_fields") if isinstance(priority, dict) else None
-    if not isinstance(ranked_fields, list):
-        raise ValueError("Intention prediction must contain priority.ranked_fields")
-    return {
-        "constraints": copy.deepcopy(constraints),
-        "priority": [str(field) for field in ranked_fields],
-        "explanation": str(raw.get("explanation") or "").strip(),
-        "domain": domain,
-    }
+    return normalize_intent_prediction(raw)
 
 
 def infer_blind_intention(
@@ -103,7 +90,7 @@ def replay_travelplanner_instance(
 ) -> List[Dict[str, Any]]:
     task = travel_task_from_instance(instance)
     env = TravelPlannerEnvAdapter()
-    executor = TravelPlannerExecutor(llm_client=client)
+    executor = EvaluationTravelPlannerExecutor(llm_client=client)
     env_observation = env.reset(task)
     history: List[Dict[str, Any]] = []
     utterances: List[str] = []
@@ -123,7 +110,7 @@ def replay_travelplanner_instance(
             execution_agent=executor,
             history=history,
             user_utterance=user_utterance,
-            current_intention=predicted_intention,
+            current_intention=environment_intention(predicted_intention),
             env_observation=env_observation,
             gold_delta={},
             max_internal_steps=max_internal_steps,
