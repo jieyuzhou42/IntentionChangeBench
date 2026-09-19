@@ -7,6 +7,8 @@ from typing import Any, Dict, List, Optional, Sequence
 from domains.travelplanner.environment import TravelPlannerEnvAdapter
 from domains.travelplanner.executor import TravelPlannerExecutor
 from models import AgentAction, BaseTask, EnvFeedback
+from eval.intent_schema import INTENT_RULES, INTENT_SCHEMA_JSON, normalize_intent_prediction, environment_intention
+from eval.action_policy import TRAVEL_SELECTION_RULES
 
 
 PUBLIC_TRAVEL_OBSERVATION_FIELDS = {
@@ -85,6 +87,7 @@ class SingleAgentTravelPlannerExecutor(TravelPlannerExecutor):
             raise ValueError(f"TravelPlanner agent returned an invalid action: {raw_action!r}")
         if not isinstance(action.predicted_current_intention, dict):
             raise ValueError("TravelPlanner agent omitted predicted_current_intention")
+        action.predicted_current_intention = normalize_intent_prediction(action.predicted_current_intention)
         if env_observation.get("pending_notebook") and action.action_type != "NotebookWrite":
             raise ValueError("NotebookWrite is required immediately after a search tool result")
         if action.action_type == "Planner" and not self._payload_has_plan(action.action_payload or {}):
@@ -107,20 +110,7 @@ Return one JSON object only.
 
 Required schema:
 {{
-  "predicted_current_intention": {{
-    "constraints": {{"shared_semantic_field": "active value"}},
-    "entities": {{
-      "entity_1": {{"reference": "the user", "constraints": {{}}}},
-      "entity_2": {{"reference": "natural traveler description", "constraints": {{"schedule": "person-specific value"}}}}
-    }},
-    "priority": {{
-      "high": ["fields introduced or changed in the current turn"],
-      "medium": ["still-active fields introduced or changed one turn earlier"],
-      "low": ["still-active older fields"]
-    }},
-    "entity_priority": ["entities.entity_2.constraints.schedule"],
-    "explanation": "brief interpretation"
-  }},
+  "predicted_current_intention": {INTENT_SCHEMA_JSON},
   "action_type": "FlightSearch | AttractionSearch | AccommodationSearch | RestaurantSearch | CitySearch | GoogleDistanceMatrix | NotebookWrite | Planner",
   "action_payload": {{}},
   "rationale": "brief reason"
@@ -139,13 +129,15 @@ Action payloads:
 Rules:
 - Use only user_utterances and public_environment_observation.
 - Later utterances may add, replace, remove, relax, or reprioritize earlier requirements.
-- Keep shared party requirements in constraints and person-specific requirements in entities. Use stable opaque IDs in first-appearance order and preserve the natural reference for each traveler.
+- Represent shared and person-specific requirements as separate intent items with context in their field or value. Use stable traveler IDs and natural references across turns.
 - Adding or removing a traveler changes people_number; do not collapse that person's separate schedule, mobility, meal, activity, or transport need into a shared constraint.
-- Include every active shared and entity constraint and rank every active field path exactly once across high, medium, and low. Current-turn requirements are high, prior-turn requirements are medium, and older active requirements are low; remove overridden fields.
+{INTENT_RULES}
 - Use real search tools, write their results to Notebook, then submit a grounded plan.
 - If pending_notebook is true, the next action must be NotebookWrite.
 - A Planner action must include the complete itinerary in action_payload.plan.
 - Never invent tool results.
+
+{TRAVEL_SELECTION_RULES}
 
 CONTEXT:
 {json.dumps(context, ensure_ascii=False, indent=2, default=str)}
@@ -193,7 +185,7 @@ def run_single_agent_travel_instance(
         for step_index in range(1, max_internal_steps + 1):
             action = agent.act(user_history, utterance, observation)
             prediction = copy.deepcopy(action.predicted_current_intention or {})
-            feedback = env.step(action, prediction)
+            feedback = env.step(action, environment_intention(prediction))
             public_feedback = public_travel_feedback(feedback)
             rollout_trace.append(
                 {

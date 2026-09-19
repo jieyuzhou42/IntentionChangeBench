@@ -13,6 +13,8 @@ if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
 
 from models import DialogueInstance, TurnRecord
+from eval.priority_schema import PRIORITY_ALIASES
+from eval.intent_schema import normalize_intent_prediction
 
 
 IMPORTANCE_WEIGHTS = {
@@ -75,12 +77,14 @@ def _normalize_priority(priority: Any, constraint_fields: Iterable[str]) -> Dict
     normalized = {"high": [], "medium": [], "low": []}
 
     if isinstance(priority, dict):
+        priority = {PRIORITY_ALIASES.get(k, k): v for k, v in priority.items()}
         for level in normalized:
             values = priority.get(level) or []
             if not isinstance(values, list):
                 continue
             for value in values:
-                field = _clean_key(value)
+                path = str(value)
+                field = _clean_key(path[len("constraints."):] if path.startswith("constraints.") else path)
                 if field and field in known and field not in normalized[level]:
                     normalized[level].append(field)
     elif isinstance(priority, list):
@@ -117,6 +121,8 @@ def evaluate_state_understanding(
     gold_intention: Dict[str, Any],
     predicted_intention: Optional[Dict[str, Any]],
 ) -> Dict[str, Any]:
+    if "intent" in gold_intention or (isinstance(predicted_intention, dict) and "intent" in predicted_intention):
+        return _evaluate_atomic_understanding(gold_intention, predicted_intention or {})
     gold_constraints = _non_null_constraints(gold_intention.get("constraints"))
     gold_priority = _normalize_priority(gold_intention.get("priority"), gold_constraints.keys())
     gold_importance = _priority_lookup(gold_priority)
@@ -168,6 +174,62 @@ def evaluate_state_understanding(
         "per_constraint": per_constraint,
         "predicted_explanation": predicted_intention.get("explanation"),
     }
+
+
+def _atomic_entries(intention: Dict[str, Any]) -> List[Dict[str, Any]]:
+    if "intent" in intention:
+        return normalize_intent_prediction(intention)["intent"]
+    # Legacy gold remains untouched on disk. Prose/compound gold still requires
+    # the semantic judge; only top-level fields are bridged here.
+    constraints = _non_null_constraints(intention.get("constraints"))
+    priority = _priority_lookup(_normalize_priority(intention.get("priority"), constraints))
+    inverse = {v:k for k,v in PRIORITY_ALIASES.items()}
+    return [{"field": field,
+             "value": value,
+             "priority": inverse[priority[field][0]]}
+            for field, value in constraints.items()]
+
+
+def _evaluate_atomic_understanding(gold: Dict[str, Any], prediction: Dict[str, Any]) -> Dict[str, Any]:
+    expected = _atomic_entries(gold)
+    actual = _atomic_entries(prediction)
+    weights = {"must_have": 3, "preferred": 2, "optional": 1}
+
+    def key(item):
+        field = _clean_key(item["field"])
+        field = "budget" if field == "budget_max" else field
+        return field
+
+    used = set()
+    rows = []
+    constraint_credit = priority_credit = total_weight = 0
+    for item in expected:
+        candidates = [i for i,x in enumerate(actual) if i not in used and key(x) == key(item)]
+        matching = [i for i in candidates if _values_match(item["value"], actual[i]["value"])]
+        index = (matching or candidates or [None])[0]
+        candidate = actual[index] if index is not None else None
+        if index is not None:
+            used.add(index)
+        value_match = candidate is not None and _values_match(item["value"], candidate["value"])
+        priority_match = candidate is not None and candidate["priority"] == item["priority"]
+        weight = weights[item["priority"]]
+        total_weight += weight
+        constraint_credit += weight if value_match else 0
+        priority_credit += weight if priority_match else 0
+        rows.append({"field": item["field"],
+                     "gold_value": item["value"], "predicted_value": candidate["value"] if candidate else None,
+                     "importance": PRIORITY_ALIASES[item["priority"]], "weight": weight,
+                     "value_match": value_match, "priority_match": priority_match,
+                     "constraint_credit": weight if value_match else 0, "priority_credit": weight if priority_match else 0})
+    denominator = total_weight or 1
+    return {"constraint_weighted_score": constraint_credit / denominator,
+            "priority_level_weighted_score": priority_credit / denominator,
+            "combined_weighted_score": (constraint_credit + priority_credit) / (2 * denominator),
+            "constraint_credit": constraint_credit, "priority_credit": priority_credit,
+            "total_possible_credit": total_weight, "per_constraint": rows,
+            "predicted_extra_intent": [x for i,x in enumerate(actual) if i not in used],
+            "predicted_explanation": prediction.get("explanation"),
+            "matching_mode": "field/value matching; contextual or paraphrased gold requires semantic judging"}
 
 
 def evaluate_action_selection(turn: Dict[str, Any]) -> Dict[str, Any]:

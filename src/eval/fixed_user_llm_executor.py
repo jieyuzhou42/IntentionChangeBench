@@ -7,6 +7,8 @@ from typing import Any, Dict, List, Optional, Protocol
 from common.execution_agent import ExecutionAgent
 from models import AgentAction
 from prompt_logging import log_prompt
+from eval.intent_schema import INTENT_RULES, INTENT_SCHEMA_JSON, normalize_intent_prediction
+from eval.action_policy import BEST_AVAILABLE_RULES
 
 
 ALLOWED_ACTION_TYPES = {
@@ -142,17 +144,7 @@ Rules:
 
 Required JSON schema:
 {
-  "current_intention_understanding": {
-    "explanation": "briefly explain your understanding of the user's current shopping intention",
-    "constraints": {
-      "constraint_name": "constraint value"
-    },
-    "priority": {
-      "high": ["most important constraint names"],
-      "medium": ["moderately important constraint names"],
-      "low": ["least important constraint names"]
-    }
-  },
+  "current_intention_understanding": INTENT_SCHEMA_PLACEHOLDER,
   "action_type": "search | click | buy | back_to_search | next_page | prev_page",
   "action_payload": {
     "query": "string when needed",
@@ -161,7 +153,8 @@ Required JSON schema:
   "rationale": "short explanation"
 }
 """.strip()
-        return f"{instructions}\n\nEXECUTOR_CONTEXT_JSON:\n{_safe_json_dumps(context)}"
+        instructions = instructions.replace("INTENT_SCHEMA_PLACEHOLDER", INTENT_SCHEMA_JSON)
+        return f"{instructions}\n\n{INTENT_RULES}\n\n{BEST_AVAILABLE_RULES}\n\nEXECUTOR_CONTEXT_JSON:\n{_safe_json_dumps(context)}"
 
     def _serialize_observation(self, env_observation: Dict[str, Any]) -> Dict[str, Any]:
         raw_text = str(env_observation.get("raw_text", "") or "").strip()
@@ -359,38 +352,7 @@ Required JSON schema:
         if not isinstance(raw, dict):
             return None
 
-        constraints = raw.get("constraints") or {}
-        if not isinstance(constraints, dict):
-            constraints = {}
-        constraints = {
-            _clean_string(key): value
-            for key, value in constraints.items()
-            if _clean_string(key)
-        }
-
-        priority = raw.get("priority") or {}
-        normalized_priority: Dict[str, List[str]] = {"high": [], "medium": [], "low": []}
-        if isinstance(priority, dict):
-            for level in normalized_priority:
-                values = priority.get(level) or []
-                if isinstance(values, list):
-                    normalized_priority[level] = [
-                        _clean_string(value)
-                        for value in values
-                        if _clean_string(value)
-                    ]
-        elif isinstance(priority, list):
-            normalized_priority["medium"] = [
-                _clean_string(value)
-                for value in priority
-                if _clean_string(value)
-            ]
-
-        return {
-            "explanation": _clean_string(raw.get("explanation")),
-            "constraints": constraints,
-            "priority": normalized_priority,
-        }
+        return normalize_intent_prediction(raw)
 
     def _normalize_action_type(self, raw_action_type: Any) -> str:
         action_type = _clean_string(raw_action_type).lower()
