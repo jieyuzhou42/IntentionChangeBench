@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import copy
+from eval.intent_schema import environment_intention
+
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -194,6 +196,8 @@ def execute_fixed_user_turn(
             search_queries.append(str((agent_action.action_payload or {}).get("query", "")))
 
         predicted_intention = getattr(agent_action, "predicted_current_intention", None)
+        if isinstance(predicted_intention, dict):
+            predicted_intention = environment_intention(predicted_intention)
         env_user_state = predicted_intention if isinstance(predicted_intention, dict) else {}
         env_feedback = env.step(agent_action, env_user_state)
 

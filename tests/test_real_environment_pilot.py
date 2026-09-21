@@ -24,17 +24,12 @@ def test_blind_intention_prompt_contains_no_gold_payload() -> None:
     assert "Raise the budget to $2,000." in prompt
 
 
-def test_normalize_intention_prediction_uses_ranked_priority() -> None:
-    normalized = normalize_intention_prediction(
-        {
-            "constraints": {"budget": 2000, "dest": "Boston"},
-            "priority": {"ranked_fields": ["dest", "budget"]},
-            "explanation": "Boston matters most.",
-        },
-        domain="travelplanner",
-    )
-    assert normalized["priority"] == ["dest", "budget"]
-    assert normalized["constraints"]["budget"] == 2000
+def test_normalize_intention_prediction_preserves_atoms() -> None:
+    prediction = {"intent": [{"field": "budget_max", "value": 2000,
+                               "priority": "preferred"}]}
+    normalized = normalize_intention_prediction(prediction, domain="travelplanner")
+    assert normalized == prediction
+    assert normalized is not prediction
 
 
 def test_travel_task_does_not_copy_gold_intention() -> None:

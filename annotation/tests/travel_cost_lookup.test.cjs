@@ -50,3 +50,14 @@ context.renderTravelCostSummary();
 assert.match(summary.innerHTML,/Known costs \(incomplete\)/);
 assert.match(summary.innerHTML,/Remaining budget unknown/);
 console.log('Travel cost lookup and live totals passed');
+vm.runInContext(script.slice(script.indexOf('    function allTransportationPages'), script.indexOf('    function renderTravelPlanner')), context);
+const pages = context.allTransportationPages({
+  'Flight from Boston to Miami on 2022-03-02': [records[0]],
+  'Taxi from Boston to Miami': 'taxi, cost: 200',
+  'Self-driving from Boston to Miami': 'self-driving, cost: 100',
+}, [{items: [{value:'taxi, cost: 200'}]}]);
+assert.equal(pages.length, 3);
+assert.equal(pages.reduce((sum, p) => sum + p.items.length, 0), 3);
+assert.equal(pages[0].items[0].searched_this_turn, 'No');
+assert.equal(pages[1].items[0].searched_this_turn, 'Yes');
+console.log('All reference transportation options and deduplication passed');

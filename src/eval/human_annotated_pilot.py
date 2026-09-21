@@ -8,6 +8,9 @@ import random
 import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Sequence, Tuple
+from eval.priority_schema import PRIORITY_ALIASES
+from eval.intent_schema import INTENT_RULES, INTENT_SCHEMA_JSON, normalize_intent_prediction
+from eval.action_policy import BEST_AVAILABLE_RULES, TRAVEL_SELECTION_RULES
 
 
 PRIORITY_LEVEL_WEIGHTS = {"high": 3.0, "medium": 2.0, "low": 1.0}
@@ -139,11 +142,12 @@ def build_agent_prompt(
 """.strip()
         domain_rules = """
 - Select only from candidate_items. Never invent an ASIN.
-- Choose buy only when the candidate is the best available match to the current
-  cumulative intention; otherwise choose no_match.
+- Choose buy for the best available candidate even if some requirements cannot
+  be met. Use no_match only if candidate_items contains no real selectable item.
 - Earlier requirements remain active unless a later utterance relaxes, replaces,
   or removes them.
 """.strip()
+        domain_rules += "\n" + BEST_AVAILABLE_RULES
     elif domain == "travelplanner":
         feedback = turn.get("env_feedback") or {}
         common_context["original_query"] = (
@@ -173,11 +177,12 @@ def build_agent_prompt(
 }
 """.strip()
         domain_rules = """
-- Use only options grounded in fixed_search_results; use "-" if no grounded option exists.
+- Use only options grounded in fixed_search_results.
 - Produce a complete itinerary for the currently requested trip.
 - Earlier requirements remain active unless a later utterance relaxes, replaces,
   or removes them.
 """.strip()
+        domain_rules += "\n" + TRAVEL_SELECTION_RULES
     else:
         raise ValueError(f"Unsupported domain: {domain}")
 
@@ -189,21 +194,14 @@ The gold intention is hidden. The canonical field vocabulary is only a naming ai
 do not assume every listed field is active. Omit inactive constraints.
 
 Priority rules:
-- Return every active constraint exactly once in priority.ranked_fields.
-- Order from most important to least important.
-- Use explicit trade-off language from the latest utterance to update the order.
-- When no explicit trade-off is stated, preserve earlier relative priorities.
+{INTENT_RULES}
 
 Domain rules:
 {domain_rules}
 
 Return exactly one JSON object with this schema:
 {{
-  "current_intention_understanding": {{
-    "constraints": {{"canonical_field_name": "current value"}},
-    "priority": {{"ranked_fields": ["most important", "next", "..."]}},
-    "explanation": "brief cumulative interpretation"
-  }},
+  "current_intention_understanding": {INTENT_SCHEMA_JSON},
   {action_schema}
 }}
 
@@ -223,13 +221,7 @@ def normalize_agent_output(
     understanding = raw.get("current_intention_understanding")
     if not isinstance(understanding, dict):
         raise ValueError("Missing current_intention_understanding")
-    constraints = understanding.get("constraints")
-    if not isinstance(constraints, dict):
-        constraints = {}
-    priority = understanding.get("priority")
-    ranked_fields = priority.get("ranked_fields") if isinstance(priority, dict) else []
-    if not isinstance(ranked_fields, list):
-        ranked_fields = []
+    understanding = normalize_intent_prediction(understanding)
 
     action = raw.get("action")
     if not isinstance(action, dict):
@@ -240,6 +232,8 @@ def normalize_agent_output(
             raise ValueError(f"Invalid WebShop action_type: {action_type}")
         selected_asin = str(action.get("selected_asin") or "").strip().upper()
         valid = {str(value).strip().upper() for value in valid_asins if str(value).strip()}
+        if action_type == "no_match" and valid:
+            raise ValueError("Select the best available candidate; no_match is not allowed when candidates exist")
         if action_type == "buy" and selected_asin not in valid:
             raise ValueError(f"selected_asin is not in candidate_items: {selected_asin}")
         action["selected_asin"] = selected_asin
@@ -248,11 +242,7 @@ def normalize_agent_output(
             raise ValueError("TravelPlanner action must contain action_type=plan and an itinerary")
 
     return {
-        "current_intention_understanding": {
-            "constraints": copy.deepcopy(constraints),
-            "priority": {"ranked_fields": [str(value) for value in ranked_fields]},
-            "explanation": str(understanding.get("explanation") or "").strip(),
-        },
+        "current_intention_understanding": understanding,
         "action": copy.deepcopy(action),
     }
 
@@ -268,20 +258,32 @@ You are a strict evaluator for a two-layer intention-change benchmark.
 The evaluated agent never saw gold annotations.
 
 Layer 1, intention understanding:
+- Agent predictions use intent items with field, value, priority.
+  Match these semantically to the original gold, including gold entity constraints.
+  Respect context and limits encoded in fields/values: Day 2 does not satisfy
+  Day 1, and a budget ceiling is not an exact spending target.
+  A field may have multiple items; never collapse them by field name.
+  Legacy gold high/medium/low correspond to must_have/preferred/optional.
 - For every gold constraint, decide whether the agent recognized it and whether
   the predicted current value is semantically correct.
 - A renamed but clearly equivalent field may count as recognized.
 - Latest user utterances override earlier values.
-- Score priority_order_score from 0 to 1 based on whether the predicted ordering
-  preserves the gold ordering/tiering, especially explicit trade-offs.
+- Score priority_order_score from 0 to 1 as gold-weighted tier classification
+  accuracy after semantic field matching: must_have=high, preferred=medium,
+  optional=low (weights 3/2/1). Missing fields or wrong tiers earn no credit.
+  Ignore order within tiers; relative ordering alone does not establish correct tiers.
 
 Layer 2, action compliance:
 - Judge the actual selected product or itinerary, not the agent rationale.
 - For every gold constraint, label action_status as satisfied, violated, or unknown.
 - unknown means the supplied action evidence is genuinely insufficient.
-- A no_match action satisfies no product constraint directly, but is the correct
-  constraint-following decision when every supplied candidate violates an active
-  high-priority requirement. Set no_match_appropriate accordingly.
+- The agent must select its best available concrete compromise even if some
+  requirements cannot be met. Judge those unmet requirements normally; an
+  explanation of the trade-off does not earn compliance credit.
+- Leaving a required choice unresolved is not satisfied. A no_match action is
+  inappropriate when real selectable candidates exist, even if all have defects.
+  Set no_match_appropriate=false for such cases; absence of all real selectable
+  candidates is the only possible no_match exception.
 - A human_gold_action with confirmed=false is an unconfirmed annotation hint, not
   an authoritative answer. Evaluate the candidate evidence yourself.
 - Do not give credit merely because the action repeats a requirement in prose.
@@ -326,6 +328,7 @@ def priority_weights(gold_intention: Dict[str, Any]) -> Dict[str, float]:
     priority = gold_intention.get("priority")
     weights: Dict[str, float] = {}
     if isinstance(priority, dict):
+        priority = {PRIORITY_ALIASES.get(k, k): v for k, v in priority.items()}
         for level, level_weight in PRIORITY_LEVEL_WEIGHTS.items():
             for field in priority.get(level) or []:
                 field_name = str(field)
