@@ -31,7 +31,7 @@ import argparse
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 
 MEALS = ("breakfast", "lunch", "dinner")
@@ -131,10 +131,16 @@ def soft_fields(priority: Any) -> set:
     }
 
 
+# A sacrifice names a constraint field, but one of them surfaces under its own
+# issue label rather than the field name.
+DECLARED_ALIASES = {"accommodation_stay": ("accommodation_stay", "最低入住晚数冲突")}
+
+
 def check_turn(
     constraints: Dict[str, Any],
     itinerary: List[Dict[str, Any]],
     priority: Any = None,
+    declared_sacrifice: Sequence[str] = (),
 ) -> List[str]:
     issues: List[str] = []
     if not itinerary:
@@ -331,6 +337,19 @@ def check_turn(
             f"[soft] {issue}" if issue.split(":")[0] in soft else issue
             for issue in issues
         ]
+    # A turn whose pool cannot satisfy everything now carries a real plan plus a
+    # gold_action.world_feasibility record saying which requirement it gave up.
+    # That one is the annotation working as designed, not a defect -- but only
+    # that one: anything else broken on the same turn is still a defect.
+    declared = {alias
+                for field in declared_sacrifice or ()
+                for alias in DECLARED_ALIASES.get(str(field), (str(field),))}
+    if declared:
+        issues = [
+            f"[declared] {issue}"
+            if issue.split(":")[0].replace("[soft] ", "") in declared else issue
+            for issue in issues
+        ]
     return issues
 
 
@@ -343,7 +362,7 @@ def main() -> int:
     grand = 0
     for path in args.files:
         instances = json.loads(path.read_text(encoding="utf-8"))
-        total_turns = checked = bad_turns = soft_turns = 0
+        total_turns = checked = bad_turns = soft_turns = declared_turns = 0
         findings: List[Tuple[str, int, List[str]]] = []
         for instance in instances:
             for index, turn in enumerate(instance.get("turns") or []):
@@ -353,21 +372,30 @@ def main() -> int:
                     continue
                 checked += 1
                 gold = turn.get("gold_current_intention") or {}
+                feasibility = (turn.get("gold_action") or {}).get("world_feasibility") or {}
+                sacrifices = feasibility.get("acceptable_sacrifices") or []
+                # gold books the cheapest minimal sacrifice, so that is the one it took.
+                declared = (sacrifices[0].get("give_up") or []) if sacrifices else []
                 issues = check_turn(
-                    gold.get("constraints") or {}, itinerary, gold.get("priority")
+                    gold.get("constraints") or {}, itinerary, gold.get("priority"),
+                    declared_sacrifice=declared,
                 )
                 if not issues:
                     continue
-                hard = [i for i in issues if not i.startswith("[soft]")]
+                hard = [i for i in issues
+                        if not i.startswith("[soft]") and not i.startswith("[declared]")]
                 if hard:
                     bad_turns += 1
+                elif any(i.startswith("[declared]") for i in issues):
+                    declared_turns += 1
                 else:
                     soft_turns += 1
                 findings.append((str(instance["instance_id"]), int(turn.get("turn_id", index)), issues))
         grand += bad_turns
         print(f"\n=== {path.name}: {len(instances)} instances / {total_turns} turns "
               f"(有行程 {checked} 轮) -> 不符 {bad_turns} 轮，"
-              f"另有 {soft_turns} 轮仅偏好项未满足 ===")
+              f"另有 {soft_turns} 轮仅偏好项未满足、"
+              f"{declared_turns} 轮是 world_feasibility 已声明的牺牲 ===")
         counts: Dict[str, int] = {}
         for _, _, issues in findings:
             for issue in issues:

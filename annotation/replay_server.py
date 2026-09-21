@@ -871,12 +871,49 @@ HTML = r"""
         ${options.map((o, i) => `<option value="${i}">${esc(o.label)}</option>`).join("")}
       </select>`;
     }
+    // A turn whose pool cannot satisfy every constraint still gets a real,
+    // bookable itinerary; what makes it honest is this block, which says so and
+    // lists every minimal sacrifice the pool allows. Without it the plan below
+    // reads as if gold met everything.
+    function renderWorldFeasibility() {
+      const wf = goldActionDraft.world_feasibility
+        || (goldActionDraft.world_feasibility = { feasible: true, explanation: null,
+                                                  minimum_sacrifice: 0, acceptable_sacrifices: [] });
+      const feasible = wf.feasible !== false;
+      const options = (wf.acceptable_sacrifices || []).map((item, index) => {
+        const give = (item.give_up || []).join(", ") || "-";
+        const taken = index === 0 ? ' <span class="pill warn">itinerary 用的是这个</span>' : "";
+        return `<li><code>${esc(give)}</code> &middot; $${esc(String(Math.round(item.cost || 0)))}${taken}
+                <span class="details">${esc((item.plan || {}).accommodation || "")}</span></li>`;
+      }).join("");
+      return `
+        <div class="travel-card" style="margin-bottom:12px;">
+          <div class="editor-head">
+            <strong>World feasibility</strong>
+            <label class="gold-confirm" style="margin:0;">
+              <input type="checkbox" data-gold-role="wf-feasible" ${feasible ? "checked" : ""}>
+              这一轮的候选池能同时满足所有 must-have
+            </label>
+          </div>
+          <div style="margin-top:8px;">
+            <label>做不到的话，说明是什么挡住了</label>
+            <textarea data-gold-role="wf-explanation" rows="4"
+              placeholder="No feasible option: ..." ${feasible ? "disabled" : ""}>${esc(wf.explanation || "")}</textarea>
+          </div>
+          ${feasible ? "" : `<div style="margin-top:8px;">
+            <label>池子允许的最小牺牲（下限 ${esc(String(wf.minimum_sacrifice ?? "?"))} 条 must-have）</label>
+            <ul class="details" style="margin:4px 0 0 18px;">${options || "<li>（未计算）</li>"}</ul>
+            <div class="details" style="margin-top:6px;">用 annotation/tools/second_best.py 重算</div>
+          </div>`}
+        </div>`;
+    }
     function renderTravelGoldAction() {
       const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
       const plan = payload.plan || (payload.plan = {});
       const days = plan.itinerary || (plan.itinerary = []);
       const fields = ["day", "current_city", "transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
       goldActionEditor.innerHTML = `
+        ${renderWorldFeasibility()}
         <div class="day-list">${days.map((day, dayIndex) => `
           <article class="day-card">
             <div class="day-head editor-head"><strong>${esc(day.day || `Day ${dayIndex + 1}`)}</strong><button class="danger" data-gold-role="remove-day" data-day-index="${dayIndex}">Remove day</button></div>
@@ -889,6 +926,15 @@ HTML = r"""
       renderTravelCostSummary();
     }
     goldActionEditor.addEventListener("change", event => {
+      const feasible = event.target.closest('[data-gold-role="wf-feasible"]');
+      if (feasible) {
+        const wf = goldActionDraft.world_feasibility || (goldActionDraft.world_feasibility = {});
+        wf.feasible = Boolean(feasible.checked);
+        if (wf.feasible) { wf.explanation = null; wf.minimum_sacrifice = 0; wf.acceptable_sacrifices = []; }
+        markDirty();
+        renderTravelGoldAction();
+        return;
+      }
       const select = event.target.closest('[data-gold-role="travel-pick"]');
       if (!select) return;
       const dayIndex = Number(select.dataset.dayIndex);
@@ -901,6 +947,13 @@ HTML = r"""
         : (travelOptions(field)[Number(select.value)] || {}).text || "";
       renderTravelGoldAction();
     });
+    goldActionEditor.addEventListener("input", event => {
+      const box = event.target.closest('[data-gold-role="wf-explanation"]');
+      if (!box) return;
+      const wf = goldActionDraft.world_feasibility || (goldActionDraft.world_feasibility = {});
+      wf.explanation = box.value.trim() || null;
+      markDirty();
+    });
     function draftConstraintNumber(keys, fallback) {
       for (const key of keys) {
         const row = constraintDraft.find(item => item.key.trim() === key);
@@ -912,12 +965,10 @@ HTML = r"""
       return fallback;
     }
     function isUnbookedSlot(text) {
-      // A slot that reports "no feasible option" is an explanation, not a
-      // booking. Those notes quote the prices that make the plan impossible
-      // ("...the 5.0 apartment is $2,080 for two nights..."), so pricing them
-      // charges the trip for a stay it explicitly did not book -- and, because
-      // the note repeats on every night, charges it twice.
-      return /^\s*(no feasible option|not applicable|unknown\b)/i.test(text);
+      // "no feasible option" no longer appears in an itinerary slot -- it lives in
+      // gold_action.world_feasibility and the plan below it is always a real
+      // booking. The placeholder rows are all that is left to skip.
+      return /^\s*(not applicable|unknown\b)/i.test(text);
     }
     function extractTravelUnitCost(value) {
       if (value && typeof value === "object") {
@@ -2307,6 +2358,66 @@ def annotation_turn_for_storage(turn: Dict[str, Any]) -> Dict[str, Any]:
     return stored
 
 
+def _field_tiers(gold_intention: Any) -> Dict[str, str]:
+    priority = (gold_intention or {}).get("priority")
+    if not isinstance(priority, dict):
+        return {}
+    return {str(f): level
+            for level in ("high", "medium", "low")
+            for f in priority.get(level) or []}
+
+
+def _same_constraint_value(left: Any, right: Any) -> bool:
+    """4 and 4.0 are the same bound; everything else compares as squashed text."""
+    if isinstance(left, bool) or isinstance(right, bool):
+        return left is right
+    try:
+        return float(left) == float(right)
+    except (TypeError, ValueError):
+        pass
+    return " ".join(str(left).split()) == " ".join(str(right).split())
+
+
+def recompute_gold_delta(turns: List[Dict[str, Any]], index: int) -> None:
+    """Rewrite turn `index`'s gold_delta from its own and the previous turn's intention.
+
+    gold_delta is derived, not authored: it is the difference between turn k-1 and
+    turn k. The editor only ever writes user_utterance, constraints, priority and
+    gold_action, so without this the two drift apart on every save -- and the panel
+    that renders gold_delta is hidden unless an instance has two or more entities,
+    so the drift is invisible. score_v2 reads gold_delta as the ground truth of
+    "what changed this turn", which is where the drift turns into wrong scores.
+
+    Mirrors annotation/tools/recompute_deltas.py; that one rebuilds a whole file.
+    """
+    if index <= 0 or index >= len(turns):
+        return
+    prev = turns[index - 1].get("gold_current_intention") or {}
+    cur = turns[index].get("gold_current_intention") or {}
+    prev_c = prev.get("constraints") or {}
+    cur_c = cur.get("constraints") or {}
+    prev_t, cur_t = _field_tiers(prev), _field_tiers(cur)
+
+    record: Dict[str, Any] = {}
+    for field, value in cur_c.items():
+        if field not in prev_c:
+            record[field] = {"op": "add", "old": None, "new": value}
+        elif not _same_constraint_value(prev_c[field], value):
+            record[field] = {"op": "override", "old": prev_c[field], "new": value}
+    for field, value in prev_c.items():
+        if field not in cur_c:
+            record[field] = {"op": "remove", "old": value, "new": None}
+    # A tier move with no value change is how a tradeoff is expressed; record it or
+    # the turn reads as a no-op.
+    for field in cur_c:
+        if field in record or field not in prev_c:
+            continue
+        before, after = prev_t.get(field), cur_t.get(field)
+        if before is not None and after is not None and before != after:
+            record[field] = {"op": "reprioritize", "old": before, "new": after}
+    turns[index]["gold_delta"] = record
+
+
 def validate_gold_action(gold_action: Any, domain: str) -> Optional[str]:
     if not isinstance(gold_action, dict):
         return "gold_action must be an object"
@@ -2331,6 +2442,13 @@ def validate_gold_action(gold_action: Any, domain: str) -> Optional[str]:
                 return f"Gold itinerary day {index + 1} is missing: {', '.join(missing)}"
     elif not str(payload.get("selected_asin") or "").strip():
         return "A confirmed WebShop gold action must select a product ASIN"
+    feasibility = gold_action.get("world_feasibility")
+    if isinstance(feasibility, dict) and feasibility.get("feasible") is False \
+            and not str(feasibility.get("explanation") or "").strip():
+        # The itinerary below always looks like a complete plan, so an unticked
+        # feasibility box with no explanation would silently assert that gold met
+        # everything when it did not.
+        return "world_feasibility is marked not feasible but has no explanation"
     return None
 
 
@@ -2470,6 +2588,15 @@ def create_app(
         if has_gold_action:
             turn["gold_action"] = copy.deepcopy(gold_action)
             state_turn["gold_action"] = copy.deepcopy(gold_action)
+
+        # Editing turn k moves both its own delta and the next turn's `old` values,
+        # so both have to be rebuilt -- otherwise gold_delta drifts away from the
+        # constraints it is supposed to describe and score_v2 reads a stale change.
+        for target in (turn_index, turn_index + 1):
+            recompute_gold_delta(turns, target)
+            if 0 <= target < len(state["instances"][instance_index]["turns"]):
+                state["instances"][instance_index]["turns"][target]["gold_delta"] = \
+                    copy.deepcopy(turns[target].get("gold_delta") or {})
 
         save_json(annotation_path, instances)
         return jsonify({"ok": True, "turn": state_turn})

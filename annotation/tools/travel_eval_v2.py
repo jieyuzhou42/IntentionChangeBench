@@ -31,6 +31,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
+from eval.agent_v2 import agent_feasibility, build_agent_prompt_v2  # noqa: E402
 from eval.human_annotated_pilot import (  # noqa: E402
     build_agent_prompt, constraint_field_vocabulary)
 from eval.judge_v2 import build_judge_prompt_v2, merge_votes  # noqa: E402
@@ -63,8 +64,53 @@ def touched_fields(instance: Dict[str, Any], turn_id: int) -> List[str]:
 
 
 def run_agent(instances, vocabulary, client, workers):
-    """复用旧脚本的 agent 跑法，保证两套 v1/v2 的 agent 输出完全相同。"""
-    return tpe.run_agent(instances, vocabulary, client, workers)
+    """v2 的 agent 跑法: 和 v1 同一套解析，但 prompt 多一个 feasibility 通道。
+
+    v1 的 prompt 一个字都不能动（团队拿它做对比，而且 OpenRouter 的缓存键是
+    sha256(model + prompt)），所以这里复制 tpe.run_agent 的流程而不是改它。
+    差别只有两处: 换成 build_agent_prompt_v2，以及把 feasibility 块带进每一行。
+    """
+    jobs = [(i, j) for i, inst in enumerate(instances)
+            for j in range(len(inst.get('turns') or []))]
+    results: List[Any] = [None] * len(jobs)
+
+    def work(k: int) -> None:
+        i, j = jobs[k]
+        results[k] = client.complete(build_agent_prompt_v2(
+            instance=instances[i], turn_index=j, field_vocabulary=vocabulary))
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        list(pool.map(work, range(len(jobs))))
+
+    stats = {'no_json': 0, 'empty_constraints': 0, 'bad_action': 0, 'no_feasibility': 0}
+    by_instance: Dict[int, List[Dict[str, Any]]] = {}
+    for k, (i, j) in enumerate(jobs):
+        raw = results[k]
+        if raw is None:
+            stats['no_json'] += 1
+        understanding, has_constraints = tpe.lenient_understanding(raw)
+        if not has_constraints:
+            stats['empty_constraints'] += 1
+        action, action_ok = tpe.valid_travel_action(raw)
+        if not action_ok:
+            stats['bad_action'] += 1
+        feasibility = agent_feasibility(raw)
+        if not feasibility['declared']:
+            stats['no_feasibility'] += 1
+        turn = (instances[i].get('turns') or [])[j]
+        by_instance.setdefault(i, []).append({
+            'domain': DOMAIN,
+            'instance_id': str(instances[i].get('instance_id')),
+            'turn_id': int(turn.get('turn_id', j)),
+            'user_utterance': turn.get('user_utterance'),
+            'gold_intention': copy.deepcopy(turn.get('gold_current_intention') or {}),
+            'agent_intention_prediction': understanding,
+            'action_evidence': {'action': action},
+            'agent_feasibility': feasibility,
+        })
+    grouped = [(str(instances[i].get('instance_id')), by_instance[i])
+               for i in sorted(by_instance)]
+    return grouped, stats
 
 
 def judge_turn(job: Dict[str, Any], client: Any, votes: int,
@@ -184,6 +230,10 @@ def main() -> None:
                 # t0 带进来的字段就是"没人提过就不该计分"的候选集合
                 'baseline': sorted((instance['turns'][0].get('gold_current_intention') or {})
                                    .get('constraints') or {}),
+                # 池子能做到的最好结果，second_best.py 枚举出来写进标注的
+                'world_feasibility': copy.deepcopy(
+                    (turn.get('gold_action') or {}).get('world_feasibility')),
+                'agent_feasibility': row.get('agent_feasibility') or {},
             })
 
     print(f'[judge] {len(jobs)} 轮 × {args.votes} 票，模型 {judge_model} ...', flush=True)
@@ -209,7 +259,9 @@ def main() -> None:
                 agent_intention_prediction=job['agent_intention_prediction'],
                 judgment=judgment,
                 touched_fields=job['touched'],
-                baseline_fields=job['baseline'])
+                baseline_fields=job['baseline'],
+                world_feasibility=job['world_feasibility'],
+                agent_feasibility=job['agent_feasibility'])
         except Exception as exc:  # noqa: BLE001
             failures.append((label, str(exc)))
             continue
@@ -222,6 +274,7 @@ def main() -> None:
             'changed_this_turn': job['changed_this_turn'],
             'agent_intention_prediction': job['agent_intention_prediction'],
             'action': job['action'],
+            'agent_feasibility': job['agent_feasibility'],
             'judgment': judgment,
             'scores': scores,
         })
@@ -241,6 +294,19 @@ def main() -> None:
     print('—— 主指标 ——')
     print(f'{"变更捕捉(轮级)":<26}{agg["change_capture_turn"]:>8.3f}   n={agg["change_turns"]}')
     print(f'{"变更捕捉(字段级)":<26}{agg["change_capture_field"]:>8.3f}')
+    print(f'{"    仅值变化(对照口径)":<26}{agg["change_capture_value_field"]:>8.3f}')
+    for op, value in (agg.get('change_capture_by_op') or {}).items():
+        print(f'{"    " + op:<26}{value:>8.3f}   n={(agg.get("change_turns_by_op") or {}).get(op, 0)} 轮')
+    print('\n—— 池子下限（second_best 枚举） ——')
+    print(f'{"达到下限的轮次占比":<26}{agg["sacrifice_optimality_rate"]:>8.3f}   n={agg["sacrifice_turns"]} 轮')
+    print(f'{"平均多让了几条 must-have":<26}{agg["sacrifice_mean_regret"]:>8.3f}')
+    if agg.get('sacrifice_judge_alarms'):
+        print(f'{"  !! 低于下限(judge 算错)":<26}{agg["sacrifice_judge_alarms"]:>8d} 轮')
+    print('\n—— 不可行上报 ——')
+    print(f'{"声明正确率":<26}{agg["declaration_accuracy"]:>8.3f}')
+    print(f'{"    池子真不可行时说出来":<26}{agg["declaration_recall"]:>8.3f}')
+    print(f'{"    可行轮误报率":<26}{agg["declaration_false_alarm_rate"]:>8.3f}')
+    print(f'{"    归因正确率":<26}{agg["blame_accuracy"]:>8.3f}   n={agg["blame_turns"]} 轮')
     print('\n—— 意图 ——')
     for name, key in [('Constraint 识别率', 'constraint_recall'),
                       ('Constraint 值准确率', 'constraint_value_accuracy'),
