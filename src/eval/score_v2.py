@@ -117,6 +117,42 @@ def priority_concordance(
 tradeoff_concordance = priority_concordance
 
 
+def tier_move_respected(
+    field: str,
+    gold_intention: Dict[str, Any],
+    background: Sequence[str],
+    ranked_fields: Sequence[str],
+) -> bool:
+    """降档/升档之后，agent 的排序有没有把这个字段放到新档位该在的位置。
+
+    档位变化没有"新值"可以复述，所以 Layer 1 那一套（复述里有没有说出新值）对它
+    完全失效 —— 这正是取舍轮长期不进变更捕捉的原因。唯一能查的证据是 agent 自己
+    给出的 ranked_fields: 一个被降到 medium 的字段，必须排在所有仍然 high 的字段
+    之后；升档则相反。
+
+    背景字段不参与比较，理由和 priority_concordance 一样: 和"出发地是 Charleston"
+    比先后是废题。agent 压根没把这个字段排进去, 算没抓到 —— 它连位置都没表态。
+    """
+    position = {str(f): i for i, f in enumerate(ranked_fields or [])}
+    if field not in position:
+        return False
+    tiers = field_tiers(gold_intention)
+    constraints = (gold_intention or {}).get("constraints") or {}
+    background = set(background or ())
+    rank = TIER_RANK.get(tiers.get(field, "high"), 3)
+    for other, level in tiers.items():
+        if other == field or other not in constraints or other in background:
+            continue
+        if other not in position:
+            continue
+        other_rank = TIER_RANK.get(level, 3)
+        if other_rank > rank and position[other] > position[field]:
+            return False
+        if other_rank < rank and position[other] < position[field]:
+            return False
+    return True
+
+
 def _dynamic_rows(judgment: Dict[str, Any]) -> List[Dict[str, Any]]:
     """把契约外的违规变成 per_constraint 里的条目，好让它走同一套公式。"""
     rows = []
@@ -145,6 +181,100 @@ def _dynamic_rows(judgment: Dict[str, Any]) -> List[Dict[str, Any]]:
     return rows
 
 
+def sacrifice_regret(
+    per_constraint: Sequence[Dict[str, Any]],
+    world_feasibility: Optional[Dict[str, Any]],
+) -> Optional[Dict[str, Any]]:
+    """How far the agent's plan sits from the best the candidate pool allows.
+
+    action_score answers "how much of what was asked did you deliver". On a turn
+    whose pool cannot deliver everything that number has no ceiling: an agent that
+    picked the closest available option and one that picked garbage both read as
+    violated, and 0.675 on an impossible turn cannot be interpreted. This adds the
+    ceiling. gold_action.world_feasibility carries the floor -- the fewest
+    must-haves any plan in the pool can get away with breaking -- computed by
+    enumeration in annotation/tools/second_best.py.
+
+        regret = 0   the agent reached the floor; nothing better existed
+        regret > 0   it gave up more than it had to
+        regret < 0   arithmetically impossible, so it flags a judge error rather
+                     than an agent success -- a plan cannot break fewer
+                     requirements than the best plan in the pool
+
+    Counted over the same field set the enumerator could decide (scoped_fields),
+    so the two sides are comparable; time-window and sightseeing constraints are
+    out of scope on both.
+    """
+    if not isinstance(world_feasibility, dict):
+        return None
+    floor = world_feasibility.get("minimum_sacrifice")
+    if not isinstance(floor, int):
+        return None
+    scoped = {str(f) for f in world_feasibility.get("scoped_fields") or ()}
+    gave_up = sorted(
+        r["field"] for r in per_constraint
+        if r["field"] in scoped and r["tier"] == "high" and r["action_status"] != "satisfied"
+    )
+    acceptable = [sorted(str(f) for f in (item.get("give_up") or []))
+                  for item in world_feasibility.get("acceptable_sacrifices") or ()]
+    return {
+        "floor": floor,
+        "agent": len(gave_up),
+        "regret": len(gave_up) - floor,
+        "optimal": len(gave_up) == floor,
+        "agent_gave_up": gave_up,
+        "matches_acceptable": gave_up in acceptable if acceptable else (not gave_up),
+        "judge_alarm": len(gave_up) < floor,
+        "scoped_fields": sorted(scoped),
+    }
+
+
+def declaration_accuracy(
+    world_feasibility: Optional[Dict[str, Any]],
+    agent_feasibility: Optional[Dict[str, Any]],
+) -> Optional[Dict[str, Any]]:
+    """Did the agent say out loud that it could not meet everything, and blame the right thing.
+
+    This is the channel v1 had no room for. Scanning shard_002 found nine turns
+    where the agent volunteered "slightly over budget but ..." in free text: one of
+    them (0017 t1) reproduced gold's reason exactly and earned nothing, another
+    (0017 t5) talked itself past the cap -- "within the updated $2,500 limit when
+    considering possible rounding" -- and lost nothing. Both are now scoreable.
+
+    Two things are checked, and they fail differently:
+
+      declared_correctly  the boolean. Recall matters because staying silent about
+                          an impossible ask is the failure we care about; precision
+                          matters because a free "I can't" would otherwise be the
+                          cheapest way out of every hard turn.
+      blame_correct       the set. The pool's minimal sacrifices are the ground
+                          truth for what has to give, so an agent that says "I
+                          could not reach the rating" when the only thing in the
+                          way was the minimum-nights rule named the wrong blocker
+                          even though it was right that something broke.
+    """
+    if not isinstance(world_feasibility, dict) or not isinstance(agent_feasibility, dict):
+        return None
+    floor = world_feasibility.get("minimum_sacrifice")
+    if not isinstance(floor, int):
+        return None
+    truth = floor > 0
+    claimed = not bool(agent_feasibility.get("all_constraints_satisfiable", True))
+    blame = sorted(str(f) for f in agent_feasibility.get("gave_up") or ())
+    acceptable = [sorted(str(f) for f in (item.get("give_up") or []))
+                  for item in world_feasibility.get("acceptable_sacrifices") or ()]
+    return {
+        "pool_infeasible": truth,
+        "agent_declared": claimed,
+        "declared_correctly": claimed == truth,
+        "false_alarm": claimed and not truth,
+        "stayed_silent": truth and not claimed,
+        "agent_blamed": blame,
+        "blame_correct": (blame in acceptable) if (truth and claimed and acceptable) else None,
+        "emitted_field": bool(agent_feasibility.get("declared")),
+    }
+
+
 def score_turn_v2(
     *,
     gold_intention: Dict[str, Any],
@@ -153,6 +283,8 @@ def score_turn_v2(
     judgment: Dict[str, Any],
     touched_fields: Sequence[str] = (),
     baseline_fields: Sequence[str] = BACKGROUND_FIELDS,
+    world_feasibility: Optional[Dict[str, Any]] = None,
+    agent_feasibility: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     constraints = {
         str(f): v for f, v in ((gold_intention or {}).get("constraints") or {}).items()
@@ -209,17 +341,46 @@ def score_turn_v2(
     }
 
     # ---- 变更捕捉: 本轮变了的字段是不是全抓到了 ----
-    changed = [f for f, change in (changed_this_turn or {}).items()
-               if isinstance(change, dict) and change.get("op") != "reprioritize"]
+    # 三种 op 的证据来源不一样，不能走同一条判定:
+    #   add / override  judge 说复述里提到了新值, 且 Layer 1 判定值对;
+    #   remove          字段已经不在 constraints 里, judge 没有对应的行可判, 所以
+    #                   by_field 里永远查不到它 —— 旧写法必然判成没抓到, agent 就算
+    #                   正确地丢掉了这条约束也拿不到分。改成直接看复述里还带不带它;
+    #   reprioritize    没有新值可复述, 证据只能是 agent 自己的排序位置。旧写法把它
+    #                   整类排除, 于是"用户在两个想要的东西之间做取舍"那些轮次 ——
+    #                   benchmark 最核心的一类意图变化 —— 一轮都没进过这个指标。
+    # 背景字段上的档位变化是标注的记账(t1 把 query 带来的字段整体降到 optional),
+    # 不是用户的意图变化, 排除。
     caught_map = judgment.get("change_caught") or {}
-    caught = [f for f in changed
-              if bool(caught_map.get(f)) and by_field.get(f, {}).get("value_match")]
+    ranked = ((agent_intention_prediction or {}).get("priority") or {}).get("ranked_fields") or []
+
+    def _op(field: str) -> str:
+        return str(((changed_this_turn or {}).get(field) or {}).get("op") or "")
+
+    def _caught(field: str) -> bool:
+        op = _op(field)
+        if op == "remove":
+            return field not in predicted
+        if op == "reprioritize":
+            return tier_move_respected(field, gold_intention, background, ranked)
+        return bool(caught_map.get(field)) and bool(by_field.get(field, {}).get("value_match"))
+
+    changed = [f for f, change in (changed_this_turn or {}).items()
+               if isinstance(change, dict)
+               and not (change.get("op") == "reprioritize" and f in background)]
+    caught = [f for f in changed if _caught(f)]
+    # 只含 add/override 的口径，跟改动之前的数字可比。
+    value_fields = [f for f in changed if _op(f) not in ("remove", "reprioritize")]
     change_capture = {
         "changed_fields": changed,
         "caught_fields": caught,
         "missed_fields": [f for f in changed if f not in caught],
         "all_caught": (len(caught) == len(changed)) if changed else None,
         "field_rate": (len(caught) / len(changed)) if changed else None,
+        "by_op": {op: [f for f in changed if _op(f) == op]
+                  for op in sorted({_op(f) for f in changed})},
+        "value_fields": value_fields,
+        "value_caught": [f for f in value_fields if f in caught],
     }
 
     # ---- 动作层 ----
@@ -274,6 +435,8 @@ def score_turn_v2(
             ((agent_intention_prediction or {}).get("priority") or {}).get("ranked_fields") or [],
         ),
         "action": action,
+        "sacrifice": sacrifice_regret(per_constraint, world_feasibility),
+        "declaration": declaration_accuracy(world_feasibility, agent_feasibility),
         "per_constraint": scored,
         "judge_summary": judgment.get("summary"),
         "judge_votes": judgment.get("votes"),
@@ -293,6 +456,16 @@ def aggregate_v2(rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
                     if x["change_capture"]["all_caught"] is not None]
     field_capture = [x["change_capture"]["field_rate"] for x in s
                      if x["change_capture"]["field_rate"] is not None]
+    # 只含 add/override 的对照口径，跟把 remove / reprioritize 纳进来之前可比。
+    value_capture = [len(x["change_capture"]["value_caught"]) / len(x["change_capture"]["value_fields"])
+                     for x in s if x["change_capture"].get("value_fields")]
+    by_op: Dict[str, List[float]] = {}
+    for x in s:
+        capture = x["change_capture"]
+        caught = set(capture["caught_fields"])
+        for op, fields in (capture.get("by_op") or {}).items():
+            if fields:
+                by_op.setdefault(op, []).append(len([f for f in fields if f in caught]) / len(fields))
     priorities = [x["priority"]["score"] for x in s if x.get("priority")]
     by_kind: Dict[str, List[float]] = {}
     for x in s:
@@ -306,8 +479,29 @@ def aggregate_v2(rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
         "excluded_unchanged_judgments": sum(x["intention"]["background_fields"] for x in
                                             [r["scores"] for r in scored]),
         # 主指标
+        "declaration_accuracy": _mean([float(x["declaration"]["declared_correctly"]) for x in s
+                                       if x.get("declaration")]),
+        "declaration_recall": _mean([float(x["declaration"]["agent_declared"]) for x in s
+                                     if (x.get("declaration") or {}).get("pool_infeasible")]),
+        "declaration_false_alarm_rate": _mean([float(x["declaration"]["false_alarm"]) for x in s
+                                               if x.get("declaration")
+                                               and not x["declaration"]["pool_infeasible"]]),
+        "blame_accuracy": _mean([float(x["declaration"]["blame_correct"]) for x in s
+                                 if (x.get("declaration") or {}).get("blame_correct") is not None]),
+        "blame_turns": len([x for x in s
+                            if (x.get("declaration") or {}).get("blame_correct") is not None]),
+        "sacrifice_optimality_rate": _mean([float(x["sacrifice"]["optimal"]) for x in s
+                                            if x.get("sacrifice")]),
+        "sacrifice_mean_regret": _mean([float(x["sacrifice"]["regret"]) for x in s
+                                        if x.get("sacrifice")]),
+        "sacrifice_turns": len([x for x in s if x.get("sacrifice")]),
+        "sacrifice_judge_alarms": len([x for x in s
+                                       if (x.get("sacrifice") or {}).get("judge_alarm")]),
         "change_capture_turn": _mean([float(v) for v in turn_capture]),
         "change_capture_field": _mean(field_capture),
+        "change_capture_value_field": _mean(value_capture),
+        "change_capture_by_op": {op: _mean(v) for op, v in sorted(by_op.items())},
+        "change_turns_by_op": {op: len(v) for op, v in sorted(by_op.items())},
         "change_turns": len(turn_capture),
         # 意图
         "constraint_recall": _mean([x["intention"]["constraint_recall"] for x in s]),
