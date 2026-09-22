@@ -463,7 +463,8 @@ def test_travelplanner_replay_page_renders_and_saves_annotations(tmp_path):
     turn = saved[0]["turns"][0]
     assert turn["user_utterance"] == "Plan a cheaper Boston trip."
     assert turn["gold_current_intention"]["constraints"]["budget"] == 400
-    assert "dest" not in turn["gold_current_intention"]["constraints"]
+    # Submitted constraints are stored verbatim, itinerary-context fields included.
+    assert turn["gold_current_intention"]["constraints"]["dest"] == "Boston"
     assert turn["gold_current_intention"]["priority"]["high"] == ["budget"]
     assert turn["gold_current_intention"]["entities"]["entity_2"]["reference"] == "my friend"
     assert turn["gold_action"]["confirmed"] is True
@@ -483,7 +484,12 @@ def test_turns_can_be_added_deleted_and_renumbered(tmp_path):
     saved = json.loads(annotation_path.read_text(encoding="utf-8"))
     assert [turn["turn_id"] for turn in saved[0]["turns"]] == [0, 1]
     assert saved[0]["turns"][1]["user_utterance"] == ""
-    assert saved[0]["turns"][1]["gold_current_intention"]["constraints"] == {"budget": 500}
+    # A new turn inherits the previous intention unchanged. The server no longer strips
+    # itinerary-context fields such as dest on the way to disk.
+    assert saved[0]["turns"][1]["gold_current_intention"]["constraints"] == {
+        "dest": "Boston",
+        "budget": 500,
+    }
     assert saved[0]["turns"][1]["env_feedback"] == {}
 
     deleted = client.delete("/api/turns/0/0")
