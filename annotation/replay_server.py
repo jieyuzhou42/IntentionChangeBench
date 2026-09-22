@@ -911,15 +911,15 @@ HTML = r"""
       const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
       const plan = payload.plan || (payload.plan = {});
       const days = plan.itinerary || (plan.itinerary = []);
-      days.forEach((day, index) => {
-        for (const field of ["transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"]) {
-          day[field] = travelSelectionName(field, day[field], day);
-        }
-        if (index > 0 && index < days.length - 1 && day.transportation !== "-") {
-          if (day.transportation) goldActionDraft.confirmed = false;
-          day.transportation = "-";
-        }
-      });
+      // Rendering never rewrites the stored annotation. A previous version ran every
+      // field through travelSelectionName here and forced middle-day transportation to
+      // "-" on each render. Both mutated goldActionDraft, so merely opening a turn --
+      // or touching any control that re-renders -- persisted the rewrite on the next
+      // save: inter-city flights on multi-city trips were dropped, attraction names the
+      // matcher did not recognize were discarded, and hand-written notes were truncated
+      // at the first em dash. The picker writes the full candidate text and every day
+      // stays editable, so no field is normalized behind the annotator's back.
+      // travelSelectionName is left defined but is no longer called from any path.
       const fields = ["day", "current_city", "transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
       const costFields = ["transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
       goldActionEditor.innerHTML = `
@@ -928,7 +928,7 @@ HTML = r"""
         <div class="day-list">${days.map((day, dayIndex) => `
           <article class="day-card">
             <div class="day-head editor-head"><strong>${esc(day.day || `Day ${dayIndex + 1}`)}</strong><button class="danger" data-gold-role="remove-day" data-day-index="${dayIndex}">Remove day</button></div>
-            <div class="day-grid">${fields.filter(field => field !== "transportation" || dayIndex === 0 || dayIndex === days.length - 1).map(field => `<div class="day-field"><label><span>${esc(prettyKey(field))}</span>${costFields.includes(field) ? `<span class="field-cost" data-cost-day="${dayIndex}" data-cost-field="${field}"></span>` : ""}</label>${travelPicker(field, dayIndex)}<input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
+            <div class="day-grid">${fields.map(field => `<div class="day-field"><label><span>${esc(prettyKey(field))}</span>${costFields.includes(field) ? `<span class="field-cost" data-cost-day="${dayIndex}" data-cost-field="${field}"></span>` : ""}</label>${travelPicker(field, dayIndex)}<input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
             <div class="day-cost-footer"><span>Day subtotal</span><strong data-day-subtotal="${dayIndex}">$0.00</strong></div>
           </article>`).join("")}</div>
         ${days.length ? "" : `<div class="empty">No proposed days. Add a day to define the gold itinerary.</div>`}
@@ -2768,11 +2768,10 @@ def create_app(
     annotation_path: Path,
     catalog_items: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> Flask:
-    strip_travelplanner_context_constraints(instances)
-    strip_travelplanner_context_constraints(state.get("instances") or [])
+    # The annotation is shown and saved exactly as stored. Normalizing here rewrote the
+    # editable copy before the annotator ever saw it, which is how multi-city flights and
+    # unmatched attraction names disappeared.
     attraction_names = collect_travel_attraction_names(instances)
-    normalize_stored_gold_action_attractions(instances, attraction_names)
-    normalize_replay_action_attractions(state.get("instances") or [], attraction_names)
     app = Flask(__name__)
     replay_catalog_items = catalog_items or {}
 
@@ -2914,25 +2913,20 @@ def create_app(
         instance_domain = str(
             (instances[instance_index].get("world_state") or {}).get("domain") or "webshop"
         ).lower()
+        # Every submitted constraint is stored. Dropping itinerary-context fields here
+        # also invalidated their gold_delta entries, which is exactly the signal this
+        # benchmark measures.
         constraints_clean = {
             str(key).strip(): value
             for key, value in constraints_payload.items()
             if str(key).strip()
-            and not (
-                instance_domain == "travelplanner"
-                and str(key).strip() in TRAVELPLANNER_CONTEXT_FIELDS
-            )
         }
         priority_clean = normalize_priority_payload(payload.get("priority"), list(constraints_clean.keys()))
         has_gold_action = "gold_action" in payload
         gold_action = payload.get("gold_action")
         if has_gold_action:
-            gold_action_holder = [{
-                "world_state": {"domain": instance_domain},
-                "turns": [{"gold_action": copy.deepcopy(gold_action)}],
-            }]
-            normalize_stored_gold_action_attractions(gold_action_holder, attraction_names)
-            gold_action = gold_action_holder[0]["turns"][0]["gold_action"]
+            # Save what the annotator entered; do not renormalize on the way to disk.
+            gold_action = copy.deepcopy(gold_action)
             gold_action_error = validate_gold_action(gold_action, instance_domain)
             if gold_action_error:
                 return jsonify({"ok": False, "error": gold_action_error}), 400
@@ -3034,8 +3028,7 @@ def create_app(
             "world_state": {"domain": domain},
             "turns": copy.deepcopy(submitted_turns),
         }
-        strip_travelplanner_context_constraints([sanitized_instance])
-        normalize_stored_gold_action_attractions([sanitized_instance], attraction_names)
+        # Saved verbatim: normalizing here silently edited the annotator's own input.
         sanitized_turns = sanitized_instance["turns"]
         for turn_index, turn in enumerate(sanitized_turns):
             gold_action = turn.get("gold_action")
@@ -3148,10 +3141,13 @@ def main() -> None:
     instances = load_json(input_path)
     if not isinstance(instances, list):
         raise ValueError(f"Expected dataset JSON list in {input_path}, got {type(instances).__name__}")
-    removed_travel_context = strip_travelplanner_context_constraints(instances)
-    normalized_attractions = normalize_stored_gold_action_attractions(instances)
-    if removed_travel_context or normalized_attractions:
-        save_json(annotation_path, instances)
+    # Startup must not rewrite the annotation. This previously stripped itinerary-context
+    # constraints and renormalized stored attractions, then saved -- so merely launching
+    # the server dropped gold_delta entries whose constraint had just been removed and
+    # discarded attraction names the matcher did not recognize, before anyone opened a
+    # page. Both helpers remain available for explicit tooling in annotation/tools/.
+    removed_travel_context = 0
+    normalized_attractions = 0
     enriched_constraints = 0
     if not args.skip_constraint_enrichment:
         enriched_constraints = enrich_webshop_constraints_from_metadata(instances)
