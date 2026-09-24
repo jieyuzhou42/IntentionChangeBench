@@ -1,0 +1,155 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22572,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180 from Panama City (10:13-12:17)",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Black Pearl ($63)",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN ($109/night)",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks ($46)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "FIO Cookhouse and Bar ($31)",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pantry d'or ($53)",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN ($109/night)",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive back to Panama City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN ($109/night)",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-12 through 2022-03-14.",
+        "note": "Three itinerary days are listed."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "NYC Firehouse-Greenpoint BRKLYN has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight is from Panama City; the return text says 'Drive back to Panama City'.",
+        "note": "The plan begins and returns to Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName 'Chicago'; the itinerary lists Chicago as the current city.",
+        "note": "Chicago is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Chicago as the destination/current city.",
+        "note": "Only one destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-12.",
+        "note": "The first itinerary day matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-14.",
+        "note": "The final itinerary day matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is dated 2022-03-12, from Panama City to Chicago, and departs at 10:13.",
+        "note": "The selected flight matches the requested date, route, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 transportation is 'Drive back to Panama City'.",
+        "note": "The plan specifies a self-drive return using the traveler's own car."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Navy Pier and Buckingham Fountain are listed on 2022-03-13; day 3 transportation is 'Drive back to Panama City' and no attractions are listed that day.",
+        "note": "Sightseeing is confined to March 13, and March 14 is reserved for the drive home."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on March 12, 13, and 14; the booked listing has a 3-night minimum.",
+        "note": "The itinerary books three nights starting March 12, including the permitted additional night."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "NYC Firehouse-Greenpoint BRKLYN has review rate number 5.0.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

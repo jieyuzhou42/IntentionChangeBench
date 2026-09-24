@@ -1,0 +1,181 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33557,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477, Sioux Falls to Phoenix, Dep 18:40 - Arr 19:26 ($410)",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Mama Loca (Phoenix, ~$27, rating 4.2)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1 BR in Carroll Gardens Townhouse, Phoenix (Private room, rating 4, $397/night)",
+        "record_name": "1 BR in Carroll Gardens Townhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Spooky Sky (Phoenix, ~$15, rating 3.4)",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pizza Hut (Phoenix, ~$30, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Village Restaurant (Phoenix, ~$35, rating 3.7)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1 BR in Carroll Gardens Townhouse, Phoenix (Private room, rating 4, $397/night)",
+        "record_name": "1 BR in Carroll Gardens Townhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854, Phoenix to Flagstaff, Dep 08:49 - Arr 09:47 ($42)",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti (Flagstaff, ~$16, rating 4.2)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "38 Barracks (Flagstaff, ~$35, rating 4.4)",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Large Bedroom in 2 Bed Apartment Brighton Beach, Flagstaff (Private room, rating 3, $959/night)",
+        "record_name": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Sushi Thai Restaurant (Flagstaff, ~$49, rating 3.7)",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Bamboo Boat (Flagstaff, ~$77, rating 3.8)",
+        "record_name": "Bamboo Boat",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Rhubarb Le Restaurant (Flagstaff, ~$157, rating 3.9)",
+        "record_name": "Rhubarb Le Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Large Bedroom in 2 Bed Apartment Brighton Beach, Flagstaff (Private room, rating 3, $959/night)",
+        "record_name": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Communiti (Flagstaff, ~$16, rating 4.2)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Paparazzi (Flagstaff, ~$85, rating 3.2)",
+        "record_name": "Paparazzi",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary goes from Sioux Falls to Phoenix on 2022-03-16, then Phoenix to Flagstaff on 2022-03-18, and ends in Flagstaff.",
+        "note": "The cities are visited in the requested Phoenix, then Flagstaff order."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Phoenix accommodation is listed on 2022-03-16 and 2022-03-17; Flagstaff accommodation is listed on 2022-03-18 and 2022-03-19. There is no accommodation on the 2022-03-20 departure day.",
+        "note": "The booked nights match the requested dates in both cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing and the Flagstaff listing both have room type \"Private room\" in the candidate records.",
+        "note": "Both booked accommodations meet the private-room requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 4; the Flagstaff listing has review rate number 3.",
+        "note": "Both city listings have ratings of at least 3."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate record F4045477 departs Sioux Falls at 18:40 and arrives in Phoenix at 19:26 on 2022-03-16.",
+        "note": "The flight arrives before the preferred 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate record F3804854 departs Phoenix at 08:49 and arrives in Flagstaff at 09:47 on 2022-03-18.",
+        "note": "The flight arrives before the preferred 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends in Flagstaff on 2022-03-20 and lists no return journey.",
+        "note": "No return leg is included, as requested for this one-way visit."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

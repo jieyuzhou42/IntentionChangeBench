@@ -1,0 +1,131 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22212,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073 from Tampa to Cleveland, departs at 10:37, arrives at 12:59",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Me Kong Bowl",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Nineties",
+        "record_name": "Nineties",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC. So Spacious!",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Big Chicken",
+        "record_name": "Big Chicken",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Keventers",
+        "record_name": "Keventers",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC. So Spacious!",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247 from Cleveland to Tampa, departs at 21:20, arrives at 23:34",
+        "record_name": "F3559247",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Green Leaf",
+        "record_name": "Green Leaf",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing has maximum occupancy 1 on both accommodation nights.",
+        "note": "Capacity covers the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The listed outbound flight matches the requested flight and comfortable departure time."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The plan books 'Rare gem of an apartment in NYC.  So Spacious!', not 'Richmond Hill 3 Bedroom apartment in Private home!'.",
+        "note": "The requested accommodation listing is not the one booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing's room type is Private room.",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has review rate number 5.",
+        "note": "The listing meets the rating-5 requirement."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Cleveland Metroparks Zoo as an attraction.",
+        "note": "The plan includes sightseeing despite the preferred requirement of no sightseeing."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Me Kong Bowl, a restaurant record.",
+        "note": "A restaurant lunch is planned on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

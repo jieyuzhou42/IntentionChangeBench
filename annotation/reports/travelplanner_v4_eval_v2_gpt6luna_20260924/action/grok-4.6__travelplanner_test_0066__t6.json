@@ -1,0 +1,212 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23393,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Minneapolis to Jacksonville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Villa Gargano",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Tpot",
+        "record_name": "Tpot",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Greenpoint",
+        "record_name": "Private Bedroom in Greenpoint",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Sanjha Chulha",
+        "record_name": "Sanjha Chulha",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Villa Gargano",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Midnight Cravings Beyond Control",
+        "record_name": "Midnight Cravings Beyond Control",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Greenpoint",
+        "record_name": "Private Bedroom in Greenpoint",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Jacksonville to Minneapolis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Tpot",
+        "record_name": "Tpot",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sanjha Chulha",
+        "record_name": "Sanjha Chulha",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Greenpoint has maximum occupancy 2.",
+        "note": "The listing can host one traveler, and the plan does not assume a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “Self-driving from Minneapolis to Jacksonville.”",
+        "note": "The stated origin is Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies the destination as Jacksonville.",
+        "note": "The stated destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Jacksonville as its destination and sightseeing city.",
+        "note": "It plans to visit one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “Self-driving from Minneapolis to Jacksonville.”",
+        "note": "It specifies the requested own-car drive and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 transportation says “Self-driving from Jacksonville to Minneapolis.”",
+        "note": "It specifies the requested own-car return drive and date."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the outbound drive on March 27, all listed attractions on March 28, and the return drive on March 29.",
+        "note": "Sightseeing is confined to the requested date, with the driving legs on their specified dates."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Greenpoint is listed for March 27 and March 28; March 29 has no accommodation.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The Private Bedroom in Greenpoint record lists room type “Private room.”",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Greenpoint has review rate number 4.0.",
+        "note": "Its rating meets the 3.5 minimum."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The selected restaurants have Aggregate Ratings from 3.2 to 3.8: Villa Gargano 3.7, Tpot 3.2, Pirates' House Restaurant 3.8, Sanjha Chulha 3.3, and Midnight Cravings Beyond Control 3.3.",
+        "note": "Every restaurant meal meets the 3.0 minimum."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The selected restaurants’ Cuisines values contain no “Fast Food” tag.",
+        "note": "No listed Jacksonville meal carries the prohibited cuisine tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 28 the plan lists Sanjha Chulha for breakfast, Villa Gargano for lunch, and Midnight Cravings Beyond Control for dinner.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "That sacrifices the entire-home/no-sharing must-have (private room in a shared home)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

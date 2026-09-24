@@ -1,0 +1,172 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24982,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3583571 from San Francisco (10:26-13:18) - $677",
+        "record_name": "F3583571",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Fat Belly (rating 4.1) - budgeted $54",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights (rating 5.0) - $1040",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "BrewBakes (rating 4.0) - budgeted $44",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Michael's Kitchen (rating 3.7) - budgeted $32",
+        "record_name": "Michael's Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Vikings (rating 4.2) - budgeted $74",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights (rating 5.0) - $1040",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3872974 from Kahului to San Francisco (09:40-17:45) - $517",
+        "record_name": "F3872974",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "The Breakfast Bite (rating 0, $34)",
+        "record_name": "The Breakfast Bite",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-25, 2022-03-26, and 2022-03-27.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 8.",
+        "note": "The listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 departs from San Francisco; return flight F3872974 arrives in San Francisco.",
+        "note": "The plan's origin and return city are San Francisco."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 goes to Kahului; the listed attractions and restaurant records are in Kahului.",
+        "note": "Kahului is the destination city in the itinerary."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Kahului as the destination on all three days.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's first day is 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's last day is 2022-03-27, and flight F3872974 is dated 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3583571 is dated 2022-03-25 and flies from San Francisco to Kahului.",
+        "note": "The listed outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3872974 is dated 2022-03-27, flies from Kahului to San Francisco, and arrives at 17:45.",
+        "note": "The return flight arrives before 21:00."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-25 and 2022-03-26, with none needed on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "This matches the requested room type and provides the apartment to the traveler."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Flight F3872974 arrives in San Francisco at 17:45 on 2022-03-27.",
+        "note": "The arrival is no later than 21:00."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The booked accommodation meets the preferred 5.0 rating."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Michael's Kitchen has Aggregate Rating 3.7 and The Breakfast Bite has Aggregate Rating 0; the other restaurant meals are Fat Belly 4.1, BrewBakes 4, and Vikings 4.2.",
+        "note": "Not every listed restaurant meal meets the preferred 4.0 rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Cannot fully satisfy preferred restaurant rating of 4.0+ for all meals within $2600 budget - sacrificed to meet mandatory budget cap."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

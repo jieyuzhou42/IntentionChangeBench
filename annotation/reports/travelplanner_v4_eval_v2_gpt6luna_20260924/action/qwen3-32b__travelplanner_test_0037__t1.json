@@ -1,0 +1,136 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21883,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F3500974, 09:37 Atlanta to Bozeman, arriving 11:50",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Included in hotel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Dinner: Jiquitaia, Average Cost: $36",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Included in hotel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sun-Filled Artist Loft in Private Townhouse ($214)",
+        "record_name": "Sun-Filled Artist Loft in Private Townhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "F3500979, 13:08 Bozeman to Atlanta, arriving 18:37",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Included in hotel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Dinner: Shri Bhujia Bhandar, Average Cost: $87",
+        "record_name": "Shri Bhujia Bhandar",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days 1, 2, and 3.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sun-Filled Artist Loft in Private Townhouse has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler, and the plan does not assume a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 departs Atlanta.",
+        "note": "The trip starts in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 arrives in Bozeman; flight F3500979 departs Bozeman.",
+        "note": "Bozeman is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The plan visits Bozeman between the Atlanta-to-Bozeman and Bozeman-to-Atlanta flights.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has FlightDate 2022-03-25.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500979 has FlightDate 2022-03-27.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500974 is dated 2022-03-25 and flies from Atlanta to Bozeman.",
+        "note": "The listed outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500979 is dated 2022-03-27 and flies from Bozeman to Atlanta.",
+        "note": "The listed return flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists accommodation only on day 2; days 1 and 3 show '-'. The requested nights are 2022-03-25 and 2022-03-26.",
+        "note": "Only one accommodation night is booked, not both requested nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22430,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Private vehicle (driving from Minneapolis to Jacksonville)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport / walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering / nearby cafe",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Goose Feathers Cafe and Bakery",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny room in cozy Bushwick apartment (Private room) - VIOLATION: must-have entire home/apt not met; no 4.0+ rated entire home/apt available for 2-night stay",
+        "record_name": "Sunny room in cozy Bushwick apartment",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Private vehicle (driving from Jacksonville to Minneapolis)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering / nearby cafe",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny room in cozy Bushwick apartment has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says driving from Minneapolis to Jacksonville.",
+        "note": "The trip originates in Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as the destination.",
+        "note": "The trip goes to Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Jacksonville is the sole destination city in the itinerary.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1: “Private vehicle (driving from Minneapolis to Jacksonville).”",
+        "note": "The plan specifies self-driving in an own/private vehicle on 2022-03-27."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3: “Private vehicle (driving from Jacksonville to Minneapolis).”",
+        "note": "The plan specifies self-driving in an own/private vehicle on 2022-03-29."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan has intercity driving on 2022-03-27 and 2022-03-29, and Jacksonville Zoo and Gardens on 2022-03-28 only.",
+        "note": "Sightseeing is limited to the requested middle day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "An accommodation is listed only on 2022-03-28; 2022-03-27 has “-”.",
+        "note": "Only one night is booked, rather than the requested nights of 2022-03-27 and 2022-03-28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Sunny room in cozy Bushwick apartment is listed as “Private room.”",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Sunny room in cozy Bushwick apartment has review rate number 4.0.",
+        "note": "The listing meets the 4.0 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "must-have entire home/apt not met"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

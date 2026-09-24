@@ -1,0 +1,167 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22794,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3614784 from Kansas City to Orlando",
+        "record_name": "F3614784",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "attraction",
+        "text": "SeaWorld Orlando",
+        "record_name": "SeaWorld Orlando",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "attraction",
+        "text": "Universal Orlando Resort",
+        "record_name": "Universal Orlando Resort",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856 from Orlando to Kansas City",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Unspecified",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has three dated days: 2022-03-07, 2022-03-08, and 2022-03-09.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! has maximum occupancy 2 and is booked for both accommodation nights.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3614784 is recorded from Kansas City to Orlando on 2022-03-07.",
+        "note": "The trip begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "violated",
+        "evidence": "The final listed flight is F4019856 from Orlando to Kansas City.",
+        "note": "The itinerary leaves Orlando and ends in Kansas City rather than ending in Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The listed attraction and accommodation records are in Orlando; Kansas City is used as the origin and return airport city.",
+        "note": "Orlando is the only visiting city in the plan."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3614784 is dated 2022-03-07, and the first itinerary day is 2022-03-07.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "Flight F4019856 departs Orlando at 22:44 on 2022-03-09 and arrives in Kansas City at 00:33; its elapsed time is 2 hours 49 minutes, placing arrival on 2022-03-10.",
+        "note": "The return travel extends past the requested end date of 2022-03-09."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

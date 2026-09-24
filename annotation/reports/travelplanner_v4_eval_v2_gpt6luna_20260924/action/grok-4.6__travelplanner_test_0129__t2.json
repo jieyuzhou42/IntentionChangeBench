@@ -1,0 +1,187 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33104,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight Number: F4045477, from Sioux Falls to Phoenix, Departure Time: 18:40, Arrival Time: 19:26",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Mama Loca, Phoenix",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck!, Phoenix",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Village Restaurant, Phoenix",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pizza Hut, Phoenix",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jungle The Restaurant, Phoenix",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck!, Phoenix",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight Number: F3804854, from Phoenix to Flagstaff, Departure Time: 08:49, Arrival Time: 09:47",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti, Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "38 Barracks, Flagstaff",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York, Flagstaff",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Communiti, Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Sushi Thai Restaurant, Flagstaff",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Bamboo Boat, Flagstaff",
+        "record_name": "Bamboo Boat",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York, Flagstaff",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "38 Barracks, Flagstaff",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Communiti, Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "Frontier, Flagstaff",
+        "record_name": "Frontier",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing maximum occupancy 3; Flagstaff listing maximum occupancy 8.",
+        "note": "The booked accommodation each night can host all 3 travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Both booked listings have room type \"Entire home/apt\".",
+        "note": "Neither booked listing is a Private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing review rate number 5; Flagstaff listing review rate number 3.",
+        "note": "Both city listings meet the 3+ rating requirement."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 travels Sioux Falls to Phoenix on 2022-03-16 and arrives at 19:26.",
+        "note": "The arrival is before the requested 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 travels Phoenix to Flagstaff on 2022-03-18 and arrives at 09:47.",
+        "note": "The arrival is before the requested 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has no return transportation from Flagstaff; the rationale states, \"One-way trip ends in Flagstaff on the 20th with no return.\"",
+        "note": "The plan ends in Flagstaff on March 20 without adding a return journey."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "room_type Private room is sacrificed"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

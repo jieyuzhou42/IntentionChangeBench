@@ -1,0 +1,216 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24578,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 from Belleville (departs 12:29, arrives 14:04)",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Cakes At Bhawanas (Indian cuisine, rating 3.5)",
+        "record_name": "Cakes At Bhawanas",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! (Entire home/apt, no smoking, rating 5)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Walking/local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen (Mediterranean, rating 4.4)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen (Mediterranean, rating 4.4)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cakes At Bhawanas (Indian cuisine, rating 3.5)",
+        "record_name": "Cakes At Bhawanas",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! (Entire home/apt, no smoking, rating 5)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive back to Belleville (over 29th and 30th)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen (Mediterranean, rating 4.4)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts 2022-03-27, and the return drive is stated to span March 29 and March 30.",
+        "note": "The trip spans four calendar days, March 27–30."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Las Vegas listing has maximum occupancy 3 and is used for both nights.",
+        "note": "Its capacity covers both travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName as Belleville.",
+        "note": "The plan departs from Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName as Las Vegas.",
+        "note": "The plan travels to Las Vegas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Las Vegas as the destination and Belleville only as the origin and return destination.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return drive is stated as taking place over March 29 and March 30.",
+        "note": "The trip ends on March 30."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is from Belleville to Las Vegas on 2022-03-27; its record gives departure 12:29 and arrival 14:04.",
+        "note": "The listed outbound flight matches the requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says, \"Drive back to Belleville (over 29th and 30th).\"",
+        "note": "It specifies a self-drive return over the requested dates; the dialogue identifies the car as the travelers' own."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 27 and March 28, with no accommodation on departure day March 29.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's record gives room type \"Entire home/apt\".",
+        "note": "The booked room type matches."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's record gives review rate number 5.",
+        "note": "The booked listing meets the rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen has Aggregate Rating 4.4 and Cakes At Bhawanas has Aggregate Rating 3.5.",
+        "note": "All restaurant meals listed from the records meet the 3.0 minimum."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen's Cuisines are \"Desserts, Bakery, Cafe, Mediterranean, Seafood\"; Cakes At Bhawanas' are \"Desserts, Tea, American, Bakery, Indian, Seafood\".",
+        "note": "None of the listed restaurant meals has a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 28, breakfast and lunch are both at Ethos Vegan Kitchen; dinner is at Cakes At Bhawanas.",
+        "note": "The day has only two different restaurants, not three."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attraction text specifies The Mob Museum and The Neon Museum Las Vegas \"(after 16:00)\".",
+        "note": "The planned sightseeing is outside the 14:00–16:00 interval."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The accommodation record's house_rules include \"No smoking\".",
+        "note": "The listing prohibits smoking as requested."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Cakes At Bhawanas' record lists Indian in Cuisines, and it is scheduled for dinner on March 28.",
+        "note": "The dinner has the required Indian tag."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen's record lists Mediterranean in Cuisines, and it is scheduled for lunch on March 28.",
+        "note": "The lunch has the required Mediterranean tag."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attraction text lists The Mob Museum and The Neon Museum Las Vegas after 16:00.",
+        "note": "Both requested attractions are scheduled on the requested day, outside the unavailable interval."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attraction text specifies both museums after 16:00.",
+        "note": "No sightseeing is planned for the second traveler during 14:00–16:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

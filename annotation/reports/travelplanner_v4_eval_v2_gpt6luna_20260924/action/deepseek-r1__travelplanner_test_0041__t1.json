@@ -1,0 +1,183 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24357,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3583571 (SFO->OGG) 10:26-13:18",
+        "record_name": "F3583571",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "In-flight meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Michael's Kitchen ($32)",
+        "record_name": "Michael's Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Fat Belly ($54)",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment (Entire home/apt)",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "BrewBakes ($44)",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "New Town Cafe ($52)",
+        "record_name": "New Town Cafe - Park Plaza",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Senor Iguanas ($90)",
+        "record_name": "Senor Iguanas",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment (Entire home/apt)",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3872974 (OGG->SFO) 09:40-17:45",
+        "record_name": "F3872974",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Grab-and-go from accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "In-flight meal",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, 26, and 27, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 3 on each night.",
+        "note": "The accommodation can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 is from San Francisco to Kahului.",
+        "note": "The itinerary departs from San Francisco."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 is from San Francisco to Kahului, and the first two days list Kahului as the current city.",
+        "note": "The destination is Kahului."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Kahului on March 25 and 26 before returning to San Francisco.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight are dated March 25, 2022.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight and final itinerary day are dated March 27, 2022.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3583571 flies from San Francisco to Kahului on 2022-03-25.",
+        "note": "The plan includes the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3872974 flies from Kahului to San Francisco on 2022-03-27 and arrives at 17:45.",
+        "note": "The return flight lands before 21:00."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 25 and March 26, with none listed on departure day March 27.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "The listing meets the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Record F3872974 arrives in San Francisco at 17:45 on 2022-03-27.",
+        "note": "The recorded arrival is before 21:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

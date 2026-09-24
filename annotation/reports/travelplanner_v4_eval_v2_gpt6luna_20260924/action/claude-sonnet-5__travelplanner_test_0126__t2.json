@@ -1,0 +1,169 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32755,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, Providence to Wilmington (~12h, cost $62)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Bandit Burrito, Wilmington",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private room. 1 bed, 2 guests, 3333 Broadway (Wilmington, Private room, rating 3, $705/night)",
+        "record_name": "Private room. 1 bed, 2 guests, 3333 Broadway",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Dunkin' Donuts, Wilmington",
+        "record_name": "Dunkin' Donuts",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Moonie's Texas Barbecue, Wilmington",
+        "record_name": "Moonie's Texas Barbecue",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Taco Bus, Wilmington",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private room. 1 bed, 2 guests, 3333 Broadway (Wilmington)",
+        "record_name": "Private room. 1 bed, 2 guests, 3333 Broadway",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving, Wilmington to Fayetteville (~1h43m, cost $7)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Azteca, Wilmington",
+        "record_name": "Azteca",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "DiVine, Fayetteville",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Smoke N Oven, Fayetteville",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 (Fayetteville, Private room, rating 4, $251/night)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Eat Street, Fayetteville",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Biryani By Kilo, Fayetteville",
+        "record_name": "Biryani By Kilo",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Oriental Fusion, Fayetteville",
+        "record_name": "Oriental Fusion",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 (Fayetteville)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving, Fayetteville to Providence (~11h10m, cost $58)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Subway, Fayetteville",
+        "record_name": "Subway",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has maximum occupancy 2 and the Fayetteville listing has maximum occupancy 2; each is booked for both nights in its city.",
+        "note": "Each listing can host both travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings have room type \"Private room\" in the candidate records.",
+        "note": "The preferred room type is met in both cities."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Wilmington listing \"Private room. 1 bed, 2 guests, 3333 Broadway\" has review rate number 3; the Fayetteville listing has review rate number 4.",
+        "note": "The 4+ preference is not met in Wilmington."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "sacrificing the 4+ rating preference for Wilmington only"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

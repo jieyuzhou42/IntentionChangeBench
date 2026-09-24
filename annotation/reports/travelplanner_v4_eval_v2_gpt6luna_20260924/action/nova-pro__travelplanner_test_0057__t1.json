@@ -1,0 +1,101 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20329,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight from Houston to Reno (F3879164, 09:50-12:04)",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight from Reno to Houston (F3875705, 12:58-18:31)",
+        "record_name": "F3875705",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-11, 2022-03-12, and 2022-03-13.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "A bright, beautiful treehouse has maximum occupancy 2; the trip is for one person.",
+        "note": "The booked listing can host the traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has OriginCityName Houston.",
+        "note": "The outbound trip starts in Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has DestCityName Reno; the return flight originates in Reno.",
+        "note": "The itinerary travels to Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Houston as the origin and Reno as the destination, with the attraction and accommodation in Reno.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-11; flight F3879164 has FlightDate 2022-03-11.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-13; flight F3875705 has FlightDate 2022-03-13.",
+        "note": "The return is on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 is Houston to Reno on 2022-03-11, departing at 09:50.",
+        "note": "It matches the required outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3875705 is Reno to Houston on 2022-03-13, departing at 12:58.",
+        "note": "It matches the required return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-12; the 2022-03-11 accommodation slot is '-'.",
+        "note": "Only one accommodation night is booked, not the requested nights of 2022-03-11 and 2022-03-12."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

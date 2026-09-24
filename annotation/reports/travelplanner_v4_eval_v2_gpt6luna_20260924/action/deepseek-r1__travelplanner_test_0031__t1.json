@@ -1,0 +1,183 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21732,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 (Belleville → Las Vegas)",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Airport meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen ($42 avg)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Chili's Grill & Bar ($71 avg)",
+        "record_name": "Chili's Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! ($108/night)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Portneuf Valley Brewing ($58 avg)",
+        "record_name": "Portneuf Valley Brewing",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Barbeque Nation ($88 avg)",
+        "record_name": "Barbeque Nation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park!",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Begin drive to Belleville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Grab-and-go meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Roadside dining",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Drive-through meal",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "violated",
+        "evidence": "The itinerary contains dated entries for March 27, March 28, and March 29 only.",
+        "note": "The plan has three itinerary days, not four."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Las Vegas listing has maximum occupancy 3.",
+        "note": "Its capacity covers two travelers on both booked nights."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has OriginCityName Belleville; the March 29 slot says “Begin drive to Belleville.”",
+        "note": "The plan starts from and names the return destination as Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has DestCityName Las Vegas; the first two itinerary entries list Las Vegas as current city.",
+        "note": "Las Vegas is the planned destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Las Vegas as the destination; the return entry is marked En route.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary entry is dated 2022-03-27, and flight F3578336 is dated 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "The final dated itinerary entry is 2022-03-29; there is no March 30 entry.",
+        "note": "The plan does not extend through the required end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is from Belleville to Las Vegas on 2022-03-27.",
+        "note": "The outbound flight matches the required route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The only return entry says “Begin drive to Belleville” on March 29; no March 30 return entry or own-car detail is listed.",
+        "note": "The plan does not specify the required self-drive across March 29 and 30 in the traveler’s own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same accommodation is listed on March 27 and March 28, with no accommodation on the departure day.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! is listed as Entire home/apt.",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! has review rate number 5.",
+        "note": "The listing meets the rating floor of 5."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

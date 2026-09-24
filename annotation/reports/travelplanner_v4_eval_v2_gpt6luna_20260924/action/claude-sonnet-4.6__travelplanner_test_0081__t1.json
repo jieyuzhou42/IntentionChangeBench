@@ -1,0 +1,148 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23380,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073, Tampa→Cleveland, departs 10:37, arrives 12:59, $326 (1 passenger)",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Tampa before departure (self-catered)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Bikanerwala, Cleveland ($10) — light meal after arriving ~13:00",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Big Chicken, Cleveland ($27) — Cafe/Pizza/Italian",
+        "record_name": "Big Chicken",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy minimalist room close to train (1) — Private room, no parties rule, $593 for 3-night minimum stay, rating 3",
+        "record_name": "Cozy minimalist room close to train (1)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit / walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bikanerwala, Cleveland ($10) — Tea/Bakery/Fast Food",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Me Kong Bowl, Cleveland ($19) — Cafe/BBQ/Seafood, rated 4.0",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Nineties, Cleveland ($31) — Cafe/Pizza/Desserts, rated 3.9",
+        "record_name": "Nineties",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy minimalist room close to train (1) — night 2",
+        "record_name": "Cozy minimalist room close to train (1)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247, Cleveland→Tampa, departs 21:20, arrives 23:34, $198 (1 passenger)",
+        "record_name": "F3559247",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Me Kong Bowl, Cleveland ($19) — morning cafe option",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner, Cleveland ($25) — Pizza/French/Seafood",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Keventers, Cleveland ($54) — Pizza/American/Desserts, rated 3.8 (pre-flight dinner)",
+        "record_name": "Keventers",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1 (2022-03-02), Day 2 (2022-03-03), and Day 3 (2022-03-04).",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing, Cozy minimalist room close to train (1), has maximum occupancy 2; the plan is for 1 passenger.",
+        "note": "The listing can host the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The outbound flight matches the requested flight."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists the Rock & Roll Hall of Fame as an afternoon attraction.",
+        "note": "The requirement is no sightseeing on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is listed as Bikanerwala, a restaurant meal.",
+        "note": "The requirement is no planned restaurant lunch on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

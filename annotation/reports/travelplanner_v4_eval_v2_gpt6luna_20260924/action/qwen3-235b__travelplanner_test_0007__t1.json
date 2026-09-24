@@ -1,0 +1,185 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 3,
+  "prompt_chars": 21844,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720 from St. Louis to Oklahoma City ($105), departed 21:59, arrived 23:42",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Nizam's Kathi Kabab ($39)",
+        "record_name": "Nizam's Kathi Kabab",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! ($151)",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Veg Aroma ($52)",
+        "record_name": "Veg Aroma",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lake House Restaurant ($38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! ($151)",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607 from Oklahoma City to St. Louis ($201), departed 06:27, arrived 07:44",
+        "record_name": "F3950607",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary is dated 2022-03-17, 2022-03-18, and 2022-03-19.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Upper East Side Space and Access!! has maximum occupancy 2; it is booked for both nights.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 departs St. Louis.",
+        "note": "The outbound origin matches the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 arrives in Oklahoma City; the itinerary's first two days are in Oklahoma City.",
+        "note": "The destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Oklahoma City and returns to St. Louis on the final day.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight are dated 2022-03-17.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight are dated 2022-03-19.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 is dated 2022-03-17, from St. Louis to Oklahoma City, departing at 21:59.",
+        "note": "The route and date match, and the 21:59 departure is late."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3950607 is dated 2022-03-19, from Oklahoma City to St. Louis, departing at 06:27.",
+        "note": "The route and date match, and the 06:27 departure is early."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Upper East Side Space and Access!! is listed on 2022-03-17 and 2022-03-18; accommodation is '-' on departure day.",
+        "note": "Two nights are booked on the requested dates."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

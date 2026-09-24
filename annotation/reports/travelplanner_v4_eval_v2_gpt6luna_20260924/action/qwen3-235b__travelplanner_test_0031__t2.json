@@ -1,0 +1,205 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23507,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 from Belleville, departs 12:29, arrives 14:04",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Ethos Vegan Kitchen (Rating: 4.4, Cost: $42)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! (Entire home/apt, No smoking, Rating: 5, Price: $108/night)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen (Rating: 4.4, Cost: $42)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Barbeque Nation (Rating: 4.0, Cost: $88)",
+        "record_name": "Barbeque Nation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chili's Grill & Bar (Rating: 3.8, Cost: $71)",
+        "record_name": "Chili's Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! (Entire home/apt, No smoking, Rating: 5, Price: $108/night)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive from Las Vegas to Belleville (no return flight available)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed food from accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food during drive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "No dinner in plan (arrival expected after trip end)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "violated",
+        "evidence": "The itinerary lists March 27, 28, and 29 only.",
+        "note": "The requested trip is four days, March 27–30."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Las Vegas listing has maximum occupancy 3.",
+        "note": "The listing can host both travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has OriginCityName Belleville.",
+        "note": "The outbound flight starts in Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has DestCityName Las Vegas; the itinerary identifies Las Vegas as the destination.",
+        "note": "The plan travels to Las Vegas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Las Vegas is the only planned destination city.",
+        "note": "The itinerary visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27; flight F3578336 is dated 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "The last itinerary day is 2022-03-29, with no 2022-03-30 entry.",
+        "note": "The plan does not cover the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is dated 2022-03-27 and flies from Belleville to Las Vegas.",
+        "note": "The required outbound flight is listed."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 29 transportation text says “Drive from Las Vegas to Belleville”; there is no March 30 itinerary entry.",
+        "note": "The plan does not establish the requested self-drive across both March 29 and March 30."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same accommodation is listed on March 27 and March 28, and none is listed on March 29.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "It meets the required room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has review rate number 5.",
+        "note": "It meets the rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen is rated 4.4, Barbeque Nation 4.0, and Chili's Grill & Bar 3.8.",
+        "note": "Every restaurant meal meets the 3.0 minimum."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Barbeque Nation's Cuisines include Fast Food; Chili's Grill & Bar's Cuisines include Fast Food.",
+        "note": "Two Las Vegas restaurant meals carry the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 28 lists Ethos Vegan Kitchen for breakfast, Barbeque Nation for lunch, and Chili's Grill & Bar for dinner.",
+        "note": "The three meals use three different restaurants."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attraction text notes the sister's 14:00–16:00 appointment, and the rationale says the schedule conflict was respected; no attraction time is listed in that interval.",
+        "note": "The plan identifies the unavailable interval and does not schedule sightseeing for her during it."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's house_rules include No smoking.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attraction text notes the sister's 14:00–16:00 appointment, and the rationale says the schedule conflict was respected; no attraction time is listed in that interval.",
+        "note": "The itinerary does not schedule sightseeing for the sister during her stated unavailable interval."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

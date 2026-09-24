@@ -1,0 +1,203 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24230,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733 from Tulsa to Phoenix, departing 11:28 and arriving 13:07; fare $195",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Oatmeal and fruit prepared at home in Tulsa",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed turkey sandwich and fruit prepared at home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut — rated 4.4, average cost $30, and not tagged Fast Food",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) — Entire home/apt, night 1 of 2",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered oatmeal, yogurt, and fruit at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pizza Hut — rated 4.4, average cost $30, and not tagged Fast Food",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Self-catered pasta with vegetables at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) — Entire home/apt, night 2 of 2",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3803478 from Phoenix to Tulsa, departing 13:51 and arriving 17:04; fare $276",
+        "record_name": "F3803478",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered eggs, toast, and fruit at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Pizza Hut — rated 4.4, average cost $30, and not tagged Fast Food",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Self-catered dinner at home in Tulsa",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 6, 7, and 8, 2022.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has a maximum occupancy of 8.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Tulsa as the origin; the return is to Tulsa.",
+        "note": "The trip originates in Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Phoenix as the destination; the return originates in Phoenix.",
+        "note": "Phoenix is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Phoenix between the Tulsa outbound and return trips.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-06.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day and return flight date are 2022-03-08.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3996733 from Tulsa to Phoenix on 2022-03-06, departing 11:28 and arriving 13:07.",
+        "note": "The route, date, and midday timing match, but the required mode is self-driving in the traveler’s own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3803478 from Phoenix to Tulsa on 2022-03-08, departing 13:51 and arriving 17:04.",
+        "note": "The route, date, and afternoon timing match, but the required mode is self-driving in the traveler’s own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 6 and March 7; the March 8 departure day has no accommodation.",
+        "note": "The itinerary books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing record gives room type as Entire home/apt.",
+        "note": "The booked room type matches."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary uses flight records for both legs; the outbound departs at 11:28 and the return at 13:51.",
+        "note": "It uses the preferred flying option, and the preference allows driving rather than requiring it."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut has an Aggregate Rating of 4.4. Other meal slots are self-catered or packed.",
+        "note": "The restaurant meal in the plan exceeds the 3.5 rating floor; self-catered and packed meals do not count against it."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut's recorded Cuisines are Tea, Chinese, Desserts, Seafood; Fast Food is not listed.",
+        "note": "No restaurant meal in Phoenix is from a record tagged Fast Food."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 7, breakfast and dinner are self-catered, and lunch is Pizza Hut.",
+        "note": "The plan does not provide three different restaurants across the three meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The Phoenix accommodation candidate is named \"6 Guests! Close to JFK-Manhattan(30 min \\\"A\\\" train)\", which appears inconsistent with its recorded city of Phoenix; the audit uses the candidate record's city and attributes."
+    ]
+  }
+}

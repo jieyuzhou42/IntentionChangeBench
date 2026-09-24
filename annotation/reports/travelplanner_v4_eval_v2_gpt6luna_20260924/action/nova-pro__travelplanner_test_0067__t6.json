@@ -1,0 +1,203 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23095,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600 from Fort Lauderdale to Charlotte Amalie",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "The Wielingen",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128 from Charlotte Amalie to Fort Lauderdale",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "N/A",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-16, 2022-03-17, and 2022-03-18.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has maximum occupancy 2; the requested party size is 1.",
+        "note": "The booked listing can host one traveler, and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 originates in Fort Lauderdale; flight F3619128 arrives in Fort Lauderdale.",
+        "note": "Fort Lauderdale is the trip's origin and return city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 arrives in Charlotte Amalie; flight F3619128 originates in Charlotte Amalie.",
+        "note": "Charlotte Amalie is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels to and stays in Charlotte Amalie between the flights.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 has FlightDate 2022-03-16.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 has FlightDate 2022-03-18.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3618600 travels Fort Lauderdale to Charlotte Amalie on 2022-03-16 and departs at 13:06.",
+        "note": "The listed flight matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3619128 travels Charlotte Amalie to Fort Lauderdale on 2022-03-18 and departs at 16:10.",
+        "note": "The listed flight matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is N/A on 2022-03-16 and The Wielingen is listed only on 2022-03-17.",
+        "note": "Only one of the two required nights is booked."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Maharaja Restaurant has Aggregate Rating 3.6.",
+        "note": "Both listed restaurant dinners meet the 3.5 rating floor."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has review rate number 5.0.",
+        "note": "Its rating meets the preferred minimum of 4.5."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The Wielingen is listed as room type Private room.",
+        "note": "The required room type is Entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

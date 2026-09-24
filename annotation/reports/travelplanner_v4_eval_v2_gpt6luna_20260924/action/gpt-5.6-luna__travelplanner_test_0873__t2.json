@@ -1,0 +1,217 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25093,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Charlotte to New Orleans; 10 hours 28 minutes, cost 57",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Gupha",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan, New Orleans; entire home/apt, maximum occupancy 2, 186 per night",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gupha",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gupha",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Gupha",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from New Orleans to Charlotte; 10 hours 27 minutes, cost 57",
+        "record_name": null,
+        "revised": true
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Gupha",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "No flight from New Orleans to Charlotte is available on March 13 in the search results, so the requested return flight is unmet and self-driving is used as the reliable supported alternative.",
+        "effect": "The March 13 return transportation is self-driving rather than the requested flight."
+      },
+      {
+        "quote": "Mardi Gras World is omitted from the airport-focused final day.",
+        "effect": "Mardi Gras World is excluded from March 13."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary bases the travelers in New Orleans, with Charlotte shown only as the drive's origin or destination.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Lovely One bedroom apartment 20 min to Manhattan, has room type Entire home/apt.",
+        "note": "The listing's recorded room type matches the requirement."
+      },
+      {
+        "gold_field": "required_cities",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies New Orleans as the destination and current city for the stay.",
+        "note": "New Orleans is the only planned destination city."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate record lists self-driving from Charlotte to New Orleans, duration 10 hours 28 mins; the itinerary uses this on 2022-03-09.",
+        "note": "Mode, route, and date match."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary says “Self-driving from New Orleans to Charlotte”; the transportation search says there is no flight from New Orleans to Charlotte on 2022-03-13.",
+        "note": "The plan drives back rather than flying."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 13 lists “Airport/return-travel day; Mardi Gras World omitted,” but its transportation is self-driving from New Orleans to Charlotte, not an airport transfer and flight home.",
+        "note": "Sightseeing is omitted, but the day is not reserved for the required airport transfer and flight home."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "the requested return flight is unmet"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

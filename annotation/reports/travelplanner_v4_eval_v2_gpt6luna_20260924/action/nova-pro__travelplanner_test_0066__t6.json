@@ -1,0 +1,165 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22346,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "driving to Jacksonville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Villa Gargano",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Goose Feathers Cafe and Bakery",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "attraction",
+        "text": "Jacksonville Zoo and Gardens",
+        "record_name": "Jacksonville Zoo and Gardens",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC Sanctuary, Skyline Views & Rooftop",
+        "record_name": "NYC Sanctuary, Skyline Views & Rooftop",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "driving back to Minneapolis",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 6.",
+        "note": "The listing can host one traveler, and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says driving to Jacksonville from Minneapolis and driving back to Minneapolis.",
+        "note": "Minneapolis is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as the destination on 2022-03-28.",
+        "note": "The destination matches the requested city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Jacksonville and lists no other destination city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-27 the plan says \"driving to Jacksonville\"; the user specified driving in their own car.",
+        "note": "The plan uses the requested self-driving outbound transportation."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-29 the plan says \"driving back to Minneapolis\"; the user specified driving in their own car.",
+        "note": "The plan uses the requested self-driving return transportation."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan has driving on 2022-03-27 and 2022-03-29, and places Jacksonville Zoo and Gardens on 2022-03-28 only.",
+        "note": "The driving dates and sightseeing day match the required schedule."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The accommodation slot is empty on 2022-03-27 and lists NYC Sanctuary, Skyline Views & Rooftop only on 2022-03-28.",
+        "note": "Only one night is booked; the requirement is two nights, March 27 and 28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "NYC Sanctuary, Skyline Views & Rooftop is listed as Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "NYC Sanctuary, Skyline Views & Rooftop has review rate number 5.0.",
+        "note": "The rating exceeds the 3.5 minimum."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Villa Gargano is rated 3.7, Pirates' House Restaurant 3.8, and Goose Feathers Cafe and Bakery 4.2.",
+        "note": "Every restaurant meal meets the 3.0 minimum."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Goose Feathers Cafe and Bakery has Cuisines listed as \"Tea, Fast Food, Italian\".",
+        "note": "The dinner carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "Breakfast is Villa Gargano, lunch is Pirates' House Restaurant, and dinner is Goose Feathers Cafe and Bakery on 2022-03-28.",
+        "note": "All three meals are at different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

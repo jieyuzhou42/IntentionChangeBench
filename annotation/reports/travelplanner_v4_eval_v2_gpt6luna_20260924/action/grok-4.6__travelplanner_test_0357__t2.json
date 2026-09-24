@@ -1,0 +1,154 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22725,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 Buffalo to Boston 08:04-09:30; airport and local transfers by rideshare (party together, door-to-door)",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "packed simple inexpensive breakfast before the morning flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat (sit-down, rating 4.4, average cost 18)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "packed simple inexpensive food at the accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "rideshare only, party together, door-to-door between accommodation, meals, and attractions",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "packed simple inexpensive breakfast at the accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Irish Democrat (sit-down, rating 4.4, average cost 18)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "packed simple inexpensive food at the accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "rideshare door-to-door for local moves; Flight F3757097 Boston to Buffalo 21:44-23:34",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "packed simple inexpensive breakfast at the accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Irish Democrat (sit-down, rating 4.4, average cost 18)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "packed simple inexpensive food before the evening flight",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5 and is used for both nights.",
+        "note": "The listing can host all 4 travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists two attractions on March 4, two on March 5, and one on March 6; it describes the first pair as adjacent and the second pair as nearby.",
+        "note": "The daily limit of two nearby attractions is respected. The plan also identifies seating at the listed stops for breaks."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "unknown",
+        "evidence": "Irish Democrat has an Aggregate Rating of 4.4. The restaurant record does not specify whether it offers sit-down dining.",
+        "note": "The rating requirement is documented for a meal each day, but the records lack the attribute needed to verify the sit-down requirement."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "unknown",
+        "evidence": "The other meal slots are described as packed or self-catered and have no matching restaurant records.",
+        "note": "Those slots do not establish affordability under the meal-level evidence rule, and the requirement gives no price threshold for inexpensive restaurant meals."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "The latest user request says to prioritize restaurant ratings over French and American variety and to choose any cuisine.",
+        "note": "The earlier cuisine preference was explicitly relaxed; the plan may use any cuisine."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

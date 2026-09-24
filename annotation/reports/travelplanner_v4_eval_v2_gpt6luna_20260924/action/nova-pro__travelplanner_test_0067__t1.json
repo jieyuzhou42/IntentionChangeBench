@@ -1,0 +1,122 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21788,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600 from Fort Lauderdale to Charlotte Amalie",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Kabab Roll Cafe",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "The Wielingen",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "The Wielingen",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128 from Charlotte Amalie to Fort Lauderdale",
+        "record_name": "F3619128",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-16, 2022-03-17, and 2022-03-18.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has a maximum occupancy of 2, and the plan books it for both nights.",
+        "note": "The listing capacity covers the one traveler requested."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Fort Lauderdale as OriginCityName.",
+        "note": "The trip starts in Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Charlotte Amalie as DestCityName.",
+        "note": "The trip destination is Charlotte Amalie."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels from Fort Lauderdale to Charlotte Amalie and back; its destination-city activities and accommodation are in Charlotte Amalie.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-16, and the itinerary begins on 2022-03-16.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record has FlightDate 2022-03-18, and the itinerary ends on 2022-03-18.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 is from Fort Lauderdale to Charlotte Amalie on 2022-03-16 and departs at 13:06.",
+        "note": "The planned outbound flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 is from Charlotte Amalie to Fort Lauderdale on 2022-03-18 and departs at 16:10.",
+        "note": "The planned return flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books The Wielingen on 2022-03-16 and 2022-03-17; its recorded minimum stay is 1 night.",
+        "note": "Accommodation is booked for both requested nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

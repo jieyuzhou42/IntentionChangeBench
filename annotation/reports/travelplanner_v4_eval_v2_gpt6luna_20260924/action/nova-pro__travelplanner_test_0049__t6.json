@@ -1,0 +1,158 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24641,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497 from Kansas City to Orlando",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Turquoise Villa",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Turquoise Villa",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA",
+        "record_name": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856 from Orlando to Kansas City",
+        "record_name": "F4019856",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has three dates: 2022-03-07, 2022-03-08, and 2022-03-09.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Orlando listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Kansas City as the origin.",
+        "note": "The plan starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Orlando as the destination.",
+        "note": "The plan visits Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination city is Orlando.",
+        "note": "One visiting city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary date and outbound flight date are 2022-03-07.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary date and return flight date are 2022-03-09.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary uses flight F3998497; its record shows Kansas City to Orlando on 2022-03-07, departing 19:26 and arriving 23:00.",
+        "note": "The requirement specifies self-driving in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary uses flight F4019856; its record shows Orlando to Kansas City on 2022-03-09, departing 22:44 and arriving 00:33.",
+        "note": "The requirement specifies self-driving in an own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-08; the 2022-03-07 and 2022-03-09 accommodation slots are empty.",
+        "note": "Only one night is booked, not three nights from 2022-03-07."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan lists no attractions on 2022-03-07 or 2022-03-09 and lists SeaWorld Orlando, The Wheel at ICON Park, and Fun Spot America Theme Parks on 2022-03-08.",
+        "note": "Sightseeing is confined to the only available day."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights for both intercity legs; the listed flight records show prices of 250 and 282.",
+        "note": "The preferred mode is flying, and the plan flies."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA is listed as Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Turquoise Villa has Aggregate Rating 4.0 and is listed for breakfast and lunch.",
+        "note": "The restaurant meals matched to records meet the preferred rating floor of 3; the dinner slot does not match a restaurant record."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Turquoise Villa's Cuisines include Fast Food; it is listed for breakfast and lunch on 2022-03-08.",
+        "note": "At least one Orlando meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "Breakfast and lunch on 2022-03-08 are both Turquoise Villa; the dinner text does not match a restaurant record.",
+        "note": "The plan does not provide three different restaurants across the three meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

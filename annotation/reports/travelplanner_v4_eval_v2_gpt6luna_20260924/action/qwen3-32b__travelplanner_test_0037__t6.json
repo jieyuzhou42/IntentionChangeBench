@@ -1,0 +1,148 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22454,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 departs at 09:37",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Breakfast at Jiquitaia ($36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lunch at Saravana Bhavan ($38)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Dinner at McGuire's Irish Pub & Brewery ($72)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Stay at \"Two Bedrooms with Dedicated Bath\", rating 4.0, $615 total",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 departs at 13:08",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Breakfast at Zaroob ($67)",
+        "record_name": "Zaroob",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Lunch at Zaroob ($67)",
+        "record_name": "Zaroob",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, 26, and 27, 2022.",
+        "note": "It covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "\"Two Bedrooms with Dedicated Bath\" has maximum occupancy 2.",
+        "note": "The booked listing can host the requested one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 is from Atlanta to Bozeman.",
+        "note": "The outbound flight starts in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 is from Atlanta to Bozeman.",
+        "note": "The itinerary travels to Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The destination city in the flight records and itinerary is Bozeman.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F3500974 has FlightDate 2022-03-25.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight F3500979 has FlightDate 2022-03-27.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500974 travels from Atlanta to Bozeman on 2022-03-25 and departs at 09:37.",
+        "note": "The listed outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500979 travels from Bozeman to Atlanta on 2022-03-27 and departs at 13:08.",
+        "note": "The listed return flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-26; the 2022-03-25 accommodation slot is empty.",
+        "note": "Only one night is booked, rather than the requested nights of March 25 and 26."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The candidate record for \"Two Bedrooms with Dedicated Bath\" has review rate number 4.",
+        "note": "The booked accommodation meets the preferred rating of 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Zaroob has Aggregate Rating 3.9; it is listed for both breakfast and lunch on 2022-03-27.",
+        "note": "Those restaurant meals fall below the required 4.0 rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

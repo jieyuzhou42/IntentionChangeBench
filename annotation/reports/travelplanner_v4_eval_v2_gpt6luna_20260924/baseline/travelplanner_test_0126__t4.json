@@ -1,0 +1,106 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2337.0,
+      "budget": 2600,
+      "unpriced": [
+        "breakfast: pending quote: meal before departure or on the road",
+        "lunch: pending quote: meal before departure or on the road",
+        "lunch: pending quote: meal before departure or on the road",
+        "dinner: pending quote: meal before departure or on the road"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": false,
+      "minimum_nights": [
+        "Charming 1 Bedroom in Ideal Location: 2 consecutive night(s) booked, minimum 3"
+      ],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 30094,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "2600"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "people_number",
+        "value": "2 travelers"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": "Wilmington: Entire home/apt"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "room_type",
+        "value": "Fayetteville: Entire home/apt"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "accommodation_rating",
+        "value": "4+"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "free_time",
+        "date": "2022-03-13",
+        "requirement": "Keep the day for driving and breaks.",
+        "source_turn": 1,
+        "quote": "Keep the 13th and 17th for driving and breaks."
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-17",
+        "requirement": "Keep the day for driving and breaks.",
+        "source_turn": 1,
+        "quote": "Keep the 13th and 17th for driving and breaks."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "people_number",
+        "status": "violated",
+        "evidence": "The Fayetteville listing has maximum occupancy 3, but the Wilmington accommodation name has no matching candidate record, so its capacity cannot satisfy the requirement for both travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "Fayetteville's Charming 1 Bedroom in Ideal Location is an Entire home/apt. The Wilmington accommodation, Luxury 3 bedroom apartment on the Upper East Side, has no matching candidate record, so its room type cannot be verified as satisfying the requirement."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The Fayetteville accommodation matches Charming 1 Bedroom in Ideal Location, whose candidate record lists room type Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "The matched Fayetteville listing has review rate number 3, below 4. The Wilmington accommodation has no matching candidate record to establish a rating of at least 4."
+      }
+    ],
+    "annotation_issues": [
+      "The dialogue clearly specifies two nights in each city, but the gold constraints omit an accommodation-stay constraint.",
+      "The dialogue specifies the city/date sequence (Wilmington March 13–14, Fayetteville March 15–16, home March 17), travel by the user's own car, and driving/break days on March 13 and 17; these requirements are absent from the gold constraints.",
+      "The gold reference plan's Wilmington accommodation, Luxury 3 bedroom apartment on the Upper East Side, has no matching Wilmington candidate record, preventing its attributes from being audited."
+    ]
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,182 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31692,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving to Baton Rouge (11h 13m, $61)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Jimmy Jack's Rib Shack (Baton Rouge, $12 avg)",
+        "record_name": "Jimmy Jack's Rib Shack",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Taste of India (Baton Rouge, $28 avg)",
+        "record_name": "Taste of India",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Huge private room in a Brooklyn Brownstone (Baton Rouge, $308, private room, no parties allowed - VIOLATION)",
+        "record_name": "Huge private room in a Brooklyn Brownstone",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Fifth Street Bagelry ($10 avg)",
+        "record_name": "Fifth Street Bagelry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hunter's Pub ($47 avg)",
+        "record_name": "Hunter's Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Zen Japanese Steakhouse and Sushi Bar ($20 avg)",
+        "record_name": "Zen Japanese Steakhouse and Sushi Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Huge private room in a Brooklyn Brownstone (Baton Rouge, $308, private room, no parties allowed - VIOLATION)",
+        "record_name": "Huge private room in a Brooklyn Brownstone",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving from Baton Rouge to New Orleans (1h 17m, $6)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "PKay (New Orleans, $22 avg)",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "The Fish House (New Orleans, $20 avg)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Jimmy's Pancake House (New Orleans, $50 avg)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan (New Orleans, $186, entire home/apt, no parties allowed - VIOLATION)",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Gupha (New Orleans, $11 avg)",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "New Sukh Sagar (New Orleans, $31 avg)",
+        "record_name": "New Sukh Sagar",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Sage (New Orleans, $87 avg)",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan (New Orleans, $186, entire home/apt, no parties allowed - VIOLATION)",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving from New Orleans to Charlotte (10h 27m, $57)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Amici Gourmet Pizza (New Orleans, $83 avg)",
+        "record_name": "Amici Gourmet Pizza",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Baton Rouge and New Orleans.",
+        "note": "It lists two different cities in Louisiana."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Huge private room in a Brooklyn Brownstone is listed as Private room; Lovely One bedroom apartment 20 min to Manhattan is listed as Entire home/apt.",
+        "note": "Not all booked accommodations are private rooms."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "violated",
+        "evidence": "The Baton Rouge listing's recorded rule is No children under 10; the New Orleans listing's recorded rule is No parties.",
+        "note": "The New Orleans accommodation prohibits parties, contrary to the requirement to allow them."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The three listed transportation legs are self-driving; their candidate records also specify self-driving.",
+        "note": "No flight is listed."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "house_rule",
+        "quote": "no accommodations allowing parties are available; all options violate the 'allow parties' house rule."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

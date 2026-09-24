@@ -1,0 +1,164 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21049,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 from Phoenix, $359, departure 12:24, arrival 15:50",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Hong Kong Express (rating 3.8)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! - Private room, $1,152 for 2 nights (review rate 5)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": true
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tsui Wong (rating 3.8)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Elation (rating 3.8)",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Hong Kong Express (rating 3.8)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! - Private room, $1,152 for 2 nights (review rate 5)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "No return flight available on this date - user will need ground transportation or alternative routing",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Forget the whole place, just get me the best-reviewed room going",
+        "effect": "The accommodation for both booked nights is a private room rather than a whole place."
+      },
+      {
+        "quote": "take the ceiling to 3000 if that's what it runs",
+        "effect": "The budget ceiling is updated to $3,000; this does not change a final-plan slot."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-18, 2022-03-19, and 2022-03-20.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Billings listing has maximum occupancy 2 on each booked night.",
+        "note": "The booked listing can host one traveler and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 has OriginCityName Phoenix.",
+        "note": "The outbound flight begins in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 has DestCityName Billings; the itinerary's current city is Billings.",
+        "note": "The destination is Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Billings as the current city on all three days.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-18.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-20.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 is dated 2022-03-18, from Phoenix to Billings, departing 12:24 and arriving 15:50.",
+        "note": "The planned flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The Day 3 slot says no return flight is available and lists no flight. The transportation records contain no March 20 return flight.",
+        "note": "No Billings-to-Phoenix flight on 2022-03-20 is planned."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on 2022-03-18 and 2022-03-19, and its minimum nights is 2.",
+        "note": "The plan books both requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Express, Tsui Wong, and Elation each have Aggregate Rating 3.8.",
+        "note": "Every planned restaurant meal meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Great Room! Great Price! \nCan wait to see you !, has review rate number 5.",
+        "note": "The listing meets the requested rating of 5."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "Return flight data was only available for March 21 in search results; no March 20 return flight was found - this is an unmet constraint requiring ground transport or alternative routing"
+      }
+    ],
+    "annotation_issues": [
+      "The transportation candidate records do not include a search result for a Billings-to-Phoenix flight on the required date, 2022-03-20; the only return-direction query shown is for 2022-03-21."
+    ]
+  }
+}

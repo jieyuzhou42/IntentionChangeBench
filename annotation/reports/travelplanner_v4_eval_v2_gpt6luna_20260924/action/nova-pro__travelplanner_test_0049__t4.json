@@ -1,0 +1,154 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23888,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497 from Kansas City to Orlando, departing at 19:26 and arriving at 23:00.",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! Entire home/apt for $287.",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Turquoise Villa",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Veg O Non",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Tandoori Times",
+        "record_name": "The Tandoori Times",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "attraction",
+        "text": "SeaWorld Orlando",
+        "record_name": "SeaWorld Orlando",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA Entire home/apt for $188.",
+        "record_name": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856 from Orlando to Kansas City, departing at 22:44 and arriving at 00:33.",
+        "record_name": "F4019856",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes 2022-03-07, 2022-03-08, and 2022-03-09.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Both booked Orlando listings have maximum occupancy 2.",
+        "note": "Each booked night can host the one traveler; the plan does not assume a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 is listed from Kansas City to Orlando on 2022-03-07.",
+        "note": "The plan begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight arrives in Orlando and the March 8 itinerary is in Orlando.",
+        "note": "Orlando is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The destination accommodation and activity are listed in Orlando.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-07.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-09.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "Flight F3998497 is a flight from Kansas City to Orlando, departing 19:26 and arriving 23:00.",
+        "note": "The requirement is to self-drive using the traveler's own car on March 7."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "Flight F4019856 is a flight from Orlando to Kansas City, departing 22:44 and arriving 00:33.",
+        "note": "The requirement is to self-drive using the traveler's own car on March 9."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed on March 7 and March 8 only; no accommodation is listed on March 9.",
+        "note": "The plan books two nights, not the required three nights from March 7."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The March 7 and March 9 transportation slots are flights. SeaWorld Orlando is listed on March 8.",
+        "note": "Sightseeing is limited to the requested date, but March 7 and March 9 are not reserved for intercity driving as required."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F3998497 and F4019856; their record prices are $250 and $282.",
+        "note": "The preferred mode, flying, is used."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings have room type 'Entire home/apt' in the candidate records.",
+        "note": "The accommodations meet the entire-home requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

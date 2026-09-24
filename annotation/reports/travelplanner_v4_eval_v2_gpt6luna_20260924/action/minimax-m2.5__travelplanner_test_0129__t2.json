@@ -1,0 +1,188 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32842,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 from Sioux Falls (Dep 18:40, Arr 19:26) for 3 adults - $1,230",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Restaurant in Phoenix (~$120 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Twin Cabin with a Window One - $234/night (room for 3, max occupancy 1, this is the only Phoenix option fitting budget)",
+        "record_name": "Twin Cabin with a Window One",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Restaurant in Phoenix (~$45 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Restaurant in Phoenix (~$60 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Restaurant in Phoenix (~$90 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Twin Cabin with a Window One - $234/night",
+        "record_name": "Twin Cabin with a Window One",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving Phoenix to Flagstaff - $33 total (2h 15m, 232km)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Restaurant in Phoenix (~$45 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Restaurant in Flagstaff (~$120 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York - $1,086/night (entire apt, 8 occupancy, rating 3)",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Restaurant in Flagstaff (~$45 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Restaurant in Flagstaff (~$60 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Restaurant in Flagstaff (~$90 for 3)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York - $1,086/night",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving Flagstaff to Sioux Falls - $312 total (19h 57m, 2,086km)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Restaurant in Flagstaff (~$45 for 3)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Twin Cabin with a Window One has maximum occupancy 1 in Phoenix; Stylish apartment in the heart of New York has maximum occupancy 8 in Flagstaff.",
+        "note": "The Phoenix listing cannot host all 3 travelers on either booked night."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Twin Cabin with a Window One is Private room; Stylish apartment in the heart of New York is Entire home/apt.",
+        "note": "The Flagstaff accommodation does not meet the requested Private room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Twin Cabin with a Window One has review rate number 2; Stylish apartment in the heart of New York has review rate number 3.",
+        "note": "The Phoenix listing is below the required 3+ rating."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 is listed from Sioux Falls to Phoenix on 2022-03-16, departing 18:40 and arriving 19:26.",
+        "note": "The listed flight arrives before the requested 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary lists self-driving from Phoenix to Flagstaff. Candidate flight F3804854 arrives at 09:47 on 2022-03-18.",
+        "note": "The plan uses driving rather than the requested flight; the available 08:49 flight arrives before noon."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "On 2022-03-20 the itinerary lists self-driving from Flagstaff to Sioux Falls.",
+        "note": "The itinerary includes a return journey despite the one-way visit ending in Flagstaff."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "people_number",
+        "quote": "Phoenix room has max occupancy 1 (technically insufficient)"
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "rating 2 (below preferred 3)"
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "quote": "Phoenix to Flagstaff uses driving vs preferred flight"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

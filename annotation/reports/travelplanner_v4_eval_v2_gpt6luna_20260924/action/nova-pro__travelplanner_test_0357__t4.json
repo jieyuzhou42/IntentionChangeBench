@@ -1,0 +1,130 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21675,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 from Buffalo to Boston, departing at 08:04 and arriving at 09:30.",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat, rated 4.4.",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant, rated 4.5.",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!, Entire home/apt for 5 people, $872 for 3 nights.",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Club Cubana, rated 4.4.",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Irish Democrat, rated 4.4.",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3757097 from Boston to Buffalo, departing at 21:44 and arriving at 23:34.",
+        "record_name": "F3757097",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Delight in Your Home Away from Home in NYC!, has maximum occupancy 5.",
+        "note": "Its capacity covers all four travelers on both booked nights."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The itinerary lists two attractions on each day, but does not plan regular seated breaks.",
+        "note": "The two-attraction daily limit is met; the activity requirements also call for regular seated breaks, which are not included."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Delight in Your Home Away from Home in NYC! is listed as Entire home/apt.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing, with maximum occupancy 5, is booked for both March 4 and March 5.",
+        "note": "One property has capacity for all four travelers."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat is rated 4.4, Red Mesa Restaurant 4.5, and Club Cubana 4.4.",
+        "note": "Every restaurant meal in the plan has a rating of at least 4.0."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "violated",
+        "evidence": "Red Mesa Restaurant and Club Cubana each have an Average Cost of 65; Irish Democrat has an Average Cost of 18.",
+        "note": "The plan includes $65 restaurant meals as well as the inexpensive Irish Democrat meals, so not all meals outside the daily highly rated meal are inexpensive."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The selected restaurants list cuisines including tea, cafe, bakery, fast food, desserts, Indian, seafood, BBQ, and Mediterranean; none lists French or American.",
+        "note": "The restaurant meals do not provide either requested cuisine."
+      },
+      {
+        "gold_field": "entities.entity_3.constraints.dining_style",
+        "action_status": "unknown",
+        "evidence": "The restaurant records provide costs, cuisines, and ratings, but no vegetarian-menu or confirmed-vegetarian-entree information.",
+        "note": "The records do not establish whether the sister has vegetarian meals only or a confirmed vegetarian entree at the shared sit-down restaurant each day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

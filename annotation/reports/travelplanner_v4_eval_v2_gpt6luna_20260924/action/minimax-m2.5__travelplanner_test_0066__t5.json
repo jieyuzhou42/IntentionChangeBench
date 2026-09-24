@@ -1,0 +1,154 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22495,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "driving from Minneapolis (departure day, ~14 hours)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "No available entire home/apt in Jacksonville meets the minimum 3.5 rating requirement - all entire home/apt options have 3.0 or lower ratings. Using budget for alternative.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery (rated 4.2, ~$57 for two)",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Jacksonville Zoo and Gardens",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant (rated 3.8, ~$59 for two)",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Jacksonville area entire home/apt with rating 3.0 (best available): ~$530/night x 2 nights = ~$1,060 (note: rating below user preference of 3.5)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "driving back to Minneapolis (return day, ~14 hours)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 27, 28, and 29, 2022.",
+        "note": "It covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The accommodation is described generically; no exact booked listing or maximum occupancy can be matched from the records.",
+        "note": "The plan does not identify a record-backed listing whose capacity can establish that it hosts the traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “driving from Minneapolis.”",
+        "note": "The outbound origin is Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as the current city on all three days.",
+        "note": "The destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Jacksonville is the only current city named in the itinerary.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is March 27, 2022.",
+        "note": "This matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is March 29, 2022.",
+        "note": "This matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “driving from Minneapolis”; the dialogue specifies driving out on the 27th.",
+        "note": "The plan uses the requested self-driving outbound transportation."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “driving back to Minneapolis”; the dialogue specifies driving back on the 29th.",
+        "note": "The plan uses the requested self-driving return transportation."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan places the outbound drive on March 27, the Jacksonville Zoo on March 28, and the return drive on March 29.",
+        "note": "Sightseeing is confined to the available day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The March 28 accommodation text states “~$530/night x 2 nights.”",
+        "note": "That states a two-night stay covering March 27 and 28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The itinerary describes an “entire home/apt,” but does not identify a matching booked listing; no accommodation record can be matched to that description.",
+        "note": "The requested room type cannot be established from a record-backed booked listing."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The itinerary states the selected accommodation has a rating of 3.0; the candidate entire-home listings with two-night minimums are rated 3.0, below 3.5.",
+        "note": "The stated accommodation rating is below the required 3.5."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Rating requirement of 3.5+ could not be met for entire home/apt."
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation candidates are returned for Jacksonville, but several listing names refer to places such as Williamsburg, UWS, and Brooklyn, creating an apparent location/name inconsistency."
+    ]
+  }
+}

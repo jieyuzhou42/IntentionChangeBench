@@ -1,0 +1,148 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22324,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733 (departs 11:28, arrives 13:07)",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Mama Loca",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Village Restaurant",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "De Bone Chicken",
+        "record_name": "De Bone Chicken",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BEDSTUY BK - PAD (Entire home/apt, $1188)",
+        "record_name": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3803478 (departs 13:51, arrives 17:04)",
+        "record_name": "F3803478",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Mama Loca",
+        "record_name": "Mama Loca",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-06, 2022-03-07, and 2022-03-08.",
+        "note": "It contains three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 10; the requested party size is 1.",
+        "note": "The listing can host the traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3996733 is from Tulsa to Phoenix.",
+        "note": "The outbound starts in Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight arrives in Phoenix, and the itinerary's current city is Phoenix.",
+        "note": "The destination is Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Each itinerary day lists Phoenix as the current city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-06.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-08.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3996733, departing Tulsa at 11:28 and arriving in Phoenix at 13:07 on 2022-03-06.",
+        "note": "The requested outbound transportation is self-driving in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3803478, departing Phoenix at 13:51 and arriving in Tulsa at 17:04 on 2022-03-08.",
+        "note": "The requested return transportation is self-driving in an own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-07; the 2022-03-06 accommodation slot is empty.",
+        "note": "Only one itinerary night is booked, rather than the requested nights of March 6 and 7."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "The listing meets the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights on both legs; the outbound flight costs $195 and the return flight costs $276 in the candidate records.",
+        "note": "The gold preference is to fly when the cap allows; driving is an acceptable alternative, not a requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

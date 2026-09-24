@@ -1,0 +1,187 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22956,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600, dep 13:06 arr 15:39, $291",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "McDonald's ($29)",
+        "record_name": "McDonald's",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Home By The Pier (Entire home/apt, $549/night)",
+        "record_name": "Brooklyn Home By The Pier",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Foodaucity - Bum Bum Bholey Ke Chole Bhature ($38)",
+        "record_name": "Foodaucity - Bum Bum Bholey Ke Chole Bhature",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Marwadi Khana ($59)",
+        "record_name": "Marwadi Khana",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant ($59)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Home By The Pier (Entire home/apt, $549/night)",
+        "record_name": "Brooklyn Home By The Pier",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128, dep 16:10 arr 18:55, $263",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Boufe Boutique Cafe ($65)",
+        "record_name": "Boufe Boutique Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Lord of Grillz ($85)",
+        "record_name": "Lord of Grillz",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-16, 2022-03-17, and 2022-03-18.",
+        "note": "It contains three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier has maximum occupancy 4; it is booked for both nights.",
+        "note": "The listing can host the requested one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 lists Fort Lauderdale as its origin; F3619128 lists Fort Lauderdale as its destination.",
+        "note": "The itinerary starts and returns to Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 lists Charlotte Amalie as its destination; the accommodation record lists its city as Charlotte Amalie.",
+        "note": "The trip goes to and stays in Charlotte Amalie."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation city are Charlotte Amalie.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts on 2022-03-16; flight F3618600 is dated 2022-03-16.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-18; flight F3619128 is dated 2022-03-18.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 is Fort Lauderdale to Charlotte Amalie on 2022-03-16, departing 13:06.",
+        "note": "The booked outbound flight matches the requested route, date, and departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 is Charlotte Amalie to Fort Lauderdale on 2022-03-18, departing 16:10.",
+        "note": "The booked return flight matches the requested route, date, and departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier is listed on 2022-03-16 and 2022-03-17; departure day 2022-03-18 has no accommodation.",
+        "note": "The two nights requested are booked."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation record is tagged as Charlotte Amalie, but its name, Brooklyn Home By The Pier, suggests a different location."
+    ]
+  }
+}

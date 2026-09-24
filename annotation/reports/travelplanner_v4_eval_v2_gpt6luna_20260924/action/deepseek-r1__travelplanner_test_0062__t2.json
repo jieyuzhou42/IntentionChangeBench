@@ -1,0 +1,227 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23186,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Ithaca (3h52m)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Gurdas Ram Jalebi Wala ($20)",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Brothers Dhaba ($52)",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern Luxury Apartment in Heart of Williamsburg",
+        "record_name": "Modern Luxury Apartment in Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala ($20)",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe (Italian) ($47)",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Brothers Dhaba ($52)",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Luxury Apartment in Heart of Williamsburg",
+        "record_name": "Modern Luxury Apartment in Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive return (depart 14:00)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala ($20)",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed meal",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-01, 2022-03-02, and 2022-03-03.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler, and the plan does not assume a different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “Self-drive from Ithaca”; day 3 says “Self-drive return.”",
+        "note": "The itinerary begins the trip from Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Days 1 and 2 list Philadelphia as the current city.",
+        "note": "Philadelphia is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Philadelphia on days 1 and 2 and Ithaca on the return day.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-01.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-03.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says “Self-drive from Ithaca”; the transportation record lists self-driving from Ithaca to Philadelphia.",
+        "note": "The plan uses self-driving outbound transportation on the requested date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says “Self-drive return (depart 14:00)” on 2022-03-03.",
+        "note": "The plan specifies self-driving from Philadelphia back to Ithaca."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same listing is booked on March 1 and March 2; its minimum nights is 2.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Modern Luxury Apartment in Heart of Williamsburg is listed as “Entire home/apt.”",
+        "note": "Matches the required room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing’s house rules include “No parties.”",
+        "note": "The listing prohibits parties as required."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Gurdas Ram Jalebi Wala is rated 4.1, Brothers Dhaba 3.8, and Hong Kong Cafe 3.6.",
+        "note": "All restaurant meals meet the 3.5 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Record average costs are $20 for Gurdas Ram Jalebi Wala, $52 for Brothers Dhaba, and $47 for Hong Kong Cafe.",
+        "note": "All restaurant meals are under $60 per person; packed meals do not count against the cap."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The cuisines for Gurdas Ram Jalebi Wala, Brothers Dhaba, and Hong Kong Cafe do not include a Fast Food tag.",
+        "note": "No listed Philadelphia restaurant meal carries the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 2, breakfast is Gurdas Ram Jalebi Wala, lunch is Hong Kong Cafe, and dinner is Brothers Dhaba.",
+        "note": "The three meals are at three different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe’s record lists Italian among its cuisines.",
+        "note": "The March 2 lunch is Italian-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "unknown",
+        "evidence": "The itinerary gives a 14:00 departure, but the records provide a 3 hours 52 minutes duration only for Ithaca-to-Philadelphia self-driving, not the return route.",
+        "note": "The available records do not establish the return arrival time."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Liberty Bell on 2022-03-02, and the candidate attraction records include Liberty Bell in Philadelphia.",
+        "note": "The optional visit is included on the requested day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The transportation candidates do not provide a return self-driving duration, so the return-arrival schedule constraint cannot be verified from the records."
+    ]
+  }
+}

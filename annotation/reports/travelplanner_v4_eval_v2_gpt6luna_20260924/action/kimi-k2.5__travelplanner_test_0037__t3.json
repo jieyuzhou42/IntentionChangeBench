@@ -1,0 +1,168 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22672,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974: Atlanta to Bozeman (09:37-11:50), $345",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Side Wok (Tea, Pizza, Indian) - $14",
+        "record_name": "Side Wok",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jiquitaia (Tea, Pizza, American) - $36",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Two Bedrooms with Dedicated Bath (Private room, review rate: 4)",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Saravana Bhavan (Tea, American, Desserts) - $38",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub & Brewery (Fast Food, Desserts, Italian) - $72",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Two Bedrooms with Dedicated Bath (Private room, review rate: 4)",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979: Bozeman to Atlanta (13:08-18:37), $803",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering from leftover supplies",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Two Bedrooms with Dedicated Bath (Private room, review rate: 4)",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": true
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Extended accommodation to 3 nights (March 25-27) as user explicitly offered to pay for third night",
+        "effect": "Added the booked accommodation to March 27, making the stay three nights from March 25 through March 27, including the night after departure."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, March 26, and March 27.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Two Bedrooms with Dedicated Bath has maximum occupancy 2.",
+        "note": "The listing can host the one traveler; the plan assumes no larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has OriginCityName Atlanta.",
+        "note": "The itinerary starts with travel from Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has DestCityName Bozeman; the return flight departs Bozeman.",
+        "note": "The trip destination is Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's travel and activities are in Bozeman between the Atlanta outbound and return flights.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has FlightDate 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500979 has FlightDate 2022-03-27.",
+        "note": "The return flight is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500974 is Atlanta to Bozeman on 2022-03-25, departing 09:37 and arriving 11:50.",
+        "note": "The plan keeps the listed outbound flight on March 25."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500979 is Bozeman to Atlanta on 2022-03-27, departing 13:08 and arriving 18:37.",
+        "note": "The plan keeps the listed return flight on March 27."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The revised plan books Two Bedrooms with Dedicated Bath on March 25, 26, and 27; the user allows paying for a third night after departure.",
+        "note": "Three nights are booked beginning March 25, including the permitted post-departure night."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Two Bedrooms with Dedicated Bath record has review rate number 4.",
+        "note": "The booked listing meets the rating floor of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

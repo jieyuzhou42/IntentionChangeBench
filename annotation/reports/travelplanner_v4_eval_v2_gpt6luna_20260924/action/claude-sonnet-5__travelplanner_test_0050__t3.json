@@ -1,0 +1,180 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23350,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733, Tulsa→Phoenix, Dep 11:28 Arr 13:07 ($195) — no grounded ground-transport option exists in the search results, so the requested drive could not be sourced; cheapest available flight used instead",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Jungle The Restaurant, Phoenix ($27)",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Village Restaurant, Phoenix ($35)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan (30 min \"A\" train) — Entire home/apt, $834/night",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Doughlicious ($41)",
+        "record_name": "Doughlicious",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mama Loca ($27)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mocambo ($76)",
+        "record_name": "Mocambo",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan (30 min \"A\" train) — Entire home/apt, $834/night",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3803478, Phoenix→Tulsa, Dep 13:51 Arr 17:04 ($276) — cheapest afternoon return flight; no ground-transport option was available in the search data",
+        "record_name": "F3803478",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Pizza Hut ($30)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Jaiveer Naan & Chaap ($38)",
+        "record_name": "Jaiveer Naan & Chaap",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-06 through 2022-03-08, three days.",
+        "note": "The plan has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 8.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Tulsa as the origin; the itinerary also identifies the route as Tulsa to Phoenix.",
+        "note": "The trip departs from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Phoenix as the destination; the itinerary identifies Phoenix as the destination city.",
+        "note": "The trip goes to Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Phoenix as the destination and stay city.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-06.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-08.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3996733; its record is Tulsa to Phoenix, departing 11:28 and arriving 13:07 on 2022-03-06.",
+        "note": "The requirement is to self-drive in an own car, not fly."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3803478; its record is Phoenix to Tulsa, departing 13:51 and arriving 17:04 on 2022-03-08.",
+        "note": "The requirement is to self-drive in an own car, not fly."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books the same accommodation on 2022-03-06 and 2022-03-07, and none on departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing record gives the room type as Entire home/apt.",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flights costing $195 and $276, while the booked listing costs $834 per night for two nights. Flight plus lodging totals $2,139, above the stated $1,700 cap.",
+        "note": "The preference is to fly when the cap allows it and otherwise drive to protect the room type; the plan flies despite the cap not allowing the flight-and-lodging combination."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "no grounded ground-transport option exists in the search results, so the requested drive could not be sourced"
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "no ground-transport option was available in the search data"
+      }
+    ],
+    "annotation_issues": [
+      "The Phoenix accommodation candidate records include listing names referring to Manhattan, JFK, and other New York neighborhoods despite being labeled as Phoenix listings; the recorded city and attributes were used for this audit."
+    ]
+  }
+}

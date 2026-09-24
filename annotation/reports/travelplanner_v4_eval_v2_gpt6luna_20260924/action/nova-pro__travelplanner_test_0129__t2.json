@@ -1,0 +1,231 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31034,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 from Sioux Falls to Phoenix",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 from Phoenix to Flagstaff",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Tranquil private bedroom, Hamilton Heights, NY",
+        "record_name": "Tranquil private bedroom, Hamilton Heights, NY",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Flagstaff to Sioux Falls",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Phoenix listing maximum occupancy: 3; Flagstaff listing maximum occupancy: 2.",
+        "note": "The Flagstaff accommodation cannot host all 3 travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Phoenix listing room type: Entire home/apt; Flagstaff listing room type: Private room.",
+        "note": "The Phoenix accommodation does not meet the required Private room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Phoenix listing review rate number: 5; Flagstaff listing review rate number: 2.",
+        "note": "The Flagstaff listing is below the required 3+ rating."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 departs Sioux Falls at 18:40 and arrives in Phoenix at 19:26 on 2022-03-16.",
+        "note": "It arrives before the 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 departs Phoenix at 08:49 and arrives in Flagstaff at 09:47 on 2022-03-18.",
+        "note": "It arrives before the 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan says: \"Self-driving from Flagstaff to Sioux Falls\" on 2022-03-20.",
+        "note": "The itinerary includes a return journey despite the requirement that no return journey belong to it."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

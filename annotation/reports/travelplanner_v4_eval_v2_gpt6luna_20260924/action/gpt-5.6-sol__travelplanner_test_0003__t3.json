@@ -1,0 +1,190 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22550,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Charleston to St. Louis (12 hours 43 minutes, 1,379 km, $68)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast from home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch from home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito (rating 4.1, average cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Kan house (private room, rating 4.0, $749 per night)",
+        "record_name": "Kan house",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Self-drive locally between the named St. Louis stops",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "El Super Burrito (rating 4.1, average cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "El Super Burrito (rating 4.1, average cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "El Super Burrito (rating 4.1, average cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Kan house (private room, rating 4.0, $749 per night)",
+        "record_name": "Kan house",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from St. Louis to Charleston (12 hours 43 minutes, 1,379 km, $68)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "El Super Burrito (rating 4.1, average cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed lunch prepared before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed dinner for the return drive",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-16, 2022-03-17, and 2022-03-18.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Kan house has maximum occupancy 2; it is booked for both nights.",
+        "note": "The listed capacity accommodates one traveler, and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound drive is from Charleston.",
+        "note": "The itinerary starts in Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary drives to and stays in St. Louis.",
+        "note": "St. Louis is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits St. Louis as its sole destination city.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-18.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says self-drive from Charleston to St. Louis; the transportation record supports self-driving on that route.",
+        "note": "The outbound mode, route, and date match the requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says self-drive from St. Louis to Charleston on 2022-03-18; the transportation record supports self-driving on that route.",
+        "note": "The return mode, route, and date match the requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Each restaurant meal is El Super Burrito, whose candidate record has Aggregate Rating 4.1. Packed meals are not restaurant meals.",
+        "note": "All restaurant meals meet the 4.0 rating threshold."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Kan house is listed on 2022-03-16 and 2022-03-17, with no accommodation needed on departure day.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Kan house has review rate number 4 in the candidate record.",
+        "note": "The booked accommodation meets the 4.0 rating threshold."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

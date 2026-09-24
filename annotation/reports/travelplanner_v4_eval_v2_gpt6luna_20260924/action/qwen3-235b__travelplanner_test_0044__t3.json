@@ -1,0 +1,177 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22936,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3920918 from Scranton at 05:57, arriving Newark at 06:44 ($33)",
+        "record_name": "F3920918",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered or quick purchase near accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Drifters Cafe (Aggregate Rating: 4.1, Average Cost: $24)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Bernardo's (Aggregate Rating: 4.0, Average Cost: $84)",
+        "record_name": "Bernardo's",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sonder | Stock Exchange | Ideal 1BR + Kitchen (Rating: 4.0, Price: $903, Minimum Stay: 2 nights)",
+        "record_name": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered at accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Artistry (Aggregate Rating: 3.8, Average Cost: $79)",
+        "record_name": "Artistry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Anaicha's Food Joint (Aggregate Rating: 3.6, Average Cost: $43)",
+        "record_name": "Anaicha's Food Joint",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "record_name": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3919859 from Newark at 21:46, arriving Scranton at 22:23 ($22)",
+        "record_name": "F3919859",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered at accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Jaguar (Aggregate Rating: 2.8, Average Cost: $38)",
+        "record_name": "Jaguar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Escape Terrace Bar Kitchen (Aggregate Rating: 3.4, Average Cost: $100)",
+        "record_name": "Escape Terrace Bar Kitchen",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 24, March 25, and March 26, 2022.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Sonder listing has maximum occupancy 9.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 originates in Scranton; the return flight arrives in Scranton.",
+        "note": "Scranton is the trip's origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 travels to Newark, and the itinerary's current city is Newark on all three days.",
+        "note": "Newark is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "All itinerary days list Newark as the current city.",
+        "note": "The itinerary visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-24, and F3920918 is dated 2022-03-24.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-26, and F3919859 is dated 2022-03-26.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3920918 is Scranton to Newark on 2022-03-24, departing at 05:57.",
+        "note": "It is the earliest listed outbound flight and matches the requested departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3919859 is Newark to Scranton on 2022-03-26, departing at 21:46.",
+        "note": "It matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 24 and March 25, with none listed on the March 26 departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Sonder | Stock Exchange | Ideal 1BR + Kitchen has review rate number 4.0.",
+        "note": "The booked Newark accommodation meets the 4.0 minimum."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

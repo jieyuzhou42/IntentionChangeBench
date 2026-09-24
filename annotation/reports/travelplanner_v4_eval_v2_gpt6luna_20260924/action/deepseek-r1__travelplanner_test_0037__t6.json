@@ -1,0 +1,172 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22414,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 (ATL→BZN) $345",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Jiquitaia (4.1★ $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub (4.9★ $72)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Greenpoint, BK 1 Bedroom (5★) - VIOLATES 2-night stay requirement",
+        "record_name": "Greenpoint, BK 1 Bedroom, Couple/Solo Traveler",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Saravana Bhavan (4.3★ $38)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Jiquitaia (4.1★ $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub (4.9★ $72)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Greenpoint, BK 1 Bedroom (5★)",
+        "record_name": "Greenpoint, BK 1 Bedroom, Couple/Solo Traveler",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 (BZN→ATL) $803",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Saravana Bhavan (4.3★ $38)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Would like to adjust it back to the two nights.",
+        "effect": "The accommodation is booked on March 25 and March 26 only; the itinerary already reflects that two-night stay."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, March 26, and March 27.",
+        "note": "It covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has a maximum occupancy of 2; the requested number is 1.",
+        "note": "The listing can host the traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 departs Atlanta.",
+        "note": "The itinerary starts from the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 arrives in Bozeman, and the itinerary's activities are in Bozeman.",
+        "note": "Bozeman is the trip destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Bozeman as the city for all three days.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F3500974 is dated 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight F3500979 is dated 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500974 flies from Atlanta to Bozeman on 2022-03-25 (09:37–11:50).",
+        "note": "The listed outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500979 flies from Bozeman to Atlanta on 2022-03-27 (13:08–18:37).",
+        "note": "The listed return flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing appears on March 25 and March 26; March 27 has no accommodation.",
+        "note": "Two nights are booked on the requested dates. The listing's three-night minimum is a separate gate."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Greenpoint, BK 1 Bedroom, Couple/Solo Traveler has a review rate number of 5.",
+        "note": "The rating meets the preferred floor of 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant meals have Aggregate Ratings of 4.1 (Jiquitaia), 4.9 (McGuire's Irish Pub & Brewery), and 4.3 (Saravana Bhavan).",
+        "note": "Every restaurant meal in the plan meets the 4.0 floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "VIOLATES 2-night stay requirement"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

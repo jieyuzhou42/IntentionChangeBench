@@ -1,0 +1,174 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31736,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Driving to Wilmington",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Breakfast at home or in car",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Taco Bus",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Azteca",
+        "record_name": "Azteca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Momo-Cha",
+        "record_name": "Momo-Cha",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Wyndham Midtown 45",
+        "record_name": "Wyndham Midtown 45 (1 Bedroom Presidential) 2A",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Wilmington",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Eat Street",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "The Great Indian Pub",
+        "record_name": "The Great Indian Pub",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "DiVine",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Brownstone Studio",
+        "record_name": "Brownstone Studio",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Oriental Fusion",
+        "record_name": "Oriental Fusion",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Oasis Kitchen",
+        "record_name": "Oasis Kitchen",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Pind Balluchi",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Brownstone Studio",
+        "record_name": "Brownstone Studio",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving to Providence",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places Wilmington on 2022-03-14 and Fayetteville on 2022-03-15 and 2022-03-16.",
+        "note": "The requested cities appear in the requested order."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The plan has no accommodation on 2022-03-13, has Wyndham Midtown 45 on 2022-03-14, and Brownstone Studio on 2022-03-15 and 2022-03-16.",
+        "note": "The requested Wilmington nights include both March 13 and 14, but only March 14 is booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Wyndham Midtown 45 (1 Bedroom Presidential) 2A is listed as Entire home/apt; Brownstone Studio is listed as Entire home/apt.",
+        "note": "Neither booked listing is a private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Wyndham Midtown 45 (1 Bedroom Presidential) 2A has review rate number 2; Brownstone Studio has review rate number 4.",
+        "note": "The Wilmington accommodation is below the 4+ rating requirement."
+      },
+      {
+        "gold_field": "night_policy",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed only on March 14 in Wilmington and March 15 and 16 in Fayetteville; there are no overlapping stays or listed nights beyond the requested dates.",
+        "note": "The policy prohibits extra or overlapping booked nights; the missing Wilmington night is assessed under accommodation_stay."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan lists driving to Wilmington, self-driving from Wilmington, and self-driving to Providence. Candidate reference text provides self-driving routes for all three legs.",
+        "note": "The transportation is by the requested own-car mode."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The attractions are '-' on March 13 and March 17; transportation is listed on March 15 as self-driving from Wilmington.",
+        "note": "The two requested driving/rest days have no sightseeing, and the March 15 plan includes the transfer."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

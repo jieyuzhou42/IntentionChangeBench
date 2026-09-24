@@ -1,0 +1,164 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22586,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, Charleston to St. Louis, duration 12h43m, cost $68",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "El Super Burrito (rating 4.1)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Starbucks (rating 4.1)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Kan house (Private room, rating 4)",
+        "record_name": "Kan house",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks (rating 4.1)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "El Super Burrito (rating 4.1)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Starbucks (rating 4.1)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Kan house (Private room, rating 4)",
+        "record_name": "Kan house",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving, St. Louis to Charleston, duration 12h43m, cost $68",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "El Super Burrito (rating 4.1)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Kan house has maximum occupancy 2 and is booked for both accommodation nights.",
+        "note": "The booked capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound self-driving record is from Charleston to St. Louis.",
+        "note": "Charleston is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound self-driving record is from Charleston to St. Louis.",
+        "note": "St. Louis is the stated destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists St. Louis as the destination city and does not list another visited city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-18.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record supports self-driving from Charleston to St. Louis, with duration 12 hours 43 minutes and cost 68; the itinerary places it on 2022-03-16.",
+        "note": "The outbound leg uses the requested mode and route."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record supports self-driving from St. Louis to Charleston, with duration 12 hours 43 minutes and cost 68; the itinerary places it on 2022-03-18.",
+        "note": "The return leg uses the requested mode and route."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "El Super Burrito has Aggregate Rating 4.1. The first Starbucks candidate record has Aggregate Rating 4.1.",
+        "note": "The restaurant meals meet the 4.0 floor when the Starbucks pre-match is taken as the first matching candidate record."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Kan house is listed on 2022-03-16 and 2022-03-17; the departure day has no accommodation.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Kan house has review rate number 4.",
+        "note": "The St. Louis accommodation meets the 4.0 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The candidate records contain two restaurants named Starbucks with different Aggregate Ratings (4.1 and 3.9), while the pre-match identifies only the name. The Starbucks meal-rating audit therefore depends on which duplicate record was intended."
+    ]
+  }
+}

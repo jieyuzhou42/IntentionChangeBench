@@ -1,0 +1,115 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21378,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733 from Tulsa to Phoenix",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "record_name": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3803478 from Phoenix to Tulsa",
+        "record_name": "F3803478",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-06, 2022-03-07, and 2022-03-08.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's maximum occupancy is 10.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Tulsa as OriginCityName.",
+        "note": "The trip departs from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Phoenix as DestCityName.",
+        "note": "The trip goes to Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The plan lists Phoenix as the destination city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-06.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-08.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3996733 from Tulsa to Phoenix; its record gives departure 11:28 and arrival 13:07.",
+        "note": "The requirement is self-driving in an own car, not flying."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3803478 from Phoenix to Tulsa; its record gives departure 13:51 and arrival 17:04.",
+        "note": "The requirement is self-driving in an own car, not flying."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only for 2022-03-07; 2022-03-06 has no accommodation.",
+        "note": "Only one of the required nights, March 6 and March 7, is booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "The listing meets the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary uses flights F3996733 and F3803478.",
+        "note": "Flying is preferred when the cap allows it, and driving is acceptable rather than required by this preferred field."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation listing name refers to Bedstuy/BK, while its candidate record identifies its city as Phoenix; the record's listed attributes were used for the audit."
+    ]
+  }
+}

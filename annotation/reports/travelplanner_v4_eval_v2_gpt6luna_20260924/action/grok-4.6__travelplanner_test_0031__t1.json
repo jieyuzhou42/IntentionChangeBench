@@ -1,0 +1,204 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22735,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 Belleville to Las Vegas, depart 12:29, arrive 14:04",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Barbeque Nation",
+        "record_name": "Barbeque Nation",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park!",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Big Brewsky",
+        "record_name": "Big Brewsky",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Chili's Grill & Bar",
+        "record_name": "Chili's Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Portneuf Valley Brewing",
+        "record_name": "Portneuf Valley Brewing",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park!",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Las Vegas toward Belleville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Big Brewsky",
+        "record_name": "Big Brewsky",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Self-driving, arriving Belleville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "packed food",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has four dated days, 2022-03-27 through 2022-03-30.",
+        "note": "The plan covers four days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3 on both nights.",
+        "note": "The accommodation capacity covers two travelers, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName as Belleville; the return itinerary says it is arriving in Belleville.",
+        "note": "The itinerary begins and returns to Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName as Las Vegas, and the first two itinerary days are in Las Vegas.",
+        "note": "Las Vegas is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Las Vegas as its only visited destination city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27; the flight record is dated 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-30 and says self-driving, arriving Belleville.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is dated 2022-03-27, from Belleville to Las Vegas, departing 12:29 and arriving 14:04.",
+        "note": "The recorded flight matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists self-driving from Las Vegas toward Belleville on 2022-03-29 and arriving Belleville on 2022-03-30; the dialogue says, \"I'll drive back over the 29th and 30th.\"",
+        "note": "The plan specifies the requested self-drive return across both dates."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing appears on 2022-03-27 and 2022-03-28; accommodation is '-' on 2022-03-29 and 2022-03-30.",
+        "note": "The two booked nights are the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! has room type Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! has review rate number 5.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

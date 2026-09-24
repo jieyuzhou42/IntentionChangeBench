@@ -1,0 +1,303 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 3,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1289.0,
+      "budget": 1350,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21379,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Trip budget is no more than $1,350."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The trip is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "The trip is for 1 person."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "The trip originates in Ithaca."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "The destination is Philadelphia."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-01."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-03."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-drive in own car from Ithaca to Philadelphia on 2022-03-01."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-drive in own car from Philadelphia to Ithaca on 2022-03-03."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights: 2022-03-01 and 2022-03-02."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "room_type",
+        "value": "The room type must be Entire home/apt."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "house_rule",
+        "value": "The accommodation must prohibit parties."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "restaurant_rating",
+        "value": "Every meal eaten must be at a restaurant rated at least 3.5."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "meal_cost",
+        "value": "Each meal must cost less than $60 per person."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "dining_style",
+        "value": "No Philadelphia meal may have a Fast Food tag in Cuisines."
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "dining_variety",
+        "value": "Use three different restaurants for breakfast, lunch, and dinner on 2022-03-02."
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "cuisine",
+        "value": "At least one meal on 2022-03-02 must have an Italian tag."
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "schedule",
+        "value": "Arrive back in Ithaca no later than 18:00 on 2022-03-03."
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "activity",
+        "value": "Optional: visit the Philadelphia Museum of Art in the morning and the Liberty Bell later on 2022-03-02."
+      },
+      {
+        "atom_id": "g21",
+        "source_field": "lunch",
+        "value": "Lunch on 2022-03-02 must have an Italian tag in Cuisines."
+      },
+      {
+        "atom_id": "g22",
+        "source_field": "dinner",
+        "value": "Dinner on 2022-03-02 must have a Seafood tag in Cuisines."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-02",
+        "requirement": "Visit the Philadelphia Museum of Art in the morning.",
+        "source_turn": 3,
+        "quote": "Work the Philadelphia Museum of Art into that morning"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-02",
+        "requirement": "Visit the Liberty Bell later that day.",
+        "source_turn": 3,
+        "quote": "before the Liberty Bell"
+      },
+      {
+        "kind": "order",
+        "date": "2022-03-02",
+        "requirement": "Visit the Philadelphia Museum of Art before the Liberty Bell.",
+        "source_turn": 3,
+        "quote": "Work the Philadelphia Museum of Art into that morning before the Liberty Bell"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-02",
+        "requirement": "Have the Italian-tagged meal at lunch.",
+        "source_turn": 3,
+        "quote": "Put the Italian one at lunch"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-02",
+        "requirement": "Have a Seafood-tagged meal at dinner.",
+        "source_turn": 3,
+        "quote": "something with Seafood at dinner"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-03",
+        "requirement": "Be back in Ithaca before 18:00.",
+        "source_turn": 2,
+        "quote": "I need to be back in Ithaca before 18:00 on the 3rd."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers 2022-03-01 through 2022-03-03, three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 3, which accommodates 1 traveler; the plan does not indicate another party size."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound route is stated as Ithaca to Philadelphia."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The plan's destination and overnight stay are in Philadelphia."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Philadelphia is the sole destination city in the plan."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The first itinerary day and accommodation check-in are 2022-03-01."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The last itinerary day and accommodation check-out are 2022-03-03."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan states that the traveler self-drives in their own car from Ithaca to Philadelphia on 2022-03-01."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan states that the traveler self-drives in their own car from Philadelphia to Ithaca on 2022-03-03."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in 2022-03-01 and check-out 2022-03-03, covering the two required nights."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The reference plan lists the accommodation as Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "status": "satisfied",
+        "evidence": "The listed accommodation rules include No parties."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "unknown",
+        "evidence": "The three named 2022-03-02 restaurants are rated 4.1, 3.6, and 3.8, but travel-day meals are pending venues and ratings."
+      },
+      {
+        "gold_field": "meal_cost",
+        "status": "unknown",
+        "evidence": "The three named 2022-03-02 meals cost $20, $47, and $52 per person, but travel-day meal venues and costs are pending."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "satisfied",
+        "evidence": "The listed Philadelphia meals on 2022-03-02 have no Fast Food tag in their Cuisines."
+      },
+      {
+        "gold_field": "dining_variety",
+        "status": "satisfied",
+        "evidence": "Breakfast, lunch, and dinner on 2022-03-02 are listed at three different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "status": "satisfied",
+        "evidence": "Hong Kong Cafe, listed for lunch on 2022-03-02, has an Italian tag."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "unknown",
+        "evidence": "The return drive is listed as 3 hours 54 minutes, but no departure or arrival clock time is given."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "The plan lists the Philadelphia Museum of Art in the morning followed by the Liberty Bell on 2022-03-02."
+      },
+      {
+        "gold_field": "lunch",
+        "status": "satisfied",
+        "evidence": "The listed lunch restaurant, Hong Kong Cafe, has an Italian tag."
+      },
+      {
+        "gold_field": "dinner",
+        "status": "satisfied",
+        "evidence": "The listed dinner restaurant, Brothers Dhaba, has a Seafood tag."
+      }
+    ],
+    "annotation_issues": [
+      "The gold dining_variety value requires three different restaurants across the three meals on 2022-03-02, while the user's turn 2 wording, \"never the same place three times on the 2nd,\" only rules out using the same place for all three meals and does not clearly require three distinct places.",
+      "The gold activity value labels the Philadelphia Museum of Art and Liberty Bell visits optional, but turn 3 directs, \"Work the Philadelphia Museum of Art into that morning before the Liberty Bell,\" which states the visits as requirements."
+    ]
+  },
+  "out_of_scope_fields": []
+}

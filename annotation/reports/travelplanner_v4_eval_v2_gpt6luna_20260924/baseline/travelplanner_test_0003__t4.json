@@ -1,0 +1,182 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1763.0,
+      "budget": 1800,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19144,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget ceiling: $1800"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Charleston"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "St. Louis"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 visiting city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-16"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-18"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-driving from Charleston to St. Louis on 2022-03-16 using own car"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-driving from St. Louis to Charleston on 2022-03-18 using own car"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant rating at least 4.0"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "accommodation_rating",
+        "value": "Accommodation rating at least 4.0"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "accommodation_stay",
+        "value": "2 nights: 2022-03-16 and 2022-03-17"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-16",
+        "requirement": "Valid travel time is after arrival.",
+        "source_turn": 1,
+        "quote": "my valid travel time would be on 16th after I arrive"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-17",
+        "requirement": "Valid travel time is on this day.",
+        "source_turn": 1,
+        "quote": "and 17th"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers 2022-03-16 through 2022-03-18, three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan specifies one traveler; the booked Kan house listing has maximum occupancy 2."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound plan starts in Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound plan goes to St. Louis."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "St. Louis is the one visiting city shown in the plan."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The plan begins on 2022-03-16."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The plan ends with the return on 2022-03-18."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies outbound self-driving from Charleston to St. Louis in an own car on 2022-03-16."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies return self-driving from St. Louis to Charleston in an own car on 2022-03-18."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "unknown",
+        "evidence": "The listed restaurant meals on 2022-03-17 use El Super Burrito, rated 4.1; the travel-day meal venues are marked UNKNOWN, so their ratings cannot be checked."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "Kan house is listed with a review rate number of 4."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "Kan house is booked for the nights of 2022-03-16 and 2022-03-17, checking out on 2022-03-18."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

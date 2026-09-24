@@ -1,0 +1,188 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33157,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, Providence -> Wilmington, ~12h, cost $62",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Taco Bus, Wilmington",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Bedroom - Warm & Cozy Near Subway (1), Wilmington (Private room, rating 5)",
+        "record_name": "Brooklyn Bedroom - Warm & Cozy Near Subway (1)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bandit Burrito, Wilmington",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Azteca, Wilmington",
+        "record_name": "Azteca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Moonie's Texas Barbecue, Wilmington",
+        "record_name": "Moonie's Texas Barbecue",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Bedroom - Warm & Cozy Near Subway (1), Wilmington (night 2)",
+        "record_name": "Brooklyn Bedroom - Warm & Cozy Near Subway (1)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving, Wilmington -> Fayetteville, ~1h43m, cost $7",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Aggarwal Sweet Corner, Wilmington",
+        "record_name": "Aggarwal Sweet Corner",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "DiVine, Fayetteville",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Eat Street, Fayetteville",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1, Fayetteville (Private room, rating 4)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Smoke N Oven, Fayetteville",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Biryani By Kilo, Fayetteville",
+        "record_name": "Biryani By Kilo",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "The Great Indian Pub, Fayetteville",
+        "record_name": "The Great Indian Pub",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1, Fayetteville (night 2)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving, Fayetteville -> Providence, ~11h10m, cost $58",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Subway, Fayetteville",
+        "record_name": "Subway",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary goes from Wilmington on March 13-14 to Fayetteville on March 15-16.",
+        "note": "The two cities are visited in the requested order."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed in Wilmington on March 13 and 14, and in Fayetteville on March 15 and 16.",
+        "note": "The booked nights match the requested dates in each city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings have room type \"Private room\" in the candidate records.",
+        "note": "Each city's accommodation meets the private-room requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Bedroom - Warm & Cozy Near Subway (1) has review rate number 5; TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 has review rate number 4.",
+        "note": "Both booked listings are rated at least 4."
+      },
+      {
+        "gold_field": "night_policy",
+        "action_status": "satisfied",
+        "evidence": "The plan lists two Wilmington nights (March 13-14) and two Fayetteville nights (March 15-16), with no other accommodation nights.",
+        "note": "Only the specified nights are booked, with no overlap."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The three listed legs are self-driving, and the transportation reference records provide self-driving routes for each leg.",
+        "note": "The plan uses the requested own-car mode."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 13 and 17 have no listed attractions; March 15 lists self-driving from Wilmington to Fayetteville with a 1 hour 43 minute duration.",
+        "note": "The requested driving/rest days are kept free of sightseeing, and the March 15 transfer is included."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

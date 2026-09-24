@@ -1,0 +1,177 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24829,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497 ($250) dep 19:26 → arr 23:00",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone (3 nights @$287/night)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Turquoise Villa ($55)",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Fuji Japanese Steakhouse ($75)",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856 ($282) dep 22:44",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 7, 8, and 9.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Kansas City as the origin.",
+        "note": "The itinerary starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Orlando as the destination.",
+        "note": "The itinerary visits Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as its destination and activity city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-07.",
+        "note": "This matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's final day and return flight date are 2022-03-09.",
+        "note": "This matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3998497; its record is a Kansas City-to-Orlando flight departing 19:26 on 2022-03-07.",
+        "note": "The requirement specifies self-driving in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F4019856; its record is an Orlando-to-Kansas City flight departing 22:44 on 2022-03-09.",
+        "note": "The requirement specifies self-driving in an own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed on March 7 and March 8; March 9 has no accommodation.",
+        "note": "The plan books two itinerary nights, not three."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Flights are listed on March 7 and March 9; Universal Orlando Resort is listed on March 8.",
+        "note": "Sightseeing is placed on the only available day, but the intercity travel dates use flights rather than the required drives."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan selects flights F3998497 and F4019856.",
+        "note": "It follows the preference to fly."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! is recorded as Entire home/apt.",
+        "note": "The listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Turquoise Villa has Aggregate Rating 4.0; Fuji Japanese Steakhouse has Aggregate Rating 3.8.",
+        "note": "The dinner restaurant is below the required 4.0 rating."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Turquoise Villa's Cuisines include Fast Food.",
+        "note": "The March 8 lunch carries a prohibited Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "March 8 breakfast is self-catered; lunch is at Turquoise Villa and dinner is at Fuji Japanese Steakhouse.",
+        "note": "The plan does not provide three different restaurants across the three meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Dinner at Fuji Japanese (3.8★) violates 4.0★ requirement."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25068,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3883491 from San Francisco, departs 09:03, arrives Kahului 11:18, cost $872",
+        "record_name": "F3883491",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered or quick bite pre-departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Michael's Kitchen (cost ~$32)",
+        "record_name": "Michael's Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Vikings (cost ~$74)",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to staten island ferry (Entire home/apt, $365/night)",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit or walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "BrewBakes (cost ~$44)",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Breakfast Bite (cost ~$34)",
+        "record_name": "The Breakfast Bite",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Fat Belly (cost ~$54)",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to staten island ferry (Entire home/apt, $365/night)",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3880403 from Kahului departs 13:04, arrives San Francisco 20:51, cost $544",
+        "record_name": "F3880403",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Invitation (cost ~$29)",
+        "record_name": "Invitation",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Green Chilly Chinese Food (cost ~$57)",
+        "record_name": "Green Chilly Chinese Food",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-25, 2022-03-26, and 2022-03-27.",
+        "note": "Three itinerary days are provided."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Kahului listing has maximum occupancy 3.",
+        "note": "The listing can host one traveler, and the plan does not assume a different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3883491 is from San Francisco to Kahului.",
+        "note": "The trip departs from San Francisco."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3883491 arrives in Kahului; the itinerary's current city is Kahului on all three days.",
+        "note": "Kahului is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Kahului as the destination city throughout the trip.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3883491 is dated 2022-03-25, from San Francisco to Kahului, departing 09:03 and arriving 11:18.",
+        "note": "The listed outbound flight matches the required route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3880403 is dated 2022-03-27, from Kahului to San Francisco, arriving at 20:51.",
+        "note": "The return flight is on the required date and lands before 21:00."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-25 and 2022-03-26, with none listed on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing record gives room type 'Entire home/apt'.",
+        "note": "The listing meets the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Record F3880403 arrives in San Francisco at 20:51 on 2022-03-27.",
+        "note": "The recorded arrival is before the 21:00 deadline."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24787,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3560505 Kansas City → Orlando, 20:41-00:42, $508",
+        "record_name": "F3560505",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Crust N Cakes ($61)",
+        "record_name": "Crust N Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Turquoise Villa ($55) - French, Bakery, BBQ",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Wai Yu Mun Ching ($51) - Tea, Pizza, Desserts",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Entire home/apt, $287)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3629193 Orlando → Kansas City, 17:43-20:46, $299",
+        "record_name": "F3629193",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 7, 8, and 9, 2022.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler, and nothing in the plan assumes a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3560505's record lists Kansas City as the origin city.",
+        "note": "The itinerary begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3560505's record lists Orlando as the destination city.",
+        "note": "The itinerary travels to Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation are in Orlando.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-07.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-09.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3560505; its record shows Kansas City to Orlando, not self-driving in an own car.",
+        "note": "The required outbound self-drive is not provided."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3629193; its record shows Orlando to Kansas City, not self-driving in an own car.",
+        "note": "The required return self-drive is not provided."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on March 8; March 7 and March 9 have no accommodation slot.",
+        "note": "Only one night is booked, not three nights from March 7."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "There are no attractions on March 7 or 9, and SeaWorld Orlando is listed on March 8, the only sightseeing day.",
+        "note": "Sightseeing is confined to March 8; the other dates have intercity transportation and no sightseeing."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary uses flights F3560505 and F3629193.",
+        "note": "Flying is preferred when the cap allows it, and the plan chooses flights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The record for BKLYN Brownstone- Glam Getaway! lists room type Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Crust N Cakes is rated 3.4, Turquoise Villa 4.0, and Wai Yu Mun Ching 3.6.",
+        "note": "Each restaurant meal meets the preferred rating floor of 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Turquoise Villa's record lists its cuisines as French, Bakery, BBQ, Fast Food.",
+        "note": "The March 8 lunch carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 8 lists Crust N Cakes for breakfast, Turquoise Villa for lunch, and Wai Yu Mun Ching for dinner.",
+        "note": "These are three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

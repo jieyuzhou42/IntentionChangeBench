@@ -1,0 +1,209 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23631,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409, Gulfport-Charlotte, Dep 06:58, Arr 09:48, $215",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe (Rating 4.6, $23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "China Garden (Rating 3.8, $14)",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg (Entire home/apt, no smoking, $218/night)",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Grover's - The Baker Shop (Rating 3.0, $30)",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Kylin Skybar (Rating 3.6, $44)",
+        "record_name": "Kylin Skybar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Unplugged Courtyard (Rating 4.0, $54)",
+        "record_name": "Unplugged Courtyard",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg (Entire home/apt, no smoking, $218/night)",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3793242, Charlotte-Gulfport, Dep 20:36, Arr 21:40, $154",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Olive Tree Cafe (Rating 4.6, $23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "China Garden (Rating 3.8, $14)",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 5, March 6, and March 7, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3; the dialogue requests an individual.",
+        "note": "The listing can host one traveler and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Gulfport as the origin.",
+        "note": "The itinerary departs from Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Charlotte as the destination.",
+        "note": "Charlotte is the trip destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Charlotte between the Gulfport outbound and return flights.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight is dated 2022-03-05.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight is dated 2022-03-07.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 is recorded from Gulfport to Charlotte on 2022-03-05, departing at 06:58.",
+        "note": "It matches the requested early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793242 is recorded from Charlotte to Gulfport on 2022-03-07, departing at 20:36; this is the latest listed departure that day.",
+        "note": "It matches the requested last return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 5 and March 6, with none needed on the March 7 departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "The booked listing matches the required room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house rules include 'No smoking'.",
+        "note": "The listing explicitly prohibits smoking."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant records show ratings of 4.6, 3.8, 3.0, 3.6, and 4.0 for the restaurants used.",
+        "note": "Every restaurant meal meets the 3.0 minimum."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Restaurant records list average costs per person of $23, $14, $30, $44, and $54 for the restaurants used.",
+        "note": "Every restaurant meal is under $60 per person."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

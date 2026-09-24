@@ -1,0 +1,183 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24585,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497 from Kansas City to Orlando, departing 19:26 and arriving 23:00; fare $250.",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Packed dinner before the flight.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (first occupied night; $287 nightly rate).",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Remain in Orlando; no intercity transportation needed.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Veg O Non ($45 average cost).",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching ($51 average cost).",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Turquoise Villa ($55 average cost).",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (second occupied night; $287 nightly rate).",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3629193 from Orlando to Kansas City, departing 17:43 and arriving 20:46; fare $299.",
+        "record_name": "F3629193",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Veg O Non ($45 average cost).",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching ($51 average cost).",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed dinner for the return journey.",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 7, 8, and 9, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, BKLYN Brownstone- Glam Getaway!, has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Kansas City as the origin.",
+        "note": "The itinerary begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Orlando as the destination, and the itinerary places the stay and activities there.",
+        "note": "Orlando is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination stay and listed attractions are in Orlando.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-07.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day and return flight date are 2022-03-09.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3998497 is Kansas City to Orlando on 2022-03-07, departing 19:26.",
+        "note": "It matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3629193 is Orlando to Kansas City on 2022-03-09, departing 17:43.",
+        "note": "It matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists the accommodation on March 7 and March 8, and none on the March 9 departure day.",
+        "note": "The two listed accommodation nights match the requested dates; the listing's three-night minimum is a separate gate."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "The accommodation requires a three-night minimum, so three nights must be billed for $861 even though only March 7 and 8 are occupied; this does not meet the requirement to pay for only two nights."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

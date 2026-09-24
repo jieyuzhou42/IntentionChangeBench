@@ -1,0 +1,180 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33199,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477, Sioux Falls to Phoenix, Dep 18:40, Arr 19:26 (3 travelers)",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Spooky Sky, Phoenix (3 travelers, $15/person)",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! (Entire home/apt, Phoenix, rating 5, occ 3)",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Amritsari Naan Hut, Phoenix ($21/person)",
+        "record_name": "Amritsari Naan Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mama Loca, Phoenix ($27/person)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jungle The Restaurant, Phoenix ($27/person)",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! (Entire home/apt, Phoenix)",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854, Phoenix to Flagstaff, Dep 08:49, Arr 09:47 (3 travelers)",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Pizza Hut, Phoenix ($30/person)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti, Flagstaff ($16/person)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Bar Code - Leisure Inn, Flagstaff ($41/person)",
+        "record_name": "Bar Code - Leisure Inn",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York (Entire home/apt, Flagstaff, rating 3, occ 8)",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "38 Barracks, Flagstaff ($35/person)",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Frontier, Flagstaff ($47/person)",
+        "record_name": "Frontier",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Sushi Thai Restaurant, Flagstaff ($49/person)",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York (Entire home/apt, Flagstaff)",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Communiti, Flagstaff ($16/person)",
+        "record_name": "Communiti",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has maximum occupancy 3; the Flagstaff listing has maximum occupancy 8.",
+        "note": "The booked listing for each city’s nights can host all 3 travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Both booked listings have room type Entire home/apt.",
+        "note": "Neither city’s booked listing is a Private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 5; the Flagstaff listing has review rate number 3.",
+        "note": "Both city listings meet the 3+ rating requirement."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 is Sioux Falls to Phoenix on 2022-03-16 and arrives at 19:26.",
+        "note": "It arrives before the 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 is Phoenix to Flagstaff on 2022-03-18 and arrives at 09:47.",
+        "note": "It arrives before the 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends in Flagstaff on 2022-03-20 and lists no return journey.",
+        "note": "This matches the one-way visit requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "the room_type preference is sacrificed"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33802,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Providence to Wilmington (own car), cost $62",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast (self-catered, before departure)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch (self-catered, on the road)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Dunkin' Donuts (Wilmington)",
+        "record_name": "Dunkin' Donuts",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "3BR/1.5BA East Harlem - Families, Space, Quiet! (Wilmington, entire home/apt)",
+        "record_name": "3BR/1.5BA East Harlem - Families, Space , Quiet!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Packed/self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bandit Burrito (Wilmington)",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Packed/self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "3BR/1.5BA East Harlem - Families, Space, Quiet! (Wilmington, entire home/apt)",
+        "record_name": "3BR/1.5BA East Harlem - Families, Space , Quiet!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Wilmington to Fayetteville, cost $7",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed/self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "DiVine (Fayetteville)",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 (Fayetteville, private room, rating 4)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Packed/self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Smoke N Oven (Fayetteville)",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Packed/self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 (Fayetteville, private room, rating 4)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Fayetteville to Providence, cost $58",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Packed/self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Packed/self-catered",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has maximum occupancy 2 and the Fayetteville listing has maximum occupancy 2; each is booked for both nights in its city.",
+        "note": "The shared listings can host both travelers each night."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing is Entire home/apt, which is allowed there; the Fayetteville listing is Private room.",
+        "note": "Both booked room types meet the city-specific requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Wilmington listing has review rate number 3; the Fayetteville listing has review rate number 4.",
+        "note": "The 4+ preferred rating is not met for the Wilmington stay."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "this sacrifices the 4+ rating preference for Wilmington"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

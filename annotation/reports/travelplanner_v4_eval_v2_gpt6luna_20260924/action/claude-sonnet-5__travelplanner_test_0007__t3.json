@@ -1,0 +1,150 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22112,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720, Dep 21:59 - Arr 23:42, $105",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! (Private room, $151/night)",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Lake House Restaurant (Rating 4.3, $38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Buffet 101 (Rating 4.0, $74)",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cafe Delhi Heights (Rating 4.0, $74)",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! (Private room, $151/night)",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607, Dep 06:27 - Arr 07:44, $201",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 17, 18, and 19, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Upper East Side Space and Access!! has maximum occupancy 2; the itinerary books it for both nights.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists St. Louis as the origin city.",
+        "note": "The itinerary starts from St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Oklahoma City as the destination city.",
+        "note": "The plan visits Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oklahoma City as its sole destination city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-17.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-19.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F4025720 from St. Louis to Oklahoma City; the record gives a 21:59 departure and 23:42 arrival.",
+        "note": "The required outbound transport is self-driving in the traveler's own car, not flying."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3950607 from Oklahoma City to St. Louis; the record gives a 06:27 departure and 07:44 arrival.",
+        "note": "The required return transport is self-driving in the traveler's own car, not flying."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan books Upper East Side Space and Access!! on 2022-03-17 and 2022-03-18.",
+        "note": "Both required nights are listed."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant is rated 4.3; Buffet 101 and Cafe Delhi Heights are each rated 4.0 in the candidate records.",
+        "note": "Every restaurant meal in the plan meets the 4.0 floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "violated",
+        "evidence": "Both transportation slots are flights. Their record prices total $306; the listed lodging and restaurant costs bring the known total to $794, above the $700 cap.",
+        "note": "Flying is preferred only when the cap allows it; the plan exceeds the cap, while the dialogue says driving is acceptable to protect the food requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "explicitly sacrificing the 'drive' preference"
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "explicitly sacrificing the 'drive' preference"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

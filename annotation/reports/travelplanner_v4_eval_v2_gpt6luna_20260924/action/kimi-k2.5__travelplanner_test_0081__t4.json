@@ -1,0 +1,179 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24199,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3558527: Tampa to Cleveland, departs 17:33, arrives 20:06, $393",
+        "record_name": "F3558527",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Green Leaf (Chinese cuisine available, $73)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! (rating 5, $565 for 2 nights, min 1 night, max occupancy 4)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transportation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner (Chinese available in cuisines, $25)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pind Balluchi (Chinese available in cuisines, $96)",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043: Cleveland to Tampa, departs 07:19, arrives 09:36, $336",
+        "record_name": "F3905043",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Revised: F3558527 ($393) + 2 nights Richmond Hill ($565) + return F3905043 ($336) + meals (~$194) = ~$1488 within $1800 budget.",
+        "effect": "Replaced the Day 3 return flight F3623037 with F3905043."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-02 through 2022-03-04.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Richmond Hill has maximum occupancy 4 and is booked for both nights.",
+        "note": "The booked listing can host the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3558527 (17:33–20:06); the requested flight is F3915073 (10:37–12:59).",
+        "note": "The specified outbound flight is not used."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is arrival with no activity; Day 2 has sightseeing; Day 3 has a 07:19 flight.",
+        "note": "This follows arrival/rest, sightseeing, and early departure days."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "Day 2 lists Rock & Roll Hall of Fame; Cleveland Cultural Gardens are not listed.",
+        "note": "The requested priority sightseeing includes the Cleveland Cultural Gardens, which are absent."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is '-' and Day 3 lunch is '-'.",
+        "note": "Neither day has a planned restaurant lunch."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The booked listing is Richmond Hill 3 Bedroom apartment in Private home!",
+        "note": "It matches the requested accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Richmond Hill listing has room type Entire home/apt.",
+        "note": "The listing matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Richmond Hill listing has review rate number 5.",
+        "note": "The rating meets the requested 5."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The final plan uses F3905043 (07:19–09:36); the requested flight is F3623037 (08:40–10:57).",
+        "note": "The final return flight differs from the specified flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast is Self-catering.",
+        "note": "No restaurant breakfast is planned."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "Day 1 attraction is listed as 'Arrival evening, no activity'.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is '-'.",
+        "note": "No restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Record F3905043 arrives in Tampa at 09:36.",
+        "note": "The revised return flight arrives before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

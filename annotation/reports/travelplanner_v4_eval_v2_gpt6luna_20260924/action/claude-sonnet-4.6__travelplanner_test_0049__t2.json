@@ -1,0 +1,190 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 26092,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, departs Kansas City 19:26, arrives Orlando 23:00 ($250)",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Kansas City before travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "At home / airport in Kansas City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Grab a bite at the airport or upon arrival — Veg O Non (avg $45, BBQ/Mexican/Pizza, rated 3.1)",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private room. 1 bed, 2 guests, 3333 Broadway – Orlando ($705/night)",
+        "record_name": "Private room. 1 bed, 2 guests, 3333 Broadway",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport within Orlando",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Wai Yu Mun Ching (avg $51, Tea/Pizza/Desserts, rated 3.6)",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Turquoise Villa (avg $55, French/Bakery/BBQ/Fast Food, rated 4.0)",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Fuji Japanese Steakhouse (avg $75, Tea/Bakery/Desserts, rated 3.8)",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private room. 1 bed, 2 guests, 3333 Broadway – Orlando ($705/night)",
+        "record_name": "Private room. 1 bed, 2 guests, 3333 Broadway",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856, departs Orlando 22:44, arrives Kansas City 00:33 ($282)",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Wai Yu Mun Ching (avg $51, Tea/Pizza/Desserts, rated 3.6)",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Turquoise Villa (avg $55, French/Bakery/BBQ/Fast Food, rated 4.0)",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Veg O Non (avg $45, BBQ/Mexican/Pizza, rated 3.1) before evening departure",
+        "record_name": "Veg O Non",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1, Day 2, and Day 3.",
+        "note": "It has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497's record lists Kansas City as the origin.",
+        "note": "The outbound trip begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497's record lists Orlando as the destination.",
+        "note": "The itinerary travels to Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as its sole destination city.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-07.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "Flight F4019856 is dated 2022-03-09, departs at 22:44, and arrives at 00:33; its 2 hours 49 minutes elapsed time places arrival after midnight.",
+        "note": "The return flight arrives in Kansas City on the following calendar day, not by 2022-03-09."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3998497; its record is an air flight from Kansas City to Orlando.",
+        "note": "The requirement is to self-drive in an own car on 2022-03-07."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F4019856; its record is an air flight from Orlando to Kansas City.",
+        "note": "The requirement is to self-drive in an own car on 2022-03-09."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on Day 1 (2022-03-07) and Day 2 (2022-03-08), with no accommodation on departure Day 3.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan lists flights rather than drives on March 7 and March 9, and lists The Wheel at ICON Park / Ripley's Believe It or Not! on March 9.",
+        "note": "The requested intercity driving days are not reserved for driving, and sightseeing is listed on a day other than March 8."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan chooses flights for both intercity legs.",
+        "note": "It follows the preference to fly; budget compliance is not judged."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

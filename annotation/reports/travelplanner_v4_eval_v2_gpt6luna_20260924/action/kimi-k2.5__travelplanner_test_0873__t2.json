@@ -1,0 +1,221 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25646,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Charlotte to New Orleans (10h 28min, $57)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed food/Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food/Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fish House ($20, Mediterranean/Tea/BBQ)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill (Entire home/apt, 4 nights @ $205/night = $820)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House ($50, Pizza/Indian/Desserts)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "New Sukh Sagar ($31, Tea/Bakery/BBQ/American/Seafood)",
+        "record_name": "New Sukh Sagar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Shenanigan's Irish Pub ($43, Tea/Chinese/Bakery/Desserts)",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gupha ($11, Tea/Cafe/Bakery/Chinese/American)",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "PKay ($22, Tea/Bakery/Fast Food)",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sage ($87, Mediterranean/Desserts/Seafood)",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "The Fish House ($20)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "New Sukh Sagar ($31)",
+        "record_name": "New Sukh Sagar",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Jimmy's Pancake House ($50)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Flight from New Orleans to Charlotte (search returned no available flight - infeasible per fixed results)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House ($50)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary bases the trip in New Orleans; Charlotte appears only as the origin and return destination.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Cozy in Cobble Hill record lists room type as Entire home/apt.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "required_cities",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New Orleans as the current city for the first four days, and the accommodation record is labeled New Orleans.",
+        "note": "New Orleans is the sole destination city in the plan."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The transportation record gives self-driving from Charlotte to New Orleans, duration 10 hours 28 minutes; the itinerary places it on March 9.",
+        "note": "The plan uses the requested mode, route, and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The transportation record states, \"There is no flight from New Orleans to Charlotte on 2022-03-13.\"",
+        "note": "The itinerary names a flight, but the candidate records confirm no such flight is available."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 13 has no listed attraction, but the only return-flight record says there is no flight from New Orleans to Charlotte that day.",
+        "note": "The day is free of sightseeing, but cannot be reserved for the required airport transfer and flight home because the flight is unavailable."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "Critical unmet requirement: No flight is available from New Orleans to Charlotte on 2022-03-13 per fixed search results."
+      },
+      {
+        "gold_field": "schedule",
+        "quote": "Self-driving round trip is the only supported return option, violating the must-have flight and day-13 airport reservation requirements."
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation candidate records are labeled as New Orleans, but several listing names refer to Brooklyn, Manhattan, or NYC locations; this is a city/location data inconsistency."
+    ]
+  }
+}

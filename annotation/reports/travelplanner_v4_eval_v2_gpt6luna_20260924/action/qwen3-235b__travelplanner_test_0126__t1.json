@@ -1,0 +1,162 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32469,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving from Providence (11h59m, $62)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Azteca ($56)",
+        "record_name": "Azteca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Bedroom - Warm & Cozy Near Subway (1) ($339, Private room, 5-star)",
+        "record_name": "Brooklyn Bedroom - Warm & Cozy Near Subway (1)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bandit Burrito ($26)",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Taco Bus ($59)",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Bedroom - Warm & Cozy Near Subway (1) ($339, Private room, 5-star)",
+        "record_name": "Brooklyn Bedroom - Warm & Cozy Near Subway (1)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving from Wilmington (1h43m, $7)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Eat Street ($63)",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "The Great Indian Pub ($95)",
+        "record_name": "The Great Indian Pub",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 ($251, Private room, 4-star)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Biryani By Kilo ($53)",
+        "record_name": "Biryani By Kilo",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "DiVine ($32)",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 ($251, Private room, 4-star)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving to Providence (11h10m, $58)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Wilmington on March 13–14 and Fayetteville on March 15–16, then returns to Providence on March 17.",
+        "note": "The listed city order matches the requested Wilmington-then-Fayetteville sequence."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing is booked on March 13 and 14; the Fayetteville listing is booked on March 15 and 16.",
+        "note": "The accommodation slots cover the specified nights in both cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked records specify room type \"Private room\".",
+        "note": "Each booked accommodation meets the private-room requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has review rate number 5; the Fayetteville listing has review rate number 4.",
+        "note": "Both city listings meet the 4+ rating requirement."
+      },
+      {
+        "gold_field": "night_policy",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed for March 13–14 in Wilmington and March 15–16 in Fayetteville, with no other accommodation slots. The Wilmington listing has a 2-night minimum and the Fayetteville listing a 1-night minimum.",
+        "note": "The plan books the specified occupied nights without an extra listed stay or overlap."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The transportation records describe self-driving Providence–Wilmington, Wilmington–Fayetteville, and Fayetteville–Providence.",
+        "note": "The planned transportation is by the traveler's own car."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The activity requirements say March 13 should be a driving/rest day without sightseeing, but the itinerary lists Battleship North Carolina on March 13. March 15 includes self-driving from Wilmington to Fayetteville.",
+        "note": "The March 13 sightseeing conflicts with the requested driving/rest day, even though the March 15 transfer is included."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation records' city fields say Wilmington and Fayetteville, but the listing names refer to Brooklyn and JFK; this location inconsistency may impede verification of the accommodations' actual locations."
+    ]
+  }
+}

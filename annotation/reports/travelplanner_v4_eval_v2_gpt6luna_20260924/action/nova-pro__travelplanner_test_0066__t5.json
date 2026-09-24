@@ -1,0 +1,140 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21721,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive to Jacksonville.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Oh! Fudge",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny room in cozy Bushwick apartment",
+        "record_name": "Sunny room in cozy Bushwick apartment",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive back to Minneapolis.",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 27, March 28, and March 29.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny room in cozy Bushwick apartment has maximum occupancy 2.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 starts in Minneapolis and says “Drive to Jacksonville.”",
+        "note": "The stated origin is Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as the destination and day 2 current city.",
+        "note": "The stated destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as its destination and sightseeing city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-29.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-27 the itinerary says “Drive to Jacksonville.”",
+        "note": "This matches the requested outbound self-drive."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-29 the itinerary says “Drive back to Minneapolis.”",
+        "note": "This matches the requested return self-drive."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary drives on March 27 and March 29; Jacksonville Zoo and Gardens is listed on March 28.",
+        "note": "Sightseeing is confined to the only available day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary has accommodation only on March 28; March 27 and March 29 have “-”.",
+        "note": "Only one night is booked, rather than the requested nights of March 27 and March 28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Sunny room in cozy Bushwick apartment is listed as “Private room”.",
+        "note": "The preferred room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Sunny room in cozy Bushwick apartment has review rate number 4.0.",
+        "note": "The listing meets the 3.5 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

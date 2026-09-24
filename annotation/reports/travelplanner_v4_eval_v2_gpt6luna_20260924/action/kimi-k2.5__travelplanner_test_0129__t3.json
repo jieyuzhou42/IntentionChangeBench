@@ -1,0 +1,215 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 35892,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477: Sioux Falls to Phoenix, arrives 19:26 ($410 × 3 = $1,230)",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut, avg $30 × 3 = $90 (sit-down, relaxed arrival day)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan (Entire home/apt, 3+ occupancy, $834/night × 2 nights = $1,668) - VIOLATION: Not private room, but only option for 3 people; review rate 5",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering at accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mama Loca, avg $27 × 3 = $81 (sit-down Italian)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Doughlicious, avg $41 × 3 = $123 (sit-down)",
+        "record_name": "Doughlicious",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan (night 2 of 2)",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854: Phoenix to Flagstaff, 08:49-09:47, arrive well before noon ($42 × 3 = $126) - PROTECTED transfer",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti, avg $16 × 3 = $48 (sit-down, relaxed pace)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "38 Barracks, avg $35 × 3 = $105 (sit-down, rating 4.4)",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York (Entire home/apt, 8 occupancy, $1,086/night × 2 nights = $2,172) - VIOLATION: Not private room, but only option for 3 people; review rate 3",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Self-catering at accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Bamboo Boat, avg $77 × 3 = $231 (sit-down)",
+        "record_name": "Bamboo Boat",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Sushi Thai Restaurant, avg $49 × 3 = $147 (sit-down)",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York (night 2 of 2)",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Flagstaff to Sioux Falls, 19h 57m ($104) - VIOLATION: No flight available; ground transport only option. One-way trip ends here.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Self-catering before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Packed/road food (-self-catering)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has maximum occupancy 8 and the Flagstaff listing has maximum occupancy 8.",
+        "note": "Each booked listing can host all 3 travelers."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing review rate number 5; Flagstaff listing review rate number 3.",
+        "note": "Both booked listings meet the 3+ rating threshold."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4045477 is dated 2022-03-16, Sioux Falls to Phoenix, arriving at 19:26.",
+        "note": "The flight arrives before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804854 is dated 2022-03-18, Phoenix to Flagstaff, departing 08:49 and arriving 09:47.",
+        "note": "The flight arrives before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 20 transportation slot says: “Self-driving from Flagstaff to Sioux Falls, 19h 57m”.",
+        "note": "The itinerary includes a journey home instead of ending in Flagstaff."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 17 attraction entry lists “Heard Museum (morning), Desert Botanical Garden (afternoon)”.",
+        "note": "Both requested Phoenix attractions are included on the required day."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "No itinerary attraction entry lists Hole in the Rock.",
+        "note": "The excluded attraction is not scheduled."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 17 lists Heard Museum and Desert Botanical Garden, two attractions in one day.",
+        "note": "The requirement is fewer than two attractions per day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21173,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F3804883, Phoenix to Billings, departure 12:24",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Hong Kong Express",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Elation",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bd + Private rooftop on best GP street",
+        "record_name": "Sunny 2 bd + Private rooftop on best GP street",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "L'Angoor",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chakhnaa Wala",
+        "record_name": "Chakhnaa Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bd + Private rooftop on best GP street",
+        "record_name": "Sunny 2 bd + Private rooftop on best GP street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "F3799751, Billings to Phoenix, departure 16:33",
+        "record_name": "F3799751",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Holy Smoke",
+        "record_name": "Holy Smoke",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 18, 19, and 20, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Billings listing has maximum occupancy 3.",
+        "note": "The listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 departs Phoenix.",
+        "note": "The outbound flight originates in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 arrives in Billings; the itinerary's current city is Billings for the stay.",
+        "note": "Billings is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary stays in Billings after arriving from Phoenix and returns from Billings.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F3804883 has FlightDate 2022-03-18.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F3799751 has FlightDate 2022-03-20.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3804883 is a Phoenix-to-Billings flight on 2022-03-18, departing 12:24.",
+        "note": "It matches the required outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3799751 is a Billings-to-Phoenix flight on 2022-03-20, departing 16:33.",
+        "note": "It matches the required return route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same Billings accommodation is listed on March 18 and March 19; March 20 has no accommodation.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bd + Private rooftop on best GP street has room type Entire home/apt.",
+        "note": "The booked listing matches the preferred room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Hong Kong Express, Elation, L'Angoor, Chakhnaa Wala, and Holy Smoke have Aggregate Ratings of 3.8, 3.8, 3.5, 3.5, and 3.6, respectively.",
+        "note": "Every restaurant meal listed is below the required 4.0 rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

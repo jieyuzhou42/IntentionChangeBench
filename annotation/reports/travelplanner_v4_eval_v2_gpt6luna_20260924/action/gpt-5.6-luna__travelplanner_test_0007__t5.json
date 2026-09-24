@@ -1,0 +1,161 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22538,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720, departing 21:59 and arriving 23:42; $105 for one traveler",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Lake House Restaurant in Oklahoma City, rating 4.3, listed average cost $38",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio, Entire home/apt, 2-night minimum, $406 listed price",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Lake House Restaurant, rating 4.3, listed average cost $38",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Buffet 101, rating 4.0, listed average cost $74",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cafe Delhi Heights, rating 4.0, listed average cost $74",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio, Entire home/apt, $406 listed price",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607, departing 06:27 and arriving 07:44; $201 for one traveler",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "under the revised $1,100 budget",
+        "effect": "The action reflects the updated budget cap; no itinerary slot was changed."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 17, March 18, and March 19, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 4 on both nights.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 has OriginCityName St. Louis.",
+        "note": "The outbound trip starts in St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 has DestCityName Oklahoma City; the accommodation and restaurant records are also tagged Oklahoma City.",
+        "note": "The destination is Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary stays in Oklahoma City between the St. Louis outbound and return flights.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-17.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-19.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F4025720 from St. Louis to Oklahoma City on 2022-03-17; its record shows departure at 21:59.",
+        "note": "The requirement is to self-drive in an own car, not fly."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3950607 from Oklahoma City to St. Louis on 2022-03-19; its record shows departure at 06:27.",
+        "note": "The requirement is to self-drive in an own car, not fly."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio is booked on March 17 and March 18; its record has a 2-night minimum.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant is rated 4.3; Buffet 101 and Cafe Delhi Heights are each rated 4.0.",
+        "note": "Every restaurant meal listed from the records meets the 4.0 floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights priced at $105 and $201, and the action refers to the revised $1,100 budget.",
+        "note": "Flying is preferred when the cap allows; the plan chooses flights within the revised cap."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked Chelsea/Union Square cozy studio record lists room type Entire home/apt.",
+        "note": "The listing is an entire home/apartment, not a room in someone else's flat."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation listing is tagged as Oklahoma City in the candidate record, but its name, \"Chelsea/Union Square cozy studio,\" suggests a New York location."
+    ]
+  }
+}

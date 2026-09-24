@@ -1,0 +1,136 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22152,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3920918 (Scranton 05:57 → Newark 06:44) - $33",
+        "record_name": "F3920918",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Angeethi Restaurant ($12)",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Drifters Cafe ($24)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Room 4 - Sunny Cozy Room in Historic Victorian Home - $598 (1st night)",
+        "record_name": "Room 4 -Sunny Cozy Room in Historic Victorian Home",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Angeethi Restaurant ($12)",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jaguar ($38)",
+        "record_name": "Jaguar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Room 4 - Sunny Cozy Room in Historic Victorian Home - $598 (2nd night)",
+        "record_name": "Room 4 -Sunny Cozy Room in Historic Victorian Home",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3919859 (Newark 21:46 → Scranton 22:23) - $22",
+        "record_name": "F3919859",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 24, March 25, and March 26, 2022.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 1.",
+        "note": "The accommodation can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 lists Scranton as its origin; the return flight lists Scranton as its destination.",
+        "note": "The itinerary begins and ends in Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 travels from Scranton to Newark, and the accommodation and activities are listed in Newark.",
+        "note": "Newark is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Newark as the only destination city.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 is dated 2022-03-24, the first itinerary day.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3919859 is dated 2022-03-26, the final itinerary day.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 travels Scranton to Newark on 2022-03-24 and departs at 05:57.",
+        "note": "This is the first listed outbound flight and matches the requested departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3919859 travels Newark to Scranton on 2022-03-26 and departs at 21:46.",
+        "note": "This is the listed return flight and matches the requested departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same accommodation is listed for the nights of March 24 and March 25; there is no accommodation on the March 26 departure day.",
+        "note": "The itinerary books the requested two nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

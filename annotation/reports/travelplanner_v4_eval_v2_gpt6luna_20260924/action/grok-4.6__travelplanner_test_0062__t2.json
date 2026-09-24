@@ -1,0 +1,211 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23444,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, from Ithaca to Philadelphia, duration: 3 hours 52 mins, distance: 369 km, cost: 18",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Brothers Dhaba",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern Luxury Apartment in Heart of Williamsburg",
+        "record_name": "Modern Luxury Apartment in Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Brothers Dhaba",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Luxury Apartment in Heart of Williamsburg",
+        "record_name": "Modern Luxury Apartment in Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving, from Philadelphia to Ithaca, duration: 3 hours 52 mins, distance: 369 km, cost: 18",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Hong Kong Cafe",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-01, 2022-03-02, and 2022-03-03.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3 on both nights.",
+        "note": "The combined nightly capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is from Ithaca to Philadelphia.",
+        "note": "The trip starts in Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Philadelphia as the destination and day-2 city.",
+        "note": "The trip visits Philadelphia."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Philadelphia is the sole destination city listed.",
+        "note": "The origin, Ithaca, is not an additional visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-01.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-03.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “Self-driving, from Ithaca to Philadelphia”; the candidate transportation record gives self-driving from Ithaca to Philadelphia.",
+        "note": "The itinerary uses the requested self-driving route in the own-car context."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The day-3 plan says “Self-driving, from Philadelphia to Ithaca.”",
+        "note": "The itinerary specifies the requested self-driving return route."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-01 and 2022-03-02, with none needed on departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Modern Luxury Apartment in Heart of Williamsburg is listed as Entire home/apt.",
+        "note": "The booked listing meets the room-type requirement."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules are “No parties.”",
+        "note": "The listing prohibits parties."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant meals used have Aggregate Ratings of 4.1 (Gurdas Ram Jalebi Wala), 3.8 (Brothers Dhaba), and 3.6 (Hong Kong Cafe).",
+        "note": "Each restaurant meal is rated at least 3.5."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Average Costs per person are $20 for Gurdas Ram Jalebi Wala, $52 for Brothers Dhaba, and $47 for Hong Kong Cafe.",
+        "note": "Every restaurant meal is under $60 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The cuisines for all listed restaurant meals—Gurdas Ram Jalebi Wala, Brothers Dhaba, and Hong Kong Cafe—do not include Fast Food.",
+        "note": "No Philadelphia meal in the plan carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-02, breakfast is Gurdas Ram Jalebi Wala, lunch is Hong Kong Cafe, and dinner is Brothers Dhaba.",
+        "note": "All three meals are at different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe, listed for lunch on 2022-03-02, has Italian in its Cuisines.",
+        "note": "At least one meal that day is Italian-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "unknown",
+        "evidence": "The return drive is listed as 3 hours 52 minutes, but the itinerary gives no departure time from Philadelphia. The rationale says to leave after an early lunch, without specifying a time.",
+        "note": "The records and itinerary do not establish whether arrival in Ithaca is by 18:00."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Liberty Bell on 2022-03-02, matching the candidate attraction record.",
+        "note": "The optional visit is included on the requested day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

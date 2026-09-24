@@ -1,0 +1,188 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22530,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164 from Houston to Reno, 09:50-12:04, $688",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Olive Bistro (rating 3.9; average cost $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Bistro (rating 3.9; average cost $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Olive Bistro (rating 3.9; average cost $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse — entire home/apt, $361/night",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "No intercity transportation required",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Olive Bistro (rating 3.9; average cost $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Olive Bistro (rating 3.9; average cost $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Olive Bistro (rating 3.9; average cost $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse — entire home/apt, $361/night",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705 from Reno to Houston, 12:58-18:31, $446",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Olive Bistro (rating 3.9; average cost $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Olive Bistro (rating 3.9; average cost $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 11, 12, and 13, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The treehouse has a maximum occupancy of 2.",
+        "note": "The booked accommodation can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Houston as OriginCityName.",
+        "note": "The trip departs from Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Reno as DestCityName.",
+        "note": "The itinerary's destination is Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Reno as the destination and return origin, with no other destination city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-11.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The third itinerary day and return flight date are 2022-03-13.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3879164 is dated 2022-03-11, Houston to Reno, departing 09:50.",
+        "note": "The listed outbound flight matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3875705 is dated 2022-03-13, Reno to Houston, departing 12:58.",
+        "note": "The listed return flight matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "A bright, beautiful treehouse is listed for March 11 and March 12; the departure day has no accommodation.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Olive Bistro has an Aggregate Rating of 3.9 in the restaurant record.",
+        "note": "Every listed restaurant meal is below the required rating of 4."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Olive Bistro's Cuisines are listed as Tea, Cafe, Pizza, BBQ, with no Fast Food tag.",
+        "note": "No listed Reno restaurant meal carries a Fast Food tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "the 4.0 meal-rating requirement is unmet"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22983,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 from Belleville to Las Vegas",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Steps away from the Heart of the Theater District!",
+        "record_name": "Steps away from the Heart of the Theater District!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Big Brewsky",
+        "record_name": "Big Brewsky",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Steps away from the Heart of the Theater District!",
+        "record_name": "Steps away from the Heart of the Theater District!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive from Las Vegas to Belleville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "violated",
+        "evidence": "The itinerary lists March 27, March 28, and March 29 only.",
+        "note": "The requirement is 4 days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on both accommodation nights.",
+        "note": "The combined capacity covers both travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts in Belleville and flight F3578336 has OriginCityName Belleville.",
+        "note": "Belleville is the origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 goes to Las Vegas; the following itinerary days are in Las Vegas.",
+        "note": "Las Vegas is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Las Vegas is the only visiting city in the itinerary.",
+        "note": "The itinerary visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and flight date are 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "The last itinerary day is 2022-03-29; there is no 2022-03-30 entry.",
+        "note": "The required end date is 2022-03-30."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3578336 is dated 2022-03-27 and lists Belleville as origin and Las Vegas as destination.",
+        "note": "The recorded flight matches the outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan says “Drive from Las Vegas to Belleville” on March 29 only; no return travel is listed for March 30, and no record confirms own-car use.",
+        "note": "The required self-drive across March 29 and March 30 is not fully represented."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is present on March 27 and March 28, with no accommodation required on the departure day.",
+        "note": "The plan books the two required nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "“Steps away from the Heart of the Theater District!” is listed as a Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has review rate number 5.",
+        "note": "It meets the rating requirement of 5."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen has Aggregate Rating 4.4 and Big Brewsky has Aggregate Rating 4.5.",
+        "note": "Every planned restaurant meal is rated at least 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Big Brewsky's Cuisines include Fast Food.",
+        "note": "A Las Vegas meal may not carry a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 28, breakfast and dinner are both Ethos Vegan Kitchen; lunch is Big Brewsky.",
+        "note": "Only two different restaurants are listed across the three meals."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Fremont Street Experience is listed as an attraction on March 28, with no plan reserving 14:00–16:00 as free time for the second traveler.",
+        "note": "The required free interval is not preserved in the day's planned activities."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "violated",
+        "evidence": "The listing's house_rules say “No children under 10”; they do not prohibit smoking.",
+        "note": "The requirement is that smoking be prohibited."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "violated",
+        "evidence": "Fremont Street Experience is listed on March 28, with no plan reserving 14:00–16:00 as free of sightseeing for the sister.",
+        "note": "The itinerary does not keep the sister's unavailable interval clear of planned activities."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

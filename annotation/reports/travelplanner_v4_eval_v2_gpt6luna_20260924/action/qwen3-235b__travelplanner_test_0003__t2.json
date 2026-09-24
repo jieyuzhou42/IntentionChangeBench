@@ -1,0 +1,158 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21264,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Charleston to St. Louis (estimated ~6-7 hours)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local driving/city transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "El Super Burrito",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Starbucks",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "No return flight available; user must self-drive back",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Starbucks",
+        "record_name": "Starbucks",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence has maximum occupancy 2 on both booked nights.",
+        "note": "The booked capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The March 16 transportation says “Self-drive from Charleston to St. Louis.”",
+        "note": "Charleston is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The plan travels to St. Louis and lists St. Louis attractions, including The Gateway Arch and Saint Louis Zoo.",
+        "note": "St. Louis is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits St. Louis as its destination city.",
+        "note": "It names one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-18.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “Self-drive from Charleston to St. Louis”; the user specified they would self-drive in their own car.",
+        "note": "The outbound leg matches the requested date, route, and mode."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 18 slot says “user must self-drive back”; the user specified they would leave on March 18 and self-drive.",
+        "note": "The return leg is explicitly planned as self-driving in the user's own car."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "unknown",
+        "evidence": "El Super Burrito is rated 4.1. The records contain two entries named Starbucks, rated 4.1 and 3.9, respectively.",
+        "note": "The plan's Starbucks slots do not identify which of the two conflicting same-name records applies, so it is not possible to verify that every restaurant meal meets the 4.0 floor."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence is listed on March 16 and March 17; the listing's minimum nights is 1.",
+        "note": "The plan books the requested two nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The restaurant records contain two entries named Starbucks with conflicting aggregate ratings (4.1 and 3.9), and the plan's Starbucks slots are not disambiguated."
+    ]
+  }
+}

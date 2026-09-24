@@ -1,0 +1,181 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21957,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4046779 (06:56 Moline → 09:08 Dallas)",
+        "record_name": "F4046779",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings ($17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Drifters Cafe ($21)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Coconuts Fish Cafe ($38)",
+        "record_name": "Coconuts Fish Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Exclusive Modern Penthouse Apartment (Entire home/apt)",
+        "record_name": "Exclusive Modern Penthouse Apartment",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings ($17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Drifters Cafe ($21)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "1918 Bistro & Grill ($90)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Exclusive Modern Penthouse Apartment (Entire home/apt)",
+        "record_name": "Exclusive Modern Penthouse Apartment",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4047063 (18:48 Dallas → 20:40 Moline)",
+        "record_name": "F4047063",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings ($17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Drifters Cafe ($21)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, 26, and 27, 2022.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Exclusive Modern Penthouse Apartment has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 departs Moline; flight F4047063 arrives in Moline.",
+        "note": "The outbound origin is Moline."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 arrives in Dallas; the itinerary lists Dallas as the current city.",
+        "note": "The destination is Dallas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Dallas as the current city on all three days.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-25.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-27.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 is dated 2022-03-25, departs Moline at 06:56, and arrives in Dallas at 09:08.",
+        "note": "This is an early flight on the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4047063 is dated 2022-03-27, departs Dallas at 18:48, and arrives in Moline at 20:40.",
+        "note": "This is an evening flight on the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books accommodation on 2022-03-25 and 2022-03-26, with none on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Exclusive Modern Penthouse Apartment is listed as Entire home/apt.",
+        "note": "The booked accommodation matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Exclusive Modern Penthouse Apartment has a review rate number of 3.",
+        "note": "The listing falls below the required rating of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Explicitly violated accommodation_rating must-have constraint due to inventory limitations."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

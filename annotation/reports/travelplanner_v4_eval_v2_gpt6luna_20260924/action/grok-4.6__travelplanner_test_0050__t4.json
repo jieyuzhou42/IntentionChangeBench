@@ -1,0 +1,169 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22737,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Tulsa to Phoenix",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Mama Loca",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Village Restaurant",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Jungle The Restaurant",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Doughlicious",
+        "record_name": "Doughlicious",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Phoenix to Tulsa",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Mama Loca",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Village Restaurant",
+        "record_name": "Village Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-06, 2022-03-07, and 2022-03-08.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 8.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “Self-driving from Tulsa to Phoenix.”",
+        "note": "The trip starts from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels from Tulsa to Phoenix and returns from Phoenix to Tulsa.",
+        "note": "Phoenix is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Phoenix as the destination city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-06.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-08.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Self-driving from Tulsa to Phoenix.”",
+        "note": "The plan uses the requested self-driving outbound transportation on 2022-03-06."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “Self-driving from Phoenix to Tulsa.”",
+        "note": "The plan uses the requested self-driving return transportation on 2022-03-08."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same accommodation is listed on 2022-03-06 and 2022-03-07; day 3 has no accommodation.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is “Entire home/apt.”",
+        "note": "The listing meets the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The action says “Midday F3996733 ($195) plus afternoon F3803478 ($276) plus that apartment is $2139 before meals,” above the $2000 cap, and says “Self-driving is the user-accepted trade-off.”",
+        "note": "Flying with the booked apartment exceeds the cap even before meals, so the accepted driving option is consistent with the preference."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

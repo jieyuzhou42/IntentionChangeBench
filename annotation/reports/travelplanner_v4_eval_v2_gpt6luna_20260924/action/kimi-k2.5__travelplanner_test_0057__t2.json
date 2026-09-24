@@ -1,0 +1,191 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21491,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164 (09:50-12:04, $688)",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "- (departing Houston)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Leme Light (Rating 4.2, $55)",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Kanha Sweets (Rating 4.1, $28)",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Entire suite with breathtaking views of NYC (1 night, $1040)",
+        "record_name": "Entire suite with breathtaking views of NYC",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Leme Light (Rating 4.2, $55)",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Kanha Sweets (Rating 4.1, $28)",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Leme Light (Rating 4.2, $55)",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Entire suite with breathtaking views of NYC (1 night, $1040)",
+        "record_name": "Entire suite with breathtaking views of NYC",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705 (12:58-18:31, $446)",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Leme Light (Rating 4.2, $55)",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "- (departing Reno)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "- (arriving Houston)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-11, 2022-03-12, and 2022-03-13.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Reno listing has a maximum occupancy of 8.",
+        "note": "The accommodation can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 departs Houston; the return flight F3875705 arrives in Houston.",
+        "note": "Houston is the origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 goes from Houston to Reno; the return flight departs Reno.",
+        "note": "Reno is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary stays in Reno and lists Reno attractions.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-11.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day and return flight date are 2022-03-13.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 is Houston to Reno on 2022-03-11 and departs at 09:50.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3875705 is Reno to Houston on 2022-03-13 and departs at 12:58.",
+        "note": "It matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed for 2022-03-11 and 2022-03-12, with none needed on departure day.",
+        "note": "The itinerary books the two requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Leme Light has an Aggregate Rating of 4.2 and Kanha Sweets has an Aggregate Rating of 4.1.",
+        "note": "Every listed restaurant meal meets the 4.0 minimum; empty meal slots are not restaurant meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23336,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Minneapolis to Jacksonville (21 hours 14 minutes, 2,370 km, supported cost $118)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast from home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch from home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Ashoka Restaurant in Jacksonville (average cost $11)",
+        "record_name": "Ashoka Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Greenpoint, Jacksonville (private room, $169 per night, night 1 of 2)",
+        "record_name": "Private Bedroom in Greenpoint",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Self-drive locally between the accommodation, restaurants, and attractions",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery (average cost $57)",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ashoka Restaurant (average cost $11)",
+        "record_name": "Ashoka Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Villa Gargano (average cost $51)",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Greenpoint, Jacksonville (private room, $169 per night, night 2 of 2)",
+        "record_name": "Private Bedroom in Greenpoint",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Jacksonville to Minneapolis (21 hours 20 minutes, 2,377 km, supported cost $118)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery (average cost $57)",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed lunch prepared before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed dinner for the drive",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary is dated March 27, March 28, and March 29, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Greenpoint has maximum occupancy 2; the rationale says it accommodates one traveler.",
+        "note": "The booked lodging can host one traveler, and the plan assumes no larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is from Minneapolis to Jacksonville, and the return is from Jacksonville to Minneapolis.",
+        "note": "Minneapolis is the origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as the destination and lists Jacksonville attractions and lodging.",
+        "note": "The destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The plan visits Jacksonville and lists no other sightseeing city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “Self-drive from Minneapolis to Jacksonville”; the candidate transportation record gives self-driving from Minneapolis to Jacksonville, duration 21 hours 14 minutes.",
+        "note": "The outbound trip uses the requested mode, route, and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “Self-drive from Jacksonville to Minneapolis”; the candidate transportation record gives self-driving from Jacksonville to Minneapolis, duration 21 hours 20 minutes.",
+        "note": "The return trip uses the requested mode, route, and date."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 27 and March 29 list intercity drives and no attractions; March 28 lists MOSH followed by Southbank Riverwalk.",
+        "note": "Sightseeing is confined to the only available activity day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Greenpoint is booked on March 27 and March 28, one night on each date.",
+        "note": "The plan books the requested two nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

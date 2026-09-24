@@ -1,0 +1,140 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "violated",
+      "total": 2280.0,
+      "budget": 1500,
+      "unpriced": [
+        "breakfast: simple self-catered breakfast at the apartment.",
+        "breakfast: simple self-catered breakfast at the apartment.",
+        "breakfast: simple self-catered breakfast at the apartment.",
+        "breakfast: simple self-catered breakfast at the apartment before early "
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21140,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "1500"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "schedule",
+        "value": "Keep March 13 free of sightseeing."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dining_style",
+        "value": "Have simple self-catered breakfasts at the apartment."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "dining_style",
+        "value": "Choose sit-down restaurants rather than fast-food options for lunch."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "dining_style",
+        "value": "Choose sit-down restaurants rather than fast-food options for dinner."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "transportation",
+        "value": "Self-drive."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "The other person traveling with me cannot comfortably manage an intercity transfer during this short trip."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "The other person traveling with me should remain in the same accommodation with me."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "exclude",
+        "date": "2022-03-13",
+        "requirement": "No sightseeing on March 13, including Mardi Gras World.",
+        "source_turn": 3,
+        "quote": "skipping all sightseeing that day, including Mardi Gras World."
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-13",
+        "requirement": "Check out early on March 13.",
+        "source_turn": 3,
+        "quote": "checking out early"
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "entities.entity_2.constraints.mobility",
+        "reason": "This is a traveler's mobility need, which cannot be audited using the candidate records."
+      }
+    ],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The itinerary visits New Orleans as its only destination city."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The plan names Harlem Short Term Stay, which is absent from the accommodation records, so its room type cannot satisfy the requirement."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "March 13 has no attraction listed."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "violated",
+        "evidence": "The plan explicitly lists self-catered apartment breakfasts on Days 2–5, but Def Col Social and Yeti - The Himalayan Kitchen are absent from the restaurant records, so their attributes cannot establish that all planned lunch and dinner meals meet the sit-down rather than fast-food requirement."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "satisfied",
+        "evidence": "Both the Charlotte-to-New Orleans and New Orleans-to-Charlotte legs are planned as self-driving, and both routes appear in the transportation records."
+      }
+    ],
+    "annotation_issues": [
+      "The gold budget value of $1500 conflicts with the user's later request in turn 2 to raise the budget to $2000; the gold_delta_this_turn rationale also mentions a $4000 budget.",
+      "The gold reference plan names Harlem Short Term Stay, but that listing is absent from the accommodation candidate records."
+    ]
+  },
+  "out_of_scope_fields": [
+    "entities.entity_2.constraints.mobility"
+  ]
+}

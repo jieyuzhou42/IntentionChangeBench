@@ -1,0 +1,169 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 4,
+  "prompt_chars": 32511,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Providence to Wilmington, 11 hours 59 mins, 1,247 km, $62",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Bandit Burrito",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "3BR/1.5BA East Harlem - Families, Space , Quiet!",
+        "record_name": "3BR/1.5BA East Harlem - Families, Space , Quiet!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Dunkin' Donuts",
+        "record_name": "Dunkin' Donuts",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bandit Burrito",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Moonie's Texas Barbecue",
+        "record_name": "Moonie's Texas Barbecue",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "3BR/1.5BA East Harlem - Families, Space , Quiet!",
+        "record_name": "3BR/1.5BA East Harlem - Families, Space , Quiet!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Wilmington to Fayetteville, 1 hour 43 mins, 149 km, $7",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Dunkin' Donuts",
+        "record_name": "Dunkin' Donuts",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Smoke N Oven",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "DiVine",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "24 Lex Prime Location of East NYC 15min to TimeSq",
+        "record_name": "24 Lex Prime Location of East NYC 15min to TimeSq",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Smoke N Oven",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "DiVine",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Smoke N Oven",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "24 Lex Prime Location of East NYC 15min to TimeSq",
+        "record_name": "24 Lex Prime Location of East NYC 15min to TimeSq",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Fayetteville to Providence, 11 hours 10 mins, 1,163 km, $58",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Smoke N Oven",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has maximum occupancy 2 and the Fayetteville listing has maximum occupancy 3; each is booked for both nights in its city.",
+        "note": "The listings booked for every night accommodate the two travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings have room type \"Entire home/apt\" in the candidate records.",
+        "note": "The Wilmington and Fayetteville room-type requirements are both met."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Wilmington listing has review rate number 3; the Fayetteville listing has review rate number 2.",
+        "note": "Neither booked listing meets the optional 4+ rating preference."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Preferred 4+ ratings are unmet because no 4+ entire home allows a 2-night stay in either city"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

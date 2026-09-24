@@ -1,0 +1,193 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25649,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, Kansas City to Orlando, 19:26-23:00, $250",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Orlando; entire home/apt; $287/night; night 1 of 3)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local travel within Orlando; no intercity transportation required",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Fuji Japanese Steakhouse — average cost $75, rating 3.8",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching — average cost $51, rating 3.6",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Crust N Cakes — average cost $61, rating 3.4",
+        "record_name": "Crust N Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Orlando; entire home/apt; $287/night; night 2 of 3)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856, Orlando to Kansas City, 22:44-00:33, $282",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Fuji Japanese Steakhouse — average cost $75, rating 3.8",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching — average cost $51, rating 3.6",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (third billed minimum night; depart for return flight before overnight occupancy)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has dates 2022-03-07, 2022-03-08, and 2022-03-09.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Orlando listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 departs Kansas City.",
+        "note": "The itinerary begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 arrives in Orlando; the return flight departs Orlando.",
+        "note": "Orlando is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The overnight accommodation and sightseeing attraction are in Orlando.",
+        "note": "The itinerary visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary date and outbound flight date are 2022-03-07.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight is dated 2022-03-09.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary uses flight F3998497, which departs Kansas City at 19:26 and arrives in Orlando at 23:00.",
+        "note": "The requirement specifies self-driving in one's own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary uses flight F4019856, which departs Orlando at 22:44 and arrives in Kansas City at 00:33.",
+        "note": "The requirement specifies self-driving in one's own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is included for March 7, March 8, and a third billed minimum night; its record states a three-night minimum.",
+        "note": "The requirement permits paying for a night after departure."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The attraction is listed only on 2022-03-08; no sightseeing is listed on March 7 or March 9.",
+        "note": "The activity requirements reserve March 7 and 9 for intercity travel and March 8 for sightseeing."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights for both intercity legs.",
+        "note": "Flying is the preferred option, and the requirement accepts driving when needed to stay within budget."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! is recorded as Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records show ratings of 3.8 for Fuji Japanese Steakhouse, 3.6 for Wai Yu Mun Ching, and 3.4 for Crust N Cakes.",
+        "note": "Every restaurant meal in the plan meets the preferred floor of 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Cuisines records for Fuji Japanese Steakhouse, Wai Yu Mun Ching, and Crust N Cakes do not include Fast Food.",
+        "note": "No listed Orlando meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "Breakfast, lunch, and dinner on 2022-03-08 are Fuji Japanese Steakhouse, Wai Yu Mun Ching, and Crust N Cakes.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

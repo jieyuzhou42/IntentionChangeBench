@@ -1,0 +1,188 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22130,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883, Phoenix 12:24 to Billings 15:50, $359",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast selected for the pre-flight morning; price unavailable",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch selected for travel; price unavailable",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Tsui Wong, Billings — average cost $40, rating 3.8",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! Can wait to see you!, Billings — private room, rating 5, 2-night minimum, listed price $1,152",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local travel to attractions and restaurants; no supported fare provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tsui Wong — average cost $40, rating 3.8",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Express — average cost $43, rating 3.8",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tsui Wong — average cost $40, rating 3.8",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! Can wait to see you!, Billings — private room, second and final night",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Morning local travel, then flight F3799751, Billings 16:33 to Phoenix 18:15, $238",
+        "record_name": "F3799751",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Tsui Wong — average cost $40, rating 3.8",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Hong Kong Express — average cost $43, rating 3.8",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 18, March 19, and March 20, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Billings listing has maximum occupancy 2.",
+        "note": "The listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 lists Phoenix as its origin city.",
+        "note": "The outbound journey starts in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 lists Billings as its destination city.",
+        "note": "The outbound journey arrives in Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Billings between flights from Phoenix and back.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's first day is 2022-03-18; flight F3804883 is dated 2022-03-18.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's final day is 2022-03-20; flight F3799751 is dated 2022-03-20.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 is dated 2022-03-18 and lists Phoenix to Billings, departing 12:24 and arriving 15:50.",
+        "note": "The recorded flight matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3799751 is dated 2022-03-20 and lists Billings to Phoenix, departing 16:33 and arriving 18:15.",
+        "note": "The recorded flight matches the requested return route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same Billings listing is booked on March 18 and March 19; its minimum nights is 2.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing, Great Room! Great Price! Can wait to see you !, has room type Private room.",
+        "note": "The requested preferred room type is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "The recorded restaurant meals are Tsui Wong (Aggregate Rating 3.8) and Hong Kong Express (Aggregate Rating 3.8).",
+        "note": "The restaurant meals are below the required rating of 4; packed meals do not affect this constraint."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "The meal-rating requirement cannot be met because no available restaurant scores 4.0 or higher; the selected restaurants are the highest available at 3.8, so that must-have is explicitly unmet."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

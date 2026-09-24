@@ -1,0 +1,158 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21406,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "No supported outbound transportation available; the search result explicitly reports no flight from Ithaca to Philadelphia on 2022-03-01.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "No supported return transportation available; the search result explicitly reports no flight from Philadelphia to Ithaca on 2022-03-03.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Gurdas Ram Jalebi Wala",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 1, March 2, and March 3, 2022.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Top floor of an amazing duplex, has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler on both booked nights."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "violated",
+        "evidence": "The transportation result says, “There is no flight from Ithaca to Philadelphia on 2022-03-01,” and the plan states no supported outbound transportation is available.",
+        "note": "The planned trip has no supported outbound journey from Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Philadelphia as the current city on all three days.",
+        "note": "Philadelphia is the planned destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Philadelphia is the only city listed as the current city in the itinerary.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-01.",
+        "note": "The planned trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-03.",
+        "note": "The planned trip ends on the requested date."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "org",
+        "quote": "no supported outbound or return transport exists in the supplied results, so the Ithaca–Philadelphia journeys cannot be booked"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

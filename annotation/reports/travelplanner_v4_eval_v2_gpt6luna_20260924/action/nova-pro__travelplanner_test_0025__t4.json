@@ -1,0 +1,148 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23382,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983 from Wilmington to New York at 20:26, arriving at 22:05",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lord of the Drinks Forum",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "QD's Restaurant",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Spacious Bedroom in Prime Brooklyn Location",
+        "record_name": "Spacious Bedroom in Prime Brooklyn Location",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657 from New York to Wilmington at 16:45, arriving at 18:28",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Lord of the Drinks Forum",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 12, 13, and 14, 2022.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 1.",
+        "note": "The listing accommodates the individual traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Wilmington as the origin.",
+        "note": "The trip begins in Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The flights and accommodation are in New York.",
+        "note": "The itinerary ends in New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits New York between flights from and to Wilmington.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is dated 2022-03-12.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 is dated 2022-03-14.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4050983 departs Wilmington at 20:26 on 2022-03-12 and arrives in New York at 22:05.",
+        "note": "The recorded departure is late and the route and date match."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3641657 departs New York at 16:45 on 2022-03-14 and arrives in Wilmington at 18:28.",
+        "note": "The recorded departure is late afternoon and the route and date match."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on March 13; March 12 has no accommodation.",
+        "note": "Only one night is booked, rather than the requested nights of March 12 and 13."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Spacious Bedroom in Prime Brooklyn Location has review rate number 4.",
+        "note": "The booked listing meets the rating requirement of 4."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Spacious Bedroom in Prime Brooklyn Location is listed as a Private room.",
+        "note": "The required room type is Entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

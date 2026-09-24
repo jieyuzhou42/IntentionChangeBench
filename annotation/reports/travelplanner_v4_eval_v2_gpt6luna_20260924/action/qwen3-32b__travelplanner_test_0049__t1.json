@@ -1,0 +1,108 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23324,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497 at 19:26 from Kansas City to Orlando, $250",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!, $287/night, 3.0 avg rating, occupancy for 2 adults, no pets or visitors, minimum nights 3",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856 at 22:44 from Orlando to Kansas City, $282",
+        "record_name": "F4019856",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has 3 days.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The accommodation listing has maximum occupancy 2; the plan books it for both nights.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound record F3998497 has OriginCityName Kansas City.",
+        "note": "The trip starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "F3998497 flies to Orlando, and the return flight F4019856 departs Orlando.",
+        "note": "Orlando is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Orlando as its destination city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "F3998497 has FlightDate 2022-03-07.",
+        "note": "The outbound flight is on the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "F4019856 has FlightDate 2022-03-09.",
+        "note": "The return flight is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3998497 is from Kansas City to Orlando on 2022-03-07 and has DepTime 19:26.",
+        "note": "The selected flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The selected flight F4019856 departs Orlando at 22:44 on 2022-03-09. The record for F3629193 departs at the requested 17:43.",
+        "note": "The selected return flight does not match the required 17:43 departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan lists accommodation on days 1 and 2, corresponding to 2022-03-07 and 2022-03-08.",
+        "note": "Two nights are booked on the requested dates; the listing's 3-night minimum is a separate gate."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

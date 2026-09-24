@@ -1,0 +1,121 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20752,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 from Atlanta to Bozeman",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "McGuire's Irish Pub & Brewery",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jiquitaia",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Two Bedrooms with Dedicated Bath",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 from Bozeman to Atlanta",
+        "record_name": "F3500979",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 25, March 26, and March 27.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "The listing can host 1 traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has OriginCityName Atlanta.",
+        "note": "The outbound flight starts in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has DestCityName Bozeman.",
+        "note": "The outbound flight goes to Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Bozeman and returns from Bozeman to Atlanta.",
+        "note": "Bozeman is the one destination city visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-25.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-27.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500974 is dated 2022-03-25 and flies from Atlanta to Bozeman.",
+        "note": "The listed outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500979 is dated 2022-03-27 and flies from Bozeman to Atlanta.",
+        "note": "The listed return flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists accommodation only on 2022-03-26; 2022-03-25 has no accommodation.",
+        "note": "Only one night is listed, rather than the requested nights of March 25 and 26."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Two Bedrooms with Dedicated Bath record has review rate number 4 in Bozeman.",
+        "note": "The booked listing meets the rating floor of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

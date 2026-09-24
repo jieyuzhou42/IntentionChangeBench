@@ -1,0 +1,190 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 27984,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-drive from Moab (5h 23min, $28)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fatty Bao (rated 4.7, $93)",
+        "record_name": "The Fatty Bao - Asian Gastro Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights (Entire home/apt, $457 total)",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "The Urban Socialite ($34)",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Al Yousuf ($32)",
+        "record_name": "Al Yousuf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Rain Tree Grill ($94)",
+        "record_name": "Rain Tree Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Sweet Sensations ($14)",
+        "record_name": "Sweet Sensations",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Yakooz ($52)",
+        "record_name": "Yakooz",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Woods Spice ($69)",
+        "record_name": "Woods Spice",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "self-drive Denver to Gunnison (3h 39min, $16)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Nathu's Sweets ($12)",
+        "record_name": "Nathu's Sweets",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Tasty Fare ($79)",
+        "record_name": "Tasty Fare",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "SALT ($44)",
+        "record_name": "SALT",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "- (continuing to Gunnison)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-drive Gunnison to Moab (4h 1min, $19)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Mocha ($30)",
+        "record_name": "Mocha",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Shree Bikaner Misthan Bhandar ($15)",
+        "record_name": "Shree Bikaner Misthan Bhandar",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "accommodation",
+        "text": "- (trip ends)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "violated",
+        "evidence": "The itinerary includes Denver and Gunnison, including the Gunnison Pioneer Museum on day 4 and I.O.O.F. Park on day 5.",
+        "note": "Gunnison is planned as a sightseeing stop, not merely a road connection, so the itinerary visits more than one city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Harlem cozy nights is listed as Entire home/apt.",
+        "note": "The booked Denver accommodation meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Harlem cozy nights has a review rate number of 4.",
+        "note": "The Denver listing meets the rating floor of 4."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary states self-drive on the Moab-to-Denver, Denver-to-Gunnison, and Gunnison-to-Moab routes; the candidate records include matching self-driving route references.",
+        "note": "The plan uses the user's own car."
+      },
+      {
+        "gold_field": "launch at Gunnison",
+        "action_status": "violated",
+        "evidence": "Day 5 starts with Gunnison to Moab and also lists I.O.O.F. Park; Gunnison is reached by self-drive from Denver on day 4.",
+        "note": "The plan does not pass through Gunnison on the way home on March 23 as requested; it is already there from the prior day and schedules sightseeing in Gunnison that day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

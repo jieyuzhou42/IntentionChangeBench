@@ -1,0 +1,202 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1829.0,
+      "budget": 2000,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20295,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget capped at $2,000"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Fort Lauderdale"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Charlotte Amalie"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-16"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-18"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Fort Lauderdale to Charlotte Amalie"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Flight on 2022-03-16"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "13:06 departure"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Flight from Charlotte Amalie to Fort Lauderdale"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "Flight on 2022-03-18"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "16:10 departure"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "Stay for 2 nights"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "accommodation_stay",
+        "value": "The nights are 2022-03-16 and 2022-03-17"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant rating of at least 3.5"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "accommodation_rating",
+        "value": "Accommodation rating of 5"
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers March 16 through March 18, 2022, a 3-day itinerary."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan is priced for one person, and the booked accommodation has maximum occupancy 4."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Charlotte Amalie."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The plan visits Charlotte Amalie as its sole destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary starts on 2022-03-16."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-18."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3618600 is from Fort Lauderdale to Charlotte Amalie on 2022-03-16, departing at 13:06."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3619128 is from Charlotte Amalie to Fort Lauderdale on 2022-03-18, departing at 16:10."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in on 2022-03-16 and check-out on 2022-03-18, covering the nights of March 16 and 17."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "unknown",
+        "evidence": "The listed Maharaja Restaurant meals rate 3.6 and meet the 3.5 threshold, but the travel-day meal venues are unknown."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "Brooklyn Home By The Pier has a recorded rating of 4.0, below the required 5."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier is listed as an Entire home/apt."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

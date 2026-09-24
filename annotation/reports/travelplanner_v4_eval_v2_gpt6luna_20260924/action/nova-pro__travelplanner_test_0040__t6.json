@@ -1,0 +1,173 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22966,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F4046779, departure 06:56, arrival 09:08",
+        "record_name": "F4046779",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Coconuts Fish Cafe",
+        "record_name": "Coconuts Fish Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "1918 Bistro & Grill",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury Williamsburg duplex, private roof terrace",
+        "record_name": "Luxury Williamsburg duplex, private roof terrace",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Yanki Sizzlers",
+        "record_name": "Yanki Sizzlers",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Coconuts Fish Cafe",
+        "record_name": "Coconuts Fish Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury Williamsburg duplex, private roof terrace",
+        "record_name": "Luxury Williamsburg duplex, private roof terrace",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "F4047063, departure 18:48, arrival 20:40",
+        "record_name": "F4047063",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, 26, and 27, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Dallas listing has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound record F4046779 has OriginCityName Moline.",
+        "note": "The trip starts in Moline."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound record F4046779 has DestCityName Dallas.",
+        "note": "The trip destination is Dallas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Dallas as the destination and stay city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "F4046779 has FlightDate 2022-03-25.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "F4047063 has FlightDate 2022-03-27.",
+        "note": "The itinerary returns on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4046779 flies Moline to Dallas on 2022-03-25, departing at 06:56.",
+        "note": "The record confirms the requested early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4047063 flies Dallas to Moline on 2022-03-27, departing at 18:48.",
+        "note": "The record confirms the requested evening return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 25 and March 26; March 27 has no accommodation.",
+        "note": "Two nights are listed on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury Williamsburg duplex, private roof terrace is listed as Entire home/apt.",
+        "note": "The booked room type matches the preference."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The rating meets the minimum of 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant ratings are 4.5 (Coconuts Fish Cafe), 4.4 (1918 Bistro & Grill), 4.4 (Cafe Gatherings), and 4.1 (Yanki Sizzlers).",
+        "note": "Every listed restaurant meal meets the 4.0 minimum."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Coconuts Fish Cafe has Cuisines listed as Cafe, BBQ, Mediterranean, Fast Food.",
+        "note": "The plan includes a Dallas meal at a restaurant tagged Fast Food."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 26, breakfast is Cafe Gatherings, lunch is Yanki Sizzlers, and dinner is Coconuts Fish Cafe.",
+        "note": "The three meal slots use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

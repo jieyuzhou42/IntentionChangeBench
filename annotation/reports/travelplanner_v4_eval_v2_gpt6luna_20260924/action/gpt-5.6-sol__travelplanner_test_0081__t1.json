@@ -1,0 +1,141 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22462,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073 from Tampa to Cleveland, departing 10:37 and arriving 12:59; fare $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast from home before the flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Bikanerwala — $10 average cost",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Me Kong Bowl — $19 average cost",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — night 1 of 2, $565 per night",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bikanerwala — $10 average cost",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Me Kong Bowl — $19 average cost",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Bikanerwala — $10 average cost",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — night 2 of 2, $565 per night",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247 from Cleveland to Tampa, departing 21:20 and arriving 23:34; fare $198",
+        "record_name": "F3559247",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Bikanerwala — $10 average cost",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Me Kong Bowl — $19 average cost",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Bikanerwala — $10 average cost before the flight",
+        "record_name": "Bikanerwala",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-02, 2022-03-03, and 2022-03-04.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing, Richmond Hill 3 Bedroom apartment in Private home!, has maximum occupancy 4.",
+        "note": "Its capacity accommodates one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is dated 2022-03-02, travels from Tampa to Cleveland, and departs at 10:37; the plan lists arrival at 12:59.",
+        "note": "The outbound flight matches the required flight number, route, date, and times."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "The 2022-03-02 attraction slot is '-'.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "The 2022-03-02 lunch slot lists Bikanerwala, which matches a restaurant record.",
+        "note": "A restaurant lunch is planned on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

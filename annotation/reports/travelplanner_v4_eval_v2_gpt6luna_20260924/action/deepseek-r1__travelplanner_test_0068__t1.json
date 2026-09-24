@@ -1,0 +1,164 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22266,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180 (10:13 Panama City → Chicago)",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Pre-flight meal in Panama City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "FIO Cookhouse and Bar ($31)",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pantry d'or ($53)",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Discounted! Cute Unique 2BR Apartment in SoHo",
+        "record_name": "Discounted! Cute Unique 2BR Apartment in SoHo",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks ($46)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bro's Kitchenette ($38)",
+        "record_name": "Bro's Kitchenette",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Black Pearl ($63)",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Discounted! Cute Unique 2BR Apartment in SoHo",
+        "record_name": "Discounted! Cute Unique 2BR Apartment in SoHo",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive return",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Grab-and-go meal",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, 13, and 14, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is recorded from Panama City to Chicago.",
+        "note": "The plan departs from Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is recorded from Panama City to Chicago; the March 12 and 13 itinerary entries list Chicago as the current city.",
+        "note": "Chicago is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Chicago, then returns to Panama City on March 14.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary date is 2022-03-12.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary date is 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is dated 2022-03-12, departs Panama City at 10:13, and arrives in Chicago.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 14 transportation slot says \"Self-drive return\"; the user specified driving their own car from Chicago to Panama City.",
+        "note": "The plan uses the requested self-driving return."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The March 12 itinerary includes \"Navy Pier,\" while the user said March 13 was the only day available for sightseeing in Chicago. March 14 has no attraction listed and is reserved for the self-drive return.",
+        "note": "Sightseeing is scheduled outside the sole available sightseeing day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

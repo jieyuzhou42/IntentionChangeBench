@@ -1,0 +1,167 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22584,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409 from Gulfport to Charlotte",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Olive Tree Cafe",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Olive Tree Cafe",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3793242 from Charlotte to Gulfport",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 5, 6, and 7, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Gulfport as OriginCityName.",
+        "note": "The plan departs from Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Charlotte as DestCityName; the itinerary places the traveler in Charlotte on March 6 and 7.",
+        "note": "Charlotte is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Charlotte as the destination and lists its activities and accommodation there.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-05.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-07.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 is dated 2022-03-05, departs Gulfport at 06:58, and arrives in Charlotte.",
+        "note": "It matches the requested early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793242 is dated 2022-03-07, departs Charlotte at 20:36, and arrives in Gulfport.",
+        "note": "It matches the requested last return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 5 and March 6; no accommodation is listed on the departure day, March 7.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg has room type Entire home/apt.",
+        "note": "The booked room type matches the requirement."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules include No smoking.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Olive Tree Cafe has Aggregate Rating 4.6.",
+        "note": "Every listed restaurant meal meets the 3.0 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Olive Tree Cafe has Average Cost 23 per person.",
+        "note": "Every listed restaurant meal is under 60 per person."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

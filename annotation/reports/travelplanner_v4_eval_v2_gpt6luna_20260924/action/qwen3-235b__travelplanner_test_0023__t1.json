@@ -1,0 +1,165 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21783,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving (12h 16m, $64)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Tucanos ($36)",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment! ($201, 2-night stay, entire home/apt, rating: 2.0)",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Checker's ($90, under $70 per head for one traveler)",
+        "record_name": "Checker's",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Food Ka Adda ($78, slightly over limit)",
+        "record_name": "Food Ka Adda",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Silantro Fil-Mex ($29)",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment! ($201, 2-night stay, entire home/apt, rating: 2.0)",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving (12h 27m, $64)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 23, 24, and 25, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is self-driving from Myrtle Beach to Syracuse.",
+        "note": "The origin is Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is self-driving from Myrtle Beach to Syracuse; the itinerary lists Syracuse on March 23 and 24.",
+        "note": "The destination is Syracuse."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Syracuse as the destination and stay city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-23.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-25.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The record lists self-driving from Myrtle Beach to Syracuse, duration 12 hours 16 minutes, cost 64; the itinerary places self-driving on 2022-03-23.",
+        "note": "The outbound leg uses the requested own-car mode and route on the requested date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The record lists self-driving from Syracuse to Myrtle Beach, duration 12 hours 27 minutes, cost 64; the itinerary places self-driving on 2022-03-25.",
+        "note": "The return leg uses the requested own-car mode and route on the requested date."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan lists outbound driving on March 23, the Everson Museum of Art on March 24, and return driving on March 25.",
+        "note": "The only listed sightseeing activity is on the user's free day; the travel legs are on the specified driving days."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! is listed for March 23 and March 24; its minimum stay is 1 night.",
+        "note": "Two accommodation nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! is listed as Entire home/apt.",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Food Ka Adda has Aggregate Rating 0; Tucanos is rated 4, Checker's 4, and Silantro Fil-Mex 4.9.",
+        "note": "Food Ka Adda is below the required restaurant rating of 3."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "Checker's has Average Cost 90 and Food Ka Adda 78; Tucanos is 36 and Silantro Fil-Mex is 29.",
+        "note": "Checker's and Food Ka Adda exceed the per-person limit of 70."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "meal_cost",
+        "quote": "Meals exceed limit at Checker's ($90) and Food Ka Adda ($78)"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

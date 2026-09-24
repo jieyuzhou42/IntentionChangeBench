@@ -1,0 +1,186 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24366,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F4031463 (Denver to Oakland, 08:39-10:13, $255)",
+        "record_name": "F4031463",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi (Aggregate Rating 4.4, Tea/BBQ/Seafood, $52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jammu And Kashmir House (Aggregate Rating 2.9, violates 4.0+ requirement, Tea/BBQ/American/Mediterranean/Seafood, $100)",
+        "record_name": "Jammu And Kashmir House",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow (Entire home/apt, 5.0 rating, $222/night, 3-night minimum required)",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transportation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Malais By Anands (Aggregate Rating 3.7, violates 4.0+ requirement, Tea/Cafe/Mexican/Pizza, $37)",
+        "record_name": "Malais By Anands",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Blue Water Grille Express (Aggregate Rating 2.6, violates 4.0+ requirement, Tea/Seafood/Desserts/Fast Food, $75)",
+        "record_name": "Blue Water Grille Express",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow (night 2 of 3)",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "F3958709 (Oakland to Denver, 06:10-09:25, $258) - arrives 09:25, before noon as required",
+        "record_name": "F3958709",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-26, 2022-03-27, and 2022-03-28.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow has maximum occupancy 2; it is listed for both booked nights.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F4031463 has OriginCityName Denver.",
+        "note": "The trip departs from Denver."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "F4031463 flies to Oakland, and the itinerary lists Oakland as the destination city.",
+        "note": "The destination is Oakland."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oakland as the visiting city; Denver is the return city.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary entry and outbound flight are dated 2022-03-26.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary entry and return flight are dated 2022-03-28.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4031463 is a Denver-to-Oakland flight on 2022-03-26 departing at 08:39.",
+        "note": "It matches the requested morning outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3958709 is an Oakland-to-Denver flight on 2022-03-28 arriving at 09:25.",
+        "note": "The flight matches the specified return."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists accommodation on March 26 and March 27, but none on March 28.",
+        "note": "Only two nights are actually listed, not the requested three nights."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The F3958709 record gives an arrival time in Denver of 09:25 on March 28.",
+        "note": "The return is before 12:00."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow is recorded as Entire home/apt.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow has review rate number 5.",
+        "note": "The listing meets the 5.0 rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Cho Gao - Crowne Plaza Abu Dhabi is rated 4.4; Jammu And Kashmir House is rated 2.9, Malais By Anands 3.7, and Blue Water Grille Express 2.6.",
+        "note": "Three listed restaurant meals are below the 4.0 minimum; self-catered slots are not evidence for or against the requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Restaurant 4.0+ rating requirement cannot be met: only one restaurant in search results meets 4.0+ (Cho Gao at 4.4), all others are below 4.0."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

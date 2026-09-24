@@ -1,0 +1,203 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 26621,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving, from Charlotte to New Orleans, duration: 10 hours 28 mins, distance: 1,149 km, cost: 57",
+        "record_name": "self-driving, from Charlotte to New Orleans, duration: 10 hours 28 mins, distance: 1,149 km, cost: 57",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Shenanigan's Irish Pub",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "New Sukh Sagar",
+        "record_name": "New Sukh Sagar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sage",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Town Table Restaurant",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Amici Gourmet Pizza",
+        "record_name": "Amici Gourmet Pizza",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving, from New Orleans to Charlotte, duration: 10 hours 27 mins, distance: 1,148 km, cost: 57",
+        "record_name": "self-driving, from New Orleans to Charlotte, duration: 10 hours 27 mins, distance: 1,148 km, cost: 57",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "Packed food",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies New Orleans as the destination city; Charlotte is the starting and return city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The matched listing, Lovely One bedroom apartment 20 min to Manhattan, has room type Entire home/apt.",
+        "note": "The listing matches the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 13 lists attraction as \"-\" and schedules the drive from New Orleans to Charlotte.",
+        "note": "No sightseeing is scheduled on March 13."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "unknown",
+        "evidence": "The restaurant records list names, costs, cuisines, and ratings, but do not provide dining-service style. PKay is listed with Fast Food cuisine; the other selected restaurant records do not establish whether they are sit-down venues.",
+        "note": "Packed meals and PKay are on the drive day, where packed food or quick service is allowed. The records do not verify that the New Orleans sightseeing-day restaurant meals are sit-down."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "March 10–12 each list two attractions with a seated break between them. The Cabildo and The Singing Oak are omitted.",
+        "note": "Each full sightseeing day has no more than two listed stops, and the named first-priority stops to drop are absent."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation records match the self-driving Charlotte-to-New Orleans and New Orleans-to-Charlotte routes listed in the plan.",
+        "note": "Both intercity legs use self-drive transportation."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

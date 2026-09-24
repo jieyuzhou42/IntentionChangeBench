@@ -1,0 +1,221 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25996,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497 departing 19:26, arriving 23:00 ($250)",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Veg O Non ($45, rating 3.1, cuisines: BBQ, Mexican, Pizza, Desserts - does not meet rating 4.0 requirement)",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! ($287/night × 3 nights = $861, entire home/apt, min 3 nights, review 3.0)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Wai Yu Mun Ching ($51, rating 3.6, cuisines: Tea, Pizza, Desserts - no Fast Food)",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Turquoise Villa ($55, rating 4.0, cuisines: French, Bakery, BBQ - no Fast Food, meets rating)",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pure Bliss ($84, rating 3.0, cuisines: BBQ, Bakery, Pizza, Desserts - does not meet rating 4.0 requirement)",
+        "record_name": "Pure Bliss",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (night 2 of 3)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3629193 departing 17:43, arriving 20:46 ($299)",
+        "record_name": "F3629193",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Fuji Japanese Steakhouse ($75, rating 3.8, cuisines: Tea, Bakery, Desserts - does not meet rating 4.0 requirement)",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (night 3, checkout; paid for 3 nights to meet minimum stay requirement)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-07, 2022-03-08, and 2022-03-09.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2; the plan uses the same listing for all three nights and assumes no larger party.",
+        "note": "Capacity covers the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "F3998497 is recorded from Kansas City to Orlando; the return flight is recorded from Orlando to Kansas City.",
+        "note": "The trip begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "F3998497 is recorded from Kansas City to Orlando; the itinerary lists Orlando as the destination.",
+        "note": "The destination is Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as its only visited city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-07.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-09.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3998497; its record is a flight from Kansas City to Orlando, not self-driving in an own car.",
+        "note": "The required outbound mode is self-driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3629193; its record is a flight from Orlando to Kansas City, not self-driving in an own car.",
+        "note": "The required return mode is self-driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is included for all three itinerary accommodation nights, and its record gives a minimum stay of 3 nights.",
+        "note": "Three nights are booked from March 7; the third night after the March 9 departure is acceptable."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary books flights on March 7 and March 9 rather than intercity driving; it lists Universal Orlando Resort on March 8 and no attractions on March 7 or March 9.",
+        "note": "Sightseeing is confined to March 8, but the two reserved intercity-driving days use flights instead."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F3998497 and F3629193. Their recorded prices are $250 and $299, and the action states the trip total is $1,720 against the $1,800 cap.",
+        "note": "Flying is preferred when the cap allows it, and the stated total is within the cap."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! is recorded as Entire home/apt.",
+        "note": "The booked listing is not a room in someone else's flat."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records show ratings of 3.1 for Veg O Non, 3.6 for Wai Yu Mun Ching, 4.0 for Turquoise Villa, 3.0 for Pure Bliss, and 3.8 for Fuji Japanese Steakhouse.",
+        "note": "Every restaurant meal has a recorded rating of at least 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Turquoise Villa's recorded Cuisines include Fast Food.",
+        "note": "The March 8 lunch violates the requirement that no Orlando meal carry a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 8 lists Wai Yu Mun Ching for breakfast, Turquoise Villa for lunch, and Pure Bliss for dinner.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

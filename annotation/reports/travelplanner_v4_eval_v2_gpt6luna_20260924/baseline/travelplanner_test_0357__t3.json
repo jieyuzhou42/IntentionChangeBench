@@ -1,0 +1,189 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 3,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "violated",
+      "total": 4180.0,
+      "budget": 4000,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19633,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "4000"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "4 travelers"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "activity",
+        "value": "2 attractions"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dining_style",
+        "value": "One restaurant meal rated at least 4.0"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "accommodation",
+        "value": "One property"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "accommodation",
+        "value": "Capacity for all four travelers"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "dining_style 2",
+        "value": "Inexpensive"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "cuisine",
+        "value": " French"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "cuisine",
+        "value": "American"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "My mother has limited walking and needs door-to-door transportation and regular seated breaks."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-04",
+        "requirement": "Limit the day to two nearby attractions.",
+        "source_turn": 1,
+        "quote": "limit each day to two nearby attractions"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-05",
+        "requirement": "Limit the day to two nearby attractions.",
+        "source_turn": 1,
+        "quote": "limit each day to two nearby attractions"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-06",
+        "requirement": "Limit the day to two nearby attractions.",
+        "source_turn": 1,
+        "quote": "limit each day to two nearby attractions"
+      },
+      {
+        "kind": "free_time",
+        "date": null,
+        "requirement": "Include regular seated breaks.",
+        "source_turn": 1,
+        "quote": "needs door-to-door transportation and regular seated breaks"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Plan at a slower pace.",
+        "source_turn": 1,
+        "quote": "replan at a slower pace"
+      },
+      {
+        "kind": "order",
+        "date": null,
+        "requirement": "Prioritize well-reviewed restaurants over extra sightseeing.",
+        "source_turn": 2,
+        "quote": "Let’s prioritize well-reviewed restaurants over French and American variety or extra sightseeing"
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "entities.entity_2.constraints.mobility",
+        "reason": "A traveler's mobility need and the feasibility of door-to-door transportation or walking cannot be audited from the candidate records."
+      }
+    ],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers March 4, 5, and 6, 2022, for three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The same booked listing is used for both nights and has maximum occupancy 5, enough for four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "The plan lists one attraction on each day, within the stated limit of two nearby attractions per day."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "violated",
+        "evidence": "Day 1's listed restaurants, Icy Curls and Freshco - The Health Caf愆, are absent from the candidate records, so no qualifying rated meal can be verified for that day. Red Mesa Restaurant (4.5) and Club Cubana (4.4) appear on Days 2 and 3, respectively."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing, Delight in Your Home Away from Home in NYC!, is recorded as an Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation",
+        "status": "satisfied",
+        "evidence": "The same listing is booked for both accommodation nights and has maximum occupancy 5, sufficient for all four travelers."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "status": "unknown",
+        "evidence": "The records give costs for some listed meals but do not define a threshold for “inexpensive”; several other planned restaurants are absent from the records."
+      },
+      {
+        "gold_field": "cuisine",
+        "status": "violated",
+        "evidence": "The restaurant meals present in the records for the plan do not establish both French and American cuisine; several other planned restaurants are absent from the records."
+      }
+    ],
+    "annotation_issues": [
+      "The gold budget value is 4000, while the latest user-stated budget is $3,200; the turn's gold delta instead gives a new value of 9200, also inconsistent with the gold constraint.",
+      "The gold cuisine constraint retains French and American variety, but Turn 2 says to choose any cuisine over that variety, replacing the earlier cuisine preference.",
+      "The reference plan names Icy Curls, Freshco - The Health Caf愆, Syall Kotian Da Dhaba, GoGourmet, and Ama Rabsel House, none of which appear in the restaurant candidate records."
+    ]
+  },
+  "out_of_scope_fields": [
+    "entities.entity_2.constraints.mobility"
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22668,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Private vehicle driving from Minneapolis to Jacksonville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food / self-catering en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Oh! Fudge (American, $26)",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Goose Feathers Cafe and Bakery (Tea/Italian, $57)",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Villa Gargano (Tea/American, $51)",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Private vehicle driving from Jacksonville to Minneapolis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food / self-catering en route",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 27, 28, and 29, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park has a maximum occupancy of 2 and is booked for both nights.",
+        "note": "The listing can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is driving from Minneapolis to Jacksonville.",
+        "note": "The plan starts from Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The plan drives to Jacksonville and lists Jacksonville as the city on Day 2.",
+        "note": "Jacksonville is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as its destination and overnight city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation: “Private vehicle driving from Minneapolis to Jacksonville.”",
+        "note": "The plan specifies self-driving in an own/private vehicle on March 27."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 transportation: “Private vehicle driving from Jacksonville to Minneapolis.”",
+        "note": "The plan specifies self-driving in an own/private vehicle on March 29."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has driving on March 27 and March 29, no attractions on those days, and Jacksonville Zoo and Gardens on March 28.",
+        "note": "Sightseeing is limited to the available day, March 28."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park is listed on March 27 and March 28; no accommodation is listed on the March 29 departure day.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park has room type “Entire home/apt.”",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Cute Studio near Prospect Park has a review rate number of 3.0; the requirement is 3.5.",
+        "note": "The booked listing's rating is below the required minimum."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "UNMET CONSTRAINT: No accommodation has review rate ≥3.5 AND entire home/apt AND 2-night minimum under budget. The selected option has 3.0 review rate vs preferred 3.5+."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

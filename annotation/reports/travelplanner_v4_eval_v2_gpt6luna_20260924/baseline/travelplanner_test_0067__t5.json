@@ -1,0 +1,192 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 5,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1829.0,
+      "budget": 2000,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20307,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget capped at $2,000"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Depart from Fort Lauderdale"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Travel to Charlotte Amalie"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "Start on 2022-03-16"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "End on 2022-03-18"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Take a flight from Fort Lauderdale to Charlotte Amalie on 2022-03-16 departing at 13:06"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Take a flight from Charlotte Amalie to Fort Lauderdale on 2022-03-18 departing at 16:10"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights: 2022-03-16 and 2022-03-17"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant rating at least 3.5"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "accommodation_rating",
+        "value": "Accommodation rating 4.5"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "room_type",
+        "value": "Room type Entire home/apt"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-16",
+        "requirement": "Keep the available outbound flight from Fort Lauderdale to Charlotte Amalie.",
+        "source_turn": 1,
+        "quote": "Those are the only flights there are, so keep them."
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-18",
+        "requirement": "Keep the available return flight from Charlotte Amalie to Fort Lauderdale.",
+        "source_turn": 1,
+        "quote": "Those are the only flights there are, so keep them."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers March 16, 17, and 18, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 4, enough for 1 traveler; the plan prices the flights and meals for 1 person."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs from Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Charlotte Amalie, where the plan stays before returning."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Charlotte Amalie is the sole destination city in the plan."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins with the outbound flight on 2022-03-16."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends with the return flight on 2022-03-18."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan lists flight F3618600 from Fort Lauderdale to Charlotte Amalie on 2022-03-16, departing at 13:06."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan lists flight F3619128 from Charlotte Amalie to Fort Lauderdale on 2022-03-18, departing at 16:10."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for the nights of 2022-03-16 and 2022-03-17, with checkout on 2022-03-18."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The recorded restaurant meals are at Maharaja Restaurant, rated 3.6, above the 3.5 threshold. Travel-day meals have no restaurant listing to assess."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "Brooklyn Home By The Pier is rated 4.0 in the candidate record, below the required 4.5."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier is listed as Entire home/apt."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

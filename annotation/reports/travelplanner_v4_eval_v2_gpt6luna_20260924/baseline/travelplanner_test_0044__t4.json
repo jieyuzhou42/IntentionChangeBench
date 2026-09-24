@@ -1,0 +1,216 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1347.0,
+      "budget": 1900,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19818,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 1900
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Scranton"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Newark"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-24"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-26"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Scranton to Newark"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Flight on 2022-03-24"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "05:57 departure"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Flight from Newark to Scranton"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "Flight on 2022-03-26"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "21:46 departure"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "2 nights: 2022-03-24 and 2022-03-25"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "accommodation_rating",
+        "value": "Room rating 4.0 and above"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "restaurant_rating",
+        "value": "Food rating 4.0 and above"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": null,
+        "requirement": "Visit Newark for 3 days, from 2022-03-24 through 2022-03-26.",
+        "source_turn": 0,
+        "quote": "visit Newark for a span of 3 days, specifically from March 24th to March 26th, 2022"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-24",
+        "requirement": "Take the first flight out from Scranton to Newark on this date.",
+        "source_turn": 1,
+        "quote": "The first one out on the 24th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-26",
+        "requirement": "Take the last flight back from Newark on this date.",
+        "source_turn": 1,
+        "quote": "the last one back on the 26th"
+      },
+      {
+        "kind": "include",
+        "date": null,
+        "requirement": "Stay two nights between the outbound and return travel dates: 2022-03-24 and 2022-03-25.",
+        "source_turn": 1,
+        "quote": "Just the two nights in between."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The plan covers March 24, 25, and 26, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "Flights are priced for one person, and the booked accommodation has maximum occupancy 6."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The itinerary travels to Newark and lists Newark as the current city during the stay."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Newark is the only destination city listed."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary starts with outbound travel on 2022-03-24."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return flight is on 2022-03-26."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3920918 goes from Scranton to Newark on 2022-03-24 and departs at 05:57."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3919859 goes from Newark to Scranton on 2022-03-26 and departs at 21:46."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in 2022-03-24 and check-out 2022-03-26, covering the nights of March 24 and 25."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "The booked accommodation has a review rating of 2.0, below the required 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The listed restaurant, Drifters Cafe, has an aggregate rating of 4.1, meeting the 4.0 minimum."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

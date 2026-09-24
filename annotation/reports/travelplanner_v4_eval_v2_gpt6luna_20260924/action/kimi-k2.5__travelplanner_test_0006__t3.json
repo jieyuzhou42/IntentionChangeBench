@@ -1,0 +1,136 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21232,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 departing 12:24, arriving 15:50 (2h 26m)",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Elation (rating 3.8) - best available option",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Elation (rating 3.8) - best available option",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! Can wait to see you ! (Private room, 2 night minimum)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3799751 departing 16:33, arriving 18:15 (2h 42m)",
+        "record_name": "F3799751",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-18, 2022-03-19, and 2022-03-20.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 is from Phoenix to Billings.",
+        "note": "The outbound flight departs from Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 arrives in Billings, and the itinerary lists Billings as the current city on the following days.",
+        "note": "Billings is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Billings after departing Phoenix.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-18.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-20.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804883 is a Phoenix-to-Billings flight on 2022-03-18, departing 12:24 and arriving 15:50.",
+        "note": "The planned outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3799751 is a Billings-to-Phoenix flight on 2022-03-20, departing 16:33 and arriving 18:15.",
+        "note": "The planned return flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists accommodation only on 2022-03-19; the accommodation slots on 2022-03-18 and 2022-03-20 are '-'.",
+        "note": "Only one night is booked in the itinerary, rather than the requested nights of March 18 and 19."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing's room type is Private room.",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Elation's Aggregate Rating is 3.8, below the required 4.0.",
+        "note": "Both listed restaurant meals are at Elation."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "restaurant_rating 4.0 requirement cannot be met (max available 3.8)"
+      },
+      {
+        "gold_field": "room_type",
+        "quote": "room_type entire home/apt cannot be met"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

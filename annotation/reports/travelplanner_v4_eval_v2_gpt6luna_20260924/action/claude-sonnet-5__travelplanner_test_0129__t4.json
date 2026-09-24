@@ -1,0 +1,227 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 37562,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477, Sioux Falls to Phoenix, dep 18:40 arr 19:26 (x3 travelers, $410 each)",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Mama Loca, Phoenix",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! (Entire home/apt, Phoenix)",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local taxi/rideshare within Phoenix",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Spooky Sky, Phoenix",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Village Restaurant, Phoenix",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pizza Hut, Phoenix",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! (Entire home/apt, Phoenix)",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854, Phoenix to Flagstaff, dep 08:49 arr 09:47 (x3 travelers, $42 each)",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Jungle The Restaurant, Phoenix",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti, Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "38 Barracks, Flagstaff",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York (Entire home/apt, Flagstaff)",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Direct taxi/rideshare between lodging, Museum of Northern Arizona, and Lowell Observatory",
+        "record_name": null,
+        "revised": true
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Frontier, Flagstaff",
+        "record_name": "Frontier",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Sushi Thai Restaurant, Flagstaff",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Bar Code - Leisure Inn, Flagstaff",
+        "record_name": "Bar Code - Leisure Inn",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York (Entire home/apt, Flagstaff)",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving, Flagstaff to Sioux Falls (~20 hrs, $104 total)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Communiti, Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Packed/self-catered food en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "Packed/self-catered food en route",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Museum of Northern Arizona/Lowell Observatory (dropping Riordan Mansion, using direct taxi/rideshare) are scheduled per the relaxed-pace preference.",
+        "effect": "The March 19 transportation slot uses direct taxi/rideshare between the lodging and the two specified attractions; Riordan Mansion is excluded."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing maximum occupancy is 3; Flagstaff listing maximum occupancy is 8. Each listing is booked for both nights in its city.",
+        "note": "The booked capacities cover all 3 travelers each night."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing review rate number is 5; Flagstaff listing review rate number is 3.",
+        "note": "Both city listings meet the 3+ rating floor."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 on March 16 departs Sioux Falls at 18:40 and arrives in Phoenix at 19:26.",
+        "note": "The recorded arrival is before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 on March 18 departs Phoenix at 08:49 and arrives in Flagstaff at 09:47.",
+        "note": "The recorded arrival is before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 20 transportation slot says “Self-driving, Flagstaff to Sioux Falls”; the record gives a 19 hours 57 minutes drive.",
+        "note": "The itinerary includes a return journey instead of ending in Flagstaff."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "March 17 lists Heard Museum and Desert Botanical Garden only. March 19 lists Museum of Northern Arizona and Lowell Observatory only; no Riordan Mansion or other attraction is listed.",
+        "note": "The specified attractions are on the requested days, and the excluded stops are absent."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The March 17 and March 19 attraction lists each contain two attractions.",
+        "note": "Two attractions on a day does not meet the stated “<2 attractions per day” limit."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "Hole in the Rock is not listed in the itinerary.",
+        "note": "The required exclusion is met."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

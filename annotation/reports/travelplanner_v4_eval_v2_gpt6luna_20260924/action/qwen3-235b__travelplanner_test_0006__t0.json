@@ -1,0 +1,118 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20854,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 from Phoenix to Billings, departs 12:24, arrives 15:50, $359",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Hong Kong Express, $43, Cuisines: BBQ, Mediterranean, Seafood",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bd + Private rooftop on best GP street, Entire home/apt, $293, 3-night minimum",
+        "record_name": "Sunny 2 bd + Private rooftop on best GP street",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "L'Angoor, $19, Cuisines: Cafe, Pizza, Indian, Fast Food",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tsui Wong, $40, Cuisines: Desserts, Seafood",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bd + Private rooftop on best GP street, $293",
+        "record_name": "Sunny 2 bd + Private rooftop on best GP street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3799751 from Billings to Phoenix, departs 16:33, arrives 18:15, $238",
+        "record_name": "F3799751",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Govardhan, $59, Cuisines: BBQ, Bakery, Desserts",
+        "record_name": "Govardhan",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 18, 19, and 20, 2022.",
+        "note": "It covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bd + Private rooftop on best GP street has maximum occupancy 3; it is booked for both itinerary nights.",
+        "note": "The booked lodging capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 is recorded from Phoenix to Billings.",
+        "note": "The outbound flight starts in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 arrives in Billings, and the itinerary's listed city is Billings.",
+        "note": "The requested destination is Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "All itinerary days list Billings as the current city; Phoenix appears as the origin and return destination for the flights.",
+        "note": "The trip visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-18.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-20.",
+        "note": "The trip ends on the requested date."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

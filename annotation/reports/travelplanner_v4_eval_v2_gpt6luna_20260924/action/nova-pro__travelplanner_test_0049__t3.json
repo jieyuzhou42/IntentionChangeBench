@@ -1,0 +1,154 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24115,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497 from Kansas City to Orlando at 19:26, arriving at 23:00",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "No accommodation needed",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Turquoise Villa",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Fuji Japanese Steakhouse",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Veg O Non",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856 from Orlando to Kansas City at 22:44, arriving at 00:33",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "No accommodation needed",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-07, 2022-03-08, and 2022-03-09.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler, and the plan does not assume a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 departs Kansas City.",
+        "note": "The itinerary starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 arrives in Orlando; the return flight departs Orlando.",
+        "note": "Orlando is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and sightseeing city is Orlando.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-07.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-09.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3998497, which departs Kansas City at 19:26 and arrives in Orlando at 23:00.",
+        "note": "The requirement is self-driving in the user's own car; a flight does not meet it."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F4019856, which departs Orlando at 22:44 and arrives in Kansas City at 00:33.",
+        "note": "The requirement is self-driving in the user's own car; a flight does not meet it."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is marked 'No accommodation needed' on March 7 and March 9; BKLYN Brownstone- Glam Getaway! is listed only on March 8.",
+        "note": "Only one night is booked, rather than the required nights of March 7 and March 8."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary lists flights on March 7 and March 9, not full-day self-driving; SeaWorld Orlando is listed for March 8.",
+        "note": "Sightseeing is placed on the requested day, but the travel days are not reserved for the required intercity driving."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books flights F3998497 and F4019856.",
+        "note": "It follows the preference to fly; the budget is not judged here."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! is listed as 'Entire home/apt'.",
+        "note": "The booked accommodation is an entire home/apartment, not a room in someone's flat."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

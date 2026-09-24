@@ -1,0 +1,245 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24253,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 Belleville to Las Vegas (12:29-14:04, $296)",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catering in Belleville departure/-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen ($42 for 2, rated 4.4)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Barbeque Nation ($88 for 2, rated 4.0)",
+        "record_name": "Barbeque Nation",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! ($108/night, Entire home/apt, rating 5.0, No smoking)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering from accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Chili's Grill & Bar ($71 for 2, rated 3.8 - note: contains Fast Food tag but meets rating requirement; alternative unavailable)",
+        "record_name": "Chili's Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Portneuf Valley Brewing ($58 for 2, rated 3.7)",
+        "record_name": "Portneuf Valley Brewing",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! ($108/night, second night)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive to Belleville (2-day return trip begins)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering from accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen ($42 for 2, rated 4.4) - different from March 27 dinner",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Big Brewsky ($23 for 2, rated 4.5) - road trip meal en route or packed",
+        "record_name": "Big Brewsky",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Arrive Belleville (drive completion)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Packed/road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Packed/road",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 27, 28, 29, and 30.",
+        "note": "It spans four days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Las Vegas listing has maximum occupancy 3.",
+        "note": "Its capacity covers two travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has OriginCityName Belleville.",
+        "note": "The plan departs from Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has DestCityName Las Vegas; the listed attractions are also in Las Vegas.",
+        "note": "The destination is Las Vegas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Las Vegas as its destination and no other planned visiting city.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and flight date are 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes March 30 and says \"Arrive Belleville (drive completion)\".",
+        "note": "The plan ends on 2022-03-30."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is from Belleville to Las Vegas on 2022-03-27, departing 12:29 and arriving 14:04.",
+        "note": "The recorded flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says \"Drive to Belleville (2-day return trip begins)\" on March 29 and \"Arrive Belleville (drive completion)\" on March 30; the user said, \"I'll drive back\".",
+        "note": "The itinerary plans the requested two-day drive back."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 27 and March 28; no accommodation is listed on the departure day.",
+        "note": "Both requested nights are covered."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! is listed as Entire home/apt.",
+        "note": "The booked room type matches."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! has review rate number 5.",
+        "note": "The listing meets the 5.0 rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Recorded restaurant meals have ratings from 3.7 to 4.5: Ethos Vegan Kitchen 4.4, Barbeque Nation 4.0, Chili's Grill & Bar 3.8, Portneuf Valley Brewing 3.7, and Big Brewsky 4.5.",
+        "note": "Every planned restaurant meal meets the 3.0 floor; self-catered and packed meals are excluded."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Chili's Grill & Bar, Portneuf Valley Brewing, Big Brewsky, and Barbeque Nation each have Fast Food in their recorded Cuisines.",
+        "note": "At least one Las Vegas restaurant meal carries the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 28 breakfast is self-catered, lunch is Chili's Grill & Bar, and dinner is Portneuf Valley Brewing.",
+        "note": "Only two different restaurants are listed across the three meal slots."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attraction is listed as \"Madame Tussauds Las Vegas (morning; sister busy 14:00-16:00)\".",
+        "note": "The planned attraction is in the morning, leaving the specified interval free."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's house_rules include \"No smoking\".",
+        "note": "The listing prohibits smoking as required."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attraction is listed as \"Madame Tussauds Las Vegas (morning; sister busy 14:00-16:00)\".",
+        "note": "No sightseeing is planned for the sister during her unavailable interval."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_style",
+        "quote": "SACRIFICED REQUIREMENTS: No restaurant fully satisfies 'no Fast Food' - Chili's contains Fast Food tag but is only 3.8+ rated option below budget"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31499,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving to Wilmington",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Taco Bus",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Williamsburg!",
+        "record_name": "Private Bedroom in Williamsburg!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Azteca",
+        "record_name": "Azteca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Williamsburg!",
+        "record_name": "Private Bedroom in Williamsburg!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving to Fayetteville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Eat Street",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Modern 4story building w/private bathroom elavator",
+        "record_name": "Modern 4story building w/private bathroom elavator",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "The Great Indian Pub",
+        "record_name": "The Great Indian Pub",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Modern 4story building w/private bathroom elavator",
+        "record_name": "Modern 4story building w/private bathroom elavator",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving to Providence",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places Wilmington on March 13–14 and Fayetteville on March 15–16.",
+        "note": "The cities appear in the requested order."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on March 13 and 14 in Wilmington and March 15 and 16 in Fayetteville.",
+        "note": "The listed accommodation nights match the requested dates; March 17 has no accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing is a Private room; the Fayetteville listing is a Private room.",
+        "note": "Both booked listings meet the private-room requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Wilmington listing has review rate number 5; the Fayetteville listing has review rate number 3.",
+        "note": "The Fayetteville accommodation is below the required 4+ rating."
+      },
+      {
+        "gold_field": "night_policy",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed only for March 13–14 in Wilmington and March 15–16 in Fayetteville, with no overlapping city stays.",
+        "note": "The itinerary books only the specified occupied nights."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan specifies self-driving to Wilmington, self-driving to Fayetteville, and self-driving to Providence.",
+        "note": "The listed transportation matches the own-car preference."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 13 lists Bellamy Mansion Museum as an attraction, despite the requirement for no sightseeing that day. March 15 includes self-driving to Fayetteville; March 17 lists no attraction.",
+        "note": "The March 13 rest/driving-day requirement is not met, although the March 15 transfer is included and March 17 has no sightseeing."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

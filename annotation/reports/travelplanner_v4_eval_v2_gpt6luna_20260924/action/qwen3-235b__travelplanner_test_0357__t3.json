@@ -1,0 +1,159 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22785,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 from Buffalo to Boston ($136), then rideshare to accommodation",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed snacks",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Inexpensive meal at Apni Rasoi ($28 avg, American cuisine)",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Sit-down meal at Red Mesa Restaurant (rated 4.5, $65 avg)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home/apt, $872, 5 max occupancy, $3 rating)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshares for local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Inexpensive cafe at Irish Democrat (rated 4.4, $18 avg)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Sit-down meal at Club Cubana (rated 4.4, $65 avg)",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Inexpensive takeaway from Special No.1 Biryani Corner ($13 avg)",
+        "record_name": "Special No.1 Biryani Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home/apt, $872, 5 max occupancy, $3 rating)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare to airport, Flight F3757097 to Buffalo ($169)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Inexpensive meal at Irish Democrat (rated 4.4)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed snacks for flight",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5 and is used for both accommodation nights.",
+        "note": "The listing can host all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lists Boston Common and Public Garden; day 2 lists Museum of Science and New England Aquarium; day 3 lists Faneuil Hall Marketplace. The itinerary also mentions seated breaks or seated areas.",
+        "note": "The plan stays within two attractions per day and includes seated-break language."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Red Mesa Restaurant is rated 4.5, Club Cubana 4.4, and Irish Democrat 4.4 in the restaurant records; each is included on a different day.",
+        "note": "There is a restaurant rated at least 4 on each day."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's record gives room type 'Entire home/apt'.",
+        "note": "The accommodation meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing, 'Delight in Your Home Away from Home in NYC!', is booked for both nights; its record gives maximum occupancy 5.",
+        "note": "One property has capacity for all four travelers."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "The recorded average costs for the other restaurant meals include Apni Rasoi $28, Irish Democrat $18, and Special No.1 Biryani Corner $13; packed snacks are also planned.",
+        "note": "The plan includes lower-cost meals alongside the higher-rated sit-down meals, with no numeric inexpensive-price threshold specified."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Apni Rasoi's record includes American cuisine. The records for the other selected restaurants do not include French cuisine; the French-listed Cake Factory is not in the itinerary.",
+        "note": "The selected restaurant meals provide American but not French cuisine."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

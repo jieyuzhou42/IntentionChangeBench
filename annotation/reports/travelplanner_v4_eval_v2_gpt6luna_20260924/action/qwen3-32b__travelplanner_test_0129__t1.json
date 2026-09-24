@@ -1,0 +1,165 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32103,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight 18:40 - 19:26 to Phoenix",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Murray Hill, The Heart of Manhattan - Private room, Phoenix",
+        "record_name": "Murray Hill, The Heart of Manhattan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Mama Loca",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Village Restaurant",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Domino's Pizza",
+        "record_name": "Domino's Pizza",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Murray Hill, The Heart of Manhattan - Private room, Phoenix",
+        "record_name": "Murray Hill, The Heart of Manhattan",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight 13:42 - 14:26 to Flagstaff",
+        "record_name": "F3805049",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Mocambo",
+        "record_name": "Mocambo",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "38 Barracks",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Frontier",
+        "record_name": "Frontier",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Communiti",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York - Entire home/apt, Flagstaff",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving 19 hours 57 mins to Sioux Falls",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Rhubarb Le Restaurant",
+        "record_name": "Rhubarb Le Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels from Sioux Falls to Phoenix on March 16, then from Phoenix to Flagstaff on March 18.",
+        "note": "The requested destination sequence, Phoenix followed by Flagstaff, is present."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Phoenix accommodation is listed on March 16 and 17; Flagstaff accommodation is listed only on March 19, with '-' on March 18.",
+        "note": "The Flagstaff stay is missing the required March 18 night."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Murray Hill, The Heart of Manhattan is a Private room; Stylish apartment in the heart of New York is Entire home/apt.",
+        "note": "The Flagstaff listing is not a Private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Murray Hill, The Heart of Manhattan has review rate number 4; Stylish apartment in the heart of New York has review rate number 3.",
+        "note": "Both cities' booked listings meet the 3+ rating floor."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 travels Sioux Falls to Phoenix on 2022-03-16, departing 18:40 and arriving 19:26.",
+        "note": "It arrives before the 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "violated",
+        "evidence": "Flight F3805049 travels Phoenix to Flagstaff on 2022-03-18, departing 13:42 and arriving 14:26.",
+        "note": "It arrives after the required noon deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 20 transportation slot says 'Self-driving 19 hours 57 mins to Sioux Falls'; the requested itinerary ends in Flagstaff and has no return journey.",
+        "note": "The plan includes a return journey from Flagstaff to Sioux Falls."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "Compromises include return transportation from Flagstaff to Sioux Falls via self-driving as no flight is available."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

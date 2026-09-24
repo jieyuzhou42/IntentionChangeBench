@@ -1,0 +1,195 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 34076,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving: Providence to Wilmington, 11h 59m, $62",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-provided/break on road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-provided/break on road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Self-provided/break on road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Dunkin' Donuts ($25)",
+        "record_name": "Dunkin' Donuts",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bandit Burrito ($26)",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Taco Bus ($59)",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private: The Grey Room (Private room, rating 2, $954, minimum 1 night, maximum occupancy 2)",
+        "record_name": "Private: The Grey Room",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving: Wilmington to Fayetteville, 1h 43m, $7",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Moonie's Texas Barbecue ($38)",
+        "record_name": "Moonie's Texas Barbecue",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-provided/break on road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Eat Street ($63)",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 (Private room, rating 4, min 1 night, max 2 people, $251 for 2 nights)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "DiVine ($32)",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Smoke N Oven ($26)",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Biryani By Kilo ($53)",
+        "record_name": "Biryani By Kilo",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 (Private room, rating 4, $251 total for 2 nights)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving: Fayetteville to Providence, 11h 10m, $58",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Self-provided/break on road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Self-provided/break on road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "Self-provided/break on road",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Must select best available: 'Private: The Grey Room' ($954, rating 2, private room, 1 night min, 2 people) — violates rating 4+ requirement but satisfies occupancy and nights.",
+        "effect": "Replaces the Wilmington accommodation on 2022-03-14 with Private: The Grey Room."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Private: The Grey Room has maximum occupancy 2; TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 has maximum occupancy 2.",
+        "note": "The booked listings provide capacity for both travelers on the accommodation nights, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Private: The Grey Room is a Private room; TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1 is a Private room.",
+        "note": "Wilmington allows either a Private room or Entire home/apt, and Fayetteville requires a Private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Private: The Grey Room has review rate number 2; the Fayetteville listing has review rate number 4.",
+        "note": "The Wilmington listing is below the preferred 4+ rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "violates rating 4+ requirement"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21966,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 Atlanta to Bozeman ($345)",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jiquitaia (rating 4.1, budget ~$36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "attraction",
+        "text": "Museum of the Rockies",
+        "record_name": "Museum of the Rockies",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Two Bedrooms with Dedicated Bath ($615 for 3 nights, rating 4.0)",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Saravana Bhavan (rating 4.3, budget ~$38)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub & Brewery (rating 4.9, budget ~$72)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "attraction",
+        "text": "Gallatin History Museum",
+        "record_name": "Gallatin History Museum",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Two Bedrooms with Dedicated Bath ($615 for 3 nights, rating 4.0)",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 Bozeman to Atlanta ($803)",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "attraction",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, 26, and 27, 2022.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "The listing can host one traveler, and nothing in the plan assumes a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has OriginCityName Atlanta.",
+        "note": "The outbound flight starts in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has DestCityName Bozeman; the return flight originates in Bozeman.",
+        "note": "The itinerary travels to Bozeman and returns from there."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination activities and accommodation are in Bozeman.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has FlightDate 2022-03-25.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500979 has FlightDate 2022-03-27.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500974 is a flight from Atlanta to Bozeman on 2022-03-25.",
+        "note": "It matches the required outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500979 is a flight from Bozeman to Atlanta on 2022-03-27.",
+        "note": "It matches the required return route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed on March 25 and 26 only; March 27 has no accommodation.",
+        "note": "The plan books two itinerary nights, despite the slot text saying the price is for three nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The candidate listing Two Bedrooms with Dedicated Bath has review rate number 4.",
+        "note": "The booked listing meets the rating floor of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

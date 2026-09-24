@@ -1,0 +1,149 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23658,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight Number: F4050983, from Wilmington to New York, Departure Time: 20:26, Arrival Time: 22:05",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "record_name": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Green Chick Chop",
+        "record_name": "Green Chick Chop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Seasons 52 Fresh Grill",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lord of the Drinks Forum",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "record_name": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight Number: F3641657, from New York to Wilmington, Departure Time: 16:45, Arrival Time: 18:28",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "record_name": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "QD's Restaurant",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, March 13, and March 14, 2022.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Modern Brooklyn oasis (PRIVATE ROOM) has maximum occupancy 1 and is booked for both nights.",
+        "note": "The listing capacity covers the individual traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F4050983 has OriginCityName Wilmington.",
+        "note": "The trip departs from Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F4050983 has DestCityName New York.",
+        "note": "The trip arrives in New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary is in New York between the Wilmington–New York and New York–Wilmington flights.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F4050983 has FlightDate 2022-03-12.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F3641657 has FlightDate 2022-03-14.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4050983 flies from Wilmington to New York on 2022-03-12, departing at 20:26.",
+        "note": "The flight is late on the requested date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3641657 flies from New York to Wilmington on 2022-03-14, departing at 16:45.",
+        "note": "The flight is in the late afternoon on the requested date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Modern Brooklyn oasis (PRIVATE ROOM) is listed for March 12 and March 13; it has a one-night minimum.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Modern Brooklyn oasis (PRIVATE ROOM) has review rate number 5.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

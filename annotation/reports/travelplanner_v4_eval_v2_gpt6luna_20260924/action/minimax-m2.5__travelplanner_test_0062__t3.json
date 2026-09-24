@@ -1,0 +1,208 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24333,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive from Ithaca",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Moon Under Water (Italian, $94, rating 4.1)",
+        "record_name": "The Moon Under Water",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Room in Hip Neighborhood - Close to Train ($742 for 2 nights, private room, no parties)",
+        "record_name": "Brooklyn Room in Hip Neighborhood - Close to Train",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Red Ginger Sushi, Grill & Bar (Japanese, $98, rating 4.5)",
+        "record_name": "Red Ginger Sushi, Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Brothers Dhaba (Seafood, $52, rating 3.8)",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Room in Hip Neighborhood - Close to Train",
+        "record_name": "Brooklyn Room in Hip Neighborhood - Close to Train",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive back to Ithaca",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-01, 2022-03-02, and 2022-03-03.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Philadelphia listing has maximum occupancy 1 on both nights.",
+        "note": "The capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Drive from Ithaca,” and day 3 says “Drive back to Ithaca.”",
+        "note": "The trip originates in Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Philadelphia on day 2 and identifies day 1 travel as Ithaca to Philadelphia.",
+        "note": "Philadelphia is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Philadelphia is the only destination city in the itinerary.",
+        "note": "One visiting city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-01.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-03.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “Drive from Ithaca”; the user specified they would drive themselves in their own car.",
+        "note": "The outbound trip is self-driving from Ithaca on March 1."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “Drive back to Ithaca”; the user specified they would drive themselves in their own car.",
+        "note": "The return trip is self-driving to Ithaca on March 3."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same listing is booked on March 1 and March 2; the day 1 text describes it as $742 for 2 nights.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing’s room type is “Private room.”",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing’s house rules include “No parties.”",
+        "note": "The listing prohibits parties as required."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records give ratings of 4.1 for The Moon Under Water, 4.5 for Red Ginger Sushi, Grill & Bar, and 3.8 for Brothers Dhaba.",
+        "note": "Each restaurant meal is rated at least 3.5."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "Recorded average costs per person are $94 for The Moon Under Water, $98 for Red Ginger Sushi, Grill & Bar, and $52 for Brothers Dhaba.",
+        "note": "The Moon Under Water and Red Ginger exceed the $60 cap."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "The Moon Under Water and Red Ginger Sushi, Grill & Bar each have “Fast Food” in their recorded Cuisines.",
+        "note": "Philadelphia meals may not carry a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 2, breakfast is empty; lunch is Red Ginger Sushi, Grill & Bar and dinner is Brothers Dhaba.",
+        "note": "The plan does not provide three different restaurant meals across breakfast, lunch, and dinner."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The only March 2 restaurant meals are Red Ginger Sushi, Grill & Bar (Cuisines: Tea, Cafe, Indian, Fast Food) and Brothers Dhaba (Cuisines: Cafe, Desserts, Seafood).",
+        "note": "Neither March 2 meal is Italian-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The rationale states “Return by 18:00 on day 3,” and the itinerary schedules the drive back to Ithaca on March 3.",
+        "note": "The plan states a return by the requested deadline."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 2 attraction text lists “Philadelphia Museum of Art (morning) + Liberty Bell (afternoon).”",
+        "note": "Both attractions are on the requested day and in the requested order."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "violated",
+        "evidence": "Red Ginger Sushi, Grill & Bar’s recorded Cuisines are Tea, Cafe, Indian, Fast Food.",
+        "note": "The March 2 lunch is not Italian-tagged."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Brothers Dhaba’s recorded Cuisines include Seafood.",
+        "note": "The March 2 dinner is Seafood-tagged."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "meal_cost",
+        "quote": "Day 2 lunch at Red Ginger ($98) and dinner at Brothers Dhaba ($52) each exceed the $60 per-person limit"
+      },
+      {
+        "gold_field": "cuisine",
+        "quote": "Italian food moved to day 1 dinner instead of day 2 lunch to distribute cuisine variety."
+      },
+      {
+        "gold_field": "lunch",
+        "quote": "Italian food moved to day 1 dinner instead of day 2 lunch to distribute cuisine variety."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

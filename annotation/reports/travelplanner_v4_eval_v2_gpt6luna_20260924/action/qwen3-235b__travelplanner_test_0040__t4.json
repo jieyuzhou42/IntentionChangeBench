@@ -1,0 +1,188 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23469,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4046779 (06:56–09:08, $178)",
+        "record_name": "F4046779",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings ($17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Drifters Cafe ($21)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Coconuts Fish Cafe ($38)",
+        "record_name": "Coconuts Fish Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1BR, elevator, kitchen, doorman! ($475, Entire home/apt, rating: 2.0)",
+        "record_name": "1BR, elevator, kitchen, doorman!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings ($17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Drifters Cafe ($21)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "1918 Bistro & Grill ($90)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1BR, elevator, kitchen, doorman! ($475, Entire home/apt, rating: 2.0)",
+        "record_name": "1BR, elevator, kitchen, doorman!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4047063 (18:48–20:40, $272)",
+        "record_name": "F4047063",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Drifters Cafe ($21)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Coconuts Fish Cafe ($38)",
+        "record_name": "Coconuts Fish Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Self-catered or airport meal",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-25, 2022-03-26, and 2022-03-27.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Dallas listing has maximum occupancy 3 on each of the two nights.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 departs Moline, and flight F4047063 arrives in Moline.",
+        "note": "The itinerary originates from Moline."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 arrives in Dallas, and flight F4047063 departs Dallas.",
+        "note": "Dallas is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Dallas as the current city on all three days.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 is dated 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4047063 is dated 2022-03-27.",
+        "note": "The return is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 is Moline to Dallas on 2022-03-25 and departs at 06:56.",
+        "note": "It is the early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4047063 is Dallas to Moline on 2022-03-27 and departs at 18:48.",
+        "note": "It is an evening return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on 2022-03-25 and 2022-03-26; its minimum nights is 1.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "It matches the preferred room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The booked listing's review rate number is 2; the requirement is 4.",
+        "note": "The booked accommodation is below the required rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Unmet: accommodation rating <4.0"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22033,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 (Dep 09:37, Arr 11:50)",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Pre-flight meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Side Wok ($14)",
+        "record_name": "Side Wok",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Saravana Bhavan ($38)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sun-Filled Artist Loft (Entire home/apt)",
+        "record_name": "Sun-Filled Artist Loft in Private Townhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Jiquitaia ($36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub ($72)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sun-Filled Artist Loft (Entire home/apt)",
+        "record_name": "Sun-Filled Artist Loft in Private Townhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 (Dep 13:08, Arr 18:37)",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Pre-flight snack",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, March 26, and March 27, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Sun-Filled Artist Loft in Private Townhouse, has maximum occupancy 2.",
+        "note": "Its capacity covers the required one traveler on both booked nights."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 is from Atlanta to Bozeman on 2022-03-25.",
+        "note": "The outbound flight originates in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500979 is from Bozeman to Atlanta on 2022-03-27.",
+        "note": "The outbound flight arrives in Bozeman, and the return departs from Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The flights travel between Atlanta and Bozeman, and the accommodation and listed restaurants are in Bozeman.",
+        "note": "The plan visits one destination city, Bozeman."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins with flight F3500974 on 2022-03-25.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends with flight F3500979 on 2022-03-27.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500974 is Atlanta to Bozeman on 2022-03-25, departing 09:37 and arriving 11:50.",
+        "note": "The itinerary keeps the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500979 is Bozeman to Atlanta on 2022-03-27, departing 13:08 and arriving 18:37.",
+        "note": "The itinerary keeps the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The listing appears on March 25 and March 26; accommodation is '-' on March 27.",
+        "note": "Only two nights are booked, not the required three nights from March 25."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Sun-Filled Artist Loft in Private Townhouse has review rate number 2.",
+        "note": "The listing is below the required rating of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Sacrificed accommodation rating requirement (2-star)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

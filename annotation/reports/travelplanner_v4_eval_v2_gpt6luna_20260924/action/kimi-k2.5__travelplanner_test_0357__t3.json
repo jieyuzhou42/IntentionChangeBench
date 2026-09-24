@@ -1,0 +1,177 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23852,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (08:04-09:30, $136×4=$544) then rideshare to accommodation",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Simple inexpensive food at home/airport before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Red Mesa Restaurant (rating 4.5, $65×4=$260) - sit-down well-rated meal",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Simple inexpensive food (takeout/fast food, ~$20×4=$80)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! - (ERROR: Infeasible)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare between attractions with door-to-door service and seated breaks",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Simple inexpensive food (~$15×4=$60)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Club Cubana (rating 4.4, $65×4=$260) - sit-down well-rated meal",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Simple inexpensive food (~$20×4=$80)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! - (ERROR: Infeasible)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare to airport, Flight F3757097 (21:44-23:34, $169×4=$676)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Simple inexpensive food (~$15×4=$60)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Irish Democrat (rating 4.4, $18×4=$72) - sit-down well-rated meal, budget-friendly",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Simple inexpensive food at destination/home after arrival (~$20×4=$80)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days 1, 2, and 3, dated 2022-03-04 through 2022-03-06.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Delight in Your Home Away from Home in NYC!, has maximum occupancy 5.",
+        "note": "The same listing is used for both nights and can host all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists Boston Common on March 4, Public Garden on March 5, and Faneuil Hall Marketplace on March 6; each is a candidate attraction in Boston.",
+        "note": "There is one attraction each day, within the baseline limit of two nearby attractions per day."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Red Mesa Restaurant has Aggregate Rating 4.5, Club Cubana 4.4, and Irish Democrat 4.4.",
+        "note": "There is a restaurant meal rated at least 4.0 on each day."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Delight in Your Home Away from Home in NYC! is listed as room type Entire home/apt.",
+        "note": "The booked listing matches the required room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing is booked on both accommodation nights; its maximum occupancy is 5.",
+        "note": "One property can host all four travelers."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "unknown",
+        "evidence": "The remaining meal slots are described as simple inexpensive food, but they are not restaurant listings with record-backed costs.",
+        "note": "Self-catered or otherwise unlisted meals do not establish whether this meal constraint is met."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Red Mesa lists Desserts, Tea, Fast Food, Indian, and Seafood; Club Cubana lists Desserts, BBQ, Fast Food, Cafe, Indian, and Mediterranean; Irish Democrat lists Tea, Cafe, Bakery, and Fast Food.",
+        "note": "None of the selected restaurant records lists French or American cuisine."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "No valid single property fits all 4 people as entire home/apt."
+      },
+      {
+        "gold_field": "accommodation",
+        "quote": "No valid single property fits all 4 people as entire home/apt."
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation records are queried under Boston and label their city as Boston, but several listing names suggest New York City; the location data is inconsistent."
+    ]
+  }
+}

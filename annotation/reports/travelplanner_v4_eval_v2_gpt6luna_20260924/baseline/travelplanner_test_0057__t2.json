@@ -1,0 +1,187 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1940.0,
+      "budget": 2200,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19024,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is $2,200."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The itinerary is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "The trip is for 1 person."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "The trip originates in Houston."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "The destination is Reno."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-11."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-13."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Take a flight from Houston to Reno."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "The outbound flight is on 2022-03-11."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "The outbound flight departs at 09:50."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Take a flight from Reno to Houston."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "The return flight is on 2022-03-13."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "The return flight departs at 12:58."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "Stay for 2 nights."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "accommodation_stay",
+        "value": "Stay the night of 2022-03-11."
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "accommodation_stay",
+        "value": "Stay the night of 2022-03-12."
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "restaurant_rating",
+        "value": "Mealtime venues must have a rating of at least 4.0."
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers 2022-03-11 through 2022-03-13, with one itinerary entry for each of the 3 days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan is priced for 1 person; the booked accommodation has maximum occupancy 2."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Houston."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Reno and the return flight departs from Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Reno is the sole destination city in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The outbound flight and accommodation check-in are on 2022-03-11."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return flight is on 2022-03-13, the stated trip end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Candidate record F3879164 is Houston to Reno on 2022-03-11 with a 09:50 departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Candidate record F3875705 is Reno to Houston on 2022-03-13 with a 12:58 departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in 2022-03-11 and check-out 2022-03-13, covering the nights of March 11 and 12."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "violated",
+        "evidence": "Kanha Sweets is rated 4.1, but the March 11 and March 13 meal venues are unspecified; those meal slots name no record-backed venue whose rating can meet the requirement."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

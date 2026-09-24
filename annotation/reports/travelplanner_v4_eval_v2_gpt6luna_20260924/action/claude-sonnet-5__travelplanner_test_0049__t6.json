@@ -1,0 +1,198 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 26315,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, Kansas City→Orlando, dep 19:26, arr 23:00, $250",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Entire home/apt, Orlando)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Fuji Japanese Steakhouse (3.8, no Fast Food)",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching (3.6, no Fast Food)",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Crust N Cakes (3.4, no Fast Food)",
+        "record_name": "Crust N Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Entire home/apt, Orlando)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856, Orlando→Kansas City, dep 22:44, arr 00:33, $282",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Veg O Non (3.1, no Fast Food)",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Shivani Catering Services (3.1, no Fast Food)",
+        "record_name": "Shivani Catering Services",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Pure Bliss (3.0, no Fast Food)",
+        "record_name": "Pure Bliss",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (3rd night paid to satisfy 3-night minimum, not physically occupied due to late departure)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 7, March 8, and March 9, 2022.",
+        "note": "It is a three-day plan."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 departs Kansas City for Orlando.",
+        "note": "The outbound flight originates in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 arrives in Orlando; the accommodation and restaurant records are also listed for Orlando.",
+        "note": "The destination is Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary stays in Orlando between the Kansas City outbound and return flights.",
+        "note": "Orlando is the sole visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F3998497 has FlightDate 2022-03-07.",
+        "note": "The plan begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F4019856 has FlightDate 2022-03-09.",
+        "note": "The return is scheduled on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3998497 from Kansas City to Orlando (dep 19:26, arr 23:00), not self-driving in an own car.",
+        "note": "The required outbound mode is self-driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F4019856 from Orlando to Kansas City (dep 22:44, arr 00:33), not self-driving in an own car.",
+        "note": "The required return mode is self-driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan books BKLYN Brownstone- Glam Getaway! on March 7, 8, and 9; the record's minimum nights is 3. The requirement permits paying for a night after departure.",
+        "note": "Three nights are booked, with the third paid night after the March 9 departure."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan has flights on March 7 and March 9, rather than intercity driving. It lists Universal Orlando Resort on March 8 and no attractions on March 7 or 9.",
+        "note": "Sightseeing is confined to March 8, but the required intercity-driving schedule is not followed."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F3998497 and F4019856, priced in their records at $250 and $282.",
+        "note": "Flying is preferred when the cap allows it, and the action states the total estimated plan cost is within the cap."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! is listed as Entire home/apt.",
+        "note": "The booked accommodation has the required room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records show ratings of 3.8, 3.6, 3.4, 3.1, 3.1, and 3.0 for the six listed restaurant meals.",
+        "note": "Every restaurant meal meets the gold rating floor of 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "None of the six booked restaurant records has Fast Food in its Cuisines value.",
+        "note": "No listed Orlando meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 8 lists Fuji Japanese Steakhouse for breakfast, Wai Yu Mun Ching for lunch, and Crust N Cakes for dinner.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Unmet/sacrificed conditions: restaurant rating preference (4.0) is not met (max ~3.8) due to the higher-priority Fast Food exclusion"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

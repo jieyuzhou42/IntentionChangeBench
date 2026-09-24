@@ -1,0 +1,164 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24451,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, Kansas City to Orlando, Dep 19:26 - Arr 23:00, $250",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-arranged in Kansas City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-arranged in Kansas City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private room. 1 bed, 2 guests, 3333 Broadway, Orlando ($705/night)",
+        "record_name": "Private room. 1 bed, 2 guests, 3333 Broadway",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Turquoise Villa (French/Bakery/BBQ, $55)",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Veg O Non (BBQ/Mexican/Pizza, $45)",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Wai Yu Mun Ching (Tea/Pizza/Desserts, $51)",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private room. 1 bed, 2 guests, 3333 Broadway, Orlando ($705/night)",
+        "record_name": "Private room. 1 bed, 2 guests, 3333 Broadway",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856, Orlando to Kansas City, Dep 22:44 - Arr 00:33(+1), $282",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Crust N Cakes (Tea/Cafe/Indian/BBQ, $61)",
+        "record_name": "Crust N Cakes",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Fuji Japanese Steakhouse (Tea/Bakery/Desserts, $75)",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Self-arranged before departure",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers Day 1 through Day 3, March 7–9, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The accommodation listing has a maximum occupancy of 2.",
+        "note": "The booked lodging can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 departs Kansas City for Orlando.",
+        "note": "The trip begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 arrives in Orlando; the return flight departs Orlando.",
+        "note": "Orlando is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as the destination city and does not plan visits to other destination cities.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3998497 has FlightDate 2022-03-07.",
+        "note": "The plan starts on March 7, 2022."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record F4019856 has FlightDate 2022-03-09.",
+        "note": "The plan ends on March 9, 2022."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3998497 is Kansas City to Orlando on 2022-03-07 and departs at 19:26.",
+        "note": "The recorded flight matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books F4019856, which departs Orlando at 22:44. The flight departing at the required 17:43 is F3629193.",
+        "note": "The booked return flight does not match the required departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books the Orlando listing on March 7 and March 8; its record minimum nights is 1.",
+        "note": "Two nights are booked on the required dates."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21909,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600 (FLL->STT 13:06-15:39)",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Maharaja Restaurant",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Home By The Pier",
+        "record_name": "Brooklyn Home By The Pier",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Kabab Roll Cafe",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Home By The Pier",
+        "record_name": "Brooklyn Home By The Pier",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128 (STT->FLL 16:10-18:55)",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Kabab Roll Cafe",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "In-flight meal",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier has maximum occupancy 4 and is booked for both nights.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 departs Fort Lauderdale.",
+        "note": "The outbound flight originates in the requested city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 arrives in Charlotte Amalie; the itinerary lists Charlotte Amalie as the current city.",
+        "note": "The destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Charlotte Amalie as the current city throughout the stay.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-16 and the first itinerary day is 2022-03-16.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-18 and the final itinerary day is 2022-03-18.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 is Fort Lauderdale to Charlotte Amalie on 2022-03-16, departing 13:06.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 is Charlotte Amalie to Fort Lauderdale on 2022-03-18, departing 16:10.",
+        "note": "It matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier is listed on March 16 and March 17; March 18 has no accommodation.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Maharaja Restaurant has Aggregate Rating 3.6 and Kabab Roll Cafe has Aggregate Rating 3.8. The other meal slots are self-catered or in-flight.",
+        "note": "Every restaurant meal in the plan meets the 3.5 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation record is labeled as being in Charlotte Amalie, but the listing name 'Brooklyn Home By The Pier' appears geographically inconsistent with that city."
+    ]
+  }
+}

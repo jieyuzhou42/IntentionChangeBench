@@ -1,0 +1,169 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 1,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1618.0,
+      "budget": 1900,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19920,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "$1,900"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Atlanta"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Bozeman"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-25"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-27"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Atlanta to Bozeman on 2022-03-25"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Flight from Bozeman to Atlanta on 2022-03-27"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "2 nights 2022-03-25 and 2022-03-26"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-25",
+        "requirement": "Keep the flight from Atlanta to Bozeman on this date.",
+        "source_turn": 1,
+        "quote": "Keep the listed flights on the 25th and 27th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-27",
+        "requirement": "Keep the flight from Bozeman to Atlanta on this date.",
+        "source_turn": 1,
+        "quote": "Keep the listed flights on the 25th and 27th"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Have only the two intervening overnight stays, on 2022-03-25 and 2022-03-26.",
+        "source_turn": 1,
+        "quote": "only the two nights in between"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan has entries for 2022-03-25, 2022-03-26, and 2022-03-27: three days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "Flights and meals are priced for one person, and the booked accommodation has maximum occupancy 2, enough for one traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Bozeman, and the return flight departs Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Bozeman is the sole destination city in the plan; Atlanta is the origin and return endpoint."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-25, with the outbound flight on that date."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends with the return flight on 2022-03-27."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3500974 travels from Atlanta to Bozeman on 2022-03-25."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3500979 travels from Bozeman to Atlanta on 2022-03-27."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked from check-in 2022-03-25 to check-out 2022-03-27, covering the nights of 2022-03-25 and 2022-03-26."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

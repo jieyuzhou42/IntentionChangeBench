@@ -1,0 +1,173 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24144,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983 from Wilmington to New York, departing 20:26 and arriving 22:05; fare $113",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Seasons 52 Fresh Grill (rating 4.4; average cost $30)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK (Entire home/apt; $228 per night)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill (rating 4.4; average cost $30)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lord of the Drinks Forum (rating 4.2; average cost $71)",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "QD's Restaurant (rating 4.1; average cost $93)",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK (Entire home/apt; $228 per night)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657 from New York to Wilmington, departing 16:45 and arriving 18:28; fare $182",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill (rating 4.4; average cost $30)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Seasons 52 Fresh Grill (rating 4.4; average cost $30)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, March 13, and March 14, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 2; the plan is for one traveler.",
+        "note": "The listing can host the requested individual."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 departs Wilmington.",
+        "note": "The outbound origin is Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 arrives in New York.",
+        "note": "The destination is New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New York as its destination and stay city.",
+        "note": "It plans one visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-12.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-14.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is Wilmington to New York on 2022-03-12, departing 20:26 and arriving 22:05.",
+        "note": "It is a late outbound flight on the requested date and route."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 is New York to Wilmington on 2022-03-14, departing 16:45 and arriving 18:28.",
+        "note": "It is a late-afternoon return flight on the requested date and route."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same New York accommodation is booked on March 12 and March 13; its minimum stay is 2 nights.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "A Contemporary Homelike Stay in the Best of BK has review rate number 2.",
+        "note": "Its rating is below the requested 4."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "It matches the required room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant meals are Seasons 52 Fresh Grill (4.4), Lord of the Drinks Forum (4.2), and QD's Restaurant (4.1).",
+        "note": "Every restaurant meal listed has an Aggregate Rating of at least 4.0."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "its review score is 2, but the accommodation-rating requirement was explicitly dropped in favor of having the place entirely to yourself."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

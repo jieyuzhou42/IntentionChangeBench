@@ -1,0 +1,163 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22315,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 from Atlanta (09:37) to Bozeman (11:50) - $345",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Side Wok (budget: $14)",
+        "record_name": "Side Wok",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Adyar Ananda Bhavan (budget: $22)",
+        "record_name": "Adyar Ananda Bhavan",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Two Bedrooms with Dedicated Bath - $615 total for 2 nights (review: 4.0)",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Side Wok (budget: $14)",
+        "record_name": "Side Wok",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Adyar Ananda Bhavan (budget: $22)",
+        "record_name": "Adyar Ananda Bhavan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Side Wok (budget: $14)",
+        "record_name": "Side Wok",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Two Bedrooms with Dedicated Bath - $615 total for 2 nights (review: 4.0)",
+        "record_name": "Two Bedrooms with Dedicated Bath",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 from Bozeman (13:08) to Atlanta (18:37) - $803",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Side Wok (budget: $14)",
+        "record_name": "Side Wok",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Side Wok (budget: $14)",
+        "record_name": "Side Wok",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, 26, and 27, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Two Bedrooms with Dedicated Bath, has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler on each booked night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 departs Atlanta.",
+        "note": "The outbound flight starts in the requested origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 arrives in Bozeman.",
+        "note": "The itinerary's destination is Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Bozeman as the current city on all three days.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-25.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-27.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500974 is a flight from Atlanta to Bozeman on 2022-03-25.",
+        "note": "The required outbound flight is included on the requested date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500979 is a flight from Bozeman to Atlanta on 2022-03-27.",
+        "note": "The required return flight is included on the requested date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed on March 25 and March 26 only; March 27 has no accommodation.",
+        "note": "The plan books two nights, fewer than the required three nights from March 25."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 4.",
+        "note": "The booked accommodation meets the rating floor of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

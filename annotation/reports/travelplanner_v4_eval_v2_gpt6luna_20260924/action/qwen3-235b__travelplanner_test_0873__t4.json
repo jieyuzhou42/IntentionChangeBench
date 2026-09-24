@@ -1,0 +1,183 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25113,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive from Charlotte to New Orleans (10h 28m, $57)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Sit-down restaurant: Jimmy's Pancake House",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Sit-down restaurant: The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Sit-down restaurant: Shenanigan's Irish Pub",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sit-down restaurant: Town Table Restaurant",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Sit-down restaurant: Momo-Cha",
+        "record_name": "Momo-Cha",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sit-down restaurant: Sage",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Self-catered at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Sit-down restaurant: Uttarakhand Fast Food",
+        "record_name": "Uttarakhand Fast Food",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Sit-down restaurant: Amici Gourmet Pizza",
+        "record_name": "Amici Gourmet Pizza",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Drive from New Orleans to Charlotte (10h 27m, $57), early check-out, no sightseeing",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Self-catered at apartment",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New Orleans as the current city on all five days.",
+        "note": "Itinerary is based in one city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Lovely One bedroom apartment 20 min to Manhattan, has room type \"Entire home/apt\".",
+        "note": "This matches the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 13 attraction is \"-\" and the transportation text says \"no sightseeing\" and \"early check-out\".",
+        "note": "The itinerary leaves March 13 free of sightseeing and specifies an early checkout."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "March 12 lunch is Uttarakhand Fast Food; the March 13 lunch and dinner slots are \"-\".",
+        "note": "The lunch listing is explicitly a fast-food option, contrary to the request, and the departure-day lunch and dinner slots do not provide the requested restaurant meals."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate transportation records give self-driving from Charlotte to New Orleans (10 hours 28 mins) and from New Orleans to Charlotte (10 hours 27 mins).",
+        "note": "The itinerary specifies driving both ways."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

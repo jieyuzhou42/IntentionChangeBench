@@ -1,0 +1,172 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22363,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-drive from Charleston to St. Louis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito (Rating: 4.1)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence (Rating: 3, Entire home/apt, Price: $271)",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks (Rating: 4.1)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "M Cr砺me (Rating: 0, not compliant but no alternative >4.0)",
+        "record_name": "M Cr砺me",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "El Super Burrito (Rating: 4.1)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence (Rating: 3, Entire home/apt, Price: $271)",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-drive return to Charleston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Starbucks (Rating: 4.1)",
+        "record_name": "Starbucks",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence has maximum occupancy 2 and is listed for both nights.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “self-drive from Charleston to St. Louis.”",
+        "note": "Charleston is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “self-drive from Charleston to St. Louis.”",
+        "note": "St. Louis is the stated destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation city are St. Louis.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-18.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “self-drive from Charleston to St. Louis”; the user stated they would self-drive in their own car.",
+        "note": "The plan uses the requested mode, route, and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “self-drive return to Charleston”; the user stated they would self-drive in their own car.",
+        "note": "The plan uses the requested mode, route, and date."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "M Cr砺me has Aggregate Rating 0 in the records; El Super Burrito is 4.1. The two Starbucks records have ratings 4.1 and 3.9.",
+        "note": "The M Cr砺me meal is below the required 4.0 rating."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence is listed as “Entire home/apt.”",
+        "note": "The booked accommodation meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Pet & Tony's Residence has review rate number 3.",
+        "note": "The listing is below the preferred rating of 4."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence is listed on 2022-03-16 and 2022-03-17; its minimum nights is 1.",
+        "note": "The plan books both requested nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Preferred restaurant rating ≥4.0 is partially met (2 of 3 meals satisfy it; only M Cr砺me lacks data, but no compliant lunch alternative exists)."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Accommodation rating ≥4.0 cannot be satisfied while also securing an entire home/apt"
+      }
+    ],
+    "annotation_issues": [
+      "The candidate records contain two Starbucks entries with the same exact name but conflicting Aggregate Ratings (4.1 and 3.9), so the exact record behind the Starbucks slots is ambiguous."
+    ]
+  }
+}

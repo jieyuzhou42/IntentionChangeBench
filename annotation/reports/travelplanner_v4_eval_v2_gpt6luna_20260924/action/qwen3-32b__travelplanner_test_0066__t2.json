@@ -1,0 +1,141 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21481,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "drive to Jacksonville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Villa Gargano",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Huge Loft - Heart of Williamsburg",
+        "record_name": "Huge Loft - Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "drive back to Minneapolis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Oh! Fudge",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Huge Loft - Heart of Williamsburg has maximum occupancy 4.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The March 27 entry is in Minneapolis and says “drive to Jacksonville.”",
+        "note": "The itinerary starts from Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The March 27 entry says “drive to Jacksonville”; the March 28 entry lists Jacksonville as the current city.",
+        "note": "Jacksonville is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as the destination/current city and no other destination city.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-27, transportation is “drive to Jacksonville.”",
+        "note": "The plan specifies driving from Minneapolis to Jacksonville on the requested outbound date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-29, transportation is “drive back to Minneapolis.”",
+        "note": "The plan specifies driving from Jacksonville to Minneapolis on the requested return date."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has outbound driving on March 27, Jacksonville Zoo and Gardens on March 28, and return driving on March 29.",
+        "note": "Sightseeing is confined to March 28, with the travel days reserved for driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The accommodation slot is filled only on March 28; March 27 is “-”.",
+        "note": "Only one night is listed, but the requirement is for nights on March 27 and March 28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Huge Loft - Heart of Williamsburg is listed as “Entire home/apt.”",
+        "note": "The booked listing is an entire home/apartment."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23066,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733 from Tulsa to Phoenix, departing 11:28 and arriving 13:07; $195 per traveler",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast from home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Mama Loca; average cost $27 per diner",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jungle The Restaurant; average cost $27 per diner",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) — Entire home/apt, night 1 of 2",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transportation between the apartment, Desert Botanical Garden, and Hole in the Rock; cost not provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Mama Loca; average cost $27 per diner",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Jungle The Restaurant; average cost $27 per diner",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mama Loca; average cost $27 per diner",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) — Entire home/apt, night 2 of 2",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3803478 from Phoenix to Tulsa, departing 13:51 and arriving 17:04; $276 per traveler",
+        "record_name": "F3803478",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Jungle The Restaurant; average cost $27 per diner",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Mama Loca; average cost $27 per diner",
+        "record_name": "Mama Loca",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 6, 7, and 8, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 8; the rationale specifies one traveler.",
+        "note": "The listing's capacity covers one traveler, and the plan assumes a solo traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3996733 has OriginCityName Tulsa.",
+        "note": "The itinerary departs from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3996733 has DestCityName Phoenix.",
+        "note": "The itinerary's destination is Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Phoenix as its only destination city.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-06.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-08.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3996733; its record shows Tulsa to Phoenix, departing 11:28 and arriving 13:07.",
+        "note": "The requirement is to self-drive in an own car, not fly."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3803478; its record shows Phoenix to Tulsa, departing 13:51 and arriving 17:04.",
+        "note": "The requirement is to self-drive in an own car, not fly."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan books the same accommodation for nights 1 and 2 on March 6 and 7, and none on the March 8 departure day.",
+        "note": "It books exactly the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing record identifies the room type as Entire home/apt.",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary uses flights, while the rationale says the known lodging, airfare, and restaurant costs total $2,328 against the stated $1,700 budget.",
+        "note": "The cap does not allow the flights, so the stated preference accepts driving instead to protect the room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "No supported driving option is present, so the requested midday outbound and afternoon return flights are used instead."
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "No supported driving option is present, so the requested midday outbound and afternoon return flights are used instead."
+      },
+      {
+        "gold_field": "transportation",
+        "quote": "The plan therefore exceeds the $1,700 budget by at least $628 and does not use the preferred drive"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

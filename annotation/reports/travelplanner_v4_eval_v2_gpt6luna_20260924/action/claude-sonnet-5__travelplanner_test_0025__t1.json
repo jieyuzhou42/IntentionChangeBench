@@ -1,0 +1,143 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23327,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983, Wilmington to New York, Dep 20:26 Arr 22:05, $113",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK (Entire home/apt, $228/night, min 2 nights)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill ($30)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Green Chick Chop ($26)",
+        "record_name": "Green Chick Chop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lord of the Drinks Forum ($71)",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK (Entire home/apt, $228/night)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657, New York to Wilmington, Dep 16:45 Arr 18:28, $182",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Aryan's Rajasthani Pyaz Ki Kachori ($17)",
+        "record_name": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "QD's Restaurant ($93)",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked New York listing has maximum occupancy 2.",
+        "note": "Capacity covers the one traveler specified in the dialogue; the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Wilmington as the origin; the return flight lists Wilmington as the destination.",
+        "note": "The trip begins in Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists New York as the destination; the return flight lists New York as the origin.",
+        "note": "The trip destination is New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels from Wilmington to New York and returns from New York to Wilmington, with the intervening day in New York.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-12.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-14.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is Wilmington to New York on 2022-03-12 and departs at 20:26.",
+        "note": "The recorded late departure matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 is New York to Wilmington on 2022-03-14 and departs at 16:45.",
+        "note": "The recorded departure matches late afternoon."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The New York listing is booked on 2022-03-12 and 2022-03-13; its recorded minimum stay is 2 nights.",
+        "note": "Two nights are booked on the requested dates."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

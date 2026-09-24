@@ -1,0 +1,195 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23954,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, Myrtle Beach to Syracuse (cost: $64)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment! (Entire home/apt, No smoking) - Night 1",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Taco Bell (Bakery/American/Cafe/Seafood, rating 3.8, $40)",
+        "record_name": "Taco Bell",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos (BBQ, rating 4.0, $36)",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Raj Restaurant (Indian, rating 3.1, $61)",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment! (Entire home/apt, No smoking) - Night 2",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving, Syracuse to Myrtle Beach (cost: $64)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 23, March 24, and March 25, 2022.",
+        "note": "The itinerary covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Outbound transportation is listed as self-driving from Myrtle Beach to Syracuse.",
+        "note": "The trip starts in Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Outbound transportation is listed as self-driving from Myrtle Beach to Syracuse.",
+        "note": "The destination is Syracuse."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the stay and sightseeing in Syracuse.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-23.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-25.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record lists self-driving from Myrtle Beach to Syracuse, duration 12 hours 16 minutes, cost 64; the plan lists self-driving on 2022-03-23.",
+        "note": "This matches the requested own-car outbound trip."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record lists self-driving from Syracuse to Myrtle Beach, duration 12 hours 27 minutes, cost 64; the plan lists self-driving on 2022-03-25.",
+        "note": "This matches the requested own-car return trip."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan lists driving on March 23 and March 25, and lists the Erie Canal Museum and Rosamond Gifford Zoo only on March 24.",
+        "note": "Sightseeing is scheduled on the only free day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! is listed for Night 1 on March 23 and Night 2 on March 24; its minimum nights is 1.",
+        "note": "The plan books both requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has room type Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Candidate records give Taco Bell an Aggregate Rating of 3.8, Tucanos 4, and Raj Restaurant 3.1.",
+        "note": "Each restaurant meal meets the 3.0 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Candidate records list Average Cost per person as 40 for Taco Bell, 36 for Tucanos, and 61 for Raj Restaurant.",
+        "note": "Each listed meal is under 70 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Cuisines records for Taco Bell (Bakery, American, Cafe, Seafood), Tucanos (Pizza, BBQ, Desserts), and Raj Restaurant (French, Bakery, Indian, BBQ) contain no Fast Food tag.",
+        "note": "No Syracuse restaurant meal in the plan carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 24 breakfast is Taco Bell, lunch is Tucanos, and dinner is Raj Restaurant.",
+        "note": "All three meals are at different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant's Cuisines record includes Indian, and it is listed for dinner on March 24.",
+        "note": "An Indian-tagged meal is included that day."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment!'s house_rules are 'No pets & No smoking'.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Erie Canal Museum in the morning and Rosamond Gifford Zoo in the afternoon on March 24, in that order.",
+        "note": "Both activities are scheduled in the requested sequence."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant is listed for dinner on March 24; its Cuisines record includes Indian.",
+        "note": "The Indian-tagged meal is dinner."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Tucanos is listed for lunch on March 24; its Cuisines record includes BBQ.",
+        "note": "Lunch carries the required BBQ tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

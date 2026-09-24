@@ -1,0 +1,251 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23003,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving from Myrtle Beach to Syracuse (12h 16min, 1280km, $64)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos (BBQ, rating 4.0, $36 per person)",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Raj Restaurant (Indian, rating 3.1, $61 per person)",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Nice Room (Private room, No smoking, rating 3, $564 total for 2 nights)",
+        "record_name": "Nice Room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving from Syracuse to Myrtle Beach (12h 27min, 1283km, $64)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 23, 24, and 25.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Nice Room has maximum occupancy 2.",
+        "note": "The booked listing can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is self-driving from Myrtle Beach.",
+        "note": "The trip starts in Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is to Syracuse and the sightseeing day is listed in Syracuse.",
+        "note": "Syracuse is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Syracuse as the sightseeing city.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins with the March 23 outbound drive.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends with the March 25 return drive.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate record lists self-driving from Myrtle Beach to Syracuse on the requested route, duration 12 hours 16 minutes, cost 64; the itinerary specifies self-driving on March 23.",
+        "note": "The planned own-car drive matches the requested outbound transportation."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate record lists self-driving from Syracuse to Myrtle Beach, duration 12 hours 27 minutes, cost 64; the itinerary specifies self-driving on March 25.",
+        "note": "The planned own-car drive matches the requested return transportation."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the outbound drive on March 23, sightseeing in Syracuse on March 24, and the return drive on March 25.",
+        "note": "Sightseeing is confined to the only free day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Nice Room is listed only for itinerary day 2 (March 24); day 1 accommodation is '-'.",
+        "note": "Only the March 24 night is booked, rather than both March 23 and March 24."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Nice Room has room type Private room.",
+        "note": "The required type is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Tucanos has Aggregate Rating 4; Raj Restaurant has Aggregate Rating 3.1.",
+        "note": "Both restaurant meals meet the rating floor of 3."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Tucanos has Average Cost 36 and Raj Restaurant has Average Cost 61.",
+        "note": "Both restaurant meals are under 70 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Tucanos cuisines are Pizza, BBQ, Desserts; Raj Restaurant cuisines are French, Bakery, Indian, BBQ.",
+        "note": "Neither restaurant carries a Fast Food tag; breakfast is empty."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "March 24 breakfast is '-', lunch is Tucanos, and dinner is Raj Restaurant.",
+        "note": "Only two restaurant meals at two distinct restaurants are listed, not three different restaurants across all three meals."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant has Indian in its Cuisines record and is listed for March 24 dinner.",
+        "note": "An Indian-tagged meal is included on the required day."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Nice Room house_rules are 'No smoking'.",
+        "note": "The listing prohibits smoking as required."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 24 attraction text says 'Morning: Erie Canal Museum; Afternoon: Rosamond Gifford Zoo'; both attractions appear in the candidate records.",
+        "note": "The museum is placed in the morning before the zoo later that day."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant is listed for dinner on March 24 and its record includes Indian in Cuisines.",
+        "note": "The Indian-tagged meal is dinner."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Tucanos is listed for lunch on March 24 and its record includes BBQ in Cuisines.",
+        "note": "The lunch carries a BBQ tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

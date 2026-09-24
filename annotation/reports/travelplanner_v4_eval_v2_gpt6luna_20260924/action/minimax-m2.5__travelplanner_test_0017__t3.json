@@ -1,0 +1,135 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20914,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511: Lihue 13:08 → San Francisco 21:32 ($867)",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Perfect Location! Your Oasis in Heart of Chelsea (Private room, $432 for 2 nights)",
+        "record_name": "Perfect Location! Your Oasis in Heart of Chelsea",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Coffee & Chai Co. ($10)",
+        "record_name": "Coffee & Chai Co.",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tokyo Sushi ($18)",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Empress ($24)",
+        "record_name": "Empress",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Perfect Location! Your Oasis in Heart of Chelsea (Private room, $432 for 2 nights)",
+        "record_name": "Perfect Location! Your Oasis in Heart of Chelsea",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709: San Francisco 09:10 → Lihue 11:57 ($1,204)",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has dates 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "The itinerary covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 departs Lihue.",
+        "note": "The trip originates in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 arrives in San Francisco, and the itinerary lists San Francisco as the city for March 27 and 28.",
+        "note": "San Francisco is the planned destination; the return flight is on March 29."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists San Francisco as its only visiting city.",
+        "note": "One visiting city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-27.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-29.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3880511 is dated 2022-03-27, departs Lihue at 13:08, and arrives in San Francisco at 21:32.",
+        "note": "It matches the specified outbound flight and arrival time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3870709 is dated 2022-03-29 and departs San Francisco at 09:10.",
+        "note": "It matches the specified return flight and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on March 27 and March 28, with none on the departure day, March 29.",
+        "note": "The itinerary books two nights on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The candidate record for Perfect Location! Your Oasis in Heart of Chelsea lists its room type as Private room.",
+        "note": "The booked room is not Entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

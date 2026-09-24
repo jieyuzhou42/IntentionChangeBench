@@ -1,0 +1,179 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1739.0,
+      "budget": 2000,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19940,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Trip budget is capped at $2,000"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Fort Lauderdale"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Charlotte Amalie"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 visiting city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-16"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-18"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Outbound flight from Fort Lauderdale to Charlotte Amalie"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Outbound flight date: 2022-03-16"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "Outbound flight departure: 13:06"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Return flight from Charlotte Amalie to Fort Lauderdale"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "Return flight date: 2022-03-18"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "Return flight departure: 16:10"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "Stay for 2 nights, 2022-03-16 and 2022-03-17"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant rating: 4"
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers 2022-03-16 through 2022-03-18, three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "Both flights are priced for 1 person; the booked accommodation has maximum occupancy 4, enough for one traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Charlotte Amalie."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Charlotte Amalie is the sole destination city shown in the plan."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary and outbound flight begin on 2022-03-16."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return flight and final itinerary day are 2022-03-18."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan uses flight F3618600 from Fort Lauderdale to Charlotte Amalie on 2022-03-16, departing at 13:06, matching the transportation record."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan uses flight F3619128 from Charlotte Amalie to Fort Lauderdale on 2022-03-18, departing at 16:10, matching the transportation record."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked from 2022-03-16 to 2022-03-18, covering the two nights of 2022-03-16 and 2022-03-17."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "violated",
+        "evidence": "The plan lists McDonald's for all three meals on 2022-03-17; its candidate-record rating is 3.4, below 4."
+      }
+    ],
+    "annotation_issues": [
+      "No restaurant in the candidate records has a rating of 4.0 or higher, so the latest stated mealtime requirement has no qualifying restaurant candidate."
+    ]
+  },
+  "out_of_scope_fields": []
+}

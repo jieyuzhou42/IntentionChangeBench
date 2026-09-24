@@ -1,0 +1,188 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32855,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 (Sioux Falls to Phoenix, departs 18:40, arrives 19:26), $410",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Mama Loca (Italian/Pizza, $27, rating 4.2)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1 BR in Carroll Gardens Townhouse (Private room, 2-night min, rating 4, $397/night)",
+        "record_name": "1 BR in Carroll Gardens Townhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pizza Hut (Chinese/Tea, $30, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Village Restaurant (Italian/Cafe, $35, rating 3.7)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1 BR in Carroll Gardens Townhouse (Private room, night 2 of 2)",
+        "record_name": "1 BR in Carroll Gardens Townhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 (Phoenix to Flagstaff, departs 08:49, arrives 09:47), $42",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti (Mexican/Indian, $16, rating 4.2)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "38 Barracks (Chinese/Mediterranean, $35, rating 4.4)",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Large Bedroom in 2 Bed Apartment Brighton Beach (Private room, rating 3, $959/night)",
+        "record_name": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Sushi Thai Restaurant (BBQ/Desserts, $49, rating 3.7)",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Frontier (American/BBQ, $47, rating 3.0)",
+        "record_name": "Frontier",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Large Bedroom in 2 Bed Apartment Brighton Beach (Private room, night 2 of 2)",
+        "record_name": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "- (trip ends in Flagstaff, no return transportation required)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary flies from Sioux Falls to Phoenix on March 16, then from Phoenix to Flagstaff on March 18, and ends in Flagstaff.",
+        "note": "The planned destination-city order is Phoenix, then Flagstaff."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Phoenix accommodation is listed on March 16 and 17; Flagstaff accommodation is listed on March 18 and 19.",
+        "note": "The itinerary books the requested two nights in each city on the specified dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing and Flagstaff listing each have room type 'Private room'.",
+        "note": "Both booked listings meet the private-room requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 4; the Flagstaff listing has review rate number 3.",
+        "note": "Both booked listings are rated at least 3."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4045477 flies Sioux Falls to Phoenix on 2022-03-16 and arrives at 19:26.",
+        "note": "Arrival is before the requested 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804854 flies Phoenix to Flagstaff on 2022-03-18 and arrives at 09:47.",
+        "note": "Arrival is before the requested 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 20 transportation slot states that the trip ends in Flagstaff and no return transportation is required.",
+        "note": "No return journey is included."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

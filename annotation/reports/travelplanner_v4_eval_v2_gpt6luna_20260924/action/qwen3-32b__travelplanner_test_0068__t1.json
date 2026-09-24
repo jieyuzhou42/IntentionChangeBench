@@ -1,0 +1,150 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22317,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180 from Panama City departs at 10:13, arrives in Chicago at 12:17.",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Airport meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Black Pearl, Aggregate Rating 4.1",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Newly Renovated Greenpoint Abode - $981 for 3 nights (minimum 2 nights).",
+        "record_name": "Newly Renovated Greenpoint Abode",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks: Tea, Bakery, BBQ, Cafe, or Indian, rated 3.8, ~$46",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "FIO Cookhouse and Bar: Mexican, Fast Food, Seafood, ~$31, rated 4.0",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pantry d'or: Tea, BBQ, Fast Food, Cafe, Indian, ~$53, rated 4.4",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Newly Renovated Greenpoint Abode",
+        "record_name": "Newly Renovated Greenpoint Abode",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Driving back to Panama City from Chicago",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed breakfast for drive",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 12, 13, and 14, 2022.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Newly Renovated Greenpoint Abode has maximum occupancy 7; it is the only listing booked for each overnight stay.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 has OriginCityName Panama City; the return text says driving back to Panama City.",
+        "note": "The plan starts and returns to Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 has DestCityName Chicago; the itinerary lists Chicago as the current city on all three days.",
+        "note": "Chicago is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Chicago as the sole destination/current city.",
+        "note": "It plans one visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and flight date are 2022-03-12.",
+        "note": "The plan begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3948180 is a Panama City-to-Chicago flight on 2022-03-12 departing at 10:13.",
+        "note": "The flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 14 transportation slot says, \"Driving back to Panama City from Chicago\"; the user specified they would drive themselves in their own car.",
+        "note": "The plan uses the requested self-drive return."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 14 has no attraction scheduled and lists the drive home; Navy Pier is listed on March 13.",
+        "note": "Sightseeing is on the only available day, with March 14 reserved for the drive."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21917,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073: Tampa (10:37) → Cleveland (12:59), $326",
+        "record_name": "F3915073",
+        "revised": true
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home!, $565/night, Entire home/apt",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": true
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Restaurant: Big Chicken ($27) or Nineties ($31)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Restaurant: Me Kong Bowl ($19)",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Restaurant: Keventers ($54) or Master Bakers ($80)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home!, $565/night, Entire home/apt",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247: Cleveland (21:20) → Tampa (23:34), $198",
+        "record_name": "F3559247",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Checkout by 11:00",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Switched to Richmond Hill apartment ($565/night × 3 nights = $1,695).",
+        "effect": "Replaced the Cozy minimalist room accommodation on Days 1 and 2 with Richmond Hill 3 Bedroom apartment in Private home!."
+      },
+      {
+        "quote": "Selecting cheapest outbound (F3915073 $326) and return (F3559247 $198) flights",
+        "effect": "Replaced the outbound flight with F3915073 and the return flight with F3559247."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Richmond Hill 3 Bedroom apartment in Private home! has maximum occupancy 4; it is booked for both accommodation nights.",
+        "note": "The listing capacity covers the single traveler."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

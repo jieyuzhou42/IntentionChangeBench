@@ -1,0 +1,181 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22578,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Charleston to St. Louis; use the same vehicle locally after arrival",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "El Super Burrito (rating 4.1, average cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Starbucks, result 8 (rating 4.1, average cost $92)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence (Entire home/apt, rating 3, $271 per night)",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Self-drive locally in St. Louis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "El Super Burrito (rating 4.1, average cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Starbucks, result 8 (rating 4.1, average cost $92)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Starbucks, result 9 (rating 3.9, average cost $100; not tagged Fast Food)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence (Entire home/apt, rating 3, $271 per night)",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from St. Louis back to Charleston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "El Super Burrito (rating 4.1, average cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-16, 2022-03-17, and 2022-03-18.",
+        "note": "Three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence has maximum occupancy 2 on both booked nights.",
+        "note": "The listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “Self-drive from Charleston to St. Louis.”",
+        "note": "Charleston is the origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in St. Louis after driving from Charleston.",
+        "note": "St. Louis is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists St. Louis as the destination city and Charleston only as the origin and return location.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-18.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “Self-drive from Charleston to St. Louis”; the dialogue specifies using the user's own car.",
+        "note": "The plan uses self-driving for the outbound trip on March 16."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 transportation says “Self-drive from St. Louis back to Charleston”; the dialogue specifies using the user's own car.",
+        "note": "The plan uses self-driving for the return trip on March 18."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "El Super Burrito is rated 4.1; Starbucks result 8 is rated 4.1; Starbucks result 9 is rated 3.9.",
+        "note": "All St. Louis restaurant meals meet the 4.0 floor except the March 17 dinner, which is permitted to be 3.9."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Starbucks result 9 has Cuisines “Desserts, Pizza, Cafe, Mediterranean, Seafood.”",
+        "note": "The March 17 dinner listing does not carry a Fast Food tag."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence has room type “Entire home/apt.”",
+        "note": "The booked listing meets the room-type requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Pet & Tony's Residence has review rate number 3.",
+        "note": "The preferred rating is 4; the booked listing is below it."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence is listed on March 16 and March 17; its minimum nights are 1.",
+        "note": "The plan books the two requested nights, with no accommodation needed on the departure day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

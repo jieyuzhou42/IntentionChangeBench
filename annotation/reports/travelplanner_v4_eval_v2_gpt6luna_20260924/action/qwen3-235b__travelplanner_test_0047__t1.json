@@ -1,0 +1,195 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23497,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409 from Gulfport (06:58) to Charlotte (09:48), $215",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Prince Snacks & Momo's Point, $11, rating 3.4",
+        "record_name": "Prince Snacks & Momo's Point",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Grover's - The Baker Shop, $30, rating 3.0",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Unplugged Courtyard, $54, rating 4.0",
+        "record_name": "Unplugged Courtyard",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg, $218, no smoking, review 5.0",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Prince Snacks & Momo's Point, $11, rating 3.4",
+        "record_name": "Prince Snacks & Momo's Point",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Kylin Skybar, $44, rating 3.6",
+        "record_name": "Kylin Skybar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Olive Tree Cafe, $23, rating 4.6",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg, $218, no smoking, review 5.0",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3793242 from Charlotte (20:36) to Gulfport (21:40), $154",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Prince Snacks & Momo's Point, $11, rating 3.4",
+        "record_name": "Prince Snacks & Momo's Point",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "China Garden, $14, rating 3.8",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Grover's - The Baker Shop, $30, rating 3.0",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 5, 6, and 7, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Charlotte listing has maximum occupancy 3; the dialogue requests an individual.",
+        "note": "The listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Gulfport as OriginCityName.",
+        "note": "The itinerary departs from Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Charlotte as DestCityName; the itinerary's daily current_city is Charlotte.",
+        "note": "The destination is Charlotte."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "All three itinerary days list Charlotte as current_city.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-05.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight are on 2022-03-07.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 is Gulfport to Charlotte on 2022-03-05 and departs at 06:58.",
+        "note": "It matches the requested early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793242 is Charlotte to Gulfport on 2022-03-07 and departs at 20:36; the other listed return flights depart at 12:53 and 12:54.",
+        "note": "It is the last listed return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 5 and March 6; its minimum nights is 1.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg has room type Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules include No smoking.",
+        "note": "The requested smoking prohibition is present."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "All restaurant meals have Aggregate Rating at least 3.0; the lowest is Grover's - The Baker Shop at 3.0.",
+        "note": "Every listed restaurant meal meets the rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Restaurant Average Costs per person range from $11 to $54.",
+        "note": "Every listed meal is under $60 per person."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

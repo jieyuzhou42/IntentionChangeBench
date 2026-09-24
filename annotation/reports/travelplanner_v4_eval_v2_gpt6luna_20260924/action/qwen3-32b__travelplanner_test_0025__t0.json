@@ -1,0 +1,125 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22255,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4057787 (06:49 - 08:38, $232)",
+        "record_name": "F4057787",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Breakfast at Seasons 52 Fresh Grill",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lunch at QD's Restaurant",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Dinner at Rambhog",
+        "record_name": "Rambhog",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Brooklyn oasis (PRIVATE ROOM), $403/night",
+        "record_name": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657 (16:45 - 18:28, $182)",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Breakfast at Gurgaon Hights",
+        "record_name": "Gurgaon Hights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Lunch at Lord of the Drinks Forum",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Dinner at Aryan's Rajasthani Pyaz Ki Kachori",
+        "record_name": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists days 1, 2, and 3.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Modern Brooklyn oasis (PRIVATE ROOM) has maximum occupancy 1.",
+        "note": "The booked lodging accommodates the individual traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4057787 travels from Wilmington to New York.",
+        "note": "The outbound flight originates in Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "violated",
+        "evidence": "Flight F3641657 travels from New York to Wilmington.",
+        "note": "The final listed flight returns to Wilmington, so the itinerary ends there rather than in New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight arrives in New York, and the itinerary's destination-city lodging is in New York.",
+        "note": "New York is the one destination city visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4057787 has FlightDate 2022-03-12.",
+        "note": "The outbound travel begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 has FlightDate 2022-03-14.",
+        "note": "The return flight is dated the requested end date."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

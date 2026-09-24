@@ -1,0 +1,169 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 1,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 655.0,
+      "budget": 1800,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20746,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 1800
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Panama City"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Chicago"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-12"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-14"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Panama City to Chicago on 2022-03-12, the 10:13 departure"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-driving Chicago to Panama City on 2022-03-14; own car"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "schedule",
+        "value": "2022-03-14 reserved for the drive home"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "schedule",
+        "value": "Sightseeing only 2022-03-13"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-14",
+        "requirement": "Reserve this date for the drive home; do not schedule sightseeing this day.",
+        "source_turn": 1,
+        "quote": "I'll drive myself back that day. That drive is most of a day"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-13",
+        "requirement": "March 13 is the only day available for sightseeing in Chicago.",
+        "source_turn": 1,
+        "quote": "the 13th is the only day I've got there"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers March 12, 13, and 14: three dates."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3, which accommodates one traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Chicago, and the plan's stay and sightseeing day are in Chicago."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Chicago is the only destination city shown in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The plan begins with the outbound flight on 2022-03-12."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The plan's return drive is dated 2022-03-14."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies Flight F3948180 on 2022-03-12, departing Panama City at 10:13; the candidate record confirms the route, date, and time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Chicago to Panama City on 2022-03-14 in the traveler's own-car mode."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "The plan schedules the drive home on March 14 and lists no attractions on March 14; it also lists no attractions on other days, so sightseeing is not scheduled outside March 13."
+      }
+    ],
+    "annotation_issues": [
+      "The reference plan lists the Chicago accommodation through checkout on 2022-03-15, including accommodation on March 14, although the user says they will drive home on March 14."
+    ]
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,194 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23843,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600 from Fort Lauderdale to Charlotte Amalie, departing 13:06 and arriving 15:39",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered breakfast at home in Fort Lauderdale",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch prepared at home for the flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant (rating 3.6, average cost $59)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Home By The Pier — Entire home/apt",
+        "record_name": "Brooklyn Home By The Pier",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered breakfast at Brooklyn Home By The Pier",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Maharaja Restaurant (rating 3.6, average cost $59)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Self-catered dinner at Brooklyn Home By The Pier",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Home By The Pier — Entire home/apt",
+        "record_name": "Brooklyn Home By The Pier",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128 from Charlotte Amalie to Fort Lauderdale, departing 16:10 and arriving 18:55",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered breakfast at Brooklyn Home By The Pier",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Maharaja Restaurant (rating 3.6, average cost $59)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed dinner prepared at the accommodation before departure",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-16, 2022-03-17, and 2022-03-18.",
+        "note": "The plan has three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier has maximum occupancy 4.",
+        "note": "The booked listing can host the one traveler; the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 departs from Fort Lauderdale.",
+        "note": "The outbound flight starts in the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 arrives in Charlotte Amalie; F3619128 departs Charlotte Amalie.",
+        "note": "The requested destination is the trip's destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Charlotte Amalie between the Fort Lauderdale outbound and return flights.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-16.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record has FlightDate 2022-03-18.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3618600: Fort Lauderdale to Charlotte Amalie on 2022-03-16, DepTime 13:06.",
+        "note": "The plan uses the required outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3619128: Charlotte Amalie to Fort Lauderdale on 2022-03-18, DepTime 16:10.",
+        "note": "The plan uses the required return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier is listed on 2022-03-16 and 2022-03-17, and not on the departure day.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Maharaja Restaurant has Aggregate Rating 3.6. The other meal slots are self-catered or packed.",
+        "note": "The restaurant meals meet the 3.5 minimum; non-restaurant meals do not count against it."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Brooklyn Home By The Pier has review rate number 4.0.",
+        "note": "The booked listing is below the preferred 4.5 rating."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier has room type Entire home/apt.",
+        "note": "The booked listing meets the requested room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "The accommodation's 4.0 rating does not meet the preferred 4.5 minimum; no supported entire-home option reaches 4.5, so privacy was protected as the higher-priority requirement."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

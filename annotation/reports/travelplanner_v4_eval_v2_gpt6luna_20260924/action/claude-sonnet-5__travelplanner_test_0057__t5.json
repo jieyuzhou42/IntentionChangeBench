@@ -1,0 +1,180 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23150,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164, Houston to Reno, Dep 09:50 Arr 12:04",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Bistro (Reno, rating 3.9, no Fast Food)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Mustake Multicuisine Restaurant (Reno, rating 3.7, no Fast Food)",
+        "record_name": "Mustake Multicuisine Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse (Entire home/apt, $361/night, rating 5.0)",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Queens Cakes (Reno, rating 3.5, no Fast Food)",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Olive Bistro (Reno, rating 3.9, no Fast Food)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Nagpal's (Reno, rating 3.4, no Fast Food)",
+        "record_name": "Nagpal's",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse (Entire home/apt, $361/night, rating 5.0)",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705, Reno to Houston, Dep 12:58 Arr 18:31",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Mustake Multicuisine Restaurant (Reno, rating 3.7, no Fast Food)",
+        "record_name": "Mustake Multicuisine Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Olive Bistro (Reno, rating 3.9, no Fast Food)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 11, March 12, and March 13, 2022.",
+        "note": "It lists three travel days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Reno listing, A bright, beautiful treehouse, has maximum occupancy 2.",
+        "note": "Its capacity accommodates one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Outbound record F3879164 lists Houston as OriginCityName.",
+        "note": "The trip departs from Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Outbound record F3879164 lists Reno as DestCityName.",
+        "note": "The itinerary's destination is Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Reno as the destination city; the flights connect Houston and Reno.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound record F3879164 is dated 2022-03-11.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return record F3875705 is dated 2022-03-13.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3879164 is the Houston-to-Reno flight on 2022-03-11, departing 09:50.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3875705 is the Reno-to-Houston flight on 2022-03-13, departing 12:58.",
+        "note": "It matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "A bright, beautiful treehouse is listed on March 11 and March 12; there is no accommodation listed on departure day, March 13.",
+        "note": "The itinerary books the two requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "The restaurant records rate the selected meals 3.9 (Olive Bistro), 3.7 (Mustake Multicuisine Restaurant), 3.5 (Queens Cakes), and 3.4 (Nagpal's).",
+        "note": "Every restaurant meal is below the requested 4.0 rating."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The selected restaurant records list cuisines without the Fast Food tag: Olive Bistro (Tea, Cafe, Pizza, BBQ), Mustake Multicuisine Restaurant (Tea, Bakery, Pizza, Mediterranean), Queens Cakes (Bakery, Desserts, Indian, BBQ), and Nagpal's (Bakery, Mexican, Pizza, Seafood).",
+        "note": "No listed Reno meal uses a restaurant tagged Fast Food."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 12, breakfast is at Queens Cakes, lunch at Olive Bistro, and dinner at Nagpal's.",
+        "note": "All three meals are at different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "No restaurant in the fixed results simultaneously meets the >=4.0 rating requirement and excludes Fast Food"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

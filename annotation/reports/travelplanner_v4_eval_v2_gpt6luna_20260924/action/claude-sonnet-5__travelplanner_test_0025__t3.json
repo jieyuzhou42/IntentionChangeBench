@@ -1,0 +1,160 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23765,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983, Wilmington→New York, Dep 20:26–Arr 22:05, $113",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK, New York (Entire home/apt, $228/night)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lord of the Drinks Forum",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "QD's Restaurant",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK, New York (Entire home/apt, $228/night)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657, New York→Wilmington, Dep 16:45–Arr 18:28, $182",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Green Chick Chop",
+        "record_name": "Green Chick Chop",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "record_name": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on both nights.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 has OriginCityName Wilmington.",
+        "note": "The trip departs from Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 has DestCityName New York; the itinerary returns from New York.",
+        "note": "New York is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and activities are in New York.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is dated 2022-03-12.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 is dated 2022-03-14.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4050983 is Wilmington to New York on 2022-03-12, departing at 20:26.",
+        "note": "The flight is late on the 12th."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3641657 is New York to Wilmington on 2022-03-14, departing at 16:45.",
+        "note": "The flight is in the late afternoon."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing appears on 2022-03-12 and 2022-03-13; its minimum nights is 2.",
+        "note": "The two requested nights are booked."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "A Contemporary Homelike Stay in the Best of BK has review rate number 2.",
+        "note": "The listing's rating is below 5."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "A Contemporary Homelike Stay in the Best of BK has room type Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "its 2.0 rating does not meet the preferred 5.0 rating, which is explicitly sacrificed."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

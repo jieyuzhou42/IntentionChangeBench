@@ -1,0 +1,179 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 3,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1224.0,
+      "budget": 1600,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": false,
+      "minimum_nights": [
+        "Luxury Williamsburg duplex, private roof terrace: 3 consecutive night(s) booked, minimum 4"
+      ],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20035,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 1600
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Moline"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Dallas"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-25"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-27"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Take a flight from Moline to Dallas early on 2022-03-25"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Take a flight from Dallas to Moline late on 2022-03-27"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "Stay for 2 nights"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "accommodation_stay",
+        "value": "Stay the night of 2022-03-25"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "accommodation_stay",
+        "value": "Stay the night of 2022-03-26"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_rating",
+        "value": 4
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan has itinerary entries for 2022-03-25, 2022-03-26, and 2022-03-27."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The flights are priced for 1 person, and the booked unit has maximum occupancy 3, which accommodates one traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Moline, and the return flight is to Moline."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight is to Dallas, and the return flight departs Dallas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Dallas is the sole destination city shown in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The outbound flight and first itinerary day are dated 2022-03-25."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return flight and final itinerary day are dated 2022-03-27."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F4046779 goes from Moline to Dallas on 2022-03-25 and departs at 06:56; the reference plan identifies it as the early flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F4047063 goes from Dallas to Moline on 2022-03-27 and departs at 18:48; the reference plan identifies it as the late flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "violated",
+        "evidence": "The requested nights are 2022-03-25 and 2022-03-26, but the reference plan's accommodation checks out on 2022-03-29 after a stated four-night stay."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing is recorded as Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The booked listing has review rate number 5, meeting the rating requirement of 4."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

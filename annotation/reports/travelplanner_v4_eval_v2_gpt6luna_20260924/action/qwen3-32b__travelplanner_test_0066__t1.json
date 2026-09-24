@@ -1,0 +1,142 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22129,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Driving to Jacksonville (21 hours 14 mins)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Touch of Spice",
+        "record_name": "Touch of Spice",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern high-end studio! (Jacksonville), $541 for the night",
+        "record_name": "Modern high-end studio!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Driving back to Minneapolis (21 hours 20 mins)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Villa Gargano",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Oh! Fudge",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Modern high-end studio!, has maximum occupancy 3; the plan does not assume a larger party.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The first day's transportation is driving to Jacksonville; the record is self-driving from Minneapolis to Jacksonville.",
+        "note": "The stated origin is Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as the destination, and the outbound self-driving record goes to Jacksonville.",
+        "note": "The stated destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Jacksonville is the only destination city named in the itinerary.",
+        "note": "One visiting city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-27.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-29.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “Driving to Jacksonville (21 hours 14 mins)”; the record says “self-driving, from Minneapolis to Jacksonville, duration: 21 hours 14 mins”.",
+        "note": "The outbound mode, route, and date match the requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “Driving back to Minneapolis (21 hours 20 mins)”; the record says “self-driving, from Jacksonville to Minneapolis, duration: 21 hours 20 mins”.",
+        "note": "The return mode, route, and date match the requirement."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan lists “Kathryn Abbey Hanna Park” as an attraction on 2022-03-29, a day required to be reserved for intercity driving.",
+        "note": "Sightseeing is scheduled on a driving day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists accommodation only on 2022-03-28; the 2022-03-27 accommodation slot is “-”.",
+        "note": "Only one of the requested two nights is booked."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

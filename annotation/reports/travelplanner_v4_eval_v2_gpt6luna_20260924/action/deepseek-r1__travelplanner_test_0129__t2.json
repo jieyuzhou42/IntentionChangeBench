@@ -1,0 +1,201 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32240,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 (Sioux Falls→Phoenix) @ $410/person",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut ($30 avg)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1,100 sq.ft. apt Penthouse ($209/night)",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Village Restaurant ($35 avg)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jungle The Restaurant ($27 avg)",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq.ft. apt Penthouse",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 (Phoenix→Flagstaff) @ $42/person",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Bamboo Boat ($77 avg)",
+        "record_name": "Bamboo Boat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "38 Barracks ($35 avg)",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment ($1086/night)",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Communiti ($16 avg)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Rhubarb Le Restaurant ($157 avg)",
+        "record_name": "Rhubarb Le Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Trip conclusion",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing maximum occupancy 3; Flagstaff listing maximum occupancy 8.",
+        "note": "Each booked listing can host all three travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Both booked accommodation records have room type \"Entire home/apt\"; the requirement is \"Private room\".",
+        "note": "The booked listings do not meet the required room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Phoenix penthouse review rate number 5; Flagstaff apartment review rate number 3.",
+        "note": "Both cities' booked listings meet the 3+ rating floor."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4045477 departs Sioux Falls at 18:40 and arrives in Phoenix at 19:26 on 2022-03-16.",
+        "note": "It arrives before the 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3804854 departs Phoenix at 08:49 and arrives in Flagstaff at 09:47 on 2022-03-18.",
+        "note": "It arrives before the 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends in Flagstaff on March 20 with \"Trip conclusion\" and no return journey.",
+        "note": "No return transportation is included."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "No 3+★ private rooms with 3-person capacity found in either city - used entire homes instead."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

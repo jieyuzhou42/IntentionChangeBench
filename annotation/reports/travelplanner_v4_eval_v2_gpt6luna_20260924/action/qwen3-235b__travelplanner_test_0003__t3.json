@@ -1,0 +1,162 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22268,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving to St. Louis (duration: 12h43m, cost: $68)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito (rating: 4.1, cost: ~$43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Kan house (rating: 4.0, cost: $749, private room, 1-night stay)",
+        "record_name": "Kan house",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit or walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks (rating: 4.1, cost: ~$92)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "El Super Burrito (rating: 4.1, cost: ~$43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "El Super Burrito (rating: 4.1, cost: ~$43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Kan house (rating: 4.0, cost: $749, private room, 1-night stay)",
+        "record_name": "Kan house",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving back to Charleston (duration: 12h43m, cost: $68)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Starbucks (rating: 4.1, cost: ~$92)",
+        "record_name": "Starbucks",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Kan house has maximum occupancy 2.",
+        "note": "The booked accommodation can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The March 16 itinerary starts in Charleston.",
+        "note": "Charleston is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary drives to St. Louis and lists St. Louis as the current city on March 17 and 18.",
+        "note": "St. Louis is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels from Charleston to St. Louis and spends the destination days in St. Louis.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-18.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says self-driving to St. Louis on March 16; the candidate record lists self-driving from Charleston to St. Louis, duration 12 hours 43 minutes, cost 68.",
+        "note": "The outbound trip uses the requested own-car/self-driving mode on the requested date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says self-driving back to Charleston on March 18; the candidate record lists self-driving from St. Louis to Charleston, duration 12 hours 43 minutes, cost 68.",
+        "note": "The return trip uses the requested own-car/self-driving mode on the requested date."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "El Super Burrito has Aggregate Rating 4.1; the matched Starbucks record has Aggregate Rating 4.1.",
+        "note": "All restaurant meals in the plan use records rated at least 4.0."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Kan house is listed on March 16 and March 17, covering the nights of March 16 and 17.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Kan house has review rate number 4.",
+        "note": "The booked listing meets the 4.0 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

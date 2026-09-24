@@ -1,0 +1,209 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23375,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight Number: F3948180, from Panama City to Chicago, Departure Time: 10:13, Arrival Time: 12:17",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Chicago to Panama City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "NYC Firehouse-Greenpoint BRKLYN has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 lists OriginCityName Panama City.",
+        "note": "The outbound flight departs from Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 lists DestCityName Chicago.",
+        "note": "The outbound flight arrives in Chicago."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Chicago as the destination and places its listed attractions there.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-12.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is from Panama City to Chicago on 2022-03-12, departing at 10:13.",
+        "note": "It matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says, \"Self-driving from Chicago to Panama City.\"",
+        "note": "The plan specifies the requested self-drive return on 2022-03-14."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The listed attractions are on 2022-03-13; 2022-03-14 lists the drive home and no attractions.",
+        "note": "Sightseeing is confined to the only Chicago day, with the departure date reserved for driving home."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists NYC Firehouse-Greenpoint BRKLYN only on 2022-03-12 and 2022-03-13. The rationale says the third night is billed, but it is not listed as an accommodation night.",
+        "note": "Only two nights are booked in the itinerary; the requested stay is three nights from 2022-03-12."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "NYC Firehouse-Greenpoint BRKLYN has review rate number 5.0.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The Black Pearl has Aggregate Rating 4.1.",
+        "note": "Every listed restaurant meal uses this restaurant, which meets the 4.0 floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Black Pearl's Cuisines are listed as \"Cafe, Bakery\" with no Fast Food tag.",
+        "note": "No listed Chicago meal uses a restaurant tagged Fast Food."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

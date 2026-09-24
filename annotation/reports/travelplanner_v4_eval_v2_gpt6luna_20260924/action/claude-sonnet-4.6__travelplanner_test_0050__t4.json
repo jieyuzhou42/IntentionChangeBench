@@ -1,0 +1,185 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23579,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Tulsa to Phoenix (~935 miles; depart morning to arrive by evening). Fuel cost unpriced in search results.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Tulsa before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "En route (packed/roadside stop)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut, Phoenix (avg cost $30, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) – Entire home/apt, Phoenix, $834/night, min 1 night, max occupancy 8, rating 5.0",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Mama Loca, Phoenix (avg cost $27, rating 4.2)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Village Restaurant, Phoenix (avg cost $35, rating 3.7)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pizza Hut, Phoenix (avg cost $30, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) – Entire home/apt, Phoenix, $834/night",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Phoenix back to Tulsa (~935 miles); depart early afternoon to mirror the 'afternoon return' preference. Fuel cost unpriced.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Mama Loca, Phoenix (avg cost $27, rating 4.2)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "En route (packed/roadside stop)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "At home in Tulsa after arrival",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 6, March 7, and March 8, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 8; the plan does not assume another party size.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 starts with self-driving from Tulsa; Day 3 returns to Tulsa.",
+        "note": "Tulsa is the origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels to Phoenix and lists Phoenix meals and accommodation.",
+        "note": "Phoenix is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Phoenix is the only destination city in the itinerary.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is labeled 2022-03-06.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is labeled 2022-03-08.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says, \"Self-drive from Tulsa to Phoenix.\"",
+        "note": "This matches the required self-driving outbound trip using the traveler's own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says, \"Self-drive from Phoenix back to Tulsa.\"",
+        "note": "This matches the required self-driving return trip using the traveler's own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing is booked on March 6 and March 7; March 8 has no accommodation.",
+        "note": "There are two booked nights on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The candidate record lists the booked accommodation's room type as \"Entire home/apt\".",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan self-drives in both directions; the requirement says driving is acceptable to protect the room type.",
+        "note": "Driving is an explicitly acceptable alternative to flying."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The booked accommodation's name refers to JFK and Manhattan, while its candidate record lists its city as Phoenix; the listing's actual location is unclear."
+    ]
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2259.0,
+      "budget": 2300,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19735,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is $2,300 for this trip"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 person"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Start in Lihue"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "San Francisco"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-27"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-29"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight F3880511"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Lihue to San Francisco on 2022-03-27"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "Landing at 21:32"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Flight F3870709"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "San Francisco to Lihue on 2022-03-29"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "Departing at 9:10"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "2 nights"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "accommodation_stay",
+        "value": "Night of 2022-03-27"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "accommodation_stay",
+        "value": "Night of 2022-03-28"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-27",
+        "requirement": "Take the flight landing at 21:32 on the 27th",
+        "source_turn": 1,
+        "quote": "the one landing at 21:32 on the 27th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-29",
+        "requirement": "Take the return flight at 09:10 on the 29th",
+        "source_turn": 1,
+        "quote": "the 09:10 back on the 29th"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan contains entries for 2022-03-27, 2022-03-28, and 2022-03-29."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The accommodation listing has maximum occupancy 2, enough for the one traveler; the flight pricing is also for 1 person."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound itinerary begins in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound itinerary goes to San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The itinerary's destination city is San Francisco."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The outbound flight is dated 2022-03-27."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return flight and final itinerary day are dated 2022-03-29."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies Flight F3880511 from Lihue to San Francisco on 2022-03-27, arriving at 21:32, matching the candidate record."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies Flight F3870709 from San Francisco to Lihue on 2022-03-29, departing at 09:10, matching the candidate record."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The plan books accommodation from check-in 2022-03-27 to check-out 2022-03-29, covering the nights of March 27 and 28."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The reference plan books a listing identified as Private room, not Entire home/apt."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

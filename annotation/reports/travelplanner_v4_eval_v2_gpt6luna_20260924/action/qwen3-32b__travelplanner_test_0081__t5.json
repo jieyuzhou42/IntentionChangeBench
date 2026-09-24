@@ -1,0 +1,173 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23623,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Depart Tampa at 10:37 (Flight 326 to Cleveland) / Arrive Cleveland at 12:59",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner ($25) - includes Chinese cuisine",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC.  So Spacious!",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Me Kong Bowl ($19)",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Green Leaf ($73) - includes Chinese cuisine",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pind Balluchi ($96) - includes Chinese cuisine",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC.  So Spacious!",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Depart Cleveland at 08:40 (Flight 421 to Tampa) / Arrive Tampa at 10:57",
+        "record_name": "F3623037",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Nineties ($31)",
+        "record_name": "Nineties",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 2, March 3, and March 4, 2022.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing has maximum occupancy 1.",
+        "note": "The listing can host the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3915073 is listed for March 2, Tampa to Cleveland, departing 10:37 and arriving 12:59.",
+        "note": "The selected flight matches the requested flight details and comfortable departure."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Day 1 has no sightseeing; Day 2 is the sightseeing day; the March 4 flight departs at 08:40.",
+        "note": "The itinerary reserves Day 1 for arrival, Day 2 for sightseeing, and early Day 3 for the airport transfer."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The Day 2 attraction is Cleveland Metroparks Zoo; Cleveland Cultural Gardens is not listed.",
+        "note": "The required Cleveland Cultural Gardens sightseeing is missing."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Makhan Fish and Chicken Corner; Day 3 lunch is empty.",
+        "note": "A restaurant lunch is planned on Day 1, contrary to the requirement."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The booked listing is Rare gem of an apartment in NYC.  So Spacious!, not Richmond Hill 3 Bedroom apartment in Private home!.",
+        "note": "The requested accommodation is not booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Rare gem of an apartment in NYC.  So Spacious! is listed as a Private room.",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Rare gem of an apartment in NYC.  So Spacious! has review rate number 5.",
+        "note": "The booked listing meets the rating-5 requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3623037 is listed for March 4, Cleveland to Tampa, departing 08:40 and arriving 10:57.",
+        "note": "The selected return flight matches the requested flight details."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "violated",
+        "evidence": "Day 3 breakfast is Nineties, a restaurant listing.",
+        "note": "A restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Day 1 dinner is empty; Day 2 restaurants are Me Kong Bowl (Cafe, BBQ, Seafood), Green Leaf (Desserts, Tea, Cafe, BBQ, Chinese), and Pind Balluchi (Chinese, Pizza, French, BBQ, Cafe). None lists Fast Food.",
+        "note": "All restaurant meals within the specified scope avoid listings categorized as Fast Food."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 attraction slot is empty.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Makhan Fish and Chicken Corner.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "violated",
+        "evidence": "F3623037 arrives in Tampa at 10:57.",
+        "note": "The return flight arrives after the requested 10:00 deadline."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

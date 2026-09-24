@@ -1,0 +1,185 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24233,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733, Tulsa->Phoenix, Dep 11:28, Arr 13:07, $195",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Pizza Hut (Phoenix)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut (Phoenix)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) - Entire home/apt, $834/night",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Pizza Hut (Phoenix)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pizza Hut (Phoenix)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pizza Hut (Phoenix)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) - Entire home/apt, $834/night",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3803478, Phoenix->Tulsa, Dep 13:51, Arr 17:04, $276",
+        "record_name": "F3803478",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Pizza Hut (Phoenix)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 6, 7, and 8, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has a maximum occupancy of 8 on each night.",
+        "note": "Capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3996733 departs Tulsa; return flight F3803478 arrives in Tulsa.",
+        "note": "The itinerary originates in Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3996733 arrives in Phoenix; the return flight departs Phoenix.",
+        "note": "Phoenix is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary routes to Phoenix and books Phoenix accommodation and meals.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-06.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day and return flight date are 2022-03-08.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3996733, departing Tulsa at 11:28 and arriving in Phoenix at 13:07.",
+        "note": "The requirement specifies self-driving in the user's own car, not a flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3803478, departing Phoenix at 13:51 and arriving in Tulsa at 17:04.",
+        "note": "The requirement specifies self-driving in the user's own car, not a flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 6 and March 7; no accommodation is listed on March 8.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "The booked accommodation meets the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F3996733 and F3803478.",
+        "note": "The preference is to fly when the cap allows it; the itinerary chooses flights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut has an Aggregate Rating of 4.4.",
+        "note": "All listed restaurant meals meet the 3.5 preferred rating."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut's recorded Cuisines are Tea, Chinese, Desserts, Seafood.",
+        "note": "None of the listed Phoenix meals has a Fast Food tag in Cuisines."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "Breakfast, lunch, and dinner on March 7 are all listed as Pizza Hut.",
+        "note": "The requirement calls for three different restaurants that day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_variety",
+        "quote": "this necessarily violates the softer 'no repeat 3x on the 7th' preference"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

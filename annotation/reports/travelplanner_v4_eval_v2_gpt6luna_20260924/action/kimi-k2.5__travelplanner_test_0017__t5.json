@@ -1,0 +1,175 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22301,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511, departs Lihue 13:08, arrives San Francisco 21:32, $867",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catering/pre-departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Tokyo Sushi (rating 3.7), $18",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Perfect Luxury Studio in DUMBO, $247/night × 2 nights = $494",
+        "record_name": "Perfect Luxury Studio in DUMBO",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tokyo Sushi (rating 3.7), $18",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sudarshan (rating 3.7), $53",
+        "record_name": "Sudarshan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Perfect Luxury Studio in DUMBO",
+        "record_name": "Perfect Luxury Studio in DUMBO",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709, departs San Francisco 09:10, arrives Lihue 11:57, $1204",
+        "record_name": "F3870709",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Sudarshan (rating 3.7), $53 - using for day 29 lunch before flight",
+        "record_name": "Sudarshan",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 27, March 28, and March 29.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The dialogue specifies one person; Perfect Luxury Studio in DUMBO has maximum occupancy 3.",
+        "note": "The booked listing can host the traveler, and the plan is for one person."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "F3880511's origin is Lihue; F3870709 returns to Lihue.",
+        "note": "The trip starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "F3880511's destination is San Francisco.",
+        "note": "The trip arrives in San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and stay are in San Francisco.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "F3880511's FlightDate is 2022-03-27.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "F3870709's FlightDate is 2022-03-29.",
+        "note": "The return is on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3880511 is Lihue to San Francisco on 2022-03-27, arriving at 21:32.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3870709 is San Francisco to Lihue on 2022-03-29, departing at 09:10.",
+        "note": "It matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Perfect Luxury Studio in DUMBO is listed on March 27 and March 28; no accommodation is listed on the March 29 departure day.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Perfect Luxury Studio in DUMBO is listed as Entire home/apt.",
+        "note": "The booked room type matches the requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Tokyo Sushi and Sudarshan each have an Aggregate Rating of 3.7.",
+        "note": "Every restaurant meal in the plan meets the 3.7 rating floor; self-catered meals are not restaurant evidence."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 28, breakfast is self-catered, lunch is Tokyo Sushi, and dinner is Sudarshan.",
+        "note": "The requirement calls for three different restaurants across all three meals; breakfast is not at a restaurant."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

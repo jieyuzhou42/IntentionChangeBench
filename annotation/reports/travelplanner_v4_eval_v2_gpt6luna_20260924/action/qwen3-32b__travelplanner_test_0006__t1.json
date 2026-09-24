@@ -1,0 +1,156 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21063,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 from Phoenix to Billings (Depart: 12:24, Arrive: 15:50)",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Hong Kong Express, Billings (Seafood/Breakfast, $43)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Tsui Wong, Billings (Seafood, $40)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "和缘浪漫民宿",
+        "record_name": "和缘浪漫民宿",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Elation (Fast Food, $87)",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "L'Angoor (Indian, $19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Shree Annapurna (French, $96)",
+        "record_name": "Shree Annapurna",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "和缘浪漫民宿",
+        "record_name": "和缘浪漫民宿",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3799751 from Billings to Phoenix (Depart: 16:33, Arrive: 18:15)",
+        "record_name": "F3799751",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Chakhnaa Wala (Desserts/Indian, $58)",
+        "record_name": "Chakhnaa Wala",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days 1, 2, and 3, spanning March 18–20.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "和缘浪漫民宿 has maximum occupancy 1 and is booked on both accommodation nights.",
+        "note": "The booked listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Phoenix as OriginCityName.",
+        "note": "The trip starts in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Billings as DestCityName; the return flight departs Billings.",
+        "note": "Billings is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Billings after arriving from Phoenix and returns from Billings to Phoenix.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "F3804883 is dated 2022-03-18.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "F3799751 is dated 2022-03-20.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3804883 is a Phoenix-to-Billings flight on 2022-03-18, departing 12:24 and arriving 15:50.",
+        "note": "The outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3799751 is a Billings-to-Phoenix flight on 2022-03-20, departing 16:33 and arriving 18:15.",
+        "note": "The return flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on itinerary days 1 and 2, corresponding to March 18 and March 19; there is no accommodation on departure day March 20.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The record for 和缘浪漫民宿 lists room type Private room.",
+        "note": "The preferred room type is Entire home/apt, but the booked listing is a private room."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

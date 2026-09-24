@@ -1,0 +1,214 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24627,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 from Belleville to Las Vegas (12:29-14:04), $296",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Cakes At Bhawanas (Indian cuisine, rating 3.5, cost $87 for 2)",
+        "record_name": "Cakes At Bhawanas",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! (Entire home/apt, rating 5, 2 nights @ $108/night)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen (Mediterranean, rating 4.4, cost $42 for 2)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen (Mediterranean, rating 4.4, cost $42 for 2)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cakes At Bhawanas (Indian cuisine, rating 3.5, cost $87 for 2)",
+        "record_name": "Cakes At Bhawanas",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park!",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Start driving return to Belleville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen (Mediterranean, rating 4.4, cost $42 for 2)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts 2022-03-27 and says the return drive arrives 2022-03-30.",
+        "note": "The trip spans four calendar days, March 27–30."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3; the dialogue specifies two travelers.",
+        "note": "The listing can host both travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName Belleville.",
+        "note": "The trip departs from Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName Las Vegas.",
+        "note": "The destination is Las Vegas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Las Vegas as the destination and Belleville as the return destination.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The accommodation text says the drive arrives 2022-03-30.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is from Belleville to Las Vegas on 2022-03-27.",
+        "note": "The recorded flight matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says “Start driving return to Belleville” on 2022-03-29 and notes arrival on 2022-03-30; the dialogue says the traveler will drive back.",
+        "note": "The plan specifies the requested self-drive return in the travelers’ own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on 2022-03-27 and 2022-03-28, with no accommodation on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing’s room type is Entire home/apt.",
+        "note": "It meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing’s review rate number is 5.",
+        "note": "The rating meets the requested minimum."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen has Aggregate Rating 4.4 and Cakes At Bhawanas has Aggregate Rating 3.5.",
+        "note": "All listed restaurant meals are at or above 3.0."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen’s Cuisines are Desserts, Bakery, Cafe, Mediterranean, Seafood; Cakes At Bhawanas’ are Desserts, Tea, American, Bakery, Indian, Seafood.",
+        "note": "None of the listed Las Vegas restaurant meals has a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On 2022-03-28, breakfast and lunch are both Ethos Vegan Kitchen; dinner is Cakes At Bhawanas.",
+        "note": "Only two different restaurants are used across the three meals."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The Mob Museum is listed in the morning and The Neon Museum in the evening after 16:00 on 2022-03-28.",
+        "note": "No planned sightseeing falls within 14:00–16:00."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The booked listing’s house rules include “No smoking.”",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Cakes At Bhawanas is listed for dinner on 2022-03-28 and its Cuisines include Indian.",
+        "note": "The dinner carries the required Indian tag."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen is listed for lunch on 2022-03-28 and its Cuisines include Mediterranean.",
+        "note": "The lunch carries the required Mediterranean tag."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists The Mob Museum in the morning and The Neon Museum in the evening after 16:00 on 2022-03-28.",
+        "note": "Both requested attractions are scheduled on the requested day, outside the unavailable interval."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "satisfied",
+        "evidence": "The only listed attractions on 2022-03-28 are in the morning and evening after 16:00.",
+        "note": "The plan leaves the sister free of sightseeing from 14:00 to 16:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_variety",
+        "quote": "Dining variety violated - Ethos Vegan Kitchen used twice on day 28"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25304,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3560505: Kansas City to Orlando, departs 20:41, arrives 00:42+1 ($508)",
+        "record_name": "F3560505",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Airport/late arrival meal (self-catering or airport food, ~$25 estimated)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private room in Jackson Heights Apartment 2+, Orlando ($1081 total, minimum 1 night, max 1 person)",
+        "record_name": "Private room in Jackson Heights Apartment 2+",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering/simple breakfast (~$15)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Veg O Non (BBQ/Mexican, $45 avg cost per meal)",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Turquoise Villa (French/BBQ/Bakery/Fast Food, $55 avg cost per meal)",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private room in Jackson Heights Apartment 2+, Orlando (2nd night)",
+        "record_name": "Private room in Jackson Heights Apartment 2+",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3629193: Orlando to Kansas City, departs 17:43, arrives 20:46 ($299)",
+        "record_name": "F3629193",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering/simple breakfast (~$15)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching (Tea/Pizza/Desserts, $51 avg cost per meal)",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary is dated March 7, March 8, and March 9, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Orlando listing has maximum occupancy 1 and is listed for both nights.",
+        "note": "Its capacity accommodates one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3560505 has OriginCityName Kansas City.",
+        "note": "The itinerary starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3560505 has DestCityName Orlando, and the return flight originates in Orlando.",
+        "note": "Orlando is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as its only destination city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-07.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-09.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3560505 from Kansas City to Orlando; the record lists a 20:41 departure.",
+        "note": "The requirement specifies self-driving in the user's own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3629193 from Orlando to Kansas City; the record lists a 17:43 departure.",
+        "note": "The requirement specifies self-driving in the user's own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists the Orlando accommodation on March 7 and March 8, with no accommodation required on the March 9 departure day.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan uses flights rather than intercity drives on March 7 and March 9, and lists a March 9 morning activity: SeaWorld Orlando or The Wheel at ICON Park.",
+        "note": "The requirement reserves March 7 and 9 for intercity driving and allows sightseeing only on March 8."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "violated",
+        "evidence": "The selected flights cost $508 and $299; the action states the plan totals approximately $2,068–$2,168 against the $1,800 cap.",
+        "note": "Flying was selected even though the action says the resulting plan exceeds the cap; the preference allows driving to stay within budget."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

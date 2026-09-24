@@ -1,0 +1,125 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19713,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Depart Myrtle Beach to Syracuse (ground transport)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Chic Apartment for rent in East Village (not a dining option, but accommodation)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos ($36)",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Taqueria Del Sol ($61)",
+        "record_name": "Taqueria Del Sol",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Chic Apartment for rent in East Village",
+        "record_name": "Chic Apartment for rent in East Village",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Return to Myrtle Beach (ground transport)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Silantro Fil-Mex ($29)",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Mezzaluna ($41)",
+        "record_name": "Mezzaluna",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days 1, 2, and 3.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Chic Apartment for rent in East Village, has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Depart Myrtle Beach to Syracuse” and lists Myrtle Beach as the current city.",
+        "note": "The plan names Myrtle Beach as the origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Syracuse as the current city on days 2 and 3 and names Syracuse as the day 1 destination.",
+        "note": "The plan names Syracuse as the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Syracuse is the sole destination city named in the itinerary.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The dialogue specifies March 23, 2022, and the itinerary begins with day 1 outbound travel.",
+        "note": "No conflicting start date appears in the plan."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The dialogue specifies March 25, 2022, and the itinerary ends on day 3 with return travel.",
+        "note": "No conflicting end date appears in the plan."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

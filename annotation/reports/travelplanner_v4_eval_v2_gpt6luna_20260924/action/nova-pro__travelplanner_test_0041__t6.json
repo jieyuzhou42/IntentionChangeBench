@@ -1,0 +1,160 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24563,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3583571 from San Francisco to Kahului",
+        "record_name": "F3583571",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "BrewBakes",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Fat Belly",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Vikings",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3880403 from Kahului to San Francisco",
+        "record_name": "F3880403",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "BrewBakes",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Fat Belly",
+        "record_name": "Fat Belly",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-25, 2022-03-26, and 2022-03-27.",
+        "note": "It covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 8; the plan books no other party size.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName as San Francisco.",
+        "note": "The trip departs from the requested city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName as Kahului.",
+        "note": "The itinerary travels to the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The destination itinerary is in Kahului.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts with the outbound flight on 2022-03-25.",
+        "note": "This matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight is dated 2022-03-27.",
+        "note": "This matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 is dated 2022-03-25 and flies from San Francisco to Kahului.",
+        "note": "The outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880403 is dated 2022-03-27, flies from Kahului to San Francisco, and arrives at 20:51.",
+        "note": "It lands before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only for 2022-03-26; 2022-03-25 has no accommodation.",
+        "note": "Only one requested night is booked, rather than both March 25 and March 26."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cozy Apt in Centrally Located Brooklyn Heights is listed as Entire home/apt.",
+        "note": "The booked room type matches the preferred requirement."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880403 arrives in San Francisco at 20:51 on 2022-03-27.",
+        "note": "The plan returns before 21:00."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Cozy Apt in Centrally Located Brooklyn Heights has review rate number 5.",
+        "note": "The listing meets the preferred rating of 5."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "BrewBakes has Aggregate Rating 4, Fat Belly 4.1, and Vikings 4.2.",
+        "note": "Every restaurant meal in the plan meets the preferred 4.0 rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

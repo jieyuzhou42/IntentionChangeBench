@@ -1,0 +1,161 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22180,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600, 13:06 departure to Charlotte Amalie",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "The Wielingen (Room)",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cafeast",
+        "record_name": "Cafeast",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Maharaja Restaurant",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lord of Grillz",
+        "record_name": "Lord of Grillz",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "The Wielingen (Room)",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128, return to Fort Lauderdale",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Boufe Boutique Cafe",
+        "record_name": "Boufe Boutique Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Kabab Roll Cafe",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has maximum occupancy 2.",
+        "note": "The booked listing can host the requested one traveler, and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 has OriginCityName Fort Lauderdale.",
+        "note": "The outbound flight originates in Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 has DestCityName Charlotte Amalie.",
+        "note": "The outbound flight arrives in Charlotte Amalie."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Charlotte Amalie as the destination and lists no other visiting city.",
+        "note": "It plans one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-16.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-18.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3618600 is dated 2022-03-16, from Fort Lauderdale to Charlotte Amalie, with DepTime 13:06.",
+        "note": "The listed outbound flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3619128 is dated 2022-03-18, from Charlotte Amalie to Fort Lauderdale, with DepTime 16:10.",
+        "note": "The listed return flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen is listed on March 16 and March 17; there is no accommodation booked on the March 18 departure day.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Cafeast 3.0, Maharaja Restaurant 3.6, Lord of Grillz 3.2, Boufe Boutique Cafe 3.2, and Kabab Roll Cafe 3.8 (Aggregate Ratings).",
+        "note": "Several restaurant meals are below the 3.5 rating floor."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has review rate number 5.0.",
+        "note": "The booked accommodation meets the 5.0 rating requirement."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The Wielingen is listed as room type Private room.",
+        "note": "The requirement is Entire home/apt, so the booked room does not provide the place to oneself."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31571,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving (11h 59m, $62)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed meals",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Doorman Harlem Apt (Entire home/apt, 3★, $921/night)",
+        "record_name": "Doorman Harlem Apt with Great Views",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bandit Burrito ($26/person)",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Moonie's Texas Barbecue ($38/person)",
+        "record_name": "Moonie's Texas Barbecue",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Doorman Harlem Apt",
+        "record_name": "Doorman Harlem Apt with Great Views",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving (1h 43m, $7)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed meals",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Light-filled South Slope Nest! (Entire home/apt, 2★, $790/night)",
+        "record_name": "Light-filled South Slope Nest!",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Eat Street ($63/person)",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Biryani By Kilo ($53/person)",
+        "record_name": "Biryani By Kilo",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Light-filled South Slope Nest!",
+        "record_name": "Light-filled South Slope Nest!",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving (11h 10m, $58)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Packed meals",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Doorman Harlem Apt with Great Views has maximum occupancy 7; Light-filled South Slope Nest! has maximum occupancy 2. Each is booked for two nights, and each listing can host two travelers.",
+        "note": "The booked accommodation capacity covers both travelers for every night."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Doorman Harlem Apt with Great Views and Light-filled South Slope Nest! are both listed as Entire home/apt.",
+        "note": "The booked listings meet the requested room type in Wilmington and Fayetteville."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Doorman Harlem Apt with Great Views has review rate number 3; Light-filled South Slope Nest! has review rate number 2.",
+        "note": "Neither city's booked listing meets the optional 4+ rating preference."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "No 4★+ entire-home rentals in either city with 2-night stays. Selected 3★ Wilmington and 2★ Fayetteville options."
+      },
+      {
+        "gold_field": "room_type",
+        "quote": "Fayetteville room_type (no valid entire-home 4★+ options)"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

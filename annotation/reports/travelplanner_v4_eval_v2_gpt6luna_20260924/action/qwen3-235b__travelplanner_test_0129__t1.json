@@ -1,0 +1,188 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33152,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 from Sioux Falls to Phoenix, departs 18:40, arrives 19:26",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Mama Loca in Phoenix (Italian, $27)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Hudson Yard - Bright Double Double Room (Private room, $880, rating 5, Phoenix)",
+        "record_name": "Hudson Yard - Bright Double Double  Room",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Spooky Sky in Phoenix (Pizza, $15)",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pizza Hut in Phoenix (Tea, Chinese, $30)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jungle The Restaurant in Phoenix (Seafood, $27)",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Hudson Yard - Bright Double Double Room (Private room, $880, rating 5, Phoenix)",
+        "record_name": "Hudson Yard - Bright Double Double  Room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 from Phoenix to Flagstaff, departs 08:49, arrives 09:47",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "38 Barracks in Flagstaff (Chinese, $35)",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti in Flagstaff (Mexican, $16)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sushi Thai Restaurant in Flagstaff (Thai, $49)",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Air conditioned Excellent Private Room for 1 (Private room, $185, rating 4, Flagstaff)",
+        "record_name": "Air conditioned Excellent Private Room for 1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "38 Barracks in Flagstaff (Chinese, $35)",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Communiti in Flagstaff (Mexican, $16)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Bamboo Boat in Flagstaff (BBQ, $77)",
+        "record_name": "Bamboo Boat",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Air conditioned Excellent Private Room for 1 (Private room, $185, rating 4, Flagstaff)",
+        "record_name": "Air conditioned Excellent Private Room for 1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Flagstaff to Sioux Falls (19h57m, $104)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Frontier in Flagstaff (American, $47)",
+        "record_name": "Frontier",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "violated",
+        "evidence": "The itinerary goes from Phoenix to Flagstaff, then lists transportation on March 20 as “Self-driving from Flagstaff to Sioux Falls.”",
+        "note": "The plan continues beyond Flagstaff rather than ending there."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Hudson Yard is listed on March 16 and 17; Air conditioned Excellent Private Room for 1 is listed on March 18 and 19.",
+        "note": "The booked nights match the requested two nights in each city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing and the Flagstaff listing both have room type “Private room.”",
+        "note": "Both booked listings meet the private-room requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 5; the Flagstaff listing has review rate number 4.",
+        "note": "Both cities’ booked listings are rated at least 3."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 is listed from Sioux Falls to Phoenix on 2022-03-16, departing 18:40 and arriving 19:26.",
+        "note": "It arrives before the requested 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 is listed from Phoenix to Flagstaff on 2022-03-18, departing 08:49 and arriving 09:47.",
+        "note": "It arrives before the requested 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 20 transportation slot says “Self-driving from Flagstaff to Sioux Falls.”",
+        "note": "The itinerary includes a return journey, although the requirement says the one-way visit ends in Flagstaff with no return journey."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

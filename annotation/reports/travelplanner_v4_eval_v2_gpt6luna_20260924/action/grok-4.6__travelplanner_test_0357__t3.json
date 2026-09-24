@@ -1,0 +1,171 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23002,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight Number: F3754877, from Buffalo to Boston, Departure Time: 08:04, Arrival Time: 09:30; rideshare door-to-door from airport and between nearby sites",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed/self-catered inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed/self-catered inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Irish Democrat, Boston",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!, Boston",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare door-to-door between lodging and the two nearby sites; party stays together",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Packed/self-catered inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Packed/self-catered inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Irish Democrat, Boston",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!, Boston",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare door-to-door between lodging, sites, and airport; Flight Number: F3757097, from Boston to Buffalo, Departure Time: 21:44, Arrival Time: 23:34",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed/self-catered inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Irish Democrat, Boston",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed/self-catered inexpensive food",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Delight in Your Home Away from Home in NYC!, has a maximum occupancy of 5.",
+        "note": "The same listing is booked for both nights and can host all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The itinerary lists two attractions on each day, but it does not schedule regular seated breaks.",
+        "note": "The daily two-attraction limit is met; the activity requirements also call for regular seated breaks, which the plan does not include."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "unknown",
+        "evidence": "Irish Democrat has an Aggregate Rating of 4.4. Its record lists cuisines including Fast Food, but does not state whether it offers a sit-down meal.",
+        "note": "The rating floor is met, but the records do not establish the required sit-down dining style."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Delight in Your Home Away from Home in NYC! is listed as Entire home/apt.",
+        "note": "The booked listing matches the required room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing is booked on both nights and has a maximum occupancy of 5.",
+        "note": "One property can host all four travelers."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat has an Average Cost of 18 per person; the other meal slots are packed/self-catered.",
+        "note": "The recorded restaurant meal is inexpensive; self-catered meals are not evidence against the constraint."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Irish Democrat's recorded cuisines are Tea, Cafe, Bakery, and Fast Food; neither French nor American is listed.",
+        "note": "The restaurant meals do not provide the requested French and American cuisines."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "cuisine",
+        "quote": "French/American variety was dropped per the later dining instruction."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

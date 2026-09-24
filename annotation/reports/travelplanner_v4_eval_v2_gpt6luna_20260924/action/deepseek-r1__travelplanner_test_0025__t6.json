@@ -1,0 +1,173 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23334,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983 (20:26 Wilmington → 22:05 New York)",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Seasons 52 Fresh Grill (4.4★)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK (Entire home/apt)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Lord of the Drinks Forum (4.2★)",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Seasons 52 Fresh Grill (4.4★)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "QD's Restaurant (4.1★)",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK (Entire home/apt)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657 (16:45 New York → 18:28 Wilmington)",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Lord of the Drinks Forum (4.2★)",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Seasons 52 Fresh Grill (4.4★)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2; the dialogue specifies an individual traveler.",
+        "note": "The listing can host the one traveler and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 departs Wilmington.",
+        "note": "The outbound flight begins in the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 arrives in New York; the itinerary's current city is New York.",
+        "note": "The destination is New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New York as the destination/current city for the trip.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-12 and the itinerary begins that day.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-14 and the itinerary ends that day.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is Wilmington to New York on 2022-03-12, departing at 20:26.",
+        "note": "The flight is on the requested date and its evening departure is late."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 is New York to Wilmington on 2022-03-14, departing at 16:45.",
+        "note": "The flight is on the requested date and departs in the late afternoon."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on 2022-03-12 and 2022-03-13, with no accommodation listed on departure day 2022-03-14.",
+        "note": "The itinerary books the requested two nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "A Contemporary Homelike Stay in the Best of BK has review rate number 2.",
+        "note": "The requested preferred rating is 4, which the booked listing does not meet."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "A Contemporary Homelike Stay in the Best of BK is listed as Entire home/apt.",
+        "note": "The booked room type matches the requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant records give Seasons 52 Fresh Grill rating 4.4, Lord of the Drinks Forum 4.2, and QD's Restaurant 4.1.",
+        "note": "Every restaurant meal listed has a rating of at least 4.0."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Chose only 2★ entire home/apt (meets must-have privacy requirement but sacrifices preferred 4★+ rating)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

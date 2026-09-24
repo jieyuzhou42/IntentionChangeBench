@@ -1,0 +1,181 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21838,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Charleston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "El Super Burrito (4.1★)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Starbucks [8] (4.1★)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito (4.1★)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence (Entire home, 3★)",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks [8] (4.1★)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "El Super Burrito (4.1★)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Latitude - Radisson Blu (3.9★, non-Fast Food)",
+        "record_name": "The Latitude - Radisson Blu",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence (Entire home, 3★)",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive return",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence has maximum occupancy 2 and is booked for both nights.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is listed as “Self-drive from Charleston.”",
+        "note": "The stated origin is Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists St. Louis as the current city on March 16 and 17.",
+        "note": "The destination is St. Louis."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's visiting city is St. Louis.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-18.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Self-drive from Charleston”; the dialogue specifies self-driving and the gold requirement specifies own car.",
+        "note": "The outbound trip is planned by self-drive on March 16."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “Self-drive return”; the dialogue specifies self-driving and the gold requirement specifies own car.",
+        "note": "The return trip is planned by self-drive on March 18."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "unknown",
+        "evidence": "The records list two Starbucks entries: one rated 4.1 and one rated 3.9. The itinerary and code match identify only “Starbucks,” without distinguishing between them. El Super Burrito is rated 4.1; The Latitude - Radisson Blu is rated 3.9.",
+        "note": "The Starbucks meals' ratings cannot be determined unambiguously from the matched name; the other meals meet the stated rating scope."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Latitude - Radisson Blu has Cuisines “Pizza, French, BBQ, American, Seafood,” with no Fast Food tag.",
+        "note": "The March 17 dinner does not carry the prohibited tag."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence has room type “Entire home/apt.”",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Pet & Tony's Residence has review rate number 3; the preferred rating is 4.",
+        "note": "The booked listing is below the preferred rating."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence is listed on March 16 and March 17, the two requested nights.",
+        "note": "Both required nights are booked."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Chose Pet & Tony's Residence (3★ entire home) to meet private accommodation must-have, sacrificing rating."
+      }
+    ],
+    "annotation_issues": [
+      "The restaurant candidates contain two distinct Starbucks records with the same exact name but different ratings (4.1 and 3.9), and the plan/code match does not distinguish which record is intended."
+    ]
+  }
+}

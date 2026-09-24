@@ -1,0 +1,152 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23752,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073, Tampa to Cleveland, Dep 10:37 Arr 12:59, $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Me Kong Bowl, Cleveland ($19)",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Big Chicken, Cleveland ($27)",
+        "record_name": "Big Chicken",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! (rating 5)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bikanerwala, Cleveland ($10)",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Me Kong Bowl, Cleveland ($19)",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Makhan Fish and Chicken Corner, Cleveland ($25)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! (rating 5)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247, Cleveland to Tampa, Dep 21:20 Arr 23:34, $198",
+        "record_name": "F3559247",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Bikanerwala, Cleveland ($10)",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Me Kong Bowl, Cleveland ($19)",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Bikanerwala, Cleveland ($10)",
+        "record_name": "Bikanerwala",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-02, 2022-03-03, and 2022-03-04.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland accommodation has maximum occupancy 4.",
+        "note": "The listing can host the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "It matches the specified flight and avoids an overly early departure."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The booked listing is named Richmond Hill 3 Bedroom apartment in Private home! and is in Cleveland.",
+        "note": "The listed accommodation matches the requested listing."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Richmond Hill 3 Bedroom apartment in Private home! has room type Entire home/apt.",
+        "note": "The room type matches the requested type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The booked accommodation meets the rating-5 requirement."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "The Day 1 itinerary lists Rock & Roll Hall of Fame as an attraction.",
+        "note": "Day 1 includes sightseeing despite the preferred requirement for no sightseeing."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is listed as Me Kong Bowl, Cleveland.",
+        "note": "A restaurant lunch is planned despite the preferred requirement for no planned restaurant lunch on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

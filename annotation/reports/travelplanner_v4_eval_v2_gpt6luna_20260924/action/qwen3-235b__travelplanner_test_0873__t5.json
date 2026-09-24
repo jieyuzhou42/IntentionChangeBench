@@ -1,0 +1,215 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25772,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving from Charlotte to New Orleans (10h 28m)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "simple breakfast at apartment (not arrived yet, packed food)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "sit-down restaurant in New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "sit-down restaurant in New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "arrive in New Orleans; check into entire apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "local transit or walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "simple breakfast at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "sit-down restaurant in New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "sit-down restaurant in New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "entire apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "local transit or walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "simple breakfast at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "sit-down restaurant in New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "sit-down restaurant in New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "entire apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "local transit or walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "simple breakfast at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "sit-down restaurant in New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "sit-down restaurant in New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "entire apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving from New Orleans to Charlotte (10h 27m)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "simple breakfast at apartment",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "The Cabildo and The Singing Oak are dropped as specified.",
+        "effect": "Neither attraction is included in the scheduled sightseeing stops."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies New Orleans as the destination for the trip and schedules no other destination city.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The plan says “entire apartment” but does not identify a booked listing; no accommodation record is matched to the plan.",
+        "note": "The room type of an actual booked listing cannot be verified from the records."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 13 lists the attraction as “-”.",
+        "note": "No sightseeing is scheduled on March 13."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "March 9 breakfast is described as “packed food,” not breakfast at the apartment; lunch and dinner slots name no restaurants and have no matching restaurant records.",
+        "note": "The plan does not establish apartment breakfasts throughout or identify restaurant meals from the records for the requested sit-down dining style."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The full sightseeing days list two stops on March 9, 10, and 11, and one on March 12; The Cabildo and The Singing Oak are absent.",
+        "note": "No full sightseeing day exceeds two substantial stops, and the specified first stops to drop are not scheduled."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The records include self-driving Charlotte to New Orleans (10 hours 28 minutes) and New Orleans to Charlotte (10 hours 27 minutes); both corresponding itinerary legs are self-driving.",
+        "note": "The intercity travel uses self-drive; local transit or walking is listed for within-city days."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

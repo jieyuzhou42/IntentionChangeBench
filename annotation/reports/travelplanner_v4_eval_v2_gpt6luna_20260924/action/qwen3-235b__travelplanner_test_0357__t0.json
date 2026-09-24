@@ -1,0 +1,148 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20434,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 from Buffalo to Boston, departs 08:04, arrives 09:30",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Apni Rasoi (American, Mediterranean, Seafood), estimated cost $112 for 4",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunlight + Space on Eastern Parkway, price $346/night, total $692 for 2 nights",
+        "record_name": "Sunlight + Space on Eastern Parkway",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cake Factory (French, Seafood), estimated cost $172 for 4",
+        "record_name": "Cake Factory",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant (Indian, Seafood), estimated cost $260 for 4",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunlight + Space on Eastern Parkway",
+        "record_name": "Sunlight + Space on Eastern Parkway",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3757097 from Boston to Buffalo, departs 21:44, arrives 23:34",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Irish Democrat (Cafe, Bakery), estimated cost $72 for 4",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes March 4, March 5, and March 6, 2022.",
+        "note": "It covers the requested three days and date span."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Sunlight + Space on Eastern Parkway has maximum occupancy 3; the user requested a trip for 4 people.",
+        "note": "The booked accommodation cannot host all four travelers."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Apni Rasoi lists American among its cuisines, and Cake Factory lists French among its cuisines.",
+        "note": "The restaurant meals include both requested cuisines."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "people_number",
+        "quote": "maximum occupancy constraint (3) is violated to fit 4 travelers as no 4-person option exists."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

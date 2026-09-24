@@ -1,0 +1,159 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22185,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600 departing 13:06 from Fort Lauderdale, arriving 15:39 at Charlotte Amalie",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Kabab Roll Cafe (rating 3.8, avg cost $86)",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Home By The Pier (Entire home/apt, rating 4.0, $549/night)",
+        "record_name": "Brooklyn Home By The Pier",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Maharaja Restaurant (rating 3.6, avg cost $59)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Kabab Roll Cafe (rating 3.8, avg cost $86)",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant (rating 3.6, avg cost $59)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Home By The Pier (Entire home/apt, rating 4.0, $549/night)",
+        "record_name": "Brooklyn Home By The Pier",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128 departing 16:10 from Charlotte Amalie, arriving 18:55 at Fort Lauderdale",
+        "record_name": "F3619128",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, March 17, and March 18, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier has maximum occupancy 4.",
+        "note": "The booked listing accommodates one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Fort Lauderdale as OriginCityName.",
+        "note": "The trip starts in Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Charlotte Amalie as DestCityName.",
+        "note": "The trip destination is Charlotte Amalie."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation city are Charlotte Amalie.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-16.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record has FlightDate 2022-03-18.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 is from Fort Lauderdale to Charlotte Amalie on 2022-03-16 and departs at 13:06.",
+        "note": "The recorded flight matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 is from Charlotte Amalie to Fort Lauderdale on 2022-03-18 and departs at 16:10.",
+        "note": "The recorded flight matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier is booked on March 16 and March 17; no accommodation is needed on the March 18 departure day.",
+        "note": "The itinerary books the requested two nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Kabab Roll Cafe has Aggregate Rating 3.8 and Maharaja Restaurant has Aggregate Rating 3.6.",
+        "note": "Every restaurant meal in the plan meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Brooklyn Home By The Pier has review rate number 4.0; the required rating is 5. The rationale says, \"No accommodation achieves perfect 5.0 rating while being entire home/apt\".",
+        "note": "The booked listing does not meet the required 5.0 rating."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier has room type Entire home/apt.",
+        "note": "The booked listing is the requested room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "No accommodation achieves perfect 5.0 rating while being entire home/apt - Brooklyn Home By The Pier at 4.0 rating is the highest-rated entire home/apt available."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

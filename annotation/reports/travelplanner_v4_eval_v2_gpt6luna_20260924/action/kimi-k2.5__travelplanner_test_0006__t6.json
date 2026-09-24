@@ -1,0 +1,155 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21226,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 departing 12:24, arriving 15:50 ($359)",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Hong Kong Express (Rating 3.8, $43)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! Can wait to see you! (Private room, Rating 5, $1152 total for 2 nights)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tsui Wong (Rating 3.8, $40)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Elation (Rating 3.8, $87)",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! Can wait to see you! (Private room, Rating 5)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Return transportation not available in search results - requires alternative arrangement",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Holy Smoke (Rating 3.6, $38)",
+        "record_name": "Holy Smoke",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-18, 2022-03-19, and 2022-03-20.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Billings listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 lists OriginCityName Phoenix.",
+        "note": "The outbound journey starts in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 lists DestCityName Billings.",
+        "note": "The outbound journey goes to Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Billings as the destination and stay city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-18.",
+        "note": "The plan begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's final day is 2022-03-20.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804883 is a Phoenix-to-Billings flight on 2022-03-18, departing 12:24 and arriving 15:50.",
+        "note": "The listed flight matches the required route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The Day 3 slot says return transportation requires an alternative arrangement and has no matching flight record.",
+        "note": "No Billings-to-Phoenix flight on 2022-03-20 is included in the plan."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same Billings accommodation is listed on 2022-03-18 and 2022-03-19; its minimum stay is 2 nights.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant records give ratings of 3.8 for Hong Kong Express, 3.8 for Tsui Wong, 3.8 for Elation, and 3.6 for Holy Smoke.",
+        "note": "Every restaurant meal in the plan meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Great Room! Great Price! Can wait to see you ! listing has review rate number 5.",
+        "note": "The booked listing meets the required rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "UNMET REQUIREMENTS: Return transportation flight not found in available search results (searched March 21, not March 20). No ground transportation alternatives researched. User must arrange return separately."
+      }
+    ],
+    "annotation_issues": [
+      "The transportation candidate results cover a Billings-to-Phoenix search for 2022-03-21, not the required 2022-03-20 return date, so they do not establish whether a flight was available on the requested date."
+    ]
+  }
+}

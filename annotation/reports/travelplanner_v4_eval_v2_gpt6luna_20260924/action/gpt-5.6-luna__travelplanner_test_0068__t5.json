@@ -1,0 +1,195 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23105,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180 from Panama City to Chicago, departing 10:13 and arriving 12:17; $212",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "The Black Pearl — $63",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "FIO Cookhouse and Bar — $31",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pantry d'or — $53",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN, private entire home/apt; billed night 1 of 3; rating 5.0",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local sightseeing in Chicago",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gyan Vaishnav — $14",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bro's Kitchenette — $38",
+        "record_name": "Bro's Kitchenette",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Black Pearl — $63",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN, private entire home/apt; billed night 2 of 3; rating 5.0",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Chicago to Panama City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gyan Vaishnav — $14",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "FIO Cookhouse and Bar — $31",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN; billed night 3 of 3, paid after departure",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": true
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "the third billed night is accepted even though only the nights of March 12 and 13 are slept in",
+        "effect": "Add the third paid accommodation night after departure, completing the three-night booking."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "NYC Firehouse-Greenpoint BRKLYN has maximum occupancy 3.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is from Panama City to Chicago.",
+        "note": "The outbound begins in the requested origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is from Panama City to Chicago.",
+        "note": "The outbound reaches the requested destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Chicago as the sightseeing city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 has FlightDate 2022-03-12.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's return drive is listed on 2022-03-14.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3948180 departs Panama City at 10:13 on 2022-03-12 and arrives in Chicago at 12:17.",
+        "note": "The flight and departure time match the requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan states, \"Self-drive from Chicago to Panama City\"; the dialogue specifies using the user's own car.",
+        "note": "The return is planned as the requested self-drive."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The only sightseeing attraction day is 2022-03-13; 2022-03-14 lists the self-drive home and no attraction.",
+        "note": "Sightseeing is confined to March 13 and March 14 is reserved for the drive."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan states billed night 1 of 3 and billed night 2 of 3, and the rationale says the third billed night is accepted; NYC Firehouse-Greenpoint BRKLYN has a 3-night minimum.",
+        "note": "The revised plan books and pays for three nights starting March 12, including the permitted night after departure."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "NYC Firehouse-Greenpoint BRKLYN has review rate number 5.0.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

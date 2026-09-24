@@ -1,0 +1,154 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 4,
+  "prompt_chars": 21506,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Buffet 101 (Oklahoma City), $74",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny Railroad Apt ($496 for two nights)",
+        "record_name": "Sunny Railroad Apt",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "drive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lake House Restaurant ($38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cafe Delhi Heights ($74)",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny Railroad Apt",
+        "record_name": "Sunny Railroad Apt",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607 (return)",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days 1, 2, and 3, corresponding to March 17–19.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny Railroad Apt has maximum occupancy 2.",
+        "note": "The one-person party fits the listing, and the plan does not specify a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 departs St. Louis for Oklahoma City; the plan names St. Louis as the starting city.",
+        "note": "The origin matches."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 arrives in Oklahoma City, and the listed meals and accommodation are in Oklahoma City.",
+        "note": "The destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oklahoma City as the destination city and has no other visiting city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 is dated 2022-03-17.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3950607 is dated 2022-03-19.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The requirement is self-driving in an own car; Day 1 instead lists flight F4025720, recorded from St. Louis to Oklahoma City.",
+        "note": "The outbound leg is a flight, not self-driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The requirement is self-driving in an own car; Day 3 instead lists flight F3950607, recorded from Oklahoma City to St. Louis.",
+        "note": "The return leg is a flight, not self-driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Sunny Railroad Apt is listed on Day 1 and Day 2, corresponding to the nights of March 17 and 18.",
+        "note": "The plan books accommodation for both required nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Buffet 101 rating 4.0; Lake House Restaurant rating 4.3; Cafe Delhi Heights rating 4.0.",
+        "note": "Every restaurant meal in the plan meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F4025720 and F3950607 for the intercity legs; the records show the requested city directions and dates.",
+        "note": "The preference favors flying when the cap allows it, while driving is acceptable; the plan chooses flights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Sunny Railroad Apt has room type Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment, not a room in someone's flat."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

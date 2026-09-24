@@ -1,0 +1,108 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20998,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511 departing Lihue 13:08, arriving San Francisco 21:32 ($867)",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "spacious pretty east harlem apt. ($470 for 2 nights)",
+        "record_name": "spacious pretty east harlem apt.",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "spacious pretty east harlem apt. ($470 for 2 nights)",
+        "record_name": "spacious pretty east harlem apt.",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709 departing San Francisco 09:10, arriving Lihue 11:57 ($1204)",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 27, 28, and 29, 2022.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 has OriginCityName Lihue.",
+        "note": "The outbound flight starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 has DestCityName San Francisco; the accommodation record also lists city San Francisco.",
+        "note": "The trip's destination city is San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists San Francisco as the destination and stay city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F3880511 has FlightDate 2022-03-27.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight F3870709 has FlightDate 2022-03-29.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3880511 is Lihue to San Francisco on 2022-03-27, departing 13:08 and arriving 21:32.",
+        "note": "It is the requested outbound flight landing at 21:32."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3870709 is San Francisco to Lihue on 2022-03-29, departing 09:10.",
+        "note": "It is the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 27 and March 28; March 29 has no accommodation.",
+        "note": "The plan books the requested two nights, March 27 and 28."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

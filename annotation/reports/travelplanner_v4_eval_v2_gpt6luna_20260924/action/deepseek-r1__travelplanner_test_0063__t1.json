@@ -1,0 +1,170 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22696,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4031463 (DEN->OAK 08:39-10:13)",
+        "record_name": "F4031463",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Pre-flight meal in Denver",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Malais By Anands ($37)",
+        "record_name": "Malais By Anands",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Cho Gao ($52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern luxury w/views of WTC",
+        "record_name": "Modern luxury w/views of WTC",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Accommodation provisions",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bikanervala ($39)",
+        "record_name": "Bikanervala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chef Sack Kitchen ($70)",
+        "record_name": "Chef Sack Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern luxury w/views of WTC",
+        "record_name": "Modern luxury w/views of WTC",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3958709 (OAK->DEN 06:10-09:25)",
+        "record_name": "F3958709",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Quick meal before departure",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 26, March 27, and March 28, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Modern luxury w/views of WTC has maximum occupancy 2 on both booked nights.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4031463 departs Denver; flight F3958709 arrives in Denver.",
+        "note": "Denver is the origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4031463 goes from Denver to Oakland; the itinerary lists Oakland on March 26 and 27.",
+        "note": "Oakland is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination-city days are in Oakland, with Denver as the origin and return city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-26.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight are dated 2022-03-28.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4031463 departs Denver for Oakland on 2022-03-26 at 08:39.",
+        "note": "It matches the requested outbound date, route, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3958709, which arrives in Denver at 09:25. The flight arriving at 11:49 is F3958710.",
+        "note": "The requested return flight landing at 11:49 is not the flight in the plan."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books Modern luxury w/views of WTC on March 26 and March 27; its minimum stay is 1 night.",
+        "note": "The two requested nights are booked."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Record F3958709 arrives in Denver at 09:25 on 2022-03-28.",
+        "note": "The return arrives before noon."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

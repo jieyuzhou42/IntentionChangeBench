@@ -1,0 +1,113 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 1,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2329.0,
+      "budget": 3100,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31227,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 3100
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": {
+          "Denver": "Entire home/apt"
+        }
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "accommodation_rating",
+        "value": {
+          "Denver": 4
+        }
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "transportation",
+        "value": "Own car "
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "launch at Gunnison",
+        "value": true
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-23",
+        "requirement": "Pass through Gunnison on the way home.",
+        "source_turn": 1,
+        "quote": "passing through Gunnison on the way home on the 23rd"
+      },
+      {
+        "kind": "exclude",
+        "date": "2022-03-23",
+        "requirement": "Do not schedule sightseeing in Gunnison; it is only a road connection that day.",
+        "source_turn": 1,
+        "quote": "Gunnison is only a road connection that day, with no overnight or sightseeing visit."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Denver is the sole sightseeing destination in the reference plan; Gunnison is on a driving route, not a sightseeing stop."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The Denver accommodation is Harlem cozy nights, listed as Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "Harlem cozy nights has a review rate number of 4."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "satisfied",
+        "evidence": "The listed travel legs are self-driving, consistent with using the traveler's own car."
+      },
+      {
+        "gold_field": "launch at Gunnison",
+        "status": "satisfied",
+        "evidence": "The itinerary includes driving from Gunnison to Moab on the return leg."
+      }
+    ],
+    "annotation_issues": [
+      "The dialogue explicitly requests an apartment stay only March 19-22, but the gold constraints omit accommodation_stay and the no-unused-nights requirement.",
+      "The dialogue specifies the March 23 return through Gunnison, with no overnight or sightseeing visit there and driving/rest breaks only; the gold constraints omit the return-route and schedule requirements.",
+      "The reference plan schedules a Denver-to-Gunnison drive on March 21, although the dialogue places Gunnison on the way home on March 23. The reference plan therefore conflicts with the stated timing of the Gunnison passage."
+    ]
+  },
+  "out_of_scope_fields": []
+}

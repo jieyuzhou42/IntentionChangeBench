@@ -1,0 +1,202 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21637,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 (Phoenix→Billings @12:24)",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "L'Angoor (Cafe/Pizza/Indian)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Tsui Wong (Seafood)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! (Private room)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Holy Smoke (Cafe/Indian)",
+        "record_name": "Holy Smoke",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Elation (Seafood)",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chakhnaa Wala (Mediterranean)",
+        "record_name": "Chakhnaa Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! (Private room)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3799751 (Billings→Phoenix @16:33)",
+        "record_name": "F3799751",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "L'Angoor (Cafe/Pizza)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Holy Smoke (Cafe/Indian)",
+        "record_name": "Holy Smoke",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-18, 2022-03-19, and 2022-03-20.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on both nights.",
+        "note": "The accommodation capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 has OriginCityName Phoenix.",
+        "note": "The outbound flight departs from Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 has DestCityName Billings; the itinerary's current city is Billings throughout.",
+        "note": "The destination is Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Billings as the current city for all three days.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-18, and F3804883 is dated 2022-03-18.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-20, and F3799751 is dated 2022-03-20.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3804883 is a Phoenix-to-Billings flight on 2022-03-18, departing at 12:24.",
+        "note": "It matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3799751 is a Billings-to-Phoenix flight on 2022-03-20, departing at 16:33.",
+        "note": "It matches the requested return route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on 2022-03-18 and 2022-03-19, with no accommodation listed on 2022-03-20.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing's record gives room type Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant ratings are L'Angoor 3.5, Tsui Wong 3.8, Holy Smoke 3.6, Elation 3.8, and Chakhnaa Wala 3.5.",
+        "note": "Every restaurant meal in the plan meets the 3.5 minimum; empty meal slots do not count against it."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "Violates must-have: No entire-home accommodations available for 2-night stay."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

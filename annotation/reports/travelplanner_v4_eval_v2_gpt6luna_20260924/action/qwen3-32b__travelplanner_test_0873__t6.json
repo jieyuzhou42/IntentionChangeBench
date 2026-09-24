@@ -1,0 +1,217 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25953,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving (from Charlotte)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "simple breakfasts at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "sit-down restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "sit-down restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "local travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "simple breakfasts at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "sit-down restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "sit-down restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "local travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "simple breakfasts at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "sit-down restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "sit-down restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "local travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "simple breakfasts at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "sit-down restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "sit-down restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving (to Charlotte)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "packed breakfast",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Mardi Gras World was rescheduled to the last day before travel",
+        "effect": "Move Mardi Gras World from March 13 to March 12, the day before the drive home."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Each itinerary day lists New Orleans as the current city.",
+        "note": "The plan is based in one city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The matched accommodation, Lovely One bedroom apartment 20 min to Manhattan, is listed as Entire home/apt.",
+        "note": "The same entire-apartment listing is booked for each of the four accommodation nights."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The action says Mardi Gras World was rescheduled to the last day before travel, placing it on March 12; March 13 is the drive-to-Charlotte day.",
+        "note": "After applying the explicit revision, March 13 has no sightseeing."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "March 9–12 list simple breakfasts at the apartment and sit-down lunches and dinners; March 13 lists a packed breakfast and no lunch or dinner.",
+        "note": "The March 9 sit-down meals are permitted on a drive day, and the March 13 packed breakfast is permitted during the drive."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "March 10–12 each list two attractions after the revision; no seated rest break between major attractions is listed on those sightseeing days.",
+        "note": "The stop-count limit is met and neither The Cabildo nor The Singing Oak is scheduled, but the baseline activity requirement for a seated break is not shown."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate transportation records provide self-driving routes from Charlotte to New Orleans (10 hours 28 minutes) and New Orleans to Charlotte (10 hours 27 minutes); the itinerary specifies self-driving for both.",
+        "note": "Both intercity legs use the requested self-drive mode."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation candidates are labeled as being in New Orleans, but several listing names refer to New York locations, including the matched 'Lovely One bedroom apartment 20 min to Manhattan'; the record location data is inconsistent."
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22715,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180 (10:13-12:17) Panama City to Chicago",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-catering/packed or purchase at airport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "FIO Cookhouse and Bar",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Newly Renovated Greenpoint Abode",
+        "record_name": "Newly Renovated Greenpoint Abode",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pantry d'or",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mini's Royal Cafe",
+        "record_name": "Mini's Royal Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Newly Renovated Greenpoint Abode",
+        "record_name": "Newly Renovated Greenpoint Abode",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Chicago to Panama City (user arranged)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Pantry d'or",
+        "record_name": "Pantry d'or",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary is dated 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Newly Renovated Greenpoint Abode has maximum occupancy 7 and is booked for both nights.",
+        "note": "The booked capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Panama City as the origin; the return is described as a self-drive to Panama City.",
+        "note": "The plan departs from and returns to Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180's record lists Chicago as the destination, and the itinerary places the stay and sightseeing in Chicago.",
+        "note": "Chicago is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and sightseeing city is Chicago.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-12.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3948180 is dated 2022-03-12, from Panama City to Chicago, with departure time 10:13.",
+        "note": "The booked flight matches the requested route, date, and departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 14 transportation slot says \"Self-drive from Chicago to Panama City (user arranged)\"; the user specified own car.",
+        "note": "The plan uses the requested self-drive return."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The March 12 itinerary includes the attraction Millennium Park, while the activity requirement limits sightseeing to March 13.",
+        "note": "Sightseeing is scheduled outside the permitted day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Newly Renovated Greenpoint Abode is listed on March 12 and March 13; March 14 has no accommodation.",
+        "note": "The plan books the two requested nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

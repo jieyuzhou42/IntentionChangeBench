@@ -1,0 +1,90 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20513,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 departs Atlanta at 09:37, arrives in Bozeman at 11:50",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Dinner at Jiquitaia",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private Guest Loft in a Sunny Etsy-Lovers Apt (price: $481)",
+        "record_name": "Private Guest Loft in a Sunny Etsy-Lovers Apt",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 departs Bozeman at 13:08, arrives in Atlanta at 18:37",
+        "record_name": "F3500979",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1, Day 2, and Day 3.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 2.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has OriginCityName Atlanta.",
+        "note": "The plan starts in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "violated",
+        "evidence": "Flight F3500979 has DestCityName Atlanta.",
+        "note": "The itinerary ends with a return to Atlanta rather than ending in Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Bozeman; the flights show Atlanta as the origin and return destination.",
+        "note": "Bozeman is the only visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has FlightDate 2022-03-25.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500979 has FlightDate 2022-03-27.",
+        "note": "The itinerary's final travel day is the requested date."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

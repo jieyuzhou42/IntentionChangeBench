@@ -1,0 +1,189 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 26112,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving to New Orleans",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "packed food or quick-service stop",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "packed food or quick-service stop",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Shenanigan's Irish Pub",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jimmy's Pancake House",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sage",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving to Charlotte",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "simple breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "packed food or quick-service stop",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "packed food or quick-service stop",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New Orleans as the destination on days 2–5, with no other destination city.",
+        "note": "Charlotte is the trip's origin/return city; the plan visits one city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Lovely One bedroom apartment 20 min to Manhattan, has room type Entire home/apt.",
+        "note": "The listing's recorded room type matches the requested value."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 13 lists no attraction.",
+        "note": "The itinerary leaves the departure day free of sightseeing."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Breakfasts are listed as simple apartment breakfasts; March 10 and 11 lunches and dinners are restaurant meals; March 9 and 13 meals are packed food or quick-service stops.",
+        "note": "The sightseeing-day meals are restaurant meals and the long-drive days allow packed or quick-service food."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "March 10 and 11 each list two attractions, and neither The Cabildo nor The Singing Oak is included. No seated rest break is listed between attractions.",
+        "note": "The stop limit and drop-priority requirements are met, but the baseline activity requirements also call for a seated break between major attractions."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate transportation records provide self-driving routes from Charlotte to New Orleans and from New Orleans to Charlotte.",
+        "note": "Both listed intercity legs are self-drive."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

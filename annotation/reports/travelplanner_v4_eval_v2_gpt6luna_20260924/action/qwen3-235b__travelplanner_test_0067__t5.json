@@ -1,0 +1,165 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23084,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600 from Fort Lauderdale (13:06) to Charlotte Amalie (15:39), $291",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Kabab Roll Cafe, $86, rating 3.8",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "[Unavailable] No eligible accommodation found for 2 nights with entire home/apt, rating ≥4.5, min 2-night stay",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Maharaja Restaurant, $59, rating 3.6",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Kabab Roll Cafe, $86, rating 3.8",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "[Unavailable] No eligible accommodation found for 2 nights with entire home/apt, rating ≥4.5, min 2-night stay",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128 from Charlotte Amalie (16:10) to Fort Lauderdale (18:55), $263",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Maharaja Restaurant, $59, rating 3.6",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked on either night.",
+        "note": "The booked accommodations provide no capacity for the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 departs Fort Lauderdale.",
+        "note": "The outbound origin matches."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 arrives in Charlotte Amalie; the itinerary lists Charlotte Amalie as the current city.",
+        "note": "The destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Charlotte Amalie as the only visited city.",
+        "note": "One visiting city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3618600 is dated 2022-03-16, and the itinerary begins that day.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record F3619128 is dated 2022-03-18, and the itinerary ends that day.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3618600 is Fort Lauderdale to Charlotte Amalie on 2022-03-16, departing at 13:06.",
+        "note": "The listed outbound flight matches the required route, date, and departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3619128 is Charlotte Amalie to Fort Lauderdale on 2022-03-18, departing at 16:10.",
+        "note": "The listed return flight matches the required route, date, and departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The March 16 and March 17 accommodation slots both state that no eligible accommodation was found; neither night has a booked listing.",
+        "note": "The required two nights are not booked."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Kabab Roll Cafe has Aggregate Rating 3.8 and Maharaja Restaurant has Aggregate Rating 3.6 in the candidate records.",
+        "note": "Every restaurant meal meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked. The 5.0-rated The Wielingen is a Private room, not a booked listing.",
+        "note": "No booked accommodation satisfies the 4.5 rating requirement."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked; the action says no eligible Entire home/apt was found.",
+        "note": "There is no booked listing with the required room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "No accommodation meets 'Entire home/apt', rating ≥4.5, and ≤2-night minimum."
+      },
+      {
+        "gold_field": "room_type",
+        "quote": "Compromising on room type violates must-have"
+      }
+    ],
+    "annotation_issues": [
+      "Several accommodation listing names refer to NYC locations, although their candidate records label the city as Charlotte Amalie; this is a potential location metadata inconsistency."
+    ]
+  }
+}

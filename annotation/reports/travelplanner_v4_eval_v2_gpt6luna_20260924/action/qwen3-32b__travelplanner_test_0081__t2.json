@@ -1,0 +1,96 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21909,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073 (10:37 departure, 12:59 arrival)",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cleveland",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC. So Spacious!",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247 (21:20 departure, 23:34 arrival)",
+        "record_name": "F3559247",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-02, 2022-03-03, and 2022-03-04.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The Day 1 accommodation text “Cleveland” matches no listing; the Day 2 listing has maximum occupancy 1.",
+        "note": "There is no matched listing capacity for the Day 1 night."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3915073 is recorded from Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The plan uses the specified flight and its departure is not overly early."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The plan lists “Cleveland” on Day 1 and “Rare gem of an apartment in NYC.  So Spacious!” on Day 2; neither is “Richmond Hill 3 Bedroom apartment in Private home!”",
+        "note": "The requested accommodation is not booked in the itinerary."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The matched Day 2 listing has room type “Private room”; Day 1 has no matched listing.",
+        "note": "The booked listing does not have the requested room type, Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Day 2 listing has review rate number 5; the Day 1 accommodation text “Cleveland” matches no listing.",
+        "note": "The Day 1 lodging has no matching record that can satisfy the rating-5 requirement."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "Day 1 attraction is “-”.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is “-”.",
+        "note": "No restaurant lunch is planned on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

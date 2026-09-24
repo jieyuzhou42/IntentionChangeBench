@@ -1,0 +1,190 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23247,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Tulsa to Phoenix (935 miles)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Self-catering at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Self-catering at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Self-catering at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Phoenix to Tulsa (935 miles)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed food",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 6, March 7, and March 8, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked entire-home listing has maximum occupancy 8.",
+        "note": "The listing can host one traveler, and the plan does not assume a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says self-driving from Tulsa to Phoenix.",
+        "note": "Tulsa is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The plan travels to Phoenix and lists Phoenix as the city on Day 2.",
+        "note": "Phoenix is the stated destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Phoenix is the only destination city listed.",
+        "note": "The itinerary visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-06.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-08.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "unknown",
+        "evidence": "The plan says “Self-driving from Tulsa to Phoenix (935 miles)” on 2022-03-06, but does not identify the vehicle as the traveler's own car.",
+        "note": "The driving mode, route, and date match; ownership is not stated."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "unknown",
+        "evidence": "The plan says “Self-driving from Phoenix to Tulsa (935 miles)” on 2022-03-08, but does not identify the vehicle as the traveler's own car.",
+        "note": "The driving mode, route, and date match; ownership is not stated."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same accommodation is listed for March 6 and March 7, with none required on departure day March 8.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The candidate listing's room type is “Entire home/apt.”",
+        "note": "Matches the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan chooses self-driving, and its rationale says flights would push lodging plus air to $2,139 before meals while driving protects the entire-home room type.",
+        "note": "Driving is explicitly acceptable to protect the room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "transportation",
+        "quote": "Unmet preferred conditions: F3996733 midday outbound and afternoon flight home."
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation candidate records are returned for Phoenix but several listing names reference New York locations; the selected listing name specifically references JFK-Manhattan, creating a destination-data inconsistency."
+    ]
+  }
+}

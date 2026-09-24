@@ -1,0 +1,143 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20670,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Billings",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "L'Angoor",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Holy Smoke",
+        "record_name": "Holy Smoke",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Elation",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "和缘浪漫民宿",
+        "record_name": "和缘浪漫民宿",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3799751",
+        "record_name": "F3799751",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days 1, 2, and 3.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The March 18 accommodation slot says \"Billings\" and has no matching listing; the March 19 listing 和缘浪漫民宿 has maximum occupancy 1.",
+        "note": "The records do not establish capacity for every booked night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 departs Phoenix.",
+        "note": "The outbound itinerary begins in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 arrives in Billings; the return flight departs Billings.",
+        "note": "Billings is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Billings and has no other destination city.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 has FlightDate 2022-03-18.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3799751 has FlightDate 2022-03-20.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3804883 is a Phoenix-to-Billings flight on 2022-03-18 (12:24–15:50).",
+        "note": "The listed outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3799751 is a Billings-to-Phoenix flight on 2022-03-20 (16:33–18:15).",
+        "note": "The listed return flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation slots are populated on day 1 (March 18) and day 2 (March 19); day 3 is the departure day.",
+        "note": "The plan includes accommodation on both requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The matched March 19 listing 和缘浪漫民宿 is a Private room; the March 18 slot has no matching listing.",
+        "note": "No booked listing is established as Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "L'Angoor has Aggregate Rating 3.5, Holy Smoke 3.6, and Elation 3.8.",
+        "note": "Every restaurant meal in the plan meets the 3.5 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The March 18 accommodation slot is only the city name \"Billings\" and has no matching accommodation record, so its listing and attributes cannot be audited."
+    ]
+  }
+}

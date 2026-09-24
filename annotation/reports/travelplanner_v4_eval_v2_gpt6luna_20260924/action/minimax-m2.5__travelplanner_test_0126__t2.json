@@ -1,0 +1,129 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31580,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving from Providence (cost: $62)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Williamsburg! (Private room, 5 stars, $400, 2 guests)",
+        "record_name": "Private Bedroom in Williamsburg!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Dunkin' Donuts ($25)",
+        "record_name": "Dunkin' Donuts",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bandit Burrito ($26)",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Moonie's Texas Barbecue ($38)",
+        "record_name": "Moonie's Texas Barbecue",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Williamsburg! (Private room, 5 stars, $400, 2 guests)",
+        "record_name": "Private Bedroom in Williamsburg!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving from Wilmington to Fayetteville (cost: $7)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Brownstone Studio (Entire home/apt, 4 stars, $396, 3 max occupancy)",
+        "record_name": "Brownstone Studio",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "DiVine ($32)",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Eat Street ($63)",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "The Great Indian Pub ($95)",
+        "record_name": "The Great Indian Pub",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Brownstone Studio (Entire home/apt, 4 stars, $396, 3 max occupancy)",
+        "record_name": "Brownstone Studio",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving from Fayetteville to Providence (cost: $58)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Williamsburg! has maximum occupancy 2; Brownstone Studio has maximum occupancy 3.",
+        "note": "Each city's nightly listing can host both travelers, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Private Bedroom in Williamsburg! is a Private room; Brownstone Studio is Entire home/apt.",
+        "note": "The preferred private-room type is not met for the Fayetteville stay."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Williamsburg! has review rate number 5; Brownstone Studio has review rate number 4.",
+        "note": "Both booked listings meet the 4+ rating preference."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

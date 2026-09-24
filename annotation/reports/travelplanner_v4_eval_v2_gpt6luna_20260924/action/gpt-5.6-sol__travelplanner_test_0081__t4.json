@@ -1,0 +1,207 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24302,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073 from Tampa to Cleveland, departing 10:37 and arriving 12:59; fare $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast in Tampa before departure (cost unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch carried from Tampa (cost unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Makhan Fish and Chicken Corner — Chinese cuisine, average cost $25",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — rating 5, first of 2 nights at $565 per night",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "No intercity journey; remain in Cleveland, with local transfers unpriced",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered packed breakfast at the accommodation (cost unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Self-catered packed lunch (cost unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Self-catered packed dinner (cost unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — rating 5, second of 2 nights at $565 per night",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043 from Cleveland to Tampa, departing 07:19 and arriving 09:36; fare $336",
+        "record_name": "F3905043",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed breakfast before the flight (cost unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed lunch in Tampa (cost unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed dinner in Tampa (cost unpriced)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 2, March 3, and March 4, 2022.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 4 on both nights.",
+        "note": "Each night's listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3915073 is listed for March 2 from Tampa to Cleveland, departing 10:37 and arriving 12:59.",
+        "note": "The selected outbound flight matches the requested flight and times."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 includes “The Cleveland Museum of Art”; Day 2 includes “Rock & Roll Hall of Fame”; the return flight departs Day 3 at 07:19.",
+        "note": "Day 1 is not reserved for arrival and rest because sightseeing is scheduled."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The plan lists The Cleveland Museum of Art on Day 1 and Rock & Roll Hall of Fame on Day 2; it lists no Cleveland Cultural Gardens and no Day 3 attraction.",
+        "note": "The Cleveland Cultural Gardens are not scheduled, and sightseeing appears on Day 1 rather than being kept on Day 2."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is “Packed lunch carried from Tampa” and Day 3 lunch is “Packed lunch in Tampa.”",
+        "note": "Neither day has a planned restaurant lunch."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "Both nights name “Richmond Hill 3 Bedroom apartment in Private home!”",
+        "note": "The booked listing matches the requested accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is “Entire home/apt.”",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The rating meets the requested value of 5."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3905043, departing 07:19 and arriving 09:36; the requested flight is F3623037, departing 08:40 and arriving 10:57.",
+        "note": "The selected return flight is not the requested flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast is “Packed breakfast before the flight.”",
+        "note": "No restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists “The Cleveland Museum of Art.”",
+        "note": "Sightseeing is scheduled on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is “Packed lunch carried from Tampa.”",
+        "note": "No restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "The record for F3905043 gives an arrival time of 09:36 in Tampa.",
+        "note": "The flight arrives before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "budget",
+        "quote": "Therefore, the $1,800 cap is unavoidably exceeded by at least $17"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

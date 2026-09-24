@@ -1,0 +1,229 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 5,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 607.0,
+      "budget": 1800,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20060,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 1800
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Minneapolis"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Jacksonville"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-27"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-29"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-driving from Minneapolis to Jacksonville"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Outbound travel on 2022-03-27"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "Use own car"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Self-driving from Jacksonville to Minneapolis"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "Return travel on 2022-03-29"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "Use own car"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "schedule",
+        "value": "2022-03-27 reserved for intercity driving"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "schedule",
+        "value": "2022-03-29 reserved for intercity driving"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "schedule",
+        "value": "Sightseeing only on 2022-03-28"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "accommodation_stay",
+        "value": "2 nights, on 2022-03-27 and 2022-03-28"
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "accommodation_rating",
+        "value": 3.5
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-27",
+        "requirement": "Drive from Minneapolis toward Jacksonville.",
+        "source_turn": 1,
+        "quote": "I'm driving out on the 27th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-29",
+        "requirement": "Drive back from Jacksonville toward Minneapolis.",
+        "source_turn": 1,
+        "quote": "back on the 29th"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-28",
+        "requirement": "The 28th is the only day available for sightseeing.",
+        "source_turn": 1,
+        "quote": "the 28th is the only day I've really got"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers 2022-03-27 through 2022-03-29, three days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan books one unit with maximum occupancy 2 for one traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound plan starts in Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The plan's destination and overnight city is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Jacksonville is the only destination city in the plan."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The plan begins on 2022-03-27."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return is planned for 2022-03-29."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Minneapolis to Jacksonville on 2022-03-27 in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Jacksonville to Minneapolis on 2022-03-29 by car."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "The plan schedules intercity driving on March 27 and 29 and lists no sightseeing on those days; it lists no attraction on March 28 either."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in 2022-03-27 and check-out 2022-03-29, covering two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The booked listing is a Private room, not an Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The booked listing has a review rating of 4.0, meeting the 3.5 requirement."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

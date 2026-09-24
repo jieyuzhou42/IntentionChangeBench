@@ -1,0 +1,168 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20919,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 (Phoenix->Billings)",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Govardhan ($59)",
+        "record_name": "Govardhan",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Holy Smoke ($38)",
+        "record_name": "Holy Smoke",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! (Private room)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "L'Angoor ($19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Express ($43)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tsui Wong ($40)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! (Private room)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3799751 (Billings->Phoenix)",
+        "record_name": "F3799751",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "L'Angoor ($19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Chakhnaa Wala ($58)",
+        "record_name": "Chakhnaa Wala",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary contains March 18, 19, and 20, 2022.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Billings accommodation has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the dialogue says the trip is for only the user."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 is from Phoenix to Billings.",
+        "note": "The origin is Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 is from Phoenix to Billings; the return flight departs Billings.",
+        "note": "Billings is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination-day city is Billings.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is 2022-03-18 and lists the outbound flight on that date.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is 2022-03-20 and lists the return flight on that date.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804883 is a Phoenix-to-Billings flight dated 2022-03-18.",
+        "note": "It matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3799751 is a Billings-to-Phoenix flight dated 2022-03-20.",
+        "note": "It matches the requested return route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed for March 18 and March 19, with none needed on the March 20 departure day.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing's room type is Private room.",
+        "note": "The preferred room type is Entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "Sacrificed preferred 'entire home' requirement due to minimum night constraints."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

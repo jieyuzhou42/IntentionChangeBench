@@ -1,0 +1,90 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20552,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Depart at 13:06 from Fort Lauderdale to Charlotte Amalie (F3618600)",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Check out",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Elegant Studio in the Heart of Harlem (price: $371)",
+        "record_name": "Elegant Studio in the Heart of Harlem",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Depart at 16:10 from Charlotte Amalie to Fort Lauderdale (F3619128)",
+        "record_name": "F3619128",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists days 1, 2, and 3.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Day 1 accommodation is listed as \"Check out\" with no matching listing; the only booked listing is Elegant Studio in the Heart of Harlem, with maximum occupancy 2, on day 2.",
+        "note": "The itinerary does not book lodging for every night of the trip, so it does not show capacity for one traveler on each night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 lists OriginCityName Fort Lauderdale and DestCityName Charlotte Amalie.",
+        "note": "The outbound flight departs from the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 lists DestCityName Charlotte Amalie; the day 2 and day 3 itinerary cities are also Charlotte Amalie.",
+        "note": "The plan travels to the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Fort Lauderdale on day 1 and Charlotte Amalie on days 2 and 3; the accommodation record is listed in Charlotte Amalie.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 has FlightDate 2022-03-16.",
+        "note": "The outbound travel date matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 has FlightDate 2022-03-18.",
+        "note": "The return travel date matches the requested end date."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

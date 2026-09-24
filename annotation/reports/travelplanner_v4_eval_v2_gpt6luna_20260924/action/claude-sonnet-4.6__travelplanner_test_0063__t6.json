@@ -1,0 +1,206 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23427,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4031463, Denver→Oakland, departs 08:39, arrives 10:13, $255 (morning flight)",
+        "record_name": "F4031463",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Denver before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi, Oakland (Aggregate Rating 4.4, avg cost $52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi, Oakland (Aggregate Rating 4.4, avg cost $52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow (Entire home/apt, rating 5.0, $222/night, min 3 nights)",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering at Historic Far Rockaway Beach Bungalow",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi, Oakland (Aggregate Rating 4.4, avg cost $52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi, Oakland (Aggregate Rating 4.4, avg cost $52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow (night 2, $222)",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "No return flight found in search results for 2022-03-28 or 2022-03-29 (Denver↔Oakland). Return flight is UNRESOLVED — see rationale.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering at Historic Far Rockaway Beach Bungalow before checkout",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi, Oakland (Aggregate Rating 4.4, avg cost $52) if departure is delayed",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow (night 3, $222; minimum 3 nights required — satisfies user's offer to pay for a third night)",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 26, March 27, and March 28.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked bungalow has maximum occupancy 2.",
+        "note": "The one traveler is within the listing's capacity."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName Denver.",
+        "note": "The trip departs from Denver."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName Oakland; the accommodation and restaurant records also list Oakland.",
+        "note": "The destination is Oakland."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The plan lists Oakland as the destination and stay city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-26 and the itinerary's first day is 2022-03-26.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's third day is 2022-03-28.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4031463 is Denver to Oakland on 2022-03-26, departing 08:39.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The Day 3 transportation slot says the return flight is unresolved and names no flight; no Oakland-to-Denver flight record is supplied for 2022-03-28.",
+        "note": "The plan does not provide the required return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The bungalow is listed for nights 1, 2, and 3, beginning 2022-03-26; its recorded minimum is 3 nights.",
+        "note": "Three nights are booked, with the third night on the departure date as permitted."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The Day 3 transportation slot says the return flight is unresolved and provides no arrival time in Denver.",
+        "note": "The plan does not establish arrival in Denver by noon on 2022-03-28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow is recorded as Entire home/apt.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow has review rate number 5.0.",
+        "note": "The listing meets the 5.0 rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Cho Gao - Crowne Plaza Abu Dhabi has Aggregate Rating 4.4.",
+        "note": "Every restaurant meal listed from the records uses this restaurant, which meets the 4.0 minimum."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "The user's requirement of a pre-noon return on Mar 28 cannot be fulfilled from available data."
+      },
+      {
+        "gold_field": "schedule",
+        "quote": "The user's requirement of a pre-noon return on Mar 28 cannot be fulfilled from available data."
+      }
+    ],
+    "annotation_issues": [
+      "The transportation candidate records contain an outbound search for 2022-03-26 and a no-flight result for 2022-03-29, but no return-flight search results for the requested 2022-03-28 date."
+    ]
+  }
+}

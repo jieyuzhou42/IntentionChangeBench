@@ -1,0 +1,181 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22838,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164, Houston→Reno, depart 09:50, arrive 12:04, $688",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catering / at Houston airport before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Bistro (Tea, Cafe, Pizza, BBQ; rating 3.9, avg $66) — best non-Fast-Food option on arrival day",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Mustake Multicuisine Restaurant (Tea, Bakery, Pizza, Mediterranean; rating 3.7, avg $91)",
+        "record_name": "Mustake Multicuisine Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse (Entire home/apt, min 2 nights, rating 5.0, $361/night)",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Queens Cakes (Bakery, Desserts, Indian, BBQ; rating 3.5, avg $58)",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Nagpal's (Bakery, Mexican, Pizza, Seafood; rating 3.4, avg $79)",
+        "record_name": "Nagpal's",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Olive Bistro (Tea, Cafe, Pizza, BBQ; rating 3.9, avg $66)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse (night 2, $361)",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705, Reno→Houston, depart 12:58, arrive 18:31, $446",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Queens Cakes (Bakery, Desserts, Indian, BBQ; rating 3.5, avg $58)",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/self-catering at airport before 12:58 departure",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-11 through 2022-03-13.",
+        "note": "It contains three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Reno listing has maximum occupancy 2 on both nights.",
+        "note": "The lodging capacity covers one traveler, and the plan assumes no larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound record lists Houston as OriginCityName.",
+        "note": "The trip departs from Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound record lists Reno as DestCityName.",
+        "note": "The destination is Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels to Reno and returns from Reno.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-11.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record has FlightDate 2022-03-13.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3879164 flies Houston to Reno on 2022-03-11 and departs at 09:50.",
+        "note": "The selected outbound flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3875705 flies Reno to Houston on 2022-03-13 and departs at 12:58.",
+        "note": "The selected return flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Reno accommodation is listed on 2022-03-11 and 2022-03-12; the listing minimum is 2 nights.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Restaurant records show ratings of 3.9 for Olive Bistro, 3.7 for Mustake Multicuisine Restaurant, 3.5 for Queens Cakes, and 3.4 for Nagpal's.",
+        "note": "Restaurant meals fall below the requested 4.0 rating floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The listed Reno restaurant meals are Olive Bistro, Mustake Multicuisine Restaurant, Queens Cakes, and Nagpal's; none has Fast Food in its recorded Cuisines.",
+        "note": "The other meal slots are self-catered or packed, not restaurant meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "the ≥4.0 rating is sacrificed"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22894,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600, Fort Lauderdale to Charlotte Amalie, 13:06-15:39, $291",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Kabab Roll Cafe (rating 3.8, $86)",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "The Wielingen (Private room, rating 5.0, $672)",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Kabab Roll Cafe (rating 3.8, $65)",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Maharaja Restaurant (rating 3.6, $59)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Kabab Roll Cafe (rating 3.8, $86)",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "The Wielingen (Private room, rating 5.0, $672)",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128, Charlotte Amalie to Fort Lauderdale, 16:10-18:55, $263",
+        "record_name": "F3619128",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 originates in Fort Lauderdale.",
+        "note": "The outbound trip starts from the requested city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 arrives in Charlotte Amalie; the itinerary's destination city is Charlotte Amalie.",
+        "note": "The plan visits the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Both overnight accommodations and the listed restaurant meals are in Charlotte Amalie.",
+        "note": "The itinerary visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists FlightDate 2022-03-16.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record lists FlightDate 2022-03-18.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3618600 is Fort Lauderdale to Charlotte Amalie on 2022-03-16, departing 13:06.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3619128 is Charlotte Amalie to Fort Lauderdale on 2022-03-18, departing 16:10.",
+        "note": "It matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen is listed for March 16 and March 17; its minimum nights is 1.",
+        "note": "The plan books both requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Kabab Roll Cafe has Aggregate Rating 3.8 and Maharaja Restaurant has Aggregate Rating 3.6.",
+        "note": "Every restaurant meal listed meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has review rate number 5.0.",
+        "note": "The listing meets the 4.5 rating floor."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The Wielingen's record lists its room type as Private room.",
+        "note": "The required room type is Entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

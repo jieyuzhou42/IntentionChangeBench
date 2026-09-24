@@ -1,0 +1,143 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22390,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733 departing 11:28 arriving 13:07 ($195)",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Village Restaurant (rating 3.7, below 4.0 - not selected. Need restaurant with 4.0+ rating)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan (Entire home/apt, $834 x 2 nights = $1,668)",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "violated",
+        "evidence": "The itinerary contains only March 6, 2022.",
+        "note": "The plan lists one day, not three."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 8.",
+        "note": "Its capacity covers one traveler, and the plan does not assume a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3996733 is from Tulsa to Phoenix.",
+        "note": "The listed origin is Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3996733 is from Tulsa to Phoenix; the accommodation record is in Phoenix.",
+        "note": "Phoenix is the listed destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The plan's destination and accommodation city are Phoenix.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's only entry is March 6, 2022.",
+        "note": "The listed start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "The itinerary has no March 8 entry or return transportation slot.",
+        "note": "The plan does not include the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books Flight F3996733, which departs Tulsa at 11:28 and arrives in Phoenix at 13:07 on March 6.",
+        "note": "The required outbound mode is self-driving in the traveler's own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "There is no return transportation slot on March 8.",
+        "note": "The required self-driving return from Phoenix to Tulsa is absent."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on March 6; there is no accommodation on March 7.",
+        "note": "Only one itinerary night is booked, rather than the requested nights of March 6 and 7."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "It matches the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan books Flight F3996733.",
+        "note": "The plan uses flying, the stated preference."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Village Restaurant has Aggregate Rating 3.7; the slot text also says it was not selected.",
+        "note": "The listed rating exceeds the gold floor of 3.5; if the slot is not a booked meal, it provides no contrary restaurant evidence."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Village Restaurant's Cuisines are Tea, Cafe, Desserts, Italian, with no Fast Food tag.",
+        "note": "The only named restaurant does not carry the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "The itinerary has no March 7 breakfast, lunch, or dinner entries.",
+        "note": "It does not provide three different restaurants across those meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Cannot find restaurants meeting 4.0+ rating requirement in available data."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

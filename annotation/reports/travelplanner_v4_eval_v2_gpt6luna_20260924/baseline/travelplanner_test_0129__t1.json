@@ -1,0 +1,127 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 1,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "violated",
+      "total": 3109.0,
+      "budget": 2500,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33533,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "$2,500"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "city_sequence",
+        "value": "Visit Phoenix, then Flagstaff."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "accommodation_stay",
+        "value": "Stay in Phoenix on 2022-03-16 and 2022-03-17."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "accommodation_stay",
+        "value": "Stay in Flagstaff on 2022-03-18 and 2022-03-19."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "room_type",
+        "value": "Private room."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "accommodation_rating",
+        "value": "3+."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "outbound_transportation",
+        "value": "Fly from Sioux Falls to Phoenix on March 16, 2022."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "outbound_transportation",
+        "value": "Arrive in Phoenix by 21:00 on March 16, 2022."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "intercity_transportation",
+        "value": "Fly from Phoenix to Flagstaff on March 18, 2022."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "intercity_transportation",
+        "value": "Arrive in Flagstaff by 12:00 on March 18, 2022."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "return_transportation",
+        "value": "The one-way visit ends in Flagstaff on March 20, 2022; no return journey belongs to this itinerary."
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "status": "violated",
+        "evidence": "The plan goes to Flagstaff first, then Phoenix, rather than Phoenix followed by Flagstaff."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "violated",
+        "evidence": "The plan places the Flagstaff accommodation on March 16–17 and the Phoenix accommodation on March 18–19, opposite the requested city/date stays."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The Flagstaff listing is a private room, but the Phoenix listing is an entire home/apt, not a private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The booked listings have ratings 3 in Flagstaff and 5 in Phoenix, both meeting 3+."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "F4045477 flies Sioux Falls to Phoenix on March 16 and arrives at 19:26, before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "status": "satisfied",
+        "evidence": "F3804854 flies Phoenix to Flagstaff on March 18 and arrives at 09:47, before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "violated",
+        "evidence": "The March 20 current_city states Phoenix → Sioux Falls, indicating a return journey despite the one-way itinerary requirement."
+      }
+    ],
+    "annotation_issues": [
+      "The gold_delta rationale says to keep $5,000, but the dialogue sets a soft $2,500 budget and the latest user turn does not change it."
+    ]
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,161 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22236,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511, Lihue->San Francisco, dep 13:08 arr 21:32, $867",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Tokyo Sushi (San Francisco, rating 3.7, $18)",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Room in Down town Brooklyn Parkslop (Private room, $79/night)",
+        "record_name": "Room in Down town Brooklyn Parkslop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Sudarshan (San Francisco, rating 3.7, $53)",
+        "record_name": "Sudarshan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ustad Moinuddin Kebab (San Francisco, rating 3.7, $50)",
+        "record_name": "Ustad Moinuddin Kebab",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tokyo Sushi (San Francisco, rating 3.7, $18)",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Room in Down town Brooklyn Parkslop (Private room, $79/night)",
+        "record_name": "Room in Down town Brooklyn Parkslop",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709, San Francisco->Lihue, dep 09:10, $1204",
+        "record_name": "F3870709",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Tokyo Sushi (San Francisco, rating 3.7, $18)",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-27 through 2022-03-29, three days.",
+        "note": "Three itinerary days are listed."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler on both nights, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 lists Lihue as the origin city.",
+        "note": "The trip starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 lists San Francisco as the destination city.",
+        "note": "The itinerary travels to San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists San Francisco as its destination and only visiting city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F3880511 has FlightDate 2022-03-27.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F3870709 has FlightDate 2022-03-29.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3880511 is Lihue to San Francisco on 2022-03-27, arriving at 21:32.",
+        "note": "The selected outbound flight matches the requested route, date, and arrival time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3870709 is San Francisco to Lihue on 2022-03-29, departing at 09:10.",
+        "note": "The selected return flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on 2022-03-27 and 2022-03-28; no accommodation is listed on departure day.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The listing's recorded room type is Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Tokyo Sushi, Sudarshan, and Ustad Moinuddin Kebab each have Aggregate Rating 3.7.",
+        "note": "Every restaurant meal in the plan meets the 3.7 rating floor."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-28, breakfast is Sudarshan, lunch is Ustad Moinuddin Kebab, and dinner is Tokyo Sushi.",
+        "note": "The three meals are at three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

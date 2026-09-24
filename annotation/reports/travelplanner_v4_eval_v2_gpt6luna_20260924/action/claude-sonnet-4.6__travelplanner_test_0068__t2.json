@@ -1,0 +1,184 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 3,
+  "prompt_chars": 24348,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180, Panama City → Chicago, departs 10:13, arrives 12:17, $212",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Panama City before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Gyan Vaishnav, Chicago ($14)",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "FIO Cookhouse and Bar, Chicago ($31) — shared cost note: over remaining meal budget; see rationale",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Discounted! Cute Unique 2BR Apartment in SoHo, Chicago – Night 1 ($781)",
+        "record_name": "Discounted! Cute Unique 2BR Apartment in SoHo",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit / walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gyan Vaishnav, Chicago ($14)",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bro's Kitchenette, Chicago ($38) — see rationale",
+        "record_name": "Bro's Kitchenette",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Gyan Vaishnav, Chicago ($14)",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Discounted! Cute Unique 2BR Apartment in SoHo, Chicago – Night 2 ($781)",
+        "record_name": "Discounted! Cute Unique 2BR Apartment in SoHo",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Chicago to Panama City (full day on the road)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Pantry d'or, Chicago (quick takeaway, $53) — see rationale",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/road food purchased at a convenience stop en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Arrive home Panama City; dinner at home",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on both nights.",
+        "note": "The capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 departs Panama City; the planned drive home is to Panama City.",
+        "note": "Panama City is the origin and return city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 arrives in Chicago, and the lodging and planned sightseeing are in Chicago.",
+        "note": "Chicago is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Chicago as the destination and sightseeing city.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's first day is 2022-03-12; flight F3948180 is dated 2022-03-12.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's third day is 2022-03-14 and lists the drive home that day.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3948180 is a Panama City–Chicago flight on 2022-03-12, departing 10:13 and arriving 12:17.",
+        "note": "It matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The Day 3 transportation says, \"Self-drive from Chicago to Panama City (full day on the road).\"",
+        "note": "The plan specifies the requested self-drive on 2022-03-14."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 includes an afternoon stroll to Millennium Park and Riverwalk; the activity requirements limit sightseeing to 2022-03-13.",
+        "note": "The plan includes sightseeing on 2022-03-12, outside the permitted sightseeing day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked for Night 1 on 2022-03-12 and Night 2 on 2022-03-13; its minimum nights is 2.",
+        "note": "Both requested nights are booked, meeting the two-night stay."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

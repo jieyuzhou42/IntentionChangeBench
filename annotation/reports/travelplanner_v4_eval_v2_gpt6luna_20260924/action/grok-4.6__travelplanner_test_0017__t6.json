@@ -1,0 +1,147 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22085,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511, Lihue to San Francisco, Dep 13:08, Arr 21:32, $867",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Spacious 1 bedroom in Woodlawn NYC",
+        "record_name": "Spacious 1 bedroom in Woodlawn NYC",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tokyo Sushi",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ustad Moinuddin Kebab",
+        "record_name": "Ustad Moinuddin Kebab",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sudarshan",
+        "record_name": "Sudarshan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Spacious 1 bedroom in Woodlawn NYC",
+        "record_name": "Spacious 1 bedroom in Woodlawn NYC",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709, San Francisco to Lihue, Dep 09:10, Arr 11:57, $1204",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary runs from 2022-03-27 through 2022-03-29, three days.",
+        "note": "It has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2; the requested party size is 1.",
+        "note": "The listing can host the traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 originates in Lihue.",
+        "note": "The itinerary starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 goes to San Francisco, and the 2022-03-29 return flight departs San Francisco.",
+        "note": "San Francisco is the trip destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits San Francisco between the Lihue outbound and return flights.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 is dated 2022-03-27.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3870709 is dated 2022-03-29.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3880511 is Lihue to San Francisco on 2022-03-27, departing 13:08 and arriving 21:32.",
+        "note": "The flight and landing time match the requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3870709 is San Francisco to Lihue on 2022-03-29, departing 09:10.",
+        "note": "The flight and departure time match the requirement."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-27 and 2022-03-28; no accommodation is listed on departure day 2022-03-29.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "The booked room type matches the requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Tokyo Sushi, Ustad Moinuddin Kebab, and Sudarshan each have Aggregate Rating 3.7.",
+        "note": "Each restaurant meal exceeds the gold rating floor of 3.4."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-28, breakfast is Tokyo Sushi, lunch is Ustad Moinuddin Kebab, and dinner is Sudarshan.",
+        "note": "The three meals are at three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

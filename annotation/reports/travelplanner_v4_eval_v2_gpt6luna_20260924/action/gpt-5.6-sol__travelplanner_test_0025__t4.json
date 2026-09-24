@@ -1,0 +1,188 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24277,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983 from Wilmington to New York, departing 20:26 and arriving 22:05; fare $113",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Breakfast at home in Wilmington",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Lunch at home in Wilmington",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Packed dinner brought for the evening flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK — Entire home/apt, night 1 of 2, $228 per night",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill — average cost $30",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Aryan's Rajasthani Pyaz Ki Kachori — average cost $17",
+        "record_name": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Green Chick Chop — average cost $26",
+        "record_name": "Green Chick Chop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK — Entire home/apt, night 2 of 2, $228 per night",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657 from New York to Wilmington, departing 16:45 and arriving 18:28; fare $182",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Aryan's Rajasthani Pyaz Ki Kachori — average cost $17",
+        "record_name": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Seasons 52 Fresh Grill — average cost $30",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Dinner at home after arrival in Wilmington",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, March 13, and March 14, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2; the plan states it is for one traveler.",
+        "note": "The listing can host the one traveler and the plan assumes no larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight is from Wilmington to New York.",
+        "note": "The trip begins in Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight arrives in New York and the return flight departs New York.",
+        "note": "The destination is New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits New York as its destination city.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins with the March 12, 2022 outbound flight.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends with the March 14, 2022 return flight.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 departs Wilmington at 20:26 on 2022-03-12 and arrives in New York at 22:05.",
+        "note": "It is a late flight on the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 departs New York at 16:45 on 2022-03-14 and arrives in Wilmington at 18:28.",
+        "note": "It is a late-afternoon flight on the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked for the nights of 2022-03-12 and 2022-03-13; its minimum stay is 2 nights.",
+        "note": "The two booked nights match the requested dates."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "A Contemporary Homelike Stay in the Best of BK has a review rate number of 2.",
+        "note": "The required rating is 4."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "A Contemporary Homelike Stay in the Best of BK is listed as Entire home/apt.",
+        "note": "The booked room type matches the requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "The selected apartment has a review rating of 2 rather than the preferred 4"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

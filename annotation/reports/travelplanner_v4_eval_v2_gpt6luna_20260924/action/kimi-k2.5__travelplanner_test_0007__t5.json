@@ -1,0 +1,182 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23653,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive from St. Louis to Oklahoma City (462 miles, ~7 hours)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food / self-catering en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Lake House Restaurant (rating 4.3, $38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio (Entire home/apt, 2-night min, $406 total for 3 nights not feasible - using calculated 2-night effective rate, total accommodation $812 for 2+ nights, adjusted: actual 2-night minimum at $203/night = $406 plus third night penalty. Actually: 2-night minimum at $406 total, third night requires rebooking. Using available: $406 for nights of 17-19 with 2-night minimum, extended to 3 nights at $203/night effective = $609, or reselect: using strict 2-night min $406 for March 17-18, need March 18-19 separately. Available: 'Chelsea/Union Square cozy studio' minimum 2 nights at $406 total. Book March 17-19 as 2+ night extension. Effective: $406 covers 2 nights, extrapolated 3 nights = $609. Using: Chelsea/Union Square cozy studio, $406 (2-night) + $203 (extra night) = $609 total accommodation)",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "- (local)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Buffet 101 (rating 4.0, $74)",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cafe Delhi Heights (rating 4.0, $74)",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio (night 2 of stay)",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive from Oklahoma City to St. Louis (462 miles, ~7 hours)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food / self-catering en route",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 17, 18, and 19, 2022.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio has maximum occupancy 4.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is from St. Louis to Oklahoma City.",
+        "note": "The itinerary starts in St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oklahoma City as the destination and stay city.",
+        "note": "The destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Oklahoma City as its one destination city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-17.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-19.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says, “Drive from St. Louis to Oklahoma City.”",
+        "note": "It specifies self-driving on the requested outbound route."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says, “Drive from Oklahoma City to St. Louis.”",
+        "note": "It specifies self-driving on the requested return route."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on March 17 and March 18, and none is needed on the March 19 departure day.",
+        "note": "The itinerary books the two requested nights; the listing minimum is also two nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant is rated 4.3; Buffet 101 and Cafe Delhi Heights are each rated 4.0. Other meal slots are self-catered or packed.",
+        "note": "Every restaurant meal meets the 4.0 floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "violated",
+        "evidence": "The available flights cost $105 outbound and $201 return; the listed accommodation is $406 and restaurant meals total $186. The itinerary instead drives.",
+        "note": "The listed flight, lodging, and restaurant-meal costs total $898, below the $1,100 cap, while the planned restaurant meals meet the rating floor."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Chelsea/Union Square cozy studio record lists room type “Entire home/apt.”",
+        "note": "The booked listing is an entire home/apartment."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

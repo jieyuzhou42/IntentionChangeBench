@@ -1,0 +1,148 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32205,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Providence to Wilmington (11h59m, $62)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Taco Bus (Average Cost: $59)",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Doorman Harlem Apt with Great Views (Entire home/apt, $921, review: 3, min nights: 1)",
+        "record_name": "Doorman Harlem Apt with Great Views",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Dunkin' Donuts (Average Cost: $25)",
+        "record_name": "Dunkin' Donuts",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bandit Burrito (Average Cost: $26)",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Biryani Blues (Average Cost: $90)",
+        "record_name": "Biryani Blues",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Doorman Harlem Apt with Great Views (Entire home/apt, $921, review: 3, min nights: 1)",
+        "record_name": "Doorman Harlem Apt with Great Views",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Wilmington to Fayetteville (1h43m, $7)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Eat Street (Average Cost: $63)",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Brownstone Studio (Entire home/apt, $396, review: 4, min nights: 3)",
+        "record_name": "Brownstone Studio",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Smoke N Oven (Average Cost: $26)",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Subway (Average Cost: $52)",
+        "record_name": "Subway",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "The Great Indian Pub (Average Cost: $95)",
+        "record_name": "The Great Indian Pub",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Brownstone Studio (Entire home/apt, $396, review: 4, min nights: 3)",
+        "record_name": "Brownstone Studio",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-drive from Fayetteville to Providence (11h10m, $58)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has maximum occupancy 7 and the Fayetteville listing has maximum occupancy 3.",
+        "note": "Each booked listing can host both travelers on its respective nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Doorman Harlem Apt with Great Views and Brownstone Studio are both listed as Entire home/apt.",
+        "note": "The booked room type meets the requirement in both cities."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Wilmington listing's review rate number is 3; Brownstone Studio's is 4.",
+        "note": "The 4+ rating requirement is not met in Wilmington."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Compromises: accommodation rating below 4 in Wilmington (rating 2)"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

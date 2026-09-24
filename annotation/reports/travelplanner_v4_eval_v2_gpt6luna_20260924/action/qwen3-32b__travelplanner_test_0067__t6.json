@@ -1,0 +1,182 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 23486,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600 from Fort Lauderdale (13:06) to Charlotte Amalie (15:39), $291",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Not specified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Boufe Boutique Cafe ($65, 3.2 rating)",
+        "record_name": "Boufe Boutique Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant ($59, 3.6 rating)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "The Wielingen (Private Room, $672 per night, 5.0 rating, exclusive stay)",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "In-room breakfast",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Kabab Roll Cafe ($86, 3.8 rating)",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lord of Grillz ($85, 3.2 rating)",
+        "record_name": "Lord of Grillz",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "The Wielingen (Private Room, $672 per night, 5.0 rating, exclusive stay)",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128 from Charlotte Amalie (16:10) to Fort Lauderdale (18:55), $263",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "In-room breakfast",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Cafeast ($79, 3.0 rating)",
+        "record_name": "Cafeast",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has three day entries.",
+        "note": "The plan is three days long."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has maximum occupancy 2; it is booked for both nights. The gold requirement is 1 traveler.",
+        "note": "The listing capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 departs Fort Lauderdale.",
+        "note": "The outbound flight starts at the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 arrives in Charlotte Amalie, and both nights are booked there.",
+        "note": "The plan travels to the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Charlotte Amalie as the destination on all three days; no other destination city is listed.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 is dated 2022-03-16.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 is dated 2022-03-18.",
+        "note": "The return flight is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3618600 is dated 2022-03-16, departs Fort Lauderdale at 13:06, and arrives in Charlotte Amalie at 15:39.",
+        "note": "The plan uses the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3619128 is dated 2022-03-18, departs Charlotte Amalie at 16:10, and arrives in Fort Lauderdale at 18:55.",
+        "note": "The plan uses the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen is listed on Day 1 and Day 2, corresponding to the two nights of March 16 and March 17; Day 3 has no accommodation.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Boufe Boutique Cafe is rated 3.2, Lord of Grillz is rated 3.2, and Cafeast is rated 3.0; the required floor is 3.5. Maharaja Restaurant is 3.6 and Kabab Roll Cafe is 3.8.",
+        "note": "Several restaurant meals fall below the required rating."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has a review rate number of 5.0; the requested floor is 4.5.",
+        "note": "The booked listing meets the preferred rating."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The Wielingen is listed as a Private room; the requirement is Entire home/apt.",
+        "note": "The booked listing is not an entire home or apartment."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21366,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Starbucks",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "El Super Burrito",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sublet in Furnished Master Bedroom",
+        "record_name": "Sublet in Furnished Master Bedroom",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-16, 2022-03-17, and 2022-03-18.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Sublet in Furnished Master Bedroom, has maximum occupancy 2.",
+        "note": "The listing's capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day has current_city Charleston.",
+        "note": "The itinerary starts in Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists current_city St. Louis on 2022-03-17 and 2022-03-18.",
+        "note": "St. Louis is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits St. Louis as its destination city.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-18.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The transportation slot on 2022-03-16 is '-'; the rationale says, 'Transportation is not included'.",
+        "note": "The plan does not include the required self-drive from Charleston to St. Louis on March 16."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The transportation slot on 2022-03-18 is '-'; the rationale says, 'Transportation is not included'.",
+        "note": "The plan does not include the required self-drive from St. Louis to Charleston on March 18."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "unknown",
+        "evidence": "The candidate records contain two Starbucks listings: one rated 4.1 and one rated 3.9. Both listed meals are matched only to the name Starbucks.",
+        "note": "The records do not identify which of the conflicting same-name listings was selected for breakfast and lunch; the dinner exception permits a rating as low as 3.9."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "El Super Burrito has Cuisines listed as 'Tea, Cafe, Mediterranean, Fast Food'.",
+        "note": "The March 17 dinner carries a Fast Food tag."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Sublet in Furnished Master Bedroom is listed as 'Private room'.",
+        "note": "The booked listing is not an Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Sublet in Furnished Master Bedroom has review rate number 5.",
+        "note": "The listing meets the preferred rating of 4."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-17; the 2022-03-16 accommodation slot is '-'.",
+        "note": "Only one night is booked, rather than the required nights of March 16 and 17."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Accommodation and dining choices meet the rating requirements, with a compromise on the accommodation rating due to the preference for a private room."
+      }
+    ],
+    "annotation_issues": [
+      "The candidate restaurant records contain two listings named Starbucks with different ratings (4.1 and 3.9), and the supplied code matches do not distinguish between them."
+    ]
+  }
+}

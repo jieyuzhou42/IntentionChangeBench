@@ -1,0 +1,169 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 5,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 802.0,
+      "budget": 1500,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21336,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "1500"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Wilmington"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "New York"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-12"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-14"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight late from Wilmington to New York on 2022-03-12"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Flight late afternoon from New York to Wilmington on 2022-03-14"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "2 nights 2022-03-12 and 2022-03-13"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "accommodation_rating",
+        "value": "4"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers 2022-03-12 through 2022-03-14, three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan specifies one traveler; the booked unit has maximum occupancy 2, so capacity is sufficient."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight is to New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The itinerary visits New York as its one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary starts with the outbound flight on 2022-03-12."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends with the return flight on 2022-03-14."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F4050983 is from Wilmington to New York on 2022-03-12 and departs at 20:26, matching a late flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3641657 is from New York to Wilmington on 2022-03-14 and departs at 16:45, matching late afternoon."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The lodging is booked from 2022-03-12 through checkout on 2022-03-14, covering the requested nights of March 12 and 13."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "The booked listing has a review rate number of 2, below the requested rating of 4."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing is an Entire home/apt."
+      }
+    ],
+    "annotation_issues": [
+      "The gold retains accommodation_rating=4 as preferred, while turn 5 says having the place to oneself is the only part the user cares about, which appears to withdraw the room-rating preference; the gold delta only reprioritizes that rating."
+    ]
+  },
+  "out_of_scope_fields": []
+}

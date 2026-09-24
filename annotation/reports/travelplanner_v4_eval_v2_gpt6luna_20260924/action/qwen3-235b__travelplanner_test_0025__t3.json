@@ -1,0 +1,143 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23082,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983 from Wilmington to New York, departs 20:26, arrives 22:05, $113",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Seasons 52 Fresh Grill, $30",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Green Chick Chop, $26",
+        "record_name": "Green Chick Chop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "QD's Restaurant, $93",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Brooklyn oasis (PRIVATE ROOM), $403, review rating 5.0",
+        "record_name": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3651251 from New York to Wilmington, departs 09:56, arrives 11:56, $198",
+        "record_name": "F3651251",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, 13, and 14, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Modern Brooklyn oasis (PRIVATE ROOM), has maximum occupancy 1.",
+        "note": "The listing accommodates the individual traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 has origin Wilmington.",
+        "note": "The outbound journey begins in Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 arrives in New York; the itinerary's current city is New York throughout.",
+        "note": "The destination is New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New York as the current city on all three days.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-12.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day and return flight date are 2022-03-14.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 travels from Wilmington to New York on 2022-03-12 and departs at 20:26.",
+        "note": "The outbound flight is on the requested date and departs late."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "Flight F3651251 departs New York at 09:56 on 2022-03-14; the record also lists flight F3641657 departing at 16:45.",
+        "note": "The booked return flight is in the morning, not late afternoon."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-13; 2022-03-12 has no accommodation.",
+        "note": "Only one night is booked, rather than the requested nights of March 12 and 13."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Modern Brooklyn oasis (PRIVATE ROOM) has review rate number 5.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Modern Brooklyn oasis (PRIVATE ROOM) is listed as a Private room.",
+        "note": "The booked room is not Entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "though room type requirement is not fully met"
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "Return flight F3651251 is selected as the only feasible morning/late afternoon option (before 12 PM)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24717,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3883491, San Francisco to Kahului, depart 09:03, arrive 11:18, $677",
+        "record_name": "F3883491",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Vikings (rating 4.2, avg cost $74)",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights (rating 5, room type: Entire home/apt, $1040 for 2 nights)",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "BrewBakes (rating 4.0, avg cost $44)",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights (rating 5, room type: Entire home/apt, $1040 for 2 nights)",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3880403, Kahului to San Francisco, depart 13:04, arrive 20:51, $544",
+        "record_name": "F3880403",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Budget has been reduced to $2600.",
+        "effect": "Acknowledges the revised budget ceiling; no itinerary slot was changed."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary is dated March 25, March 26, and March 27, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 8.",
+        "note": "The listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "F3883491 lists OriginCityName San Francisco.",
+        "note": "The outbound flight departs from San Francisco."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "F3883491 lists DestCityName Kahului; the return flight originates in Kahului.",
+        "note": "The plan travels to Kahului."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination activities and booked accommodation are listed for Kahului.",
+        "note": "The itinerary visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record for F3883491 has FlightDate 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record for F3880403 has FlightDate 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3883491 is listed from San Francisco to Kahului on 2022-03-25, departing 09:03 and arriving 11:18.",
+        "note": "The recorded flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3880403 is listed from Kahului to San Francisco on 2022-03-27, departing 13:04 and arriving 20:51.",
+        "note": "The recorded flight matches the requested route and date and lands by 21:00."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-25 and 2022-03-26, with none on departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The accommodation record lists room type Entire home/apt.",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "F3880403's recorded arrival time in San Francisco is 20:51 on 2022-03-27.",
+        "note": "The return arrives before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Cozy Apt in Centrally Located Brooklyn Heights has review rate number 5.",
+        "note": "The booked listing meets the rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Vikings has Aggregate Rating 4.2 and BrewBakes has Aggregate Rating 4.0.",
+        "note": "Both restaurant meals meet the 4.0 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

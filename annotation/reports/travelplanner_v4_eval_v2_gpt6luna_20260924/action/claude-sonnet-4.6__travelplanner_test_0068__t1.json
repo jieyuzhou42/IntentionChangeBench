@@ -1,0 +1,180 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23779,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180, Panama City → Chicago, departs 10:13, arrives 12:17, $212",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Eat at home in Panama City before departure (self-catered, pre-flight)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Gyan Vaishnav, Chicago — Bakery & Desserts, avg cost $14",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "FIO Cookhouse and Bar, Chicago — Desserts, Mexican, Fast Food, Cafe, Seafood, avg cost $31",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Amazing new private bedroom 5 min to subway (Private room, Chicago) — $790 for 2-night stay, no smoking rule, max occupancy 1",
+        "record_name": "Amazing new private bedroom 5 min to subway",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit / walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "The Black Pearl, Chicago — Cafe & Bakery, avg cost $63",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pantry d'or, Chicago — Tea, BBQ, Fast Food, Cafe, Indian, avg cost $53",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Playboy Club, Chicago — Bakery, American, BBQ, Italian, avg cost $66",
+        "record_name": "Playboy Club",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Amazing new private bedroom 5 min to subway (Private room, Chicago) — night 2 of 2-night stay",
+        "record_name": "Amazing new private bedroom 5 min to subway",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Chicago back to Panama City (most of the day)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gyan Vaishnav, Chicago — Bakery & Desserts, avg cost $14 (quick meal before departure)",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/road food en route (self-catered during drive)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Arrive home in Panama City; self-catered dinner",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, 13, and 14.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Chicago listing has maximum occupancy 1.",
+        "note": "The listing covers one traveler on both booked nights, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The flight record lists Panama City as the origin; the plan begins there.",
+        "note": "The trip originates in Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The flight record lists Chicago as the destination.",
+        "note": "Chicago is the sole travel destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The plan visits Chicago and returns to Panama City.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and flight are dated 2022-03-12.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is dated 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is from Panama City to Chicago on 2022-03-12 and departs at 10:13.",
+        "note": "It matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The Day 3 transportation says: “Self-drive from Chicago back to Panama City (most of the day)”.",
+        "note": "The plan specifies the requested own-car drive home on March 14."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The Day 1 attraction is “stroll along the Chicago Riverwalk”; the user said “the 13th is the only day I've got there” for sightseeing.",
+        "note": "The plan schedules sightseeing on March 12, although March 13 is the only available sightseeing day. March 14 has no sightseeing scheduled."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The return transportation search result is for Chicago to Panama City on 2022-03-15, not the user's stated March 14 date, so it does not substantiate the claim that no flight home is available on March 14."
+    ]
+  }
+}

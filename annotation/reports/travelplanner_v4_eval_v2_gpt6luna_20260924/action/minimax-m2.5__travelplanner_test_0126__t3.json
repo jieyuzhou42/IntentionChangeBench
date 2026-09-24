@@ -1,0 +1,134 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32579,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Providence (own car)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Prime East Village location w/backyard garden! (Entire home/apt, $978 total, 5 stars)",
+        "record_name": "Prime East Village location w/backyard garden!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Dunkin' Donuts ($25)",
+        "record_name": "Dunkin' Donuts",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bandit Burrito ($26)",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Taco Bus ($59)",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Prime East Village location w/backyard garden! (Entire home/apt, $978 total, 5 stars)",
+        "record_name": "Prime East Village location w/backyard garden!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Wilmington to Fayetteville (149 km, 1h43m, $7 fuel)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Private BRoom ,Bathroom & backyard (Private room, $56/night, 1 star, minimum 4 nights - NOT AVAILABLE for 2 nights)",
+        "record_name": "Private BRoom ,Bathroom & backyard",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "DiVine ($32)",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Eat Street ($63)",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Smoke N Oven ($26)",
+        "record_name": "Smoke N Oven",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Private BRoom ,Bathroom & backyard (Private room, $56/night, 1 star)",
+        "record_name": "Private BRoom ,Bathroom & backyard",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Fayetteville to Providence (1,163 km, 11h10m, $58 fuel)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has maximum occupancy 7 and the Fayetteville listing has maximum occupancy 2.",
+        "note": "Each booked listing can host both travelers; nothing in the plan assumes another party size."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Wilmington is booked as Entire home/apt, an allowed type; Fayetteville is booked as Private room, the required type.",
+        "note": "The booked room types meet the per-city requirements."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Wilmington listing is rated 5; the Fayetteville listing, Private BRoom ,Bathroom & backyard, is rated 1.",
+        "note": "The Fayetteville accommodation does not meet the preferred 4+ rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "The rating requirement is sacrificed to provide feasible accommodation."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

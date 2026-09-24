@@ -1,0 +1,168 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22511,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511: Lihue to San Francisco, departs 13:08, arrives 21:32 ($867)",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Ustad Moinuddin Kebab (American/Fast Food, rating 3.7, $50)",
+        "record_name": "Ustad Moinuddin Kebab",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Spacious 1 bedroom in Woodlawn NYC ($163/night × 2 nights = $326 total)",
+        "record_name": "Spacious 1 bedroom in Woodlawn NYC",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transportation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tokyo Sushi (Cafe/Pizza/BBQ, rating 3.7, $18)",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Sudarshan (Fast Food/Bakery/Mediterranean/Italian, rating 3.7, $53)",
+        "record_name": "Sudarshan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Ustad Moinuddin Kebab (Tea/Bakery/American/Fast Food, rating 3.7, $50)",
+        "record_name": "Ustad Moinuddin Kebab",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "attraction",
+        "text": "Golden Gate Bridge",
+        "record_name": "Golden Gate Bridge",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Spacious 1 bedroom in Woodlawn NYC (night 2 of 2)",
+        "record_name": "Spacious 1 bedroom in Woodlawn NYC",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709: San Francisco to Lihue, departs 09:10, arrives 11:57 ($1,204)",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-27 through 2022-03-29, three days.",
+        "note": "The plan has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 lists Lihue as its origin.",
+        "note": "The trip starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 lists San Francisco as its destination.",
+        "note": "The trip visits San Francisco before returning to Lihue."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination stay and attraction are in San Francisco; the accommodation record lists its city as San Francisco.",
+        "note": "One visiting city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 has FlightDate 2022-03-27.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3870709 has FlightDate 2022-03-29.",
+        "note": "The return is planned for the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3880511 is Lihue to San Francisco on 2022-03-27 and arrives at 21:32.",
+        "note": "The selected outbound flight matches the requested flight and arrival time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3870709 is San Francisco to Lihue on 2022-03-29 and departs at 09:10.",
+        "note": "The selected return flight matches the requested flight and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books the listing for the nights of 2022-03-27 and 2022-03-28; its record has minimum nights 2.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's record gives room type Entire home/apt.",
+        "note": "The booked room type matches the requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Tokyo Sushi, Sudarshan, and Ustad Moinuddin Kebab each have Aggregate Rating 3.7.",
+        "note": "All restaurant meals from the records meet the 3.4 floor."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-28, breakfast is Tokyo Sushi, lunch is Sudarshan, and dinner is Ustad Moinuddin Kebab.",
+        "note": "The three meals are at three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

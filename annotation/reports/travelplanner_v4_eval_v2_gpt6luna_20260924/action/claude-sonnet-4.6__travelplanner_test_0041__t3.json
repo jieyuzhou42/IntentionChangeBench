@@ -1,0 +1,182 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25767,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3583571, departs San Francisco 10:26, arrives Kahului 13:18, $677",
+        "record_name": "F3583571",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered at home before departure (pre-flight)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Michael's Kitchen, Kahului ($32, French/BBQ/Fast Food)",
+        "record_name": "Michael's Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Vikings, Kahului ($74, Pizza/Italian/BBQ)",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights, Kahului – Entire home/apt, review rate 5.0, $1,040/night",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "The Breakfast Bite, Kahului ($34, Mexican/Cafe)",
+        "record_name": "The Breakfast Bite",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "BrewBakes, Kahului ($44, Mexican/Bakery/Cafe)",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Fat Belly, Kahului ($54, BBQ/Cafe/Seafood)",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights, Kahului – Entire home/apt, review rate 5.0, $1,040/night",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3872974, departs Kahului 09:40, arrives San Francisco 17:45, $517 (arrives before 21:00 ✓)",
+        "record_name": "F3872974",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Invitation, Kahului ($29, French/Pizza/Fast Food)",
+        "record_name": "Invitation",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Michael's Kitchen, Kahului ($32, pre-flight, early lunch)",
+        "record_name": "Michael's Kitchen",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1, Day 2, and Day 3.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 8.",
+        "note": "Its capacity covers one traveler, and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName San Francisco.",
+        "note": "The itinerary departs from San Francisco."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName Kahului.",
+        "note": "The itinerary travels to Kahului."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Kahului as its destination city.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-25.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is dated 2022-03-27.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3583571 is a San Francisco-to-Kahului flight dated 2022-03-25.",
+        "note": "The planned outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3872974 is a Kahului-to-San Francisco flight dated 2022-03-27, arriving at 17:45.",
+        "note": "The return flight is on the requested date and lands before 21:00."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on Day 1 (2022-03-25) and Day 2 (2022-03-26); its minimum nights is 2.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "This matches the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The return flight record gives an arrival in San Francisco at 17:45 on 2022-03-27.",
+        "note": "The arrival is before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The booked accommodation meets the requested rating of 5."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

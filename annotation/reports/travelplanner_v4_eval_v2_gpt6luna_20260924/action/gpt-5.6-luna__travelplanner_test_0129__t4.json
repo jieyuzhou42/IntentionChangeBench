@@ -1,0 +1,230 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 37068,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477, Sioux Falls 18:40 to Phoenix 19:26, for 3 travelers",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Village Restaurant, Phoenix",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! (Phoenix), night 1 of 2",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Taxi/rideshare between lodging, Heard Museum, and Desert Botanical Garden",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Village Restaurant, Phoenix",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mocambo, Phoenix",
+        "record_name": "Mocambo",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Doughlicious, Phoenix",
+        "record_name": "Doughlicious",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! (Phoenix), night 2 of 2",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854, Phoenix 08:49 to Flagstaff 09:47, for 3 travelers; taxi/rideshare to lodging",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Village Restaurant, Phoenix, before the airport transfer",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti, Flagstaff, after check-in",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "38 Barracks, Flagstaff",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stunning 2 bedroom Apt - Breathtaking views!! (Flagstaff), night 1 of 2",
+        "record_name": "Stunning 2 bedroom Apt - Breathtaking views!!",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Direct taxi/rideshare from lodging to Museum of Northern Arizona, then to Lowell Observatory and back",
+        "record_name": null,
+        "revised": true
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Frontier, Flagstaff",
+        "record_name": "Frontier",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Sushi Thai Restaurant, Flagstaff",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "38 Barracks, Flagstaff",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stunning 2 bedroom Apt - Breathtaking views!! (Flagstaff), night 2 of 2",
+        "record_name": "Stunning 2 bedroom Apt - Breathtaking views!!",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "- One-way itinerary ends in Flagstaff",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Communiti, Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Frontier, Flagstaff",
+        "record_name": "Frontier",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "on March 19, drop Riordan Mansion",
+        "effect": "The March 19 itinerary excludes Riordan Mansion."
+      },
+      {
+        "quote": "take direct taxis or rideshares between the lodging, Museum of Northern Arizona, and Lowell Observatory",
+        "effect": "The March 19 transportation text specifies direct taxi/rideshare travel between those locations; the transportation slot is revised."
+      },
+      {
+        "quote": "Keep only the Heard Museum and Desert Botanical Garden in Phoenix on March 17.",
+        "effect": "The March 17 attraction plan includes those two Phoenix stops only."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has maximum occupancy 3; the Flagstaff listing has maximum occupancy 8. Each is booked for both nights in its city.",
+        "note": "The booked listings together can host all 3 travelers on every night."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 5; the Flagstaff listing has review rate number 4.",
+        "note": "Both cities' booked listings meet the 3+ rating floor."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 departs Sioux Falls at 18:40 and arrives in Phoenix at 19:26 on March 16.",
+        "note": "The recorded arrival is before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 departs Phoenix at 08:49 and arrives in Flagstaff at 09:47 on March 18.",
+        "note": "The recorded arrival is before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 20 plan says the one-way itinerary ends in Flagstaff; no return flight or other return journey is listed.",
+        "note": "The plan ends in Flagstaff without a return journey."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "March 17 lists Heard Museum followed by Desert Botanical Garden and says no other Phoenix stops; March 19 lists Museum of Northern Arizona and Lowell Observatory and says Riordan Mansion is omitted.",
+        "note": "The specified attractions are included on the required days, with the excluded stops omitted."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The March 17 plan lists two attractions: Heard Museum and Desert Botanical Garden. The March 19 plan lists two attractions: Museum of Northern Arizona and Lowell Observatory.",
+        "note": "The stated schedule threshold is fewer than 2 attractions per day; both sightseeing days have 2."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "The March 17 plan lists Heard Museum and Desert Botanical Garden only and does not list Hole in the Rock.",
+        "note": "Hole in the Rock is excluded."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation candidate records have city assignments that conflict with their listing names (for example, NYC-themed listing names are returned for Phoenix and Flagstaff). The audit uses the candidate records' stated attributes and city assignments."
+    ]
+  }
+}

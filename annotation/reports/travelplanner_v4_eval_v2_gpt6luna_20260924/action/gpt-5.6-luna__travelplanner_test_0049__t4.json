@@ -1,0 +1,203 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24968,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, Kansas City to Orlando, 19:26–23:00, $250",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered breakfast selected; price unpriced",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-catered lunch selected; price unpriced",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Self-catered dinner selected before the evening flight; price unpriced",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!, entire home/apt, Orlando, $287 per billed night",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transportation not specified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Veg O Non, average cost $45",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Veg O Non, average cost $45",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Veg O Non, average cost $45",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!, entire home/apt, Orlando, $287 per billed night",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856, Orlando to Kansas City, 22:44–00:33, $282",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Veg O Non, average cost $45",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Veg O Non, average cost $45",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Veg O Non, average cost $45",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! third billed night, required by the property's 3-night minimum; not occupied after the late return flight",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has three dates: 2022-03-07, 2022-03-08, and 2022-03-09.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! has maximum occupancy 2; the plan books this listing for each night and assumes one traveler.",
+        "note": "The booked accommodation can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 departs Kansas City; the itinerary identifies the first day as Kansas City to Orlando.",
+        "note": "The plan begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 goes to Orlando, and the return flight F4019856 departs Orlando.",
+        "note": "Orlando is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Orlando as the sole destination city.",
+        "note": "Only one visiting city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record for F3998497 has FlightDate 2022-03-07.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record for F4019856 has FlightDate 2022-03-09.",
+        "note": "The return is scheduled for the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3998497 from Kansas City to Orlando; its record lists departure 19:26 and arrival 23:00.",
+        "note": "The requirement specifies self-driving in an own car, not flying."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F4019856 from Orlando to Kansas City; its record lists departure 22:44 and arrival 00:33.",
+        "note": "The requirement specifies self-driving in an own car, not flying."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan books BKLYN Brownstone- Glam Getaway! on March 7, March 8, and as a third billed night on March 9; the record's minimum nights is 3.",
+        "note": "The three billed nights meet the stated stay, which allows paying for a night after departure."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The activity requirement says March 7 and March 9 are full-day intercity driving days. The plan instead has evening flights on those dates; SeaWorld Orlando is listed on March 8.",
+        "note": "Sightseeing is confined to March 8, but the intercity travel days are flights rather than the required full-day driving."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan selects flights F3998497 and F4019856, and both flight records match the listed routes and dates.",
+        "note": "The preferred mode is flying, and the plan chooses flights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The record for BKLYN Brownstone- Glam Getaway! lists room type Entire home/apt.",
+        "note": "The booked listing is an entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

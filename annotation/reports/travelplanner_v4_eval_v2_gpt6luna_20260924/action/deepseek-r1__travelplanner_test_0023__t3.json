@@ -1,0 +1,202 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22639,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Myrtle Beach",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Packed meal (en route)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Nice Room (Private room)",
+        "record_name": "Nice Room",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Mezzaluna ($41)",
+        "record_name": "Mezzaluna",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos ($36)",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Raj Restaurant ($61)",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Nice Room (Private room)",
+        "record_name": "Nice Room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive return",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-23, 2022-03-24, and 2022-03-25.",
+        "note": "The trip spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Nice Room has maximum occupancy 2 on each booked night.",
+        "note": "The capacity accommodates one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Self-drive from Myrtle Beach”; the driving record is from Myrtle Beach to Syracuse.",
+        "note": "The itinerary departs from Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Syracuse as the destination on March 23 and March 24.",
+        "note": "The destination is Syracuse."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Syracuse as its only destination city.",
+        "note": "One visiting city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-23.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-25.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Self-drive from Myrtle Beach”; the record gives self-driving from Myrtle Beach to Syracuse, duration 12 hours 16 mins, cost 64.",
+        "note": "The outbound leg uses the requested own-car mode and route."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “Self-drive return”; the record gives self-driving from Syracuse to Myrtle Beach, duration 12 hours 27 mins, cost 64.",
+        "note": "The return leg uses the requested own-car mode and route."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places outbound driving on March 23, sightseeing on March 24, and return driving on March 25.",
+        "note": "Sightseeing is confined to the specified free day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Nice Room is listed on March 23 and March 24, with no accommodation listed on departure day March 25.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Nice Room's recorded room type is Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Mezzaluna is rated 3.8, Tucanos 4, and Raj Restaurant 3.1.",
+        "note": "Each restaurant meal is rated at least 3.0; the packed meal is not a restaurant meal."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Recorded average costs are Mezzaluna 41, Tucanos 36, and Raj Restaurant 61 per person.",
+        "note": "Each restaurant meal is under 70 per person; the packed meal is not a restaurant meal."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Mezzaluna's Cuisines include Fast Food.",
+        "note": "The breakfast restaurant carries a prohibited Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "Breakfast is at Mezzaluna, lunch at Tucanos, and dinner at Raj Restaurant on March 24.",
+        "note": "All three meals use different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant's Cuisines include Indian.",
+        "note": "An Indian-tagged meal is listed on March 24."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Nice Room's house_rules state “No smoking.”",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 24 attraction text lists “Erie Canal Museum (morning), Rosamond Gifford Zoo (afternoon).”",
+        "note": "Both requested attractions are listed in the required order and day."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant is listed for dinner on March 24, and its Cuisines include Indian.",
+        "note": "The Indian-tagged meal is dinner."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Tucanos is listed for lunch on March 24, and its Cuisines include BBQ.",
+        "note": "Lunch carries the required BBQ tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

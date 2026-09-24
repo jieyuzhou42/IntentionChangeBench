@@ -1,0 +1,200 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 6,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2056.0,
+      "budget": 2600,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22756,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Stay under a budget ceiling of $2,600."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "Plan for 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "Plan for 1 person."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Depart from San Francisco."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Travel to Kahului."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "Start the trip on 2022-03-25."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "End the trip on 2022-03-27."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Take a flight from San Francisco to Kahului on 2022-03-25."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Take a flight from Kahului to San Francisco on 2022-03-27."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "return_transportation",
+        "value": "Land in San Francisco by 21:00 on 2022-03-27."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights, on 2022-03-25 and 2022-03-26."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "room_type",
+        "value": "Book an Entire home/apt."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "schedule",
+        "value": "Arrive back in San Francisco no later than 21:00 on 2022-03-27."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_rating",
+        "value": "Book accommodation rated 5."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "restaurant_rating",
+        "value": "Choose food rated 4.0 or above."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-27",
+        "requirement": "Be back in San Francisco by 21:00.",
+        "source_turn": 1,
+        "quote": "I have to be back in San Francisco by 21:00 on the 27th."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference itinerary covers 2022-03-25 through 2022-03-27, three days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked apartment has maximum occupancy 3, enough for 1 traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound itinerary departs from San Francisco."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound itinerary arrives in Kahului and the stay is listed in Kahului."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The plan visits Kahului as its destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary starts with the outbound flight on 2022-03-25."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return flight is on 2022-03-27."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3583571 flies from San Francisco to Kahului on 2022-03-25."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3872974 flies from Kahului to San Francisco on 2022-03-27 and arrives at 17:45, before 21:00."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The apartment is booked for check-in 2022-03-25 and check-out 2022-03-27, covering the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The apartment listing's room type is Entire home/apt."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "The return flight arrives in San Francisco at 17:45 on 2022-03-27, before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "The booked apartment's listing rating is 4, below the requested rating of 5."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The restaurant meals listed on 2022-03-26 are at BrewBakes, whose candidate-record rating is 4.0; travel-day meals are unknown and name no restaurant."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

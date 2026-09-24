@@ -1,0 +1,214 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22948,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720, departing St. Louis at 21:59 and arriving in Oklahoma City at 23:42; fare $105",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed food from home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food from home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Packed food from home before the late flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio — Entire home/apt, night 1 of 2 at $406 per night",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "No intercity transportation required",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered packed breakfast at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lake House Restaurant — rating 4.3, average cost $38",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Buffet 101 — rating 4.0, average cost $74",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio — Entire home/apt, night 2 of 2 at $406 per night",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607, departing Oklahoma City at 06:27 and arriving in St. Louis at 07:44; fare $201",
+        "record_name": "F3950607",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed breakfast before the early flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 17, March 18, and March 19, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio has maximum occupancy 4.",
+        "note": "The listing can host the one traveler, and the plan does not assume a different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists St. Louis as the origin.",
+        "note": "The plan starts in St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Oklahoma City as the destination.",
+        "note": "The plan travels to Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Oklahoma City as its destination and stay city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record date is 2022-03-17.",
+        "note": "The plan begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record date is 2022-03-19.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F4025720 from St. Louis to Oklahoma City; its record shows departure 21:59 on 2022-03-17.",
+        "note": "The must-have requires self-driving in the traveler's own car, but the plan uses a flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3950607 from Oklahoma City to St. Louis; its record shows departure 06:27 on 2022-03-19.",
+        "note": "The must-have requires self-driving in the traveler's own car, but the plan uses a flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan books Chelsea/Union Square cozy studio on March 17 and March 18; the listing's minimum nights is 2.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant has Aggregate Rating 4.3 and Buffet 101 has Aggregate Rating 4.0. Other meal slots are packed or self-catered.",
+        "note": "Every restaurant meal taken from the records meets the 4.0 floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F4025720 and F3950607, with the recorded outbound departure at 21:59 and return departure at 06:27.",
+        "note": "The preferred option is flying, and the plan chooses flights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio is listed as Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 18, breakfast is self-catered; lunch is Lake House Restaurant and dinner is Buffet 101.",
+        "note": "Only two different restaurants are listed for the three meals, rather than three."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "budget",
+        "quote": "No supported entire-home accommodation can satisfy the two-night stay and keep the complete trip within budget, so the budget requirement is the condition sacrificed."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

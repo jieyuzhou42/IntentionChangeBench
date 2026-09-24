@@ -1,0 +1,168 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 13323,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Afternoon flight to Cleveland",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Airport meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Chinese restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "The Ritz-Carlton Cleveland (5-star)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare service",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Hotel dining",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Li Wah Chinese Restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Szechuan Gourmet",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "The Ritz-Carlton Cleveland (5-star)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Mid-morning return flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Chinese takeout",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The candidate_records pool is empty, so no booked accommodation has a recorded maximum occupancy.",
+        "note": "The booked listing cannot be shown from candidate records to host the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "Day 1 says only “Afternoon flight to Cleveland”; there is no candidate flight record for F3915073 or its requested 10:37 departure and 12:59 arrival.",
+        "note": "The plan does not provide the specified flight, and no record supports the required flight details."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The requested listing is “Richmond Hill 3 Bedroom apartment in Private home!”; the itinerary names “The Ritz-Carlton Cleveland (5-star)”.",
+        "note": "The itinerary names a different accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "No candidate accommodation records are supplied for the named Ritz-Carlton listing.",
+        "note": "The listing's room type cannot be established from the records, so it cannot satisfy the requested Entire home/apt constraint."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "No candidate accommodation records are supplied; the plan's “5-star” wording is not a record fact.",
+        "note": "The booked listing has no recorded rating demonstrating the requested rating of 5."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "The March 2 itinerary lists the attraction as “-”.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "The March 2 lunch slot is “Airport meal”.",
+        "note": "A lunch is planned on Day 1, rather than no planned restaurant lunch."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The candidate_records pool is empty, preventing verification of flights, accommodation attributes, restaurant identities, and meal attributes."
+    ]
+  }
+}

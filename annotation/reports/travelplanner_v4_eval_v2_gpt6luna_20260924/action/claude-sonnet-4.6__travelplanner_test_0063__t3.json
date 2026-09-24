@@ -1,0 +1,187 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24047,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4031463, Denver → Oakland, departs 08:39, arrives 10:13, $255",
+        "record_name": "F4031463",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Denver before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Malais By Anands, Oakland ($37)",
+        "record_name": "Malais By Anands",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi, Oakland ($52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "attraction",
+        "text": "The Pergola at Lake Merritt; Jack London's Cabin",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow (Entire home/apt, rating 5.0, $222/night)",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bikanervala, Oakland ($39)",
+        "record_name": "Bikanervala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Malais By Anands, Oakland ($37)",
+        "record_name": "Malais By Anands",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Malais By Anands, Oakland ($37)",
+        "record_name": "Malais By Anands",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "attraction",
+        "text": "Oakland Zoo; Chabot Space & Science Center",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow (Entire home/apt, rating 5.0, $222/night)",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3958709, Oakland → Denver, departs 06:10, arrives 09:25, $258",
+        "record_name": "F3958709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1, Day 2, and Day 3.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Denver as OriginCityName.",
+        "note": "The trip departs from Denver."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Oakland as DestCityName.",
+        "note": "The destination is Oakland."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Oakland on Days 1 and 2 and returns to Denver on Day 3.",
+        "note": "Oakland is the sole visited destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-26.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-28.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4031463 is Denver to Oakland on 2022-03-26 and departs at 08:39.",
+        "note": "It matches the specified outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan selects F3958709, which arrives at 09:25; the gold value specifies a flight landing at 11:49.",
+        "note": "The selected return flight does not match the specified landing time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on 2022-03-26 and 2022-03-27, with none on the departure day.",
+        "note": "The itinerary books two nights on the requested dates."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The selected return flight record shows arrival in Denver at 09:25 on 2022-03-28.",
+        "note": "Arrival is before noon."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow is listed as Entire home/apt.",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow has a review rate number of 5.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "Its minimum nights requirement is 3 nights, but the user requested only 2 nights; the property will be billed for 3 nights ($666) to satisfy the minimum — the extra night cost is unavoidable to meet both the rating and room-type must-haves."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

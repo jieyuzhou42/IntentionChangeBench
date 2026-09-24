@@ -1,0 +1,214 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25381,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving, from Charlotte to New Orleans, duration: 10 hours 28 mins, distance: 1,149 km, cost: 57",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Shenanigan's Irish Pub",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "New Sukh Sagar",
+        "record_name": "New Sukh Sagar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sage",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Gupha",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Town Table Restaurant",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving, from New Orleans to Charlotte, duration: 10 hours 27 mins, distance: 1,148 km, cost: 57",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "packed food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "packed food",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary bases the travelers in New Orleans; Charlotte appears only as the trip's origin and destination.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Lovely One bedroom apartment 20 min to Manhattan, has room type Entire home/apt.",
+        "note": "The listing's recorded room type matches the requirement."
+      },
+      {
+        "gold_field": "required_cities",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation are listed as New Orleans.",
+        "note": "New Orleans is the only planned visit city."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 9 itinerary says self-driving from Charlotte to New Orleans; the matching transportation record gives a duration of 10 hours 28 mins and a distance of 1,149 km.",
+        "note": "The plan uses the required outbound mode, route, and date for both travelers together."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 13 itinerary uses self-driving from New Orleans to Charlotte. The transportation record says, \"There is no flight from New Orleans to Charlotte on 2022-03-13.\"",
+        "note": "The required return flight is replaced by a drive."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 13 has no attraction listed, but the transportation is a self-drive from New Orleans to Charlotte rather than an airport transfer and flight home.",
+        "note": "The no-sightseeing portion is met, but the required airport-and-flight schedule is not."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "No supported flight exists from New Orleans to Charlotte on 2022-03-13, so the fly-back must_have is unmet."
+      },
+      {
+        "gold_field": "schedule",
+        "quote": "The only grounded way home that day is the listed self-drive (10h 27m, $57)"
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation candidate is returned for New Orleans, but its title refers to Manhattan; this creates a potential listing-location inconsistency."
+    ]
+  }
+}

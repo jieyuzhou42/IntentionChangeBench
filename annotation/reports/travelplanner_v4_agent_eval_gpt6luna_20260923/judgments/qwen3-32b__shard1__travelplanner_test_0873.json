@@ -1,0 +1,1739 @@
+{
+  "pass_a": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The lodging prices shown total at least $1,709, above the $1,500 ceiling."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary visits Baton Rouge and New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected lodging is described as offering private rooms."
+        },
+        {
+          "gold_field": "house_rule",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The prediction includes party permission, but the selected rooms have no-visitors policies."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary uses self-driving rather than flying."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "people_number: 2",
+        "days: 5",
+        "city_sequence: Charlotte, Baton Rouge, New Orleans"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "All gold constraints were understood, but the selected plan exceeds budget and does not provide party-friendly lodging."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $1,500 ceiling is captured, but action evidence gives no total cost."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The stay is based in New Orleans only."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The prediction requests an entire apartment, but Harlem Deco is identified as a private room."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving meets the no-flight requirement."
+        },
+        {
+          "gold_field": "required_cities",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "New Orleans is the sole destination city."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the companion's mobility constraint; the plan keeps both travelers at the same lodging in one destination city."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "people_number: 2",
+        "days: 5",
+        "start_city: Charlotte",
+        "travel_period: 2022-03-09 to 2022-03-13"
+      ],
+      "priority_order_score": 0.846,
+      "no_match_appropriate": false,
+      "summary": "The city and no-flight change are understood, but the selected lodging is a private room rather than an entire apartment."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The raised $2,000 ceiling is captured, but no total cost is supplied."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary stays in New Orleans as its only destination city."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected lodging is identified as a 2-bedroom apartment."
+        },
+        {
+          "gold_field": "required_cities",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "New Orleans is included as the destination."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The travelers drive together from Charlotte to New Orleans on March 9."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary includes a flight from New Orleans to Charlotte on March 13."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction instead calls for Mardi Gras World on the last day, but the selected itinerary has no March 13 sightseeing and reserves it for the flight."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the mobility constraint; the itinerary keeps the travelers together in one New Orleans accommodation."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "people_number: 2",
+        "days: 5",
+        "start_date: 2022-03-09",
+        "end_date: 2022-03-13",
+        "accommodation: Gorgeous exposed-brick 2 BR Apt in LES!"
+      ],
+      "priority_order_score": 0.5,
+      "no_match_appropriate": false,
+      "summary": "The transportation and destination plan is followed, and the actual itinerary keeps the flight day free despite the prediction's conflicting sightseeing request."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction retains a $2,000 budget instead of the current $1,500; action costs are insufficient to verify the lower ceiling."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies New Orleans as the single destination city."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected lodging is described as an apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction schedules a departure on day five but does not state that March 13 must be free of sightseeing; the action has no attraction that day."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Both intercity legs use self-driving."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the companion's mobility constraint; the plan keeps the stay in one New Orleans accommodation."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "people_number: 2",
+        "days: 5",
+        "accommodation_rating: 3.0",
+        "dining_budget: 150"
+      ],
+      "priority_order_score": 0.6,
+      "no_match_appropriate": false,
+      "summary": "The return drive and sightseeing-free final day are implemented, but the prediction carries forward the superseded $2,000 budget."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction uses $2,000 rather than $1,500; the action gives no total cost."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The city sequence indicates a single New Orleans stay."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected lodging is described as a 2-bedroom apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the schedule constraint, but the March 13 itinerary has no sightseeing."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The plan lists no breakfast on the first day, rather than a simple self-catered breakfast; the other listed meals are restaurant meals."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary uses self-driving for the intercity legs."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the companion's mobility constraint; the action keeps the trip based at one accommodation."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "people_number: 2",
+        "days: 5",
+        "local_transportation: none",
+        "attraction: Mardi Gras World if available"
+      ],
+      "priority_order_score": 0.273,
+      "no_match_appropriate": false,
+      "summary": "The apartment, city, and driving plan fit, but the budget is stale and the first day's breakfast is omitted."
+    },
+    "5": {
+      "turn_id": 5,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction uses $2,000 rather than $1,500; the evidence gives no total cost."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The plan is based in New Orleans only."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The chosen lodging is an apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits this constraint, but the action schedules no sightseeing on March 13."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary lists apartment breakfasts and restaurant meals on the sightseeing days."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction lists attractions but misses the two-stop limit and the instruction to drop The Cabildo and The Singing Oak first; the action has at most one listed attraction per full day and includes neither named stop."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary uses self-driving for the intercity trip."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the mobility constraint; the plan keeps the travelers at one accommodation."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.accessibility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction omits the need for low walking and seated breaks, and the itinerary does not give enough detail to assess walking or rest breaks."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation: Lovely One bedroom apartment in New Orleans",
+        "activity: New Orleans City Park",
+        "activity: Mardi Gras World",
+        "activity: Audubon Aquarium",
+        "activity: The National WWII Museum",
+        "activity: Jackson Square",
+        "activity: St. Louis Cathedral",
+        "activity: New Orleans Museum of Art",
+        "activity: Audubon Zoo"
+      ],
+      "priority_order_score": 0.182,
+      "no_match_appropriate": false,
+      "summary": "The action limits listed attractions and omits the specified stops, but accessibility details are absent and the predicted budget is outdated."
+    },
+    "6": {
+      "turn_id": 6,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction uses $2,000 rather than $1,500; no total cost is provided."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary is based in New Orleans only."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected lodging is an apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The action schedules Mardi Gras World on March 13, which must be free of sightseeing."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction captures sit-down meals generally but misses the self-catered breakfast and drive-day allowances; the action uses sit-down meals on sightseeing days and packed food on the return drive."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction misses the two-stop cap and first-to-drop instruction; the action has no more than two listed stops on full sightseeing days and omits The Cabildo and The Singing Oak."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary uses self-driving for both intercity legs."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the mobility constraint; the action keeps the travelers at one accommodation."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.accessibility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction omits the need for low walking and seated breaks, and the itinerary provides no evidence about either."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "days: 5",
+        "people_number: 2",
+        "accommodation: Lovely One bedroom apartment 20 min to Manhattan",
+        "accommodation_stay: 3 nights",
+        "activity: Mardi Gras World on March 13"
+      ],
+      "priority_order_score": 0.182,
+      "no_match_appropriate": false,
+      "summary": "Drive-day food flexibility is reflected in the action, but the return day wrongly includes sightseeing and the budget remains outdated."
+    }
+  },
+  "pass_b": {
+    "0": {
+      "turn_id": 0,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": "visiting_city_number",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 4,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": "budget",
+          "value_match": true
+        }
+      ]
+    },
+    "1": {
+      "turn_id": 1,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": "budget",
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": "required_cities",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": "visiting_city_number",
+          "value_match": true
+        },
+        {
+          "index": 6,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 8,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "2": {
+      "turn_id": 2,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": "required_cities",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": "outbound_transportation",
+          "value_match": true
+        },
+        {
+          "index": 4,
+          "gold_field": "return_transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": "outbound_transportation",
+          "value_match": true
+        },
+        {
+          "index": 6,
+          "gold_field": "return_transportation",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 8,
+          "gold_field": "budget",
+          "value_match": false
+        },
+        {
+          "index": 9,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 10,
+          "gold_field": "schedule",
+          "value_match": false
+        }
+      ]
+    },
+    "3": {
+      "turn_id": 3,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": "visiting_city_number",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 6,
+          "gold_field": "budget",
+          "value_match": false
+        },
+        {
+          "index": 7,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 8,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 9,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 10,
+          "gold_field": "schedule",
+          "value_match": true
+        },
+        {
+          "index": 11,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 12,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "4": {
+      "turn_id": 4,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": "budget",
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 6,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 8,
+          "gold_field": "dining_style",
+          "value_match": true
+        },
+        {
+          "index": 9,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "5": {
+      "turn_id": 5,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": "budget",
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 5,
+          "gold_field": "dining_style",
+          "value_match": true
+        },
+        {
+          "index": 6,
+          "gold_field": "dining_style",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 8,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 9,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 10,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 11,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 12,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 13,
+          "gold_field": "activity",
+          "value_match": false
+        },
+        {
+          "index": 14,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 15,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "6": {
+      "turn_id": 6,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 4,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": "budget",
+          "value_match": false
+        },
+        {
+          "index": 6,
+          "gold_field": "dining_style",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 8,
+          "gold_field": "schedule",
+          "value_match": false
+        },
+        {
+          "index": 9,
+          "gold_field": "transportation",
+          "value_match": true
+        }
+      ]
+    }
+  },
+  "pass_a_grounded": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The $1500 ceiling is captured, but the listed lodging alone totals $1449 before transport and meals."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies two Louisiana destinations, and the itinerary visits Baton Rouge and New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The prediction requests private rooms, but the Baton Rouge lodging is an entire home and the New Orleans listing has maximum occupancy one."
+        },
+        {
+          "gold_field": "house_rule",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Party-friendly lodging is included in the accommodation prediction, but both selected listings prohibit visitors."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving satisfies the no-flight constraint."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "city_sequence: specific Baton Rouge and New Orleans destinations were not specified by the user"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "All five constraints are represented at the correct priority, but the selected accommodations violate lodging requirements and the plan exceeds the budget."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $1500 ceiling is captured, but the evidence does not establish the complete trip cost, including the return drive and meals."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction requests one city, and the itinerary stays in New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "An entire apartment is requested, but the selected Harlem Deco listing is a private room."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving avoids flights, as required."
+        },
+        {
+          "gold_field": "required_cities",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "New Orleans is explicitly required and is the sole destination city."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not capture the companion's transfer limitation; the itinerary nevertheless keeps both travelers in one accommodation in one city."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.6154,
+      "no_match_appropriate": false,
+      "summary": "The one-city destination and transportation are understood; the chosen lodging is not an entire apartment."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The raised $2000 ceiling is captured, but the flight price and complete trip total are not supplied."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary stays in one city, New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction requests an entire home or apartment, and the selected listing is an entire apartment."
+        },
+        {
+          "gold_field": "required_cities",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "New Orleans is explicitly specified and is the only destination city."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary drives from Charlotte to New Orleans on March 9."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary includes a flight from New Orleans to Charlotte on March 13."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction wrongly places Mardi Gras World on the last day, but the actual itinerary has no sightseeing on March 13 and reserves it for the flight."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the companion's mobility constraint; the itinerary keeps both travelers in one city and accommodation."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "attraction: Mardi Gras World on the last day conflicts with the request to reserve March 13 for the airport and flight"
+      ],
+      "priority_order_score": 0.5,
+      "no_match_appropriate": false,
+      "summary": "The actual plan follows the requested drive, return flight, and sightseeing-free airport day, though the intention prediction misstates the last-day schedule."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction retains $2000 rather than the current $1500 ceiling; the listed lodging, meals, and driving total more than $1500."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted route has New Orleans as its only destination city, as does the itinerary."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted apartment corresponds to the requested entire-home apartment, and the selected listing is an entire apartment."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving is specified for the trip and used in both directions."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not state the no-sightseeing requirement, but March 13 has no attraction scheduled."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the companion's mobility need; the itinerary keeps the travelers together in the same apartment and city."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation: preference for the specific listing Lovely One bedroom apartment 20 min to Manhattan",
+        "accommodation_rating: minimum rating of 3.0",
+        "attraction: specific preferred attraction list",
+        "dining_budget: $150"
+      ],
+      "priority_order_score": 0.0,
+      "no_match_appropriate": false,
+      "summary": "The itinerary observes the sightseeing-free return day and uses an apartment, but exceeds the current budget ceiling."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction carries forward $2000 instead of $1500; selected lodging, meals, and driving exceed $1500."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The route has one destination city, New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The entire-apartment requirement is captured and the selected listing is an entire apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the sightseeing-free return-day constraint, but the March 13 itinerary has no attraction."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The prediction captures apartment breakfasts and sit-down lunches and dinners, but PKay is identified as fast food."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary drives to and from New Orleans."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the companion's mobility need; the itinerary keeps both travelers in one apartment and city."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "local_transportation: requirement for no local transportation"
+      ],
+      "priority_order_score": 0.2727,
+      "no_match_appropriate": false,
+      "summary": "The plan provides an apartment, self-driving, and a sightseeing-free return day, but includes fast food and exceeds the budget."
+    },
+    "5": {
+      "turn_id": 5,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction uses $2000 rather than the $1500 ceiling, but the listed lodging, meals, and driving costs fit within $1500."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary is based only in New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "An entire apartment is requested and the itinerary selects an entire apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the return-day schedule constraint, but March 13 has no sightseeing."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary lists breakfasts at the apartment and restaurant meals on sightseeing days."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction lists attractions but does not capture the two-stop limit or the instruction to drop The Cabildo and The Singing Oak first; the itinerary has one attraction on each full sightseeing day and includes neither named stop."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary drives to and from New Orleans."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not represent the companion's intercity-transfer limitation; the itinerary keeps the travelers together in one city and apartment."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.accessibility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction omits the low-walking and seated-break needs; the evidence does not establish walking demands or seated breaks."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "activity: specific preferred attractions including New Orleans City Park, Mardi Gras World, Audubon Aquarium, and The National WWII Museum"
+      ],
+      "priority_order_score": 0.1818,
+      "no_match_appropriate": false,
+      "summary": "The itinerary limits each full sightseeing day to one attraction and fits the listed costs within budget, but gives no evidence of low walking or seated breaks."
+    },
+    "6": {
+      "turn_id": 6,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction states $2000 rather than $1500, and this turn's evidence lacks prices needed to determine the actual total."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary remains based in New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction names an apartment, but this turn's action evidence does not establish that the selected accommodation is an entire home or apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction schedules Mardi Gras World on March 13, and the itinerary also lists it that day despite the no-sightseeing requirement."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction captures sit-down meals only generally, missing the breakfast and drive-day details; the itinerary provides apartment breakfasts, sit-down meals on sightseeing days, and packed breakfast on the return drive."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not capture the two-stop limit or the first-to-drop attractions; the full sightseeing days list no more than two attractions and omit The Cabildo and The Singing Oak."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving is specified and used for the Charlotte-New Orleans trip."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the companion's mobility need; the itinerary keeps the travelers in one city and accommodation."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.accessibility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction omits the low-walking and seated-break needs; the itinerary does not establish walking demands or seated breaks."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation_stay: exactly 3 nights",
+        "activity: Mardi Gras World on March 13",
+        "transportation: self-driving to and from, as a separate preference beyond the specified self-drive constraint"
+      ],
+      "priority_order_score": 0.1818,
+      "no_match_appropriate": false,
+      "summary": "The itinerary follows the meal and driving updates but violates the no-sightseeing rule by scheduling Mardi Gras World on March 13."
+    }
+  },
+  "pass_a_pool": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The selected lodging prices across the stays exceed the $1500 ceiling before other trip costs."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary visits Baton Rouge and New Orleans, two Louisiana cities."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Baton Rouge lodging is an entire home, and the New Orleans private room has maximum occupancy one."
+        },
+        {
+          "gold_field": "house_rule",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The rationale acknowledges that the selected lodging does not permit parties."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "Self-driving avoids flights, but predicts a specific mode rather than the no-flight preference; the itinerary uses no flights."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "city_sequence=[Charlotte, Baton Rouge, New Orleans] (specific destinations were not requested)",
+        "intercity_transportation=self-driving (more specific than the no-flight preference)"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "The core constraints were recognized, but the itinerary exceeds the budget and does not provide the required lodging combination."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Four nights at the selected $650 accommodation exceed the $1500 ceiling."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary bases the stay in New Orleans only."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Harlem Deco is listed as a private room, not an entire apartment."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "Self-driving is more specific than the no-flight constraint, but the itinerary does avoid flights."
+        },
+        {
+          "gold_field": "required_cities",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "New Orleans is the sole destination city."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The companion-specific mobility need was not predicted; the itinerary does keep both travelers in one accommodation in one destination city."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "start_city=Charlotte (not part of the current gold constraints)",
+        "travel_period=2022-03-09 to 2022-03-13 (not part of the current gold constraints)"
+      ],
+      "priority_order_score": 0.8462,
+      "no_match_appropriate": false,
+      "summary": "The single-city change was understood, but the chosen private room and its price fail the apartment and budget requirements."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The selected $1187 accommodation is used for multiple nights, putting lodging alone above the $2000 ceiling."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The stay remains in one destination city."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected listing is an entire apartment."
+        },
+        {
+          "gold_field": "required_cities",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary stays in New Orleans."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary drives from Charlotte to New Orleans on March 9."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Although the itinerary says flight, the supplied search evidence confirms no flight is available that day."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction instead places Mardi Gras World on the final day; the action leaves March 13 free of sightseeing."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The companion-specific need was omitted from the prediction; the plan keeps the travelers together at one accommodation."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation=Gorgeous exposed-brick 2 BR Apt in LES! (agent-selected property, not a user requirement)",
+        "attraction=Mardi Gras World on the last day (contradicts the no-sightseeing schedule)"
+      ],
+      "priority_order_score": 0.5,
+      "no_match_appropriate": false,
+      "summary": "The outbound drive and one-city stay were captured, but the plan claims an unavailable return flight and puts sightseeing on the prohibited day."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction retains $2000 instead of the current $1500 ceiling; lodging, meals, and transport together exceed $1500."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary has one destination city, New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected apartment is an entire home/apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction describes travel on the final day but does not encode the no-sightseeing requirement; the action has no March 13 attraction."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Both intercity legs are by self-drive."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The companion-specific need is absent from the prediction; the plan keeps the travelers in one accommodation and one destination city."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation=Lovely One bedroom apartment 20 min to Manhattan (agent-selected property)",
+        "accommodation_rating=3.0",
+        "attraction=[New Orleans City Park, Audubon Aquarium, Mardi Gras World, Jackson Square] (specific itinerary choices not required)",
+        "dining_budget=150"
+      ],
+      "priority_order_score": 0.6,
+      "no_match_appropriate": false,
+      "summary": "The travel mode, city count, and lodging type are understood, but the current budget and final-day schedule are not accurately represented."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction keeps the earlier $2000 figure; the selected accommodation and other listed costs exceed the current $1500 ceiling."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The trip remains based in New Orleans."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected accommodation is an entire apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "No explicit no-sightseeing schedule was predicted, though the action has no attraction on March 13."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Breakfasts are at the apartment, but PKay is identified as fast food and is selected for lunch."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The outbound and return legs are self-driven."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The companion-specific need is not represented in the prediction; the plan keeps a single base and shared lodging."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "local_transportation=none (not requested)",
+        "attraction=Mardi Gras World (an agent-selected itinerary item, not a current requirement)"
+      ],
+      "priority_order_score": 0.2727,
+      "no_match_appropriate": false,
+      "summary": "The meal format is understood, but fast food is selected and the budget remains incorrectly carried forward."
+    },
+    "5": {
+      "turn_id": 5,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction uses $2000 rather than $1500; available item prices do not establish the complete trip total."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "New Orleans is the only destination city."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected accommodation is an entire apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not specify the final-day restriction; the action schedules no attraction on March 13."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction covers apartment breakfasts and sit-down lunches and dinners."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction lists attractions but omits the two-stop daily limit and the first-to-drop instruction; the action has at most one listed attraction per full sightseeing day and omits The Cabildo and The Singing Oak."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The intercity legs are self-driven."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The companion-specific transfer and shared-accommodation need was omitted, but the itinerary uses one base and one accommodation."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.accessibility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction omits the low-walking and seated-break need, and the action gives no walking or rest-break evidence."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "activity=New Orleans City Park, Mardi Gras World, Audubon Aquarium, National WWII Museum, Jackson Square, St. Louis Cathedral, The Cabildo, New Orleans Museum of Art, Audubon Zoo (specific choices not required; The Cabildo is not treated as a stop to drop)"
+      ],
+      "priority_order_score": 0.1818,
+      "no_match_appropriate": false,
+      "summary": "The plan limits listed attractions, but the prediction misses the activity rule and companion accessibility need."
+    },
+    "6": {
+      "turn_id": 6,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction retains $2000 rather than $1500, and the action does not provide a complete cost total."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary remains in New Orleans as its sole destination city."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected apartment is an entire home/apartment."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The action schedules Mardi Gras World on March 13, despite the no-sightseeing requirement."
+        },
+        {
+          "gold_field": "dining_style",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction only says sit-down restaurants and omits the self-catered breakfasts and drive-day exceptions; the action provides apartment breakfasts, sit-down meals on sightseeing days, and packed food on the return drive."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction lists activities without the daily limit or first-to-drop instruction; each full sightseeing day has no more than two listed stops."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary uses self-drive for both intercity legs."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.mobility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The companion-specific need is not represented, but the itinerary retains a shared accommodation and one destination city."
+        },
+        {
+          "gold_field": "entities.entity_2.constraints.accessibility",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "There is no evidence about walking distance or seated breaks."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation_stay=3 nights (not specified by the user)",
+        "activity=Mardi Gras World on March 13 (contradicts the no-sightseeing schedule)"
+      ],
+      "priority_order_score": 0.1818,
+      "no_match_appropriate": false,
+      "summary": "The dining update is only partially captured, and the action violates the no-sightseeing rule by scheduling Mardi Gras World on the return day."
+    }
+  }
+}

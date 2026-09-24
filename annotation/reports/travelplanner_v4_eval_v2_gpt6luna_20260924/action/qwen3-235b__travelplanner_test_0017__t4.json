@@ -1,0 +1,160 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21784,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511 from Lihue arriving at 21:32",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Sudarshan (rating: 3.7, cost: $53)",
+        "record_name": "Sudarshan",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Perfect Luxury Studio in DUMBO (Entire home/apt, $247/night)",
+        "record_name": "Perfect Luxury Studio in DUMBO",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Coffee & Chai Co. (rating: 3.6, cost: $10) - slightly below preferred rating but best available nearby option",
+        "record_name": "Coffee & Chai Co.",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ustad Moinuddin Kebab (rating: 3.7, cost: $50)",
+        "record_name": "Ustad Moinuddin Kebab",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tokyo Sushi (rating: 3.7, cost: $18)",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Perfect Luxury Studio in DUMBO (Entire home/apt, $247/night)",
+        "record_name": "Perfect Luxury Studio in DUMBO",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709 departing San Francisco at 09:10",
+        "record_name": "F3870709",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered from accommodation",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 27, 28, and 29, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Perfect Luxury Studio in DUMBO has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "F3880511 has OriginCityName Lihue.",
+        "note": "The outbound flight starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "F3880511 has DestCityName San Francisco; the return flight originates in San Francisco.",
+        "note": "The trip's destination is San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation city are San Francisco.",
+        "note": "Itinerary visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F3880511 has FlightDate 2022-03-27.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight F3870709 has FlightDate 2022-03-29.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3880511 flies Lihue to San Francisco on 2022-03-27 and arrives at 21:32.",
+        "note": "The selected outbound flight matches the requested flight and arrival time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3870709 flies San Francisco to Lihue on 2022-03-29 and departs at 09:10.",
+        "note": "The selected return flight matches the requested flight and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing appears on March 27 and March 28; the March 29 departure day has no accommodation.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Perfect Luxury Studio in DUMBO has room type Entire home/apt.",
+        "note": "The booked room type meets the requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Coffee & Chai Co. has Aggregate Rating 3.6; Sudarshan, Ustad Moinuddin Kebab, and Tokyo Sushi each have Aggregate Rating 3.7.",
+        "note": "The restaurant breakfast falls below the required 3.7 rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "breakfast at Coffee & Chai Co. is 3.6 due to no 3.7+ option under feasible cost and availability"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

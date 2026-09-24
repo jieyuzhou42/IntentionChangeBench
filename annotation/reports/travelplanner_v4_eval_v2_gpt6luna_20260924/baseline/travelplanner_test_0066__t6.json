@@ -1,0 +1,244 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 6,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 741.0,
+      "budget": 1800,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20673,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is $1,800."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The trip is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "The trip is for 1 traveler."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "The trip originates in Minneapolis."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "The destination is Jacksonville."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-27."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-29."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-drive from Minneapolis to Jacksonville on 2022-03-27 using the traveler's own car."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-drive from Jacksonville to Minneapolis on 2022-03-29 using the traveler's own car."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "schedule",
+        "value": "Reserve 2022-03-27 for intercity driving."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "schedule",
+        "value": "Reserve 2022-03-29 for intercity driving."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "schedule",
+        "value": "Sightseeing is only on 2022-03-28."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "The nights are 2022-03-27 and 2022-03-28."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "room_type",
+        "value": "Accommodation room type is Entire home/apt."
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "accommodation_rating",
+        "value": "Accommodation rating is at least 3.5."
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant rating is at least 3."
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "dining_style",
+        "value": "No Jacksonville meal may be at a restaurant with a Fast Food tag in Cuisines."
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "dining_variety",
+        "value": "Have breakfast, lunch, and dinner at three different restaurants on 2022-03-28."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-27",
+        "requirement": "Drive from Minneapolis to Jacksonville on this date.",
+        "source_turn": 1,
+        "quote": "I'm driving out on the 27th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-29",
+        "requirement": "Drive back from Jacksonville on this date.",
+        "source_turn": 1,
+        "quote": "and back on the 29th."
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-28",
+        "requirement": "Sightseeing is limited to this date.",
+        "source_turn": 1,
+        "quote": "the 28th is the only day I've really got."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers 2022-03-27 through 2022-03-29, three days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 2, enough for 1 traveler; the plan is for one unit."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound leg starts in Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound leg ends in Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The plan visits Jacksonville as its destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The 2022-03-27 transportation slot specifies self-driving in an own car from Minneapolis to Jacksonville."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The 2022-03-29 transportation slot specifies self-driving by car from Jacksonville to Minneapolis."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "The plan places outbound driving on March 27, return driving on March 29, and no sightseeing outside March 28."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The listing is booked from check-in 2022-03-27 to check-out 2022-03-29, covering the nights of March 27 and 28."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The booked listing, Private Bedroom in Greenpoint, is a Private room, not an Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The booked listing has a review rate number of 4.0, meeting the 3.5 minimum."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The three listed restaurants have ratings 3.7, 3.3, and 3.8, all at least 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "satisfied",
+        "evidence": "The listed breakfast, lunch, and dinner restaurants have no Fast Food tag in their Cuisines."
+      },
+      {
+        "gold_field": "dining_variety",
+        "status": "satisfied",
+        "evidence": "Breakfast, lunch, and dinner on 2022-03-28 are at Villa Gargano, Sanjha Chulha, and Pirates' House Restaurant, respectively."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

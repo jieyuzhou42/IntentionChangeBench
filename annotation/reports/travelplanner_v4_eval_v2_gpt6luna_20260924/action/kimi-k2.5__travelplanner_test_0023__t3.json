@@ -1,0 +1,228 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 27384,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Myrtle Beach to Syracuse (12h 16m, $64)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed food / self-catering en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food / self-catering en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment! (entire home/apt, $201, no pets & no smoking, review rate 2.0)",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": true
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Taqueria Del Sol (BBQ cuisine available, rating 4.1, $61 per person)",
+        "record_name": "Taqueria Del Sol",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Raj Restaurant (Indian cuisine, rating 3.1, $61 per person)",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment! (entire home/apt, $201, no pets & no smoking, review rate 2.0; night 2)",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Syracuse to Myrtle Beach (12h 27m, $64)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering at apartment before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food / self-catering en route",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "REVISED PLAN with 'Sunny 2 bedroom apartment!' at $201 (assuming per night, need 2 nights = $402) or if total, even better.",
+        "effect": "Replace the accommodation on both March 23 and March 24 with Sunny 2 bedroom apartment!."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 23, March 24, and March 25, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has maximum occupancy 3.",
+        "note": "The same listing is booked for both nights and can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Outbound transportation is self-driving from Myrtle Beach to Syracuse.",
+        "note": "The trip starts in Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Outbound transportation is to Syracuse; the itinerary's stay and meals are in Syracuse.",
+        "note": "Syracuse is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Syracuse as the destination and Myrtle Beach as the return destination.",
+        "note": "Only one destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-23.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-25.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record gives self-driving from Myrtle Beach to Syracuse, duration 12 hours 16 mins, cost 64.",
+        "note": "The plan uses self-driving on March 23, consistent with the requested own-car trip."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record gives self-driving from Syracuse to Myrtle Beach, duration 12 hours 27 mins, cost 64.",
+        "note": "The plan uses self-driving on March 25, consistent with the requested own-car trip."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places intercity driving on March 23 and March 25, with the Erie Canal Museum and zoo on March 24.",
+        "note": "Sightseeing is placed only on the free day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on March 23 and March 24, and none on departure day March 25.",
+        "note": "The itinerary books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! is listed as Entire home/apt.",
+        "note": "The revised listing meets the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Taqueria Del Sol has Aggregate Rating 4.1 and Raj Restaurant has Aggregate Rating 3.1; the breakfast is self-catered.",
+        "note": "Both restaurant meals meet the 3.0 minimum; self-catered breakfast is not evidence against it."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Taqueria Del Sol and Raj Restaurant each have Average Cost 61.",
+        "note": "Both restaurant meals are under $70 per person; breakfast is self-catered."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Taqueria Del Sol has Cuisines: Pizza, BBQ, Fast Food, Chinese, Seafood.",
+        "note": "The lunch restaurant carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "March 24 breakfast is self-catering; lunch is Taqueria Del Sol and dinner is Raj Restaurant.",
+        "note": "Only two different restaurants are used, not three."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant has Indian in its Cuisines field.",
+        "note": "There is an Indian-tagged meal on March 24."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has house_rules: No pets & No smoking.",
+        "note": "The revised listing prohibits smoking."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Erie Canal Museum (morning), Rosamond Gifford Zoo on March 24; both attractions appear in the Syracuse candidate records.",
+        "note": "The museum is listed before the zoo, as requested."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Dinner on March 24 is Raj Restaurant, whose Cuisines field includes Indian.",
+        "note": "The Indian-tagged meal is dinner."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Taqueria Del Sol has BBQ in its Cuisines field.",
+        "note": "The March 24 lunch carries a BBQ tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

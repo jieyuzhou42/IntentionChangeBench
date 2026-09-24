@@ -1,0 +1,174 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23183,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3558527 to Cleveland (Dep 17:33, Arr 20:06)",
+        "record_name": "F3558527",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Makhan Fish and Chicken Corner (Chinese/Seafood)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Comfy bed in Cozy Home - GRAND ARMY PLAZA (Rating 5)",
+        "record_name": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Green Leaf (Chinese)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Green Leaf (Chinese)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "record_name": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043 to Tampa (Dep 07:19, Arr 09:36)",
+        "record_name": "F3905043",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing, Comfy bed in Cozy Home - GRAND ARMY PLAZA, has maximum occupancy 1 and is booked for both nights.",
+        "note": "The listing capacity accommodates one traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3558527 departs Tampa at 17:33 on 2022-03-02 and arrives in Cleveland at 20:06.",
+        "note": "The 17:33 departure is not an overly early flight and prioritizes a comfortable departure."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Day 1 has no sightseeing; Day 2 includes the Rock & Roll Hall of Fame; Day 3 has the 07:19 flight to Tampa and no sightseeing.",
+        "note": "The itinerary follows the requested arrival/rest, sightseeing, and checkout/airport-transfer sequence."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The only listed attraction is the Rock & Roll Hall of Fame on Day 2; Cleveland Cultural Gardens is not listed. There is no Day 3 attraction.",
+        "note": "Day 3 sightseeing is dropped, but the requested Cleveland Cultural Gardens are missing."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is '-' and Day 3 lunch is '-'.",
+        "note": "Neither day has a planned restaurant lunch."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The plan books Comfy bed in Cozy Home - GRAND ARMY PLAZA; the requested listing is Richmond Hill 3 Bedroom apartment in Private home!.",
+        "note": "The booked listing does not match the requested accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Comfy bed in Cozy Home - GRAND ARMY PLAZA is listed as a Private room.",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Comfy bed in Cozy Home - GRAND ARMY PLAZA has review rate number 5.",
+        "note": "The booked listing meets the rating-5 requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3905043, which departs Cleveland at 07:19 and arrives in Tampa at 09:36. The requested flight F3623037 departs at 08:40 and arrives at 10:57.",
+        "note": "The plan uses a different return flight from the requested flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast is listed as Self-catered.",
+        "note": "No restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "Day 1 attraction is '-'.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is '-'.",
+        "note": "No restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Flight F3905043 arrives in Tampa at 09:36 on 2022-03-04.",
+        "note": "The arrival is before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

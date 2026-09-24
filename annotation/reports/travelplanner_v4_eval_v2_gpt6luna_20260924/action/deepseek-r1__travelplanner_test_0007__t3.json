@@ -1,0 +1,148 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21343,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720 (STL→OKC, 21:59→23:42)",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Lake House Restaurant (Rating 4.3)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!!",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cappuccino Blast (Rating 4.0)",
+        "record_name": "Cappuccino Blast",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lake House Restaurant (Rating 4.3)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Buffet 101 (Rating 4.0)",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!!",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607 (OKC→STL, 06:27→07:44)",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "Itinerary dates are 2022-03-17, 2022-03-18, and 2022-03-19.",
+        "note": "The itinerary covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on both nights.",
+        "note": "The listings can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 lists St. Louis as its origin; flight F3950607 lists St. Louis as its destination.",
+        "note": "The itinerary begins and returns to St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 lists Oklahoma City as its destination, and the itinerary lists Oklahoma City as the city for the first two days.",
+        "note": "The trip destination is Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oklahoma City as the destination city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-17.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-19.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary uses flight F4025720 from St. Louis to Oklahoma City on 2022-03-17; the record shows departure at 21:59 and arrival at 23:42.",
+        "note": "The requested outbound mode was self-driving in the user's own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary uses flight F3950607 from Oklahoma City to St. Louis on 2022-03-19; the record shows departure at 06:27 and arrival at 07:44.",
+        "note": "The requested return mode was self-driving in the user's own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Upper East Side Space and Access!! is listed on 2022-03-17 and 2022-03-18.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant is rated 4.3, Cappuccino Blast 4.0, and Buffet 101 4.0 in the candidate records.",
+        "note": "Every restaurant meal in the plan meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan selects flights F4025720 and F3950607, and the records confirm both routes and flight times.",
+        "note": "The preferred flying option is selected."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

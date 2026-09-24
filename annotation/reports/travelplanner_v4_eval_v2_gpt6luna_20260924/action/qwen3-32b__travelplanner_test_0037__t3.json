@@ -1,0 +1,151 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21840,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 departs Atlanta at 09:37, arrives in Bozeman at 11:50.",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub & Brewery",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Jiquitaia",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Zaroob",
+        "record_name": "Zaroob",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Saravana Bhavan",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "SPACIOUS STUDIO APT 3 IN PROSPECT LEFFERTS GARDENS",
+        "record_name": "SPACIOUS STUDIO APT 3 IN PROSPECT LEFFERTS GARDENS",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 departs Bozeman at 13:08, arrives in Atlanta at 18:37.",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Sun-Filled Artist Loft in Private Townhouse",
+        "record_name": "Sun-Filled Artist Loft in Private Townhouse",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-25 through 2022-03-27.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, SPACIOUS STUDIO APT 3 IN PROSPECT LEFFERTS GARDENS, has maximum occupancy 6.",
+        "note": "Its capacity covers 1 traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has OriginCityName Atlanta.",
+        "note": "The outbound flight starts in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has DestCityName Bozeman.",
+        "note": "The outbound flight arrives in Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation city are Bozeman.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 is dated 2022-03-25, and the itinerary starts that day.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500979 is dated 2022-03-27, and the itinerary ends that day.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 is Atlanta to Bozeman on 2022-03-25, departing 09:37 and arriving 11:50.",
+        "note": "The required outbound flight is included."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500979 is Bozeman to Atlanta on 2022-03-27, departing 13:08 and arriving 18:37.",
+        "note": "The required return flight is included."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "An accommodation is listed only on 2022-03-26; 2022-03-25 and 2022-03-27 have no accommodation.",
+        "note": "The plan books one night, not the required three nights from 2022-03-25."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "SPACIOUS STUDIO APT 3 IN PROSPECT LEFFERTS GARDENS has review rate number 4.",
+        "note": "The booked Bozeman listing meets the rating floor of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "a two-night accommodation"
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "A third night was considered, but no valid option met rating/money constraints with only two days of overnight."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

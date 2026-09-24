@@ -1,0 +1,166 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33977,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight (F4045477) from Sioux Falls to Phoenix (18:40-19:26)",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Dinner at Phoenix Art Museum",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Breakfast at Squirrel Market in Phoenix",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lunch at Doughlicious",
+        "record_name": "Doughlicious",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Dinner at Mama Loca",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight (F3804854) from Phoenix to Flagstaff (8:49-9:47)",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Breakfast at Phoenix Art Museum",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Breakfast at Communiti",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Lunch at Bar Code - Leisure Inn",
+        "record_name": "Bar Code - Leisure Inn",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Dinner at Sushi Thai Restaurant",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Breakfast at Rhubarb Le Restaurant",
+        "record_name": "Rhubarb Le Restaurant",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Lunch at 38 Barracks",
+        "record_name": "38 Barracks",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing maximum occupancy 3; Flagstaff listing maximum occupancy 8.",
+        "note": "The booked listings in both cities can host all 3 travelers."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing review rate number 5; Flagstaff listing review rate number 3.",
+        "note": "Both booked listings meet the preferred 3+ rating."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4045477 flies Sioux Falls to Phoenix on 2022-03-16, departing 18:40 and arriving 19:26.",
+        "note": "It arrives before the requested 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3804854 flies Phoenix to Flagstaff on 2022-03-18, departing 08:49 and arriving 09:47.",
+        "note": "It arrives before the requested 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-20 in Flagstaff and lists no return journey.",
+        "note": "This matches the requested one-way visit."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The itinerary lists Heard Museum on 2022-03-17, but lists Desert Botanical Garden on 2022-03-20 while the itinerary is in Flagstaff. The activity requirement places both Phoenix visits on 2022-03-17.",
+        "note": "Heard Museum is placed as required; Desert Botanical Garden is not."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "Hole in the Rock is not listed among the itinerary's attractions.",
+        "note": "The plan complies with the request not to visit it."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists one attraction on each attraction day: Heard Museum on March 17, Museum of Northern Arizona on March 19, and Desert Botanical Garden on March 20.",
+        "note": "No day has 2 or more listed attractions."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21640,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (08:04-09:30, $136 × 4 = $544)",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Simple/inexpensive (not specified)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Irish Democrat (rating 4.4, ~$18 × 4 = $72)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Not available - no Boston accommodations with ≤3 night minimum and occupancy ≥4 in fixed results",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare (door-to-door)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Simple/inexpensive (not specified)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Simple/inexpensive (not specified)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant (rating 4.5, ~$65 × 4 = $260)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Not available - no Boston accommodations with ≤3 night minimum and occupancy ≥4 in fixed results",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3757097 (21:44-23:34, $169 × 4 = $676)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Simple/inexpensive (not specified)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Simple/inexpensive (not specified)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Trip ends - no overnight stay needed",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The plan prices flights and meals for four people, but lists no accommodation for the March 4 and March 5 nights.",
+        "note": "No booked lodging listings establish capacity for the four travelers across the stay."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "There is one listed attraction on each day, within the two-attraction daily limit. No regular seated breaks are listed.",
+        "note": "The attraction limit is respected, but the baseline requirement to include regular seated breaks is not met."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Irish Democrat is rated 4.4 and Red Mesa Restaurant 4.5. No restaurant meal is listed on March 6.",
+        "note": "The plan does not provide a rated 4.0-or-higher sit-down meal on each day."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "violated",
+        "evidence": "Red Mesa Restaurant has an Average Cost of 65 per person; the other meals described as inexpensive are not matched to restaurant records.",
+        "note": "The plan includes a comparatively costly recorded meal and its unspecified meals cannot establish their cost."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Irish Democrat lists Tea, Cafe, Bakery, and Fast Food; Red Mesa Restaurant lists Desserts, Tea, Fast Food, Indian, and Seafood. Neither lists French or American cuisine.",
+        "note": "The recorded restaurant meals do not provide either requested cuisine."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

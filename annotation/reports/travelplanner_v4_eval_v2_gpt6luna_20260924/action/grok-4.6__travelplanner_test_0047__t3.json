@@ -1,0 +1,230 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25290,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409, Gulfport to Charlotte, 06:58-09:48",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "China Garden",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "China Garden",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "China Garden",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Grover's - The Baker Shop",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "China Garden",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3793242, Charlotte to Gulfport, 20:36-21:40",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "China Garden",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "China Garden",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "China Garden",
+        "record_name": "China Garden",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-05 through 2022-03-07.",
+        "note": "The trip spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Charlotte listing has maximum occupancy 3.",
+        "note": "The same listing is booked both nights and can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 departs Gulfport; flight F3793242 arrives in Gulfport.",
+        "note": "The listed origin and return destination are Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 goes to Charlotte; flight F3793242 departs Charlotte.",
+        "note": "Charlotte is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Charlotte as the destination and schedules Charlotte attractions and lodging.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 has FlightDate 2022-03-05.",
+        "note": "The outbound trip begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793242 has FlightDate 2022-03-07.",
+        "note": "The return trip is on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793409 departs Gulfport for Charlotte on 2022-03-05 at 06:58.",
+        "note": "The flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793242 departs Charlotte for Gulfport on 2022-03-07 at 20:36.",
+        "note": "The flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing appears on 2022-03-05 and 2022-03-06; no accommodation is listed on departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg has room type Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules include No smoking.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "China Garden has Aggregate Rating 3.8; Grover's - The Baker Shop has Aggregate Rating 3.0.",
+        "note": "Every restaurant meal meets the 3.0 minimum."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Average Cost is 14 and Grover's - The Baker Shop's is 30.",
+        "note": "Every restaurant meal is under 60 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "China Garden is tagged Tea, Mexican, BBQ, Mediterranean; Grover's - The Baker Shop is tagged Pizza, Bakery, Chinese, Indian, Seafood.",
+        "note": "Neither restaurant has a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On 2022-03-06, breakfast and dinner are China Garden, while lunch is Grover's - The Baker Shop.",
+        "note": "Only two different restaurants are used across the three meals."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "China Garden, scheduled for dinner on 2022-03-06, has Mediterranean in its Cuisines.",
+        "note": "At least one meal that day is Mediterranean-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The 2022-03-06 attraction text places The Mint Museum in the morning and Discovery Place Science before 15:00.",
+        "note": "No planned attraction falls within 15:00 to 17:00."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists The Mint Museum in the morning before Discovery Place Science, scheduled before 15:00 on 2022-03-06.",
+        "note": "Both requested attractions are placed in the requested order and outside the blocked time."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Cuisines include Mediterranean, and it is listed for dinner on 2022-03-06.",
+        "note": "The dinner meal has the required cuisine tag."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Grover's - The Baker Shop's Cuisines include Indian, and it is listed for lunch on 2022-03-06.",
+        "note": "The lunch meal has the required cuisine tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

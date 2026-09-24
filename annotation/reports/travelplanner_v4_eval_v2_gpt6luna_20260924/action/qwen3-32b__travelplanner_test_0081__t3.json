@@ -1,0 +1,175 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 13321,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight from Tampa to Cleveland (mid-morning departure)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Chinese restaurant near Cleveland hotel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "5-star hotel in Cleveland",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Buffet at the hotel (included)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Chinese food at local restaurant",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Buffet at the hotel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "5-star hotel in Cleveland",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Return flight to Tampa",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Buffet at the hotel (included)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary contains March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The plan names only a generic “5-star hotel in Cleveland”; the candidate-record pool is empty, so no booked listing or occupancy is available.",
+        "note": "The lodging capacity needed to verify accommodation for one traveler cannot be established from a matching record."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan says “Flight from Tampa to Cleveland (mid-morning departure)”; it does not identify Flight F3915073 or give the requested 10:37 departure and 12:59 arrival, and no flight records are supplied.",
+        "note": "The requested flight and its times are not established by the plan or candidate records."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The requested listing is “Richmond Hill 3 Bedroom apartment in Private home!”; the plan instead says “5-star hotel in Cleveland.”",
+        "note": "The requested accommodation is not named or matched."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The plan names a generic hotel, with no matching candidate record or room-type attribute.",
+        "note": "The required Entire home/apt room type is not established."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The plan claims “5-star hotel in Cleveland,” but the candidate-record pool is empty and provides no rating for a booked listing.",
+        "note": "The required rating of 5 is not supported by a record."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "The March 2 attraction slot is “-”.",
+        "note": "No sightseeing is planned for Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "The March 2 lunch slot is “-”.",
+        "note": "No restaurant lunch is planned for Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The candidate-record pool is empty, preventing verification or exact record matching for the flights, hotel, and restaurant meals."
+    ]
+  }
+}

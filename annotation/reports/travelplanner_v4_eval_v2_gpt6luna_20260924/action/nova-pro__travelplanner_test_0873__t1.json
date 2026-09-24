@@ -1,0 +1,93 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21766,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive to New Orleans (10h 28m, 1,149 km, $57)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "No suitable accommodation found within budget",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "No suitable accommodation found within budget",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "No suitable accommodation found within budget",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "No suitable accommodation found within budget",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Drive to Charlotte (10h 27m, 1,148 km, $57)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary is based in New Orleans from March 10 through March 13, with Charlotte as the start and return city.",
+        "note": "New Orleans is the sole destination city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed as \"No suitable accommodation found within budget\" on nights March 9–12; no entire-home listing is booked.",
+        "note": "The plan does not provide an accommodation meeting the required room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The transportation records show self-driving from Charlotte to New Orleans and back, with no flight.",
+        "note": "The preferred no-flight requirement is met."
+      },
+      {
+        "gold_field": "required_cities",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies New Orleans as the destination and lists New Orleans activities.",
+        "note": "The required city is included."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "No accommodation within the budget and meeting the requirement for an entire apartment was found."
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation candidates are labeled as being in New Orleans, but several listing names refer to Brooklyn, Manhattan, Harlem, or other New York locations."
+    ]
+  }
+}

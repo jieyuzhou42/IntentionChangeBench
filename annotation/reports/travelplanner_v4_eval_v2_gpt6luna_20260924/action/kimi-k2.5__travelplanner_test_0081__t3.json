@@ -1,0 +1,188 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 12808,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-02, 2022-03-03, and 2022-03-04.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The accommodation slot is '-' on all three itinerary days; no booked listings or capacities are provided.",
+        "note": "No booked lodging is shown to host the traveler for the nights of the trip."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The transportation slot is '-' on 2022-03-02; no flight number or flight times are given.",
+        "note": "The requested outbound flight is not in the plan."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The accommodation slot is '-' on each day; no listing is booked.",
+        "note": "The requested Richmond Hill listing is absent."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked, so no listing record supplies a room type.",
+        "note": "The plan does not book a listing that can satisfy the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked and candidate_records is empty.",
+        "note": "There is no listing with a recorded rating of 5."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 attraction slot is '-'.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 lunch slot is '-'.",
+        "note": "No restaurant lunch is planned on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "Cannot construct a valid itinerary with actual named accommodations, specific transport options, or concrete meal choices."
+      },
+      {
+        "gold_field": "accommodation",
+        "quote": "Cannot construct a valid itinerary with actual named accommodations, specific transport options, or concrete meal choices."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "The requirements include: 1 traveler, Tampa-Cleveland-Tampa Mar 2-4 2022, budget max $1800, comfortable (not early) flight departure, 5-star rated hotel, and Chinese cuisine. Without available search results showing actual flights, hotels, and restaurants with availability, pricing, and ratings, no feasible concrete plan can be generated."
+      }
+    ],
+    "annotation_issues": [
+      "candidate_records is empty, so there are no candidate records available to verify listing, flight, restaurant, or attribute matches."
+    ]
+  }
+}

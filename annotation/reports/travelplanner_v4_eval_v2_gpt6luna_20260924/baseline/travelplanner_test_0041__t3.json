@@ -1,0 +1,190 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 3,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 3361.0,
+      "budget": 3500,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22287,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is $3500."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The trip is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "The trip is for 1 person."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Depart from San Francisco."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Travel to Kahului."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-25."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-27."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Take a flight from San Francisco to Kahului on 2022-03-25."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Take a flight from Kahului to San Francisco on 2022-03-27."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "return_transportation",
+        "value": "The return flight must land by 21:00."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights, on 2022-03-25 and 2022-03-26."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "room_type",
+        "value": "Book an Entire home/apt."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "schedule",
+        "value": "Arrive back in San Francisco no later than 21:00 on 2022-03-27."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_rating",
+        "value": "Book accommodation rated 5."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-27",
+        "requirement": "Be back in San Francisco by 21:00.",
+        "source_turn": 1,
+        "quote": "I have to be back in San Francisco by 21:00 on the 27th."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The plan covers 2022-03-25 through 2022-03-27, three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The flight costs are listed for 1 person; the booked accommodation has maximum occupancy 8, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs from San Francisco."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Kahului."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The destination city visited is Kahului."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-25."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-27."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan uses flight F3583571 from San Francisco to Kahului on 2022-03-25; its route, date, and times match the candidate record."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan uses flight F3872974 from Kahului to San Francisco on 2022-03-27; its route and date match the candidate record."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The plan books the accommodation for the nights of 2022-03-25 and 2022-03-26, checking out on 2022-03-27."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The candidate record for Cozy Apt in Centrally Located Brooklyn Heights lists its room type as Entire home/apt."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "Flight F3872974 arrives in San Francisco at 17:45 on 2022-03-27, before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The candidate record lists the accommodation's review rate number as 5."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,139 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23427,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073 from Tampa (10:37) to Cleveland (12:59), Price: $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! ($565/night, rating 5, Entire home/apt, max occupancy 4)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chinese restaurant (subject to availability in Cleveland)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! ($565/night, rating 5)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043 from Cleveland (07:19) to Tampa (09:36), Price: $336",
+        "record_name": "F3905043",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-02, 2022-03-03, and 2022-03-04.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 4 on both listed nights.",
+        "note": "The listing's capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3915073 is listed for Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The plan uses the specified flight and its recorded times."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Day 1 has no sightseeing, Day 2 has The Cleveland Museum of Art, and the Day 3 return flight departs at 07:19.",
+        "note": "The plan reserves Day 1 for arrival/rest, Day 2 for sightseeing, and early Day 3 for departure."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The Day 2 attraction is The Cleveland Museum of Art; the plan does not list the Cleveland Cultural Gardens. There is no Day 3 sightseeing.",
+        "note": "The requested Cleveland Cultural Gardens are missing from Day 2."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 and Day 3 lunch slots are '-'.",
+        "note": "Neither day has a planned restaurant lunch."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The accommodation slots name Richmond Hill 3 Bedroom apartment in Private home!.",
+        "note": "The booked listing matches the requested accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "This matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The Cleveland accommodation meets the requested rating."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3905043, recorded as departing Cleveland at 07:19 and arriving Tampa at 09:36. F3623037 is recorded as departing at 08:40 and arriving at 10:57.",
+        "note": "The plan does not use the specified return flight F3623037."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "The Day 3 breakfast slot is '-'.",
+        "note": "There is no planned restaurant breakfast on Day 3."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 attraction slot is '-'.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 lunch slot is '-'.",
+        "note": "There is no planned restaurant lunch on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "F3905043 is recorded as arriving in Tampa at 09:36 on 2022-03-04.",
+        "note": "The planned return flight arrives before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

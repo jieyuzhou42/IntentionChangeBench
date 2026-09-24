@@ -1,0 +1,167 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21667,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 Phoenix to Billings, departs 12:24, arrives 15:50",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Holy Smoke (Rating 3.6, Cost $38)",
+        "record_name": "Holy Smoke",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "和缘浪漫民宿 (Private room, $897/night, 2 nights)",
+        "record_name": "和缘浪漫民宿",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "L'Angoor (Rating 3.5, Cost $19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Express (Rating 3.8, Cost $43)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tsui Wong (Rating 3.8, Cost $40)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "和缘浪漫民宿 (Private room, $897/night, night 2 of 2)",
+        "record_name": "和缘浪漫民宿",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3579622 Billings to Phoenix, departs 17:28, arrives 18:57",
+        "record_name": "F3579622",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Chakhnaa Wala (Rating 3.5, Cost $58)",
+        "record_name": "Chakhnaa Wala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Elation (Rating 3.8, Cost $87)",
+        "record_name": "Elation",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 18, March 19, and March 20.",
+        "note": "It covers three calendar days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "和缘浪漫民宿 has maximum occupancy 1 and is booked for both nights.",
+        "note": "The booked lodging accommodates the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 records Phoenix as the origin city.",
+        "note": "The outbound flight departs from Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 records Billings as the destination city.",
+        "note": "The outbound flight arrives in Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary stays in Billings after the Phoenix-to-Billings flight and returns from Billings.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 is dated 2022-03-18, and the first itinerary day is 2022-03-18.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3579622 is dated 2022-03-20, and the final itinerary day is 2022-03-20.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804883 is a Phoenix-to-Billings flight on 2022-03-18, departing 12:24 and arriving 15:50.",
+        "note": "It matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3579622 is a Billings-to-Phoenix flight on 2022-03-20, departing 17:28 and arriving 18:57.",
+        "note": "It matches the requested return route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "和缘浪漫民宿 is listed on the March 18 and March 19 itinerary days; there is no accommodation on March 20.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The 和缘浪漫民宿 record lists its room type as Private room.",
+        "note": "The preferred Entire home/apt room type is not provided."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant records show ratings of 3.6 (Holy Smoke), 3.5 (L'Angoor), 3.8 (Hong Kong Express), 3.8 (Tsui Wong), 3.5 (Chakhnaa Wala), and 3.8 (Elation).",
+        "note": "Every restaurant meal meets the 3.5 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "room_type preference not met."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

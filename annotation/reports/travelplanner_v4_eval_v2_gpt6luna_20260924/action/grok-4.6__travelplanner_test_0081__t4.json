@@ -1,0 +1,167 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24532,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight Number: F3915073, from Tampa to Cleveland, Departure Time: 10:37, Arrival Time: 12:59, Price: 326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Makhan Fish and Chicken Corner",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Green Leaf",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Green Leaf",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight Number: F3905043, from Cleveland to Tampa, Departure Time: 07:19, Arrival Time: 09:36, Price: 336",
+        "record_name": "F3905043",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 2, March 3, and March 4, 2022.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Richmond Hill 3 Bedroom apartment in Private home! has maximum occupancy 4 and is booked for both nights.",
+        "note": "The booked accommodation can host the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 departs Tampa at 10:37 and arrives in Cleveland at 12:59 on 2022-03-02.",
+        "note": "The plan uses the specified outbound flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Rock & Roll Hall of Fame and Great Lakes Science Center as attractions.",
+        "note": "Day 1 was requested for arrival and rest, but sightseeing is planned."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "Day 2 lists The Cleveland Museum of Art, Cleveland Botanical Garden, and Greater Cleveland Aquarium; Cleveland Cultural Gardens is not listed. Day 1 lists two attractions.",
+        "note": "The requested Cleveland Cultural Gardens are absent, and the plan includes Day 1 sightseeing."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Makhan Fish and Chicken Corner, a restaurant in the candidate records.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The booked listing is named Richmond Hill 3 Bedroom apartment in Private home!",
+        "note": "The accommodation matches the requested listing."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Richmond Hill 3 Bedroom apartment in Private home! is listed as Entire home/apt.",
+        "note": "The listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Richmond Hill 3 Bedroom apartment in Private home! has review rate number 5.",
+        "note": "The listing meets the requested rating."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3905043, which departs Cleveland at 07:19 and arrives in Tampa at 09:36. The requested F3623037 departs at 08:40 and arrives at 10:57.",
+        "note": "The plan does not use the specified return flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast is listed as '-'.",
+        "note": "No restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Rock & Roll Hall of Fame and Great Lakes Science Center.",
+        "note": "Day 1 includes sightseeing."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Makhan Fish and Chicken Corner.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Record F3905043 arrives in Tampa at 09:36 on 2022-03-04.",
+        "note": "The planned return flight arrives before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

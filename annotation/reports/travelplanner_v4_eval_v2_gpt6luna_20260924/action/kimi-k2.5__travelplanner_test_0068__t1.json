@@ -1,0 +1,157 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22832,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180 (10:13 - 12:17), $212",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Airport/early arrival meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Bro's Kitchenette (Mexican/Seafood), $38",
+        "record_name": "Bro's Kitchenette",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Newly Renovated Greenpoint Abode, 1 night (min 2 nights required, booking 2 nights), $981 × 2 = $981 total (single traveler pays full)",
+        "record_name": "Newly Renovated Greenpoint Abode",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gyan Vaishnav (Bakery), $14",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pantry d'or (Cafe/Indian), $53",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "FIO Cookhouse and Bar (Mexican), $31",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Newly Renovated Greenpoint Abode (2nd paid night)",
+        "record_name": "Newly Renovated Greenpoint Abode",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive return (user handles own transport), day-long drive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "The Black Pearl (Cafe), $63",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/travel meal, $15 estimated",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, 13, and 14, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Newly Renovated Greenpoint Abode has maximum occupancy 7; it is booked for both nights.",
+        "note": "The booked lodging capacity covers one traveler, and the plan is for a single traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is Panama City → Chicago and Day 3 is Chicago → Panama City.",
+        "note": "The plan starts from Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Chicago on March 12 and 13.",
+        "note": "Chicago is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Chicago is the only destination city listed in the itinerary.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-12.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is from Panama City to Chicago on 2022-03-12 and departs at 10:13.",
+        "note": "The selected flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 14 transportation slot says “Self-drive return (user handles own transport), day-long drive”.",
+        "note": "The plan specifies a self-drive return to Panama City on March 14."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan lists Millennium Park on March 12 and Riverwalk on March 14, as well as Skydeck Chicago and Navy Pier on March 13.",
+        "note": "Sightseeing is scheduled outside the only available sightseeing day, March 13, and Riverwalk is scheduled on the reserved drive-home date."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

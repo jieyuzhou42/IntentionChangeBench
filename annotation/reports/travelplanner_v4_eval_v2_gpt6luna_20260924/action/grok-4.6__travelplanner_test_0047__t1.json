@@ -1,0 +1,188 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23893,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409, Gulfport to Charlotte, depart 06:58, arrive 09:48, $215",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe, Charlotte (average cost $23, rating 4.6)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Unplugged Courtyard, Charlotte (average cost $54, rating 4.0)",
+        "record_name": "Unplugged Courtyard",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Grover's - The Baker Shop, Charlotte (average cost $30, rating 3.0)",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "China Garden, Charlotte (average cost $14, rating 3.8)",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Kylin Skybar, Charlotte (average cost $44, rating 3.6)",
+        "record_name": "Kylin Skybar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3793242, Charlotte to Gulfport, depart 20:36, arrive 21:40, $154",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Prince Snacks & Momo's Point, Charlotte (average cost $11, rating 3.4)",
+        "record_name": "Prince Snacks & Momo's Point",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe, Charlotte (average cost $23, rating 4.6)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "China Garden, Charlotte (average cost $14, rating 3.8)",
+        "record_name": "China Garden",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-05, 2022-03-06, and 2022-03-07.",
+        "note": "Three itinerary days are listed."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3.",
+        "note": "The listing can host the individual traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 departs Gulfport; return flight F3793242 arrives in Gulfport.",
+        "note": "The trip starts from Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 travels to Charlotte, and the itinerary lists Charlotte as the destination.",
+        "note": "Charlotte is the trip destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Charlotte as the destination city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-05.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-07.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 departs Gulfport for Charlotte at 06:58 on 2022-03-05.",
+        "note": "It is the requested early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793242 departs Charlotte for Gulfport at 20:36 on 2022-03-07; the other listed return flights depart at 12:53 and 12:54.",
+        "note": "It is the last listed return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same Charlotte accommodation is listed on 2022-03-05 and 2022-03-06, with no accommodation on departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg is listed as Entire home/apt.",
+        "note": "The booked room type matches the requirement."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules include 'No smoking'.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records for all listed meals have Aggregate Ratings of 3.0 or higher; the lowest is Grover's - The Baker Shop at 3.0.",
+        "note": "Every restaurant meal meets the rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records list Average Costs per person of $11, $14, $23, $30, $44, and $54 for the selected restaurants.",
+        "note": "Every meal costs less than $60 per person."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

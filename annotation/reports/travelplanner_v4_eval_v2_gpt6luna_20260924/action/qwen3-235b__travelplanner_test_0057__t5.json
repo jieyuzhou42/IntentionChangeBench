@@ -1,0 +1,208 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22067,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164 from Houston to Reno ($688)",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Leme Light (Rating: 4.2, Cost: $55, Cuisines: Cafe, Mexican; excludes Fast Food per user request)",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse ($361, 5.0 rating, 2-night minimum)",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Kanha Sweets (Rating: 4.1, Cost: $28, Cuisines: Italian, Bakery, American; avoids Fast Food despite tag)",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Olive Bistro (Rating: 3.9, Cost: $66, Cuisines: Tea, Cafe, Pizza, BBQ)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse ($361, night 2)",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705 from Reno to Houston ($446)",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-11, 2022-03-12, and 2022-03-13.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked treehouse has maximum occupancy 2; the request is for one traveler.",
+        "note": "Capacity covers the traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 departs Houston.",
+        "note": "The outbound origin is Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 arrives in Reno; the Reno itinerary also lists Reno attractions and accommodation.",
+        "note": "The destination is Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary stays in Reno before returning to Houston.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-11.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-13.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3879164 is Houston to Reno on 2022-03-11 with departure time 09:50.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3875705 is Reno to Houston on 2022-03-13 with departure time 12:58.",
+        "note": "It matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The treehouse is booked on 2022-03-11 and 2022-03-12; its minimum stay is 2 nights.",
+        "note": "The two booked nights match the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Olive Bistro has Aggregate Rating 3.9; Leme Light is 4.2 and Kanha Sweets is 4.1.",
+        "note": "Olive Bistro falls below the requested 4.0 rating floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Leme Light and Kanha Sweets both have Fast Food in their Cuisines records.",
+        "note": "The requirement prohibits any Reno meal at a restaurant carrying that tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On 2022-03-12 breakfast is empty, lunch is Kanha Sweets, and dinner is Olive Bistro.",
+        "note": "Only two restaurant meals are listed, not three different restaurants across all three meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_style",
+        "quote": "Leme Light and Kanha Sweets have 'Fast Food' in cuisine list"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

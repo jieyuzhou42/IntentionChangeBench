@@ -1,0 +1,119 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21436,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F3754877, Buffalo to Boston, 08:04–09:30",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Williamsburg large 2 Bedroom / 2 Bathroom",
+        "record_name": "Williamsburg large 2 Bedroom / 2 Bathroom",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Club Cubana",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Irish Democrat",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Williamsburg large 2 Bedroom / 2 Bathroom",
+        "record_name": "Williamsburg large 2 Bedroom / 2 Bathroom",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "F3757097, Boston to Buffalo, 21:44–23:34",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Red Mesa Restaurant",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 4, March 5, and March 6, 2022.",
+        "note": "It has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Williamsburg large 2 Bedroom / 2 Bathroom has maximum occupancy 3; it is booked for both nights.",
+        "note": "The listing capacity is below the requested 4 travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists two attractions on each day: Public Garden and Museum of Science; New England Aquarium and Museum of Fine Arts, Boston; Boston Common and Faneuil Hall Marketplace.",
+        "note": "It meets the two-attractions-per-day limit. Meals are listed daily as opportunities for seated breaks."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Each day includes at least one restaurant rated 4.0 or higher: Irish Democrat 4.4 and Red Mesa Restaurant 4.5 on March 4; Club Cubana 4.4 and Irish Democrat 4.4 on March 5; Red Mesa Restaurant 4.5 on March 6.",
+        "note": "The plan includes a restaurant meal meeting the rating threshold each day."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "violated",
+        "evidence": "Average Cost per person is $18 for Irish Democrat, $65 for Red Mesa Restaurant, and $65 for Club Cubana.",
+        "note": "Several planned meals cost $65 per person, including both meals on March 5, so the plan does not keep the other food inexpensive."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The planned restaurants list cuisines as Tea, Cafe, Bakery, Fast Food; Desserts, Tea, Fast Food, Indian, Seafood; and Desserts, BBQ, Fast Food, Cafe, Indian, Mediterranean. None lists French or American.",
+        "note": "The selected meals do not provide either of the requested French and American cuisines."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

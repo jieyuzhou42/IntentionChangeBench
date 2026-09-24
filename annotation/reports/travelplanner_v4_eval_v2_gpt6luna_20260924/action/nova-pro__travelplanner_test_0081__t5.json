@@ -1,0 +1,187 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24252,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073 from Tampa to Cleveland, departs at 10:37, arrives at 12:59",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Will be arranged after arrival in Cleveland.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Will be arranged after arrival in Cleveland.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Green Leaf for Chinese cuisine.",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC. So Spacious!",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Will be arranged at the accommodation or nearby.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner for Chinese cuisine.",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pind Balluchi for Chinese cuisine.",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC. So Spacious!",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3623037 from Cleveland to Tampa, departs at 08:40, arrives at 10:57",
+        "record_name": "F3623037",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Will be arranged before departure.",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation listing has maximum occupancy 1 on both accommodation nights.",
+        "note": "The booked capacity covers one traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3915073 is listed for Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The booked flight matches the requested flight and times."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Cleveland Metroparks Zoo, and Day 3 lists Rock & Roll Hall of Fame.",
+        "note": "Day 1 is not kept for arrival and rest, and Day 3 includes sightseeing."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "Day 2 lists The Cleveland Museum of Art, but not the Cleveland Cultural Gardens; Day 3 lists Rock & Roll Hall of Fame.",
+        "note": "The requested priority sightseeing is not fully placed on Day 2, and Day 3 sightseeing was not dropped."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch says it will be arranged after arrival; Day 3 lunch is '-'. Neither slot names a restaurant.",
+        "note": "No planned restaurant lunch is listed on Days 1 or 3."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The booked record is 'Rare gem of an apartment in NYC.  So Spacious!', not 'Richmond Hill 3 Bedroom apartment in Private home!'.",
+        "note": "The booked accommodation does not match the requested listing."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing's room type is Private room.",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has review rate number 5.",
+        "note": "The listing meets the requested rating of 5."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3623037 is listed for Cleveland to Tampa on 2022-03-04, departing 08:40 and arriving 10:57.",
+        "note": "The booked return flight matches the specified flight and times."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast says it will be arranged before departure and names no restaurant.",
+        "note": "No planned restaurant breakfast is listed on Day 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Makhan Fish and Chicken Corner lists Fast Food among its cuisines.",
+        "note": "The Day 2 lunch restaurant is explicitly listed as Fast Food."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Cleveland Metroparks Zoo.",
+        "note": "Sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch says it will be arranged after arrival and does not name a restaurant.",
+        "note": "No planned restaurant lunch is listed on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "violated",
+        "evidence": "Flight F3623037 arrives in Tampa at 10:57.",
+        "note": "The listed arrival is after 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

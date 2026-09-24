@@ -1,0 +1,161 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22851,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "One party-sized rideshare door-to-door to Buffalo airport; flight F3754877 from Buffalo to Boston, departing 08:04 and arriving 09:30; one party-sized rideshare door-to-door to the accommodation and later to each scheduled stop",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed granola bars and fruit before the flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed sandwiches at the accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Sit-down dinner at Irish Democrat (rating 4.4; listed average cost $18 per person)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Boston inventory listing), entire home/apartment, night 1 of 2",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "One party-sized rideshare door-to-door between the accommodation, restaurant, and attraction; all four travelers remain together",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Packed cereal bars, yogurt, and fruit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Sit-down meal at Irish Democrat (rating 4.4; listed average cost $18 per person)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Packed cold sandwiches and fruit at the accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Boston inventory listing), entire home/apartment, night 2 of 2",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "One party-sized rideshare door-to-door for the day's stops and to Boston airport; flight F3757097 from Boston to Buffalo, departing 21:44 and arriving 23:34; one party-sized rideshare door-to-door from Buffalo airport",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed granola bars, yogurt, and fruit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed sandwiches and fruit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Early sit-down dinner at Irish Democrat (rating 4.4; listed average cost $18 per person), followed by a rideshare to the airport",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-04 through 2022-03-06.",
+        "note": "It plans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation, Delight in Your Home Away from Home in NYC!, has maximum occupancy 5; the itinerary says all four travelers remain together.",
+        "note": "The accommodation can host four travelers, and the plan is for four."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists one attraction each day: Public Garden, Boston Common, and Faneuil Hall Marketplace. Each day also describes seated breaks.",
+        "note": "One attraction per day stays within the limit of two nearby attractions and includes regular seated breaks."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The plan labels one Irish Democrat meal as sit-down on each day; the restaurant record gives Aggregate Rating 4.4.",
+        "note": "Each day includes a planned sit-down meal at a restaurant rated at least 4.0."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat has Average Cost 18; the other listed meals are packed food.",
+        "note": "The restaurant meal is low-cost in the candidate records, and the remaining meals are simple packed food."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Irish Democrat lists cuisines Tea, Cafe, Bakery, Fast Food; packed meals have no candidate-record cuisine attributes.",
+        "note": "The only restaurant used does not list French or American cuisine."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

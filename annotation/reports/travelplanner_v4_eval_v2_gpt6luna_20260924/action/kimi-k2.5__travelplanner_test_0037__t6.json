@@ -1,0 +1,188 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23586,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974: Atlanta to Bozeman, departs 09:37, arrives 11:50 ($345)",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Atlanta airport or prior to flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Jiquitaia (rating 4.1, cost $36 per person)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub & Brewery (rating 4.9, cost $72 per person)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Greenpoint, BK 1 Bedroom, Couple/Solo Traveler (rating 5, $574 for stay, 3-night minimum required)",
+        "record_name": "Greenpoint, BK 1 Bedroom, Couple/Solo Traveler",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering at accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Saravana Bhavan (rating 4.3, cost $38 per person)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub & Brewery (rating 4.9, cost $72 per person)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Greenpoint, BK 1 Bedroom, Couple/Solo Traveler (continued)",
+        "record_name": "Greenpoint, BK 1 Bedroom, Couple/Solo Traveler",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979: Bozeman to Atlanta, departs 13:08, arrives 18:37 ($803)",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering at accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Airport meal or light option",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, March 26, and March 27, 2022.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Bozeman listing has maximum occupancy 2; the plan assumes a single traveler.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 departs Atlanta.",
+        "note": "The outbound flight starts in the requested origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 arrives in Bozeman and F3500979 departs Bozeman.",
+        "note": "Bozeman is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination-city activities and accommodation are in Bozeman.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is labeled 2022-03-25.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 and return flight F3500979 are dated 2022-03-27.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500974 flies from Atlanta to Bozeman on 2022-03-25, departing 09:37 and arriving 11:50.",
+        "note": "The listed outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500979 flies from Bozeman to Atlanta on 2022-03-27, departing 13:08 and arriving 18:37.",
+        "note": "The listed return flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on March 25 and March 26, with none on the March 27 departure day.",
+        "note": "Two itinerary nights are booked; the listing's three-night minimum is a separate gate."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Greenpoint, BK 1 Bedroom, Couple/Solo Traveler record has review rate number 5.",
+        "note": "Its rating meets the preferred threshold of 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Jiquitaia is rated 4.1, McGuire's Irish Pub & Brewery 4.9, and Saravana Bhavan 4.3. The March 27 lunch is only described as 'Airport meal or light option' and has no matching restaurant record or rating.",
+        "note": "The named restaurant meals meet the threshold, but the planned airport meal has no record-supported rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "The 3-night minimum forced payment for one unoccupied night, explicitly violating user's expressed preference."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

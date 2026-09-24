@@ -1,0 +1,183 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 23210,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Charleston to St. Louis; duration ~12 hrs 43 mins, distance 1,379 km, fuel cost $68",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Charleston before departure (self-catering)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "En route packed lunch (self-catering)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito, St. Louis — Cuisines: Tea, Cafe, Mediterranean, Fast Food; Avg cost $43; Rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Beloved Williamsburg, Brooklyn — Private room, rating 4.0, $332/night (minimum 3 nights billed = $996 total)",
+        "record_name": "Beloved Williamsburg, Brooklyn is calling to you!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks, St. Louis — Cuisines: Tea, French, Cafe, Fast Food; Avg cost $92; Rating 4.1",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "El Super Burrito, St. Louis — Cuisines: Tea, Cafe, Mediterranean, Fast Food; Avg cost $43; Rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "El Super Burrito, St. Louis — Avg cost $43; Rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Beloved Williamsburg, Brooklyn — Private room, rating 4.0, $332/night (night 2 of billed 3)",
+        "record_name": "Beloved Williamsburg, Brooklyn is calling to you!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from St. Louis to Charleston; duration ~12 hrs 43 mins, distance 1,379 km, fuel cost $68",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "El Super Burrito, St. Louis — Avg cost $43; Rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "En route packed lunch (self-catering)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "At home in Charleston (self-catering, trip ends)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, 17, and 18, 2022.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Beloved Williamsburg, Brooklyn is calling to you! has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound self-driving record is from Charleston to St. Louis.",
+        "note": "The trip starts in Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound self-driving record is from Charleston to St. Louis, and the itinerary places the traveler in St. Louis.",
+        "note": "The requested destination is St. Louis."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits St. Louis and returns to Charleston.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-16.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is dated 2022-03-18.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate record: “self-driving, from Charleston to St. Louis, duration: 12 hours 43 mins, distance: 1,379 km, cost: 68”; the itinerary places this drive on 2022-03-16.",
+        "note": "The plan uses the requested own-car self-drive outbound."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate record: “self-driving, from St. Louis to Charleston, duration: 12 hours 43 mins, distance: 1,379 km, cost: 68”; the itinerary places this drive on 2022-03-18.",
+        "note": "The plan uses the requested own-car self-drive return."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "El Super Burrito has Aggregate Rating 4.1; the listed Starbucks meal corresponds to the record with Average Cost 92 and Aggregate Rating 4.1. Other meal slots are self-catered or packed.",
+        "note": "Every restaurant meal listed meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on 2022-03-16 and 2022-03-17, with none on departure day 2022-03-18.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Beloved Williamsburg, Brooklyn is calling to you! has review rate number 4.",
+        "note": "The booked St. Louis listing meets the 4.0 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

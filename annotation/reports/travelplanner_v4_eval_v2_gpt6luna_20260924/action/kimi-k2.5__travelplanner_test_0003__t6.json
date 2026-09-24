@@ -1,0 +1,204 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22978,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Charleston to St. Louis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed food / en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food / en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito (Rating 4.1, Fast Food tagged but user specifically wants 4.0+ rating; however this is the only 4.0+ option in results)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence - Entire home/apt (Rating 3.0, below preferred 4.0 but meets private-only requirement; $271/night)",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport / walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks (Rating 4.1, $92)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Starbucks (Rating 4.1, $92)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Latitude - Radisson Blu (Rating 3.9, not tagged Fast Food; skipping Fast Food per preference despite below 4.0)",
+        "record_name": "The Latitude - Radisson Blu",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Pet & Tony's Residence - Entire home/apt (2nd night)",
+        "record_name": "Pet & Tony's Residence",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive departure to Charleston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Starbucks (Rating 4.1)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-catering / en route",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1 (March 16), Day 2 (March 17), and Day 3 (March 18).",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence has maximum occupancy 2 and is booked for both nights.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is listed as self-driving from Charleston to St. Louis.",
+        "note": "The stated origin is Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies St. Louis as the arrival city and destination.",
+        "note": "The trip proceeds to St. Louis."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and activity city is St. Louis.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is March 16, 2022.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is March 18, 2022, with departure to Charleston.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation: “Self-drive from Charleston to St. Louis.”",
+        "note": "The plan specifies self-driving on March 16 in the requested direction."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 transportation: “Self-drive departure to Charleston.”",
+        "note": "The plan specifies self-driving from St. Louis to Charleston on March 18."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "El Super Burrito has Aggregate Rating 4.1; the selected Starbucks record has Aggregate Rating 4.1; The Latitude - Radisson Blu has Aggregate Rating 3.9.",
+        "note": "The restaurant meals outside the March 17 dinner meet the 4.0 floor, and the March 17 dinner is within the stated 3.9 exception. Packed and self-catered slots do not count."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Latitude - Radisson Blu has Cuisines listed as “Pizza, French, BBQ, American, Seafood,” with no Fast Food tag.",
+        "note": "The March 17 dinner is not tagged Fast Food."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence is listed as “Entire home/apt.”",
+        "note": "The booked accommodation is an entire home/apartment."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Pet & Tony's Residence has review rate number 3.",
+        "note": "The preferred rating value is 4."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Pet & Tony's Residence is listed on March 16 and March 17; no accommodation is listed for the March 18 departure day.",
+        "note": "The plan books the two requested nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Accommodation rating: No private entire home/apt meets 4.0+ rating within budget. Selected Pet & Tony's Residence (rating 3.0, entire home/apt) to satisfy the must-have private-only requirement over the preferred rating."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Restaurant 4.0+ floor: Only two restaurants meet 4.0+ (El Super Burrito and Starbucks). El Super Burrito is tagged Fast Food, violating Mar 17 dinner preference. The Latitude (3.9, not Fast Food) chosen for Mar 17 dinner to honor Fast Food exclusion, accepting rating below 4.0."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

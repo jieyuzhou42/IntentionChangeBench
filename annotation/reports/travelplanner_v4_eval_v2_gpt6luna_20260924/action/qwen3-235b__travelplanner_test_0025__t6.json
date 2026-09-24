@@ -1,0 +1,166 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23725,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983 from Wilmington arriving at 22:05",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Seasons 52 Fresh Grill, rating 4.4",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "QD's Restaurant, rating 4.1",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lord of the Drinks Forum, rating 4.2",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "IN MINT CONDITION-1BR&TERRACE-E 44TH/UNITED NATION, Entire home/apt, rating 4.0",
+        "record_name": "IN MINT CONDITION-1BR&TERRACE-E 44TH/UNITED NATION",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657 to Wilmington departing at 16:45",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Seasons 52 Fresh Grill, rating 4.4",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-12 through 2022-03-14.",
+        "note": "The plan spans three calendar days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked New York listing has maximum occupancy 2.",
+        "note": "Its capacity accommodates the individual traveler; the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is from Wilmington.",
+        "note": "The outbound flight departs from the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 goes to New York; the itinerary's stay is in New York.",
+        "note": "The destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New York as the city for all three days.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 has FlightDate 2022-03-12.",
+        "note": "The trip begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 has FlightDate 2022-03-14.",
+        "note": "The return is on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4050983 departs Wilmington at 20:26 on 2022-03-12 and arrives in New York at 22:05.",
+        "note": "The flight is on the requested date and departs late."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3641657 departs New York at 16:45 on 2022-03-14.",
+        "note": "The return flight is on the requested date and departs in the late afternoon."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-13; 2022-03-12 is marked '-'. The listing also has a 30-night minimum.",
+        "note": "Only one night is booked, rather than the required nights of 2022-03-12 and 2022-03-13."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has review rate number 4.",
+        "note": "The listing meets the preferred rating of 4."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "The listing matches the required room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Seasons 52 Fresh Grill is rated 4.4, QD's Restaurant 4.1, and Lord of the Drinks Forum 4.2.",
+        "note": "Every restaurant meal in the plan meets the 4.0 rating floor; self-catered meals do not count as restaurant meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "Minimum night restriction violated: user requirement for two nights conflicts with 30-night minimum; disclosed as unmet requirement."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

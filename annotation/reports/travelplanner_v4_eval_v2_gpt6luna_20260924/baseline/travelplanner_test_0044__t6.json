@@ -1,0 +1,217 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 6,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2007.0,
+      "budget": 2050,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20269,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "2050"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 person"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Scranton"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Newark"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-24"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-26"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Scranton to Newark"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "2022-03-24"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "05:57 departure"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Flight from Newark to Scranton"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "2022-03-26"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "21:46 departure"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "2 nights"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "accommodation_stay",
+        "value": "Night of 2022-03-24"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "accommodation_stay",
+        "value": "Night of 2022-03-25"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "accommodation_rating",
+        "value": "4"
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "restaurant_rating",
+        "value": "3.5"
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "dining_variety",
+        "value": "Three different restaurants across breakfast, lunch and dinner on 2022-03-25"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-25",
+        "requirement": "Do not use the same place for breakfast, lunch, and dinner; use three different restaurants.",
+        "source_turn": 6,
+        "quote": "I really don't want the same place three times on the 25th."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference itinerary covers March 24, 25, and 26, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The accommodation listing has maximum occupancy 9 and the plan books one unit for one person."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Newark."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The itinerary visits Newark as its sole destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary and outbound flight begin on 2022-03-24."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary and return flight end on 2022-03-26."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan lists flight F3920918 from Scranton to Newark on 2022-03-24, departing at 05:57."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan lists flight F3919859 from Newark to Scranton on 2022-03-26, departing at 21:46."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The listing is booked from check-in on 2022-03-24 to check-out on 2022-03-26, covering the nights of March 24 and 25."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The booked Sonder listing has a review rating of 4.0."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The recorded March 25 restaurant meals have ratings of 4.1, 3.6, and 3.8, all at least 3.5."
+      },
+      {
+        "gold_field": "dining_variety",
+        "status": "satisfied",
+        "evidence": "Breakfast, lunch, and dinner on March 25 are at Drifters Cafe, Anaicha's Food Joint, and Artistry, respectively."
+      }
+    ],
+    "annotation_issues": [
+      "The gold restaurant_rating value is 3.5, but the user said, \"Keep the food at 4.0 and above too\" in turn 4 and did not withdraw that requirement."
+    ]
+  },
+  "out_of_scope_fields": []
+}

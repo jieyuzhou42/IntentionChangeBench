@@ -1,0 +1,179 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 3,
+  "prompt_chars": 25768,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3583571, SFO-OGG, Dep 10:26 Arr 13:18, $677",
+        "record_name": "F3583571",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Vikings (Kahului, $74, rating 4.2)",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Fat Belly (Kahului, $54, rating 4.1)",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to Staten Island Ferry (Entire home/apt, $365/night, rating 4)",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "BrewBakes (Kahului, $44, rating 4.0)",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Fat Belly (Kahului, $54, rating 4.1)",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Vikings (Kahului, $74, rating 4.2)",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to Staten Island Ferry (Entire home/apt, $365/night, rating 4)",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3872974, OGG-SFO, Dep 09:40 Arr 17:45, $517",
+        "record_name": "F3872974",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "BrewBakes (Kahului, $44, rating 4.0)",
+        "record_name": "BrewBakes",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 25, 26, and 27, 2022.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 departs San Francisco; F3872974 returns to San Francisco.",
+        "note": "The itinerary starts in the requested origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 goes to Kahului; the restaurants and accommodation records are listed for Kahului.",
+        "note": "The destination is Kahului."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and stay are in Kahului.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "F3583571 has FlightDate 2022-03-25.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "F3872974 has FlightDate 2022-03-27.",
+        "note": "The return is scheduled for the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3583571 is listed from San Francisco to Kahului on 2022-03-25.",
+        "note": "The outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3872974 is listed from Kahului to San Francisco on 2022-03-27, departing 09:40 and arriving 17:45.",
+        "note": "The return flight is on the requested date and lands before 21:00."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed for March 25 and March 26, with no accommodation listed on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The accommodation record lists room type \"Entire home/apt\".",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The record for F3872974 lists an arrival time of 17:45 on 2022-03-27.",
+        "note": "Arrival is before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The booked listing, NYC cozy apartment close to staten island ferry, has review rate number 4.",
+        "note": "The required accommodation rating is 5."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Vikings is rated 4.2, Fat Belly 4.1, and BrewBakes 4.0 in the candidate records.",
+        "note": "Every listed restaurant meal meets the 4.0 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "while sacrificing the 5.0 accommodation-rating request"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

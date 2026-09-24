@@ -1,0 +1,199 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23117,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving to Philadelphia",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Hong Kong Cafe",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Brothers Dhaba",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Moon Under Water",
+        "record_name": "The Moon Under Water",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving to Ithaca",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 1, March 2, and March 3, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on both nights.",
+        "note": "Its combined capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 starts in Ithaca and the outbound transportation says self-driving to Philadelphia.",
+        "note": "The origin is Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation says self-driving to Philadelphia; the subsequent itinerary days are in Philadelphia.",
+        "note": "The destination is Philadelphia."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Philadelphia is the sole destination city in the itinerary.",
+        "note": "Ithaca is the origin and return city, not an additional visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-01.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-03.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “self-driving to Philadelphia”; the record lists “self-driving, from Ithaca to Philadelphia.”",
+        "note": "The listed outbound mode and route match the requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says “self-driving to Ithaca” on March 3.",
+        "note": "The itinerary specifies self-driving back to the origin in the user's own-car plan."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 1 and March 2, and none is needed on the March 3 departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "“Top floor of an amazing duplex” is listed as a Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house rules say “No parties.”",
+        "note": "This matches the required prohibition."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe is rated 3.6, Brothers Dhaba 3.8, and The Moon Under Water 4.1.",
+        "note": "All restaurant meals meet the 3.5 minimum."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "The Moon Under Water has an Average Cost of 94; the other selected restaurants cost 47 and 52.",
+        "note": "The dinner cost exceeds the per-meal cap of 60."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "The Moon Under Water's Cuisines include Fast Food.",
+        "note": "It is a Philadelphia restaurant meal, so it violates the no-Fast-Food-tag requirement."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 2 lists Brothers Dhaba for breakfast, Hong Kong Cafe for lunch, and The Moon Under Water for dinner.",
+        "note": "These are three different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe and The Moon Under Water both have Italian in their Cuisines.",
+        "note": "At least one March 2 meal is Italian-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "unknown",
+        "evidence": "The plan specifies self-driving back to Ithaca on March 3 but gives no departure or arrival time; the transportation records contain no return self-driving route or timing.",
+        "note": "The records do not determine whether the traveler arrives before 18:00."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 2 attraction is Liberty Bell, which appears in the Philadelphia attractions records.",
+        "note": "The optional visit is included on the requested day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The transportation records provide a self-driving route only from Ithaca to Philadelphia, not a return self-driving route or timing, preventing verification of the March 3 arrival deadline."
+    ]
+  }
+}

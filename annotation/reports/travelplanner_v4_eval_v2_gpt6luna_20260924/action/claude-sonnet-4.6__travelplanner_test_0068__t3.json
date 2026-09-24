@@ -1,0 +1,182 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23390,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180, Panama City → Chicago, departs 10:13, arrives 12:17, $212",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Eat at home in Panama City before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "FIO Cookhouse and Bar, Chicago (~$31)",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pantry d'or, Chicago (~$53)",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Discounted! Cute Unique 2BR Apartment in SoHo, Chicago — $781/night (night 1 of 2)",
+        "record_name": "Discounted! Cute Unique 2BR Apartment in SoHo",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gyan Vaishnav, Chicago (~$14)",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bro's Kitchenette, Chicago (~$38)",
+        "record_name": "Bro's Kitchenette",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Black Pearl, Chicago (~$63)",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Discounted! Cute Unique 2BR Apartment in SoHo, Chicago — $781/night (night 2 of 2)",
+        "record_name": "Discounted! Cute Unique 2BR Apartment in SoHo",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Chicago back to Panama City (most of the day)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Starbucks, Chicago (~$46) before departure",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food / roadside stop during drive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Arrive Panama City — dine at home",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Make it 2000 then.",
+        "effect": "Raised the budget to $2,000; no itinerary slots changed."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, 13, and 14, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Chicago listing has maximum occupancy 2 on both nights.",
+        "note": "Its capacity accommodates one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 has OriginCityName Panama City; the return is described as a self-drive to Panama City.",
+        "note": "The trip starts in Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 arrives in Chicago; the itinerary places the stay and sightseeing in Chicago.",
+        "note": "Chicago is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Chicago as the destination and lists Chicago activities and lodging.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-12, and the flight record's FlightDate is 2022-03-12.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is dated 2022-03-14 and includes the drive home.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is Panama City to Chicago on 2022-03-12, departing 10:13.",
+        "note": "It matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says, \"Self-drive from Chicago back to Panama City (most of the day).\"",
+        "note": "The plan uses the requested own-car drive rather than a return flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 lists \"Navy Pier (afternoon after arrival, free admission to grounds)\"; the activity requirement limits sightseeing to 2022-03-13.",
+        "note": "Sightseeing is scheduled on March 12, although March 14 is reserved for the drive."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Chicago listing is booked for night 1 on March 12 and night 2 on March 13.",
+        "note": "Both requested nights are booked."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

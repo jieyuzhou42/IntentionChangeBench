@@ -1,0 +1,182 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 5,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1533.0,
+      "budget": 2600,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19551,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 2600
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Phoenix"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Billings"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-18"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-20"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Phoenix to Billings on 2022-03-18"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Flight from Billings to Phoenix on 2022-03-20"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "2 nights 2022-03-18 and 2022-03-19"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "restaurant_rating",
+        "value": 3.5
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "The trip spans 3 days, from 2022-03-18 through 2022-03-20.",
+        "source_turn": 0,
+        "quote": "spanning 3 days from March 18th to March 20th, 2022"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Pay for accommodation only for the nights slept there: 2022-03-18 and 2022-03-19.",
+        "source_turn": 1,
+        "quote": "I'm only paying for nights I actually sleep there the 18th and the 19th."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The plan covers March 18, 19, and 20, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan is priced for one traveler; the booked listing has maximum occupancy 3, which accommodates one."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The plan visits Billings as its single destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-18."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends with the return flight on 2022-03-20."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan uses flight F3804883 from Phoenix to Billings on 2022-03-18, matching the transportation record."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan uses flight F3799751 from Billings to Phoenix on 2022-03-20, matching the transportation record."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "violated",
+        "evidence": "The plan books the listing from check-in 2022-03-18 to check-out 2022-03-21, for 3 nights rather than the requested 2 nights on March 18 and 19."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing, Sunny 2 bd + Private rooftop on best GP street, is an Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The listed restaurant meals are at L'Angoor, whose candidate-record aggregate rating is 3.5; the unknown travel-day meals do not establish restaurant meals below the threshold."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

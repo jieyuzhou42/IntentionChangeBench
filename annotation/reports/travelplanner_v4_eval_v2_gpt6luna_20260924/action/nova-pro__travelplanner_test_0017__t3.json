@@ -1,0 +1,107 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20325,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511 from Lihue to San Francisco",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy, spacious Studio located on Upper East Side",
+        "record_name": "Cozy, spacious Studio located on Upper East Side",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709 from San Francisco to Lihue",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 27, March 28, and March 29, 2022.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "The listing can host one traveler, and the plan assumes no larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound record F3880511 is from Lihue; day 1 also lists Lihue as the current city.",
+        "note": "The trip starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound record F3880511 goes to San Francisco, and the itinerary lists San Francisco as the current city on days 2 and 3.",
+        "note": "The destination is San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's visiting-city days are in San Francisco; Lihue is the origin and return point.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-27, and the outbound flight record is dated 2022-03-27.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-29, and the return flight record is dated 2022-03-29.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3880511 is Lihue to San Francisco on 2022-03-27 and arrives at 21:32.",
+        "note": "The flight number, route, date, and requested landing time match."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3870709 is San Francisco to Lihue on 2022-03-29 and departs at 09:10.",
+        "note": "The flight number, route, date, and requested departure time match."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary has accommodation only on March 28; March 27 is listed as '-'.",
+        "note": "Only one night is booked in the itinerary, rather than the required nights of March 27 and March 28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The record for Cozy, spacious Studio located on Upper East Side lists room type 'Entire home/apt'.",
+        "note": "The booked listing matches the required room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

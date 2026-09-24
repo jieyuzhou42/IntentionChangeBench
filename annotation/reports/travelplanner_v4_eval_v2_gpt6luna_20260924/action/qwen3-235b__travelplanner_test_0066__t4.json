@@ -1,0 +1,152 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22118,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Driving from Minneapolis to Jacksonville (entire day)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering at accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Goose Feathers Cafe and Bakery",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Driving from Jacksonville to Minneapolis (entire day)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "The plan spans 3 days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park has maximum occupancy 2 and is booked for both nights.",
+        "note": "The booked capacity covers 1 traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “Driving from Minneapolis to Jacksonville (entire day).”",
+        "note": "The trip departs from Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as the current city and the drive destination.",
+        "note": "The destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Each itinerary day lists Jacksonville as the current city.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Driving from Minneapolis to Jacksonville (entire day)”; the user specified they would drive in their own car.",
+        "note": "The outbound drive is scheduled for 2022-03-27."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “Driving from Jacksonville to Minneapolis (entire day)”; the user specified they would drive in their own car.",
+        "note": "The return drive is scheduled for 2022-03-29."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary schedules driving on 2022-03-27 and 2022-03-29, with Jacksonville Zoo and Gardens on 2022-03-28.",
+        "note": "Sightseeing is confined to the only available sightseeing day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park is listed on 2022-03-27 and 2022-03-28; 2022-03-29 has no accommodation.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park is listed as “Entire home/apt.”",
+        "note": "The booked room type meets the requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Cute Studio near Prospect Park has a review rate number of 3.0.",
+        "note": "The requested minimum is 3.5, and the listing falls below it."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Though user initially wanted rating >=4.0, they later relaxed to 3.5, and this option has 3.0, which is the closest available."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

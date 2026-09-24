@@ -1,0 +1,209 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25850,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3883491 departing San Francisco at 09:03, arriving Kahului at 11:18, cost $872",
+        "record_name": "F3883491",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered from grocery pickup",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "BrewBakes (rating 4.0, cost $44)",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Fat Belly (rating 4.1, cost $54)",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights (Entire home/apt, rating 5.0, cost $1040)",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Walking/local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "The Breakfast Bite (rating 0, but no rated breakfast options ≥4.0; self-catered alternative selected to meet budget)",
+        "record_name": "The Breakfast Bite",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Vikings (rating 4.2, cost $74)",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "BrewBakes (rating 4.0, cost $44)",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Apt in Centrally Located Brooklyn Heights (Entire home/apt, rating 5.0, cost $1040)",
+        "record_name": "Cozy Apt in Centrally Located Brooklyn Heights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3880403 departing Kahului at 13:04, arriving San Francisco at 20:51, cost $544",
+        "record_name": "F3880403",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "BrewBakes (rating 4.0, cost $44)",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-catered to manage cost",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, March 26, and March 27, 2022.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The accommodation record has maximum occupancy 8.",
+        "note": "The booked listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3883491 has OriginCityName San Francisco.",
+        "note": "The outbound flight departs from San Francisco."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3883491 has DestCityName Kahului; the accommodation record's city is Kahului.",
+        "note": "The plan travels to and stays in Kahului."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Kahului as the current city on March 25, 26, and 27.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3883491 has FlightDate 2022-03-25.",
+        "note": "The itinerary starts on March 25, 2022."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880403 has FlightDate 2022-03-27.",
+        "note": "The itinerary ends on March 27, 2022."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3883491 is listed from San Francisco to Kahului on 2022-03-25, departing 09:03 and arriving 11:18.",
+        "note": "The record confirms the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3880403 is listed from Kahului to San Francisco on 2022-03-27, departing 13:04 and arriving 20:51.",
+        "note": "The return is on the requested date and lands before 21:00."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same accommodation is listed on March 25 and March 26; its minimum nights is 2.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The accommodation record lists room type Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "F3880403 arrives in San Francisco at 20:51 on 2022-03-27.",
+        "note": "The recorded arrival is before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The accommodation record's review rate number is 5.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "The Breakfast Bite has Aggregate Rating 0; BrewBakes is rated 4, Vikings 4.2, and Fat Belly 4.1.",
+        "note": "The plan lists The Breakfast Bite as a restaurant meal, and its rating is below 4.0."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21326,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (Buffalo→Boston), rideshares",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "In-flight snack",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat (4.4★)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Grocery store sandwiches",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshares",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Club Cubana (4.4★)",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Food court takeout",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshares, Flight F3757097 (Boston→Buffalo)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Red Mesa Restaurant (4.5★)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Airport snacks",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Boston listing has maximum occupancy 5 and is used for both accommodation nights.",
+        "note": "Its capacity hosts four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists two attractions on March 4, two on March 5, and one on March 6. Public Garden and Boston Common are close together; the March 5 attractions are in central Boston. Meals are listed each day as opportunities for breaks.",
+        "note": "It stays within the two-attraction daily limit and includes daily meal breaks."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "unknown",
+        "evidence": "The restaurant records give Aggregate Ratings of 4.4 for Irish Democrat, 4.4 for Club Cubana, and 4.5 for Red Mesa Restaurant, but do not state whether any meal is sit-down.",
+        "note": "The rating threshold is met on each day, but the records lack the attribute needed to verify the sit-down requirement."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "violated",
+        "evidence": "The non-self-catered dinner on March 5 is listed as 'Food court takeout' with no matching restaurant record or recorded cost. The other non-restaurant meals are snacks, grocery sandwiches, or self-catered.",
+        "note": "The unmatched takeout meal cannot be verified as inexpensive from candidate-record attributes."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The selected restaurant records list Irish Democrat cuisines as Tea, Cafe, Bakery, Fast Food; Club Cubana as Desserts, BBQ, Fast Food, Cafe, Indian, Mediterranean; and Red Mesa Restaurant as Desserts, Tea, Fast Food, Indian, Seafood.",
+        "note": "None of the selected restaurant cuisine lists supplies both French and American cuisine."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "cuisine",
+        "quote": "Cuisine variety sacrificed per final instruction."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

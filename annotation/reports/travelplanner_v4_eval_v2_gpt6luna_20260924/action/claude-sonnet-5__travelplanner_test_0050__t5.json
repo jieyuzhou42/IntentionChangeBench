@@ -1,0 +1,190 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 23375,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733, Tulsa to Phoenix, Dep 11:28 Arr 13:07, $195",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Pizza Hut (Phoenix, rating 4.4, no Fast Food tag)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut (Phoenix, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) - Entire home/apt, $834/night",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Pizza Hut (Phoenix, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pizza Hut (Phoenix, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pizza Hut (Phoenix, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) - Entire home/apt, $834/night",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3803478, Phoenix to Tulsa, Dep 13:51 Arr 17:04, $276",
+        "record_name": "F3803478",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Pizza Hut (Phoenix, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Pizza Hut (Phoenix, rating 4.4)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 6, 7, and 8, 2022.",
+        "note": "Three itinerary days are planned."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 8.",
+        "note": "The listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Tulsa as OriginCityName.",
+        "note": "The trip departs from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Phoenix as DestCityName.",
+        "note": "The trip destination is Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Phoenix as the destination and stay city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-06.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-08.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3996733; its record is a Tulsa-to-Phoenix flight, not self-driving in an own car.",
+        "note": "The required outbound mode is self-driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3803478; its record is a Phoenix-to-Tulsa flight, not self-driving in an own car.",
+        "note": "The required return mode is self-driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on March 6 and March 7, with none on the March 8 departure day.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's record gives room type Entire home/apt.",
+        "note": "The room type matches the requirement."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary uses flight F3996733 outbound and F3803478 returning; both are flight records.",
+        "note": "Flying is preferred when the cap allows it, and the plan uses flights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut's Aggregate Rating is 4.4.",
+        "note": "Every restaurant meal in the plan is Pizza Hut, meeting the 4.0 floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut's Cuisines are listed as Tea, Chinese, Desserts, Seafood, with no Fast Food tag.",
+        "note": "All listed Phoenix restaurant meals use this record."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "No ground-transportation (drive) option exists in the available search results, so flights remain the only feasible mode despite the user's openness to driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "No ground-transportation (drive) option exists in the available search results, so flights remain the only feasible mode despite the user's openness to driving."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

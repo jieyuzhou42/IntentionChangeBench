@@ -1,0 +1,218 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 24931,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409, Gulfport-Charlotte, Dep 06:58 Arr 09:48, $215",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe (Tea, Chinese, Desserts; rating 4.6; $23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Kylin Skybar (Tea, Cafe, Pizza, Italian; rating 3.6; $44)",
+        "record_name": "Kylin Skybar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg (Entire home/apt, no smoking, $218/night)",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Unplugged Courtyard (Desserts, French, Bakery, Cafe, Seafood; rating 4.0; $54)",
+        "record_name": "Unplugged Courtyard",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "China Garden (Tea, Mexican, BBQ, Mediterranean; rating 3.8; $14)",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Grover's - The Baker Shop (Pizza, Bakery, Chinese, Indian, Seafood; rating 3.0; $30)",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg (Entire home/apt, no smoking, $218/night)",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3793242, Charlotte-Gulfport, Dep 20:36 Arr 21:40, $154",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Olive Tree Cafe (rating 4.6; $23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Kylin Skybar (rating 3.6; $44)",
+        "record_name": "Kylin Skybar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Unplugged Courtyard (rating 4.0; $54, eaten before evening flight)",
+        "record_name": "Unplugged Courtyard",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-05, 2022-03-06, and 2022-03-07.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Luxury 2 bdr/2 bath prime Williamburg, has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler, and the plan does not assume a different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName as Gulfport.",
+        "note": "The trip departs from Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName as Charlotte.",
+        "note": "The destination is Charlotte."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination is Charlotte before the return to Gulfport.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-05.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record has FlightDate 2022-03-07.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793409 is Gulfport to Charlotte on 2022-03-05, departing 06:58.",
+        "note": "It matches the requested outbound route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793242 is Charlotte to Gulfport on 2022-03-07, departing 20:36.",
+        "note": "It matches the requested return route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on 2022-03-05 and 2022-03-06; the departure day has no accommodation.",
+        "note": "The itinerary books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg has room type Entire home/apt.",
+        "note": "The booked listing matches the required room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules include No smoking.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "All restaurant meals have Aggregate Rating of at least 3.0: Olive Tree Cafe 4.6, Kylin Skybar 3.6, Unplugged Courtyard 4.0, China Garden 3.8, and Grover's - The Baker Shop 3.0.",
+        "note": "Every restaurant meal meets the rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Restaurant Average Costs per person are $23, $44, $54, $14, and $30 for the listed meals.",
+        "note": "Each restaurant meal costs no more than $60 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Cuisines fields for all restaurants used contain no Fast Food tag.",
+        "note": "No planned Charlotte meal carries the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-06 breakfast is Unplugged Courtyard, lunch is China Garden, and dinner is Grover's - The Baker Shop.",
+        "note": "All three meals use different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Cuisines field includes Mediterranean; it is listed for lunch on 2022-03-06.",
+        "note": "At least one meal that day is Mediterranean-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says Discovery Place Science is a morning visit on 2022-03-06, completed before the 15:00-17:00 call; no other activities are listed that afternoon.",
+        "note": "The planned activity is outside the time that must remain free."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Discovery Place Science as a morning visit on 2022-03-06.",
+        "note": "The optional visit is placed on the requested day and outside 15:00-17:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

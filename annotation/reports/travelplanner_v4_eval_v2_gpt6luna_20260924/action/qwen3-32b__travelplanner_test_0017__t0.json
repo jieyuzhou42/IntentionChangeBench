@@ -1,0 +1,111 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20206,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Depart at 13:08 via Flight F3880511 to San Francisco; arrives at 21:32",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Dinner at 'Tokyo Sushi', San Francisco",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Stay at 'Spacious 1 bedroom in Woodlawn NYC', San Francisco (Price: $163/night)",
+        "record_name": "Spacious 1 bedroom in Woodlawn NYC",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lunch at 'That Baat', San Francisco",
+        "record_name": "That Baat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Dinner at 'Zaika', San Francisco",
+        "record_name": "Zaika",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Stay at 'Spacious 1 bedroom in Woodlawn NYC', San Francisco (Price: $163/night)",
+        "record_name": "Spacious 1 bedroom in Woodlawn NYC",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Depart at 09:10 via Flight F3870709 to Lihue; arrives at 11:57",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 27, March 28, and March 29, 2022.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Spacious 1 bedroom in Woodlawn NYC, has maximum occupancy 2.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 is recorded from Lihue to San Francisco on 2022-03-27.",
+        "note": "The trip departs from Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "violated",
+        "evidence": "Flight F3870709 is recorded from San Francisco to Lihue on 2022-03-29.",
+        "note": "The plan returns to Lihue rather than ending in San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The planned accommodation, meals, and attractions are in San Francisco; Lihue appears as the departure and return flight city.",
+        "note": "San Francisco is the one visited city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F3880511 has FlightDate 2022-03-27.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight F3870709 has FlightDate 2022-03-29.",
+        "note": "The itinerary ends on the requested date, though its destination is incorrect."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

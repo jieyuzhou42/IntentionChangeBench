@@ -1,0 +1,231 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22382,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight from Scranton to Newark (Flight #F3920949 at 1:40 PM on March 24, 2022)",
+        "record_name": "F3920949",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Drifters Cafe",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bernardo's",
+        "record_name": "Bernardo's",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Escape Terrace Bar Kitchen",
+        "record_name": "Escape Terrace Bar Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Large Two Story Loft in the Heart of West Village ($1127 for 3 nights)",
+        "record_name": "Large Two Story Loft in the Heart of West Village",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Angeethi Restaurant",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Artistry",
+        "record_name": "Artistry",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Anaicha's Food Joint",
+        "record_name": "Anaicha's Food Joint",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Large Two Story Loft in the Heart of West Village ($1127 for 3 nights)",
+        "record_name": "Large Two Story Loft in the Heart of West Village",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Flight from Newark to Scranton (Flight #F3919859 at 9:46 PM on March 26, 2022)",
+        "record_name": "F3919859",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Take it to 1900 then.",
+        "effect": "Raises the trip budget from $1,600 to $1,900; no itinerary slot is changed."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The requested dates are March 24–26, 2022, and the plan's travel is dated March 24 and March 26.",
+        "note": "The trip spans the requested three calendar days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Newark listing has maximum occupancy 5.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Scranton as OriginCityName.",
+        "note": "The itinerary starts from Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Newark as DestCityName.",
+        "note": "The itinerary visits Newark."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Newark is the only destination city in the itinerary.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record's FlightDate is 2022-03-24.",
+        "note": "Travel begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record's FlightDate is 2022-03-26.",
+        "note": "Travel ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The planned flight F3920949 departs at 13:40; the first Scranton-to-Newark flight record, F3920918, departs at 05:57.",
+        "note": "The plan does not take the requested first flight out."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3919859 departs Newark at 21:46 on 2022-03-26.",
+        "note": "This is the listed Newark-to-Scranton flight and matches the requested last departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on itinerary days 2 and 3; day 1 is March 24 with no accommodation, while the requested nights are March 24 and 25.",
+        "note": "The plan does not place accommodation on both requested nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Large Two Story Loft in the Heart of West Village has review rate number 4.0.",
+        "note": "The booked Newark listing meets the 4.0 minimum."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

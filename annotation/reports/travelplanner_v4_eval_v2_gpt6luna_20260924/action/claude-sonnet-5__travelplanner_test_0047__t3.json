@@ -1,0 +1,223 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 25566,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409, Gulfport→Charlotte, Dep 06:58, Arr 09:48, $215",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe (Tea/Chinese/Desserts, rating 4.6, $23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "China Garden (Mediterranean, rating 3.8, $14)",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg (Entire home/apt, no smoking, $218/night)",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "China Garden (rating 3.8, $14)",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Grover's - The Baker Shop (Indian, rating 3.0, $30)",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "China Garden (Mediterranean, rating 3.8, $14)",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg (night 2)",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3793242, Charlotte→Gulfport, Dep 20:36, Arr 21:40, $154",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Olive Tree Cafe (rating 4.6, $23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "China Garden (rating 3.8, $14)",
+        "record_name": "China Garden",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-05, 2022-03-06, and 2022-03-07.",
+        "note": "It lists three trip days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Charlotte listing has maximum occupancy 3.",
+        "note": "The listing can host the individual traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 is from Gulfport to Charlotte.",
+        "note": "The outbound origin is Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 is from Gulfport to Charlotte.",
+        "note": "The destination is Charlotte."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation city are Charlotte.",
+        "note": "It plans one visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 has FlightDate 2022-03-05.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793242 has FlightDate 2022-03-07.",
+        "note": "The return is on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793409 departs Gulfport at 06:58 on 2022-03-05 and arrives in Charlotte at 09:48.",
+        "note": "It matches the requested route, date, and 06:58 departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793242 departs Charlotte at 20:36 on 2022-03-07 and arrives in Gulfport at 21:40.",
+        "note": "It matches the requested route, date, and 20:36 departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Charlotte accommodation is listed on 2022-03-05 and 2022-03-06; the listing's minimum nights is 1.",
+        "note": "The itinerary books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg has room type Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg has house rules 'No children under 10 & No smoking & No pets'.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Olive Tree Cafe is rated 4.6, China Garden 3.8, and Grover's - The Baker Shop 3.0.",
+        "note": "Every restaurant meal listed meets the 3.0 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records list average costs per person of $23 for Olive Tree Cafe, $14 for China Garden, and $30 for Grover's - The Baker Shop.",
+        "note": "All listed restaurant meals are under $60 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Cuisines for Olive Tree Cafe, China Garden, and Grover's - The Baker Shop do not include Fast Food.",
+        "note": "No listed Charlotte meal has a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On 2022-03-06, breakfast and dinner are both China Garden; lunch is Grover's - The Baker Shop.",
+        "note": "The three meals use only two different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Cuisines include Mediterranean, and it is listed for meals on 2022-03-06.",
+        "note": "At least one meal that day is Mediterranean-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The listed activities are The Mint Museum in the morning and Discovery Place Science in the late morning; the itinerary says the plan is clear of the 15:00–17:00 call.",
+        "note": "No planned activity is placed in the required free-time window."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists The Mint Museum in the morning, followed by Discovery Place Science in the late morning on 2022-03-06.",
+        "note": "Both activities are listed in the requested order and outside 15:00–17:00."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Cuisines include Mediterranean, and it is listed for dinner on 2022-03-06.",
+        "note": "The planned dinner carries the required Mediterranean tag."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Grover's - The Baker Shop's Cuisines include Indian, and it is listed for lunch on 2022-03-06.",
+        "note": "The planned lunch carries the required Indian tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31137,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Self-driving from Charlotte to Baton Rouge (11 hours 13 mins)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hunter's Pub (Average Cost: 47)",
+        "record_name": "Hunter's Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Taste of India (Average Cost: 28)",
+        "record_name": "Taste of India",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely West Village 1 BR - Quiet and Comfortable (Price: 260, Maximum occupancy: 2, No visitors policy)",
+        "record_name": "Lovely West Village 1 BR - Quiet and Comfortable",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Bluebird Diner (Average Cost: 13)",
+        "record_name": "Bluebird Diner",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Zen Japanese Steakhouse and Sushi Bar (Average Cost: 20)",
+        "record_name": "Zen Japanese Steakhouse and Sushi Bar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely West Village 1 BR - Quiet and Comfortable (Stay continues)",
+        "record_name": "Lovely West Village 1 BR - Quiet and Comfortable",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Self-driving from Baton Rouge to New Orleans (1 hour 17 mins)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Shenanigan's Irish Pub (Average Cost: 43)",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Jimmy's Pancake House (Average Cost: 50)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Cute bedroom available near subway in Astoria! (Price: 1189, Maximum occupancy: 1, No visitors policy) – Only one available room allows a trade-off for budget",
+        "record_name": "Cute bedroom available near subway in Astoria!",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from New Orleans to Charlotte (10 hours 27 mins)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Baton Rouge and New Orleans, two Louisiana cities.",
+        "note": "The origin, Charlotte, is not counted as a visited destination."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Lovely West Village 1 BR - Quiet and Comfortable is listed as Entire home/apt; Cute bedroom available near subway in Astoria! is listed as Private room.",
+        "note": "Not all booked accommodations have the required private room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings specify No visitors; neither listing specifies No parties.",
+        "note": "The requirement is to allow parties, and neither listing prohibits parties."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "All listed travel legs are self-driving; no flight is listed.",
+        "note": "The itinerary uses self-driving rather than air travel."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "house_rule",
+        "quote": "we sacrifice the 'parties allowed' constraint."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

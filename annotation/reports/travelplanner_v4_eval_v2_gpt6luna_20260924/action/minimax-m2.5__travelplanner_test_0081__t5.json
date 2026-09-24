@@ -1,0 +1,166 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23738,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3558527: Tampa (17:33) to Cleveland (20:06), $393",
+        "record_name": "F3558527",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Makhan Fish and Chicken Corner (Chinese, $25)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC - Private room, Rating 5, $918 (3 nights)",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Green Leaf (Chinese, $73)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner (Chinese, $25)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Me Kong Bowl (BBQ/Seafood, $19)",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC - Private room, Rating 5, $918",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043: Cleveland (07:19) to Tampa (09:36), $336",
+        "record_name": "F3905043",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing has maximum occupancy 1.",
+        "note": "The capacity covers one traveler on each booked night."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3558527, which departs at 17:33 and arrives at 20:06; the requested flight is F3915073, departing at 10:37 and arriving at 12:59.",
+        "note": "The selected outbound flight does not match the requested flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lists arrival in Cleveland and no sightseeing; Day 2 lists sightseeing; Day 3 lists a 07:19 airport-bound flight.",
+        "note": "The plan follows the requested arrival/rest, sightseeing, and early airport-transfer sequence."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "Day 2 lists Rock & Roll Hall of Fame, but not the Cleveland Cultural Gardens. Day 3 lists departure from Cleveland and no sightseeing.",
+        "note": "The plan omits the required Cleveland Cultural Gardens sightseeing."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "The lunch slots on Days 1 and 3 are '-'.",
+        "note": "No restaurant lunch is planned on either requested day."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The booked listing is 'Rare gem of an apartment in NYC.  So Spacious!', not 'Richmond Hill 3 Bedroom apartment in Private home!'.",
+        "note": "The requested accommodation was not selected."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing's room type is Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has review rate number 5.",
+        "note": "The listing meets the requested rating of 5."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3905043, departing at 07:19 and arriving at 09:36; the requested flight is F3623037, departing at 08:40 and arriving at 10:57.",
+        "note": "The selected return flight does not match the requested flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "The Day 3 breakfast slot is '-'.",
+        "note": "No restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Makhan Fish and Chicken Corner lists Fast Food among its cuisines; it is planned for Day 1 dinner and Day 2 lunch.",
+        "note": "The plan includes a restaurant listing Fast Food, contrary to the requirement."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "Day 1's attraction is listed as 'Arrival in Cleveland'.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 lunch slot is '-'.",
+        "note": "No restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Flight F3905043 arrives in Tampa at 09:36.",
+        "note": "The recorded arrival is before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

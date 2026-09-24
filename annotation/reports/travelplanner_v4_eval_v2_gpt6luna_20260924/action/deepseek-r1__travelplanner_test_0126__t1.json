@@ -1,0 +1,211 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32341,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive (11h59m, $62)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Bandit Burrito (Wilmington)",
+        "record_name": "Bandit Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Taco Bus (Wilmington)",
+        "record_name": "Taco Bus",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Bedroom - Warm & Cozy Near Subway (1) ($339/2 nights)",
+        "record_name": "Brooklyn Bedroom - Warm & Cozy Near Subway (1)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Moonie's Texas Barbecue",
+        "record_name": "Moonie's Texas Barbecue",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Yellow Chef",
+        "record_name": "The Yellow Chef",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Bedroom - Warm & Cozy Near Subway (1)",
+        "record_name": "Brooklyn Bedroom - Warm & Cozy Near Subway (1)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive (1h43m, $7)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Eat Street (Fayetteville)",
+        "record_name": "Eat Street",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "The Great Indian Pub",
+        "record_name": "The Great Indian Pub",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH ($502/2 nights)",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Biryani By Kilo",
+        "record_name": "Biryani By Kilo",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "DiVine",
+        "record_name": "DiVine",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "TRANQUIL HAVEN W/PRIVATE BATH",
+        "record_name": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-drive (11h10m, $58)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Packed meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Roadside diner en route",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Wilmington on March 13–14, then Fayetteville on March 15–16.",
+        "note": "The cities appear in the requested order."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing is booked on March 13 and 14; the Fayetteville listing is booked on March 15 and 16.",
+        "note": "The itinerary covers the specified two nights in each city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings have room type \"Private room\" in the records.",
+        "note": "Both accommodations meet the private-room requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has review rate number 5; the Fayetteville listing has review rate number 4.",
+        "note": "Both ratings are at least 4."
+      },
+      {
+        "gold_field": "night_policy",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books Wilmington on March 13–14 and Fayetteville on March 15–16, with no accommodation on March 17.",
+        "note": "Only the specified occupied nights are booked, with no overlap."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary specifies self-driving on March 13, March 15, and March 17; the transportation records provide self-driving routes for each leg.",
+        "note": "The plan uses the requested own-car transportation."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 13 includes the attraction \"Battleship North Carolina,\" despite the requirement to keep that day for driving and breaks without sightseeing. March 17 has no attraction listed, and March 15 lists the Wilmington-to-Fayetteville self-drive.",
+        "note": "The March 13 sightseeing conflicts with the requested driving/rest day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation records have geographically inconsistent listing names: listings with Brooklyn, NYC, or JFK references are labeled as being in Wilmington or Fayetteville. The audit uses the explicit city fields in the records."
+    ]
+  }
+}

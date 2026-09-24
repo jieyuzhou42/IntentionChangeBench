@@ -1,0 +1,154 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21766,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720 (21:59 - 23:42), St. Louis to Oklahoma City",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Buffet 101 (4.0 rating, $74)",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Oklahoma City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cappuccino Blast (4.0 rating, $84)",
+        "record_name": "Cappuccino Blast",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lake House Restaurant (4.3 rating, $38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cafe Delhi Heights (4.0 rating, $74)",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! ($151)",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607 (06:27 - 07:44), Oklahoma City to St. Louis",
+        "record_name": "F3950607",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Shakahari Restaurant (3.6 rating, $81)",
+        "record_name": "Shakahari Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 17, 18, and 19, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "March 17 has no matching accommodation listing; the only matched lodging is Upper East Side Space and Access!!, with maximum occupancy 2, on March 18.",
+        "note": "The plan does not provide a matched listing with capacity for the traveler for every night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 departs St. Louis.",
+        "note": "The outbound flight matches the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 arrives in Oklahoma City.",
+        "note": "The outbound flight matches the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight is to Oklahoma City, and the return flight departs Oklahoma City; the listed attraction is also in Oklahoma City.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 has FlightDate 2022-03-17.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3950607 has FlightDate 2022-03-19.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 travels from St. Louis to Oklahoma City on 2022-03-17 and departs at 21:59.",
+        "note": "The recorded flight is late and matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3950607 travels from Oklahoma City to St. Louis on 2022-03-19 and departs at 06:27.",
+        "note": "The recorded flight is early and matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Only Upper East Side Space and Access!! is matched to a lodging record, on March 18; March 17 has no matched listing.",
+        "note": "The plan books only one of the two requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Shakahari Restaurant has Aggregate Rating 3.6; the other matched restaurant meals have ratings of 4.0 or higher.",
+        "note": "The restaurant rating floor is 4.0, and the March 19 breakfast falls below it."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "One meal on day 3 falls below the rating threshold ($81, 3.6 rating) but is acceptable as a one-time deviation"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

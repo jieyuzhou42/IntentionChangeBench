@@ -1,0 +1,168 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24388,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3883178 (Dep: 13:48 - Arr: 16:11)",
+        "record_name": "F3883178",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Kahului",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Breakfast at The Breakfast Bite",
+        "record_name": "The Breakfast Bite",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lunch at Houlihan's",
+        "record_name": "Houlihan's",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Dinner at Vikings",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to staten island ferry",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3880403 (Dep: 13:04 - Arr: 20:51)",
+        "record_name": "F3880403",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Breakfast at BrewBakes",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Lunch at Michael's Kitchen",
+        "record_name": "Michael's Kitchen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Dinner at Fat Belly",
+        "record_name": "Fat Belly",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, 26, and 27, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The March 26 listing has maximum occupancy 3; March 25 has only the text 'Kahului' and no matching accommodation listing.",
+        "note": "The plan does not provide a listing with capacity for the traveler for every night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3883178 has OriginCityName 'San Francisco'; return flight F3880403 has DestCityName 'San Francisco'.",
+        "note": "The listed flights connect to the requested origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3883178 has DestCityName 'Kahului'; return flight F3880403 has OriginCityName 'Kahului'.",
+        "note": "The listed flights connect to the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Kahului as the destination and lists Kahului attractions.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3883178 has FlightDate '2022-03-25'.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880403 has FlightDate '2022-03-27'.",
+        "note": "The return flight is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3883178 is a San Francisco-to-Kahului flight dated 2022-03-25.",
+        "note": "The itinerary lists the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3880403 is a Kahului-to-San Francisco flight dated 2022-03-27, arriving at 20:51.",
+        "note": "The recorded arrival is before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "March 25 accommodation is listed as 'Kahului' with no matching listing; the only accommodation listing is on March 26.",
+        "note": "Only one night is booked, rather than the requested nights of March 25 and 26."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing 'NYC cozy apartment close to staten island ferry' has room type 'Entire home/apt'.",
+        "note": "The listed accommodation has the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880403 arrives in San Francisco at 20:51 on 2022-03-27.",
+        "note": "The recorded arrival is no later than 21:00."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The booked listing's 'review rate number' is 4.",
+        "note": "The listing does not meet the required rating of 5."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

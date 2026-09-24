@@ -1,0 +1,202 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23584,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Charleston to St. Louis (~9–10 hrs). Depart early morning.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered / packed food from home before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "El Super Burrito, St. Louis (Rating: 4.1, Avg cost: $43/person)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito, St. Louis (Rating: 4.1, Avg cost: $43/person) — or Starbucks (Rating: 4.1, Avg cost: $92/person). Selecting El Super Burrito to stay within budget.",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private room in large, central Nolita penthouse! — St. Louis (Rating: 5, $342/night, min 3 nights, max 2 occupancy, house rule: No visitors)",
+        "record_name": "Private room in large, central Nolita penthouse!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks, St. Louis (Rating: 4.1, Avg cost: $92/person — note: high cost; this is the only rated ≥4.0 option available)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "El Super Burrito, St. Louis (Rating: 4.1, Avg cost: $43/person)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "El Super Burrito, St. Louis (Rating: 4.1, Avg cost: $43/person)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private room in large, central Nolita penthouse! — St. Louis (Night 2 of 3)",
+        "record_name": "Private room in large, central Nolita penthouse!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive return from St. Louis to Charleston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "El Super Burrito, St. Louis (Rating: 4.1, Avg cost: $43/person) — quick breakfast before departure",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/self-catered en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Self-catered upon return home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Private room in large, central Nolita penthouse! — St. Louis (Night 3 of 3, required by 3-night minimum)",
+        "record_name": "Private room in large, central Nolita penthouse!",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1 (2022-03-16), Day 2 (2022-03-17), and Day 3 (2022-03-18).",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked St. Louis listing has maximum occupancy 2; the same listing is booked for each listed night.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation says “Self-drive from Charleston to St. Louis.”",
+        "note": "The trip starts in Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation says “Self-drive from Charleston to St. Louis”; the itinerary lists St. Louis on Day 2.",
+        "note": "St. Louis is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names St. Louis as the destination and lists no other destination city.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is 2022-03-16.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is 2022-03-18.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is “Self-drive from Charleston to St. Louis”; the dialogue specifies self-driving there on Mar 16.",
+        "note": "The stated outbound mode, route, date, and own-car plan match."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 transportation is “Self-drive return from St. Louis to Charleston”; Day 3 is 2022-03-18, and the dialogue specifies leaving on Mar 18.",
+        "note": "The stated return mode, route, and date match."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "El Super Burrito and the selected Starbucks record each have Aggregate Rating 4.1. Packed and self-catered meals are not restaurant meals.",
+        "note": "All restaurant meals in the plan meet the 4.0 minimum."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing “Private room in large, central Nolita penthouse!” has review rate number 5 in the St. Louis accommodation records.",
+        "note": "Its rating meets the 4.0 minimum."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed on all three itinerary days, including Day 3 (2022-03-18); the requested stay is the nights of 2022-03-16 and 2022-03-17.",
+        "note": "The plan includes an accommodation night on the departure day in addition to the two requested nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "the user stays 2 nights but must pay for 3"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

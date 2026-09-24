@@ -1,0 +1,211 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22554,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Charleston to St. Louis; arrive before sightseeing",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "El Super Burrito — average cost 43, rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "El Super Burrito — average cost 43, rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito — average cost 43, rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "attraction",
+        "text": "The Gateway Arch",
+        "record_name": "The Gateway Arch",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1800sf Urban Goddess Brooklyn Loft — entire home/apt, rating 2, 2-night minimum, price 898",
+        "record_name": "1800sf Urban Goddess Brooklyn Loft",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local self-drive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "El Super Burrito — average cost 43, rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "El Super Burrito — average cost 43, rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Latitude - Radisson Blu — average cost 18, rating 3.9; not tagged Fast Food",
+        "record_name": "The Latitude - Radisson Blu",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "attraction",
+        "text": "Saint Louis Zoo",
+        "record_name": "Saint Louis Zoo",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1800sf Urban Goddess Brooklyn Loft — entire home/apt, rating 2",
+        "record_name": "1800sf Urban Goddess Brooklyn Loft",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from St. Louis to Charleston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "El Super Burrito — average cost 43, rating 4.1",
+        "record_name": "El Super Burrito",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 16, March 17, and March 18, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, 1800sf Urban Goddess Brooklyn Loft, has maximum occupancy 4 and is booked for both nights.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The first-day transportation says “Self-drive from Charleston to St. Louis”; the return says “Self-drive from St. Louis to Charleston.”",
+        "note": "Charleston is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The first-day transportation says “Self-drive from Charleston to St. Louis,” and the first two days list St. Louis as the current city.",
+        "note": "St. Louis is the stated destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists St. Louis as the current city on March 16 and 17, then Charleston on March 18 for the return.",
+        "note": "There is one destination city, St. Louis."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is March 16, 2022.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is March 18, 2022, with the return drive to Charleston.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "March 16 transportation is “Self-drive from Charleston to St. Louis; arrive before sightseeing.”",
+        "note": "The plan specifies self-driving in the own-car manner requested."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "March 18 transportation is “Self-drive from St. Louis to Charleston.”",
+        "note": "The plan specifies the requested self-drive return."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "El Super Burrito has Aggregate Rating 4.1 in the record; The Latitude - Radisson Blu has Aggregate Rating 3.9. The Latitude is used for the March 17 dinner, for which 3.9 is allowed.",
+        "note": "All other listed St. Louis restaurant meals meet the 4.0 floor; the exception meal meets its 3.9 allowance."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Latitude - Radisson Blu has Cuisines “Pizza, French, BBQ, American, Seafood,” with no Fast Food tag.",
+        "note": "The March 17 dinner does not carry the prohibited tag."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The record for 1800sf Urban Goddess Brooklyn Loft lists room type “Entire home/apt.”",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The record for 1800sf Urban Goddess Brooklyn Loft gives a review rate number of 2.",
+        "note": "The preferred rating value is 4, and the booked listing is rated below it."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same listing is shown on March 16 and March 17; its record has a 2-night minimum.",
+        "note": "The plan books the two requested nights, March 16 and 17."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Its 2.0 rating sacrifices the earlier 4.0 accommodation floor in favor of not sharing."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "March 17 dinner uses The Latitude to avoid Fast Food, sacrificing the 4.0 meal-rating floor because no supported non-Fast-Food restaurant reaches 4.0."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25522,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, Kansas City to Orlando, 19:26-23:00, $250",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Fuji Japanese Steakhouse",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Crust N Cakes",
+        "record_name": "Crust N Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway!",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856, Orlando to Kansas City, 22:44-00:33, $282",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Fuji Japanese Steakhouse",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Crust N Cakes",
+        "record_name": "Crust N Cakes",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 7, 8, and 9.",
+        "note": "It contains three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 lists Kansas City as its origin; the itinerary begins with travel from Kansas City.",
+        "note": "The plan starts in the requested city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 lists Orlando as its destination; the itinerary identifies Orlando as the destination.",
+        "note": "The plan reaches the requested city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Orlando as its destination and lists Orlando activities and lodging.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F3998497 has FlightDate 2022-03-07.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F4019856 has FlightDate 2022-03-09.",
+        "note": "The return travel is scheduled for the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3998497 from Kansas City to Orlando, not self-driving in an own car.",
+        "note": "The required outbound mode is self-driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F4019856 from Orlando to Kansas City, not self-driving in an own car.",
+        "note": "The required return mode is self-driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists the accommodation on March 7 and March 8 only; March 9 has no accommodation.",
+        "note": "Only two itinerary nights are booked, rather than three nights from March 7."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary lists The Wheel at ICON Park on March 9, a day reserved for intercity travel; it lists Universal Orlando Resort on March 8.",
+        "note": "Sightseeing is not confined to March 8."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary uses flights F3998497 and F4019856.",
+        "note": "The preferred mode is flying, and the plan chooses flights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! is listed as Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records rate Fuji Japanese Steakhouse 3.8, Wai Yu Mun Ching 3.6, and Crust N Cakes 3.4.",
+        "note": "Every restaurant used in the itinerary meets the gold rating floor of 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Cuisines records for Fuji Japanese Steakhouse, Wai Yu Mun Ching, and Crust N Cakes contain no Fast Food tag.",
+        "note": "No listed Orlando restaurant meal carries the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 8 lists Fuji Japanese Steakhouse for breakfast, Wai Yu Mun Ching for lunch, and Crust N Cakes for dinner.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Sacrificed: restaurant rating 4.0+"
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "a strict 2-night hotel stay"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

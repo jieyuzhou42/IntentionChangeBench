@@ -1,0 +1,194 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23374,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3920918 Scranton to Newark, depart 05:57 arrive 06:44, $33",
+        "record_name": "F3920918",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered at Sonder | Stock Exchange kitchen after arrival",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Drifters Cafe (rating 4.1, $24)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Drifters Cafe (rating 4.1, $24)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "record_name": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Drifters Cafe (rating 4.1, $24)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bernardo's (rating 4.0, $84)",
+        "record_name": "Bernardo's",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Drifters Cafe (rating 4.1, $24)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "record_name": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3919859 Newark to Scranton, depart 21:46 arrive 22:23, $22",
+        "record_name": "F3919859",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered at Sonder | Stock Exchange kitchen",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-catered / packed from accommodation kitchen",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Self-catered / packed before flight",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 24, 25, and 26, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Sonder listing has maximum occupancy 9 on both nights.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Scranton as the origin city.",
+        "note": "The itinerary departs from Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Newark as the destination city.",
+        "note": "The itinerary visits Newark."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination city is Newark.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-24.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-26.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3920918 is Scranton to Newark on 2022-03-24, departing 05:57.",
+        "note": "The selected flight matches the requested route, date, and departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3919859 is Newark to Scranton on 2022-03-26, departing 21:46.",
+        "note": "The selected flight matches the requested route, date, and departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Sonder | Stock Exchange | Ideal 1BR + Kitchen is listed on March 24 and March 25; no accommodation is listed on the departure day.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Sonder listing's review rate number is 4.0.",
+        "note": "The booked listing meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Drifters Cafe has Aggregate Rating 4.1 and Bernardo's has Aggregate Rating 4.0; other meal slots are self-catered or packed.",
+        "note": "Every restaurant meal meets the 3.5 floor; self-catered meals do not count against it."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "March 25 lists Drifters Cafe for breakfast, Bernardo's for lunch, and Drifters Cafe for dinner.",
+        "note": "Only two different restaurants are used that day, rather than three."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Sacrificed requirement: restaurant_rating 4.0+ is not met for March 24 breakfast and all three March 26 meals."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

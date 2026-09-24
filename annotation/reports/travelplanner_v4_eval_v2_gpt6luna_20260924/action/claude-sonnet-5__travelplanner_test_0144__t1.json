@@ -1,0 +1,188 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 29096,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, Moab to Denver, ~5h23m, cost $28",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Urban Socialite (Denver, Cafe/Indian/Desserts/Italian, $34)",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast, Denver (Entire home/apt, min 3 nights, rating 2, $390/night)",
+        "record_name": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Nathu's Sweets ($12)",
+        "record_name": "Nathu's Sweets",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Woods Spice ($69)",
+        "record_name": "Woods Spice",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Al Yousuf ($32)",
+        "record_name": "Al Yousuf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast, Denver",
+        "record_name": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Sweet Sensations ($14)",
+        "record_name": "Sweet Sensations",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Starve Stalkers ($31)",
+        "record_name": "Starve Stalkers",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Nukkadwala ($31)",
+        "record_name": "Nukkadwala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast, Denver",
+        "record_name": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Self-driving, Denver to Gunnison, ~3h39m, cost $16",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Yakooz (Denver, $52)",
+        "record_name": "Yakooz",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Packed food (self-catering, en route)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Mocha (Gunnison, Tea/Cafe/Pizza/BBQ, $30)",
+        "record_name": "Mocha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village, Gunnison (Private room, min 1 night, rating 4, $104/night)",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving, Gunnison to Moab, ~4h1m, cost $19",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Shree Meenakshi Dosai (Gunnison, $12)",
+        "record_name": "Shree Meenakshi Dosai",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Packed food (self-catering, en route)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "violated",
+        "evidence": "The itinerary includes Denver and Gunnison, with an overnight accommodation in Gunnison and I.O.O.F. Park listed there.",
+        "note": "The plan visits two cities rather than the requested one."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked Denver listing, *NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast, has room type Entire home/apt.",
+        "note": "The Denver listing matches the required room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The booked Denver listing has review rate number 2.",
+        "note": "Denver's required rating is 4 or higher."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists self-driving for each route, and the candidate records provide self-driving reference text for those routes.",
+        "note": "The plan uses the traveler's own car."
+      },
+      {
+        "gold_field": "launch at Gunnison",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-23 the itinerary lists self-driving from Gunnison to Moab.",
+        "note": "The traveler departs Gunnison on the way home that day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "the apartment rating requirement is sacrificed"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

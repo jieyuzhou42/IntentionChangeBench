@@ -1,0 +1,244 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24869,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409 (06:58-09:48)",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "In-flight meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe ($23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Kylin Skybar ($44)",
+        "record_name": "Kylin Skybar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Accommodation self-service",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Grover's - The Baker Shop ($30, Indian)",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "China Garden ($14, Mediterranean)",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3793242 (20:36-21:40)",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Accommodation self-service",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Prince Snacks & Momo's Point ($11)",
+        "record_name": "Prince Snacks & Momo's Point",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Airport meal",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 5, 6, and 7, 2022.",
+        "note": "The trip spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 lists Gulfport as the origin city.",
+        "note": "The outbound flight departs from Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 lists Charlotte as the destination city.",
+        "note": "The itinerary's destination is Charlotte."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Charlotte as the current city on each trip day.",
+        "note": "Only one destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record for F3793409 has FlightDate 2022-03-05.",
+        "note": "The itinerary begins on March 5, 2022."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record for F3793242 has FlightDate 2022-03-07.",
+        "note": "The itinerary ends on March 7, 2022."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793409 is Gulfport to Charlotte on 2022-03-05, departing at 06:58.",
+        "note": "The selected flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793242 is Charlotte to Gulfport on 2022-03-07, departing at 20:36.",
+        "note": "The selected flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 5 and March 6; its minimum nights is 1.",
+        "note": "There are two accommodation nights, matching the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg is listed as Entire home/apt.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules include 'No smoking'.",
+        "note": "The listing prohibits smoking as requested."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Recorded restaurant meals have ratings of 4.6 (Olive Tree Cafe), 3.6 (Kylin Skybar), 3.0 (Grover's - The Baker Shop), 3.8 (China Garden), and 3.4 (Prince Snacks & Momo's Point).",
+        "note": "Every recorded restaurant meal meets the 3.0 rating floor; self-service and unrecorded meals are not restaurant-record evidence."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Recorded restaurant meals cost $23, $44, $30, $14, and $11 per person.",
+        "note": "Each recorded restaurant meal is at or below the $60 cap."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Prince Snacks & Momo's Point is tagged 'Fast Food' in Cuisines.",
+        "note": "The plan includes a Charlotte meal at a restaurant carrying the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "March 6 breakfast is 'Accommodation self-service'; lunch is Grover's - The Baker Shop and dinner is China Garden.",
+        "note": "The day does not have three different restaurants across breakfast, lunch, and dinner."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Cuisines include Mediterranean.",
+        "note": "A March 6 meal is Mediterranean-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 6 attractions are listed as The Mint Museum (AM) and Discovery Place Science (PM); the rationale says they fit around the call.",
+        "note": "The plan does not place an activity in the 15:00–17:00 free-time window."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "On March 6 the itinerary lists The Mint Museum (AM) before Discovery Place Science (PM); the rationale says they fit around the call.",
+        "note": "Both requested attractions are on the requested day and in the requested order, with the later activity planned outside the call window."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Cuisines include Mediterranean.",
+        "note": "The March 6 dinner meets the required cuisine tag."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Grover's - The Baker Shop's Cuisines include Indian.",
+        "note": "The March 6 lunch meets the required cuisine tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

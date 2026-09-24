@@ -1,0 +1,171 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 22339,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3920918 (05:57 Scranton → 06:44 Newark)",
+        "record_name": "F3920918",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Artistry ($79)",
+        "record_name": "Artistry",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Angeethi Restaurant ($12)",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Bernardo's ($84)",
+        "record_name": "Bernardo's",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Contemporary Brooklyn Lifestyle Apt (2 nights)",
+        "record_name": "Contemporary Brooklyn Lifestyle Apt /JFK Airport",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Harmann Restaurant ($57)",
+        "record_name": "Harmann Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Drifters Cafe ($24)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Escape Terrace Bar Kitchen ($100)",
+        "record_name": "Escape Terrace Bar Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Contemporary Brooklyn Lifestyle Apt",
+        "record_name": "Contemporary Brooklyn Lifestyle Apt /JFK Airport",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3919859 (21:46 Newark → 22:23 Scranton)",
+        "record_name": "F3919859",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Anaicha's Food Joint ($43)",
+        "record_name": "Anaicha's Food Joint",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Kettle & Kegs ($67)",
+        "record_name": "Kettle & Kegs",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Jaguar ($38)",
+        "record_name": "Jaguar",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 24, 25, and 26, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 6.",
+        "note": "Its capacity covers one traveler and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName Scranton.",
+        "note": "The itinerary departs from Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName Newark; all itinerary days list Newark as the current city.",
+        "note": "The destination is Newark."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Newark as the current city on all three days.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight are dated 2022-03-24.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight are dated 2022-03-26.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 on 2022-03-24 departs Scranton at 05:57 and arrives in Newark at 06:44; the other listed outbound option departs at 13:40.",
+        "note": "The plan takes the first listed flight out."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3919859 on 2022-03-26 departs Newark at 21:46 and arrives in Scranton at 22:23; it is the only listed return option.",
+        "note": "The plan takes the last listed flight back."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on March 24 and March 25; the listing's minimum nights is 2.",
+        "note": "The plan books the two requested nights and no accommodation on the departure day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23821,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving to New Orleans (10h 28m, 1,149 km, $57)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "None",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Shenanigan's Irish Pub",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill ($205/night)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Amici Gourmet Pizza",
+        "record_name": "Amici Gourmet Pizza",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sage",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill ($205/night)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Jimmy's Pancake House",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill ($205/night)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "flight to Charlotte",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination is New Orleans; Charlotte is the starting city for the outbound drive.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cozy in Cobble Hill is listed as Entire home/apt.",
+        "note": "The booked listing is an entire apartment."
+      },
+      {
+        "gold_field": "required_cities",
+        "action_status": "satisfied",
+        "evidence": "The itinerary bases the trip in New Orleans.",
+        "note": "New Orleans is the only destination city in the plan."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says self-driving to New Orleans on March 9; the transportation record lists self-driving from Charlotte to New Orleans.",
+        "note": "The listed route and mode match the requirement to drive together."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary says \"flight to Charlotte,\" but the March 13 transportation record says, \"There is no flight from New Orleans to Charlotte on 2022-03-13.\"",
+        "note": "The candidate records do not provide a flight that can satisfy the required return."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 13 lists transportation as \"flight to Charlotte\" and attraction as \"-\"; Mardi Gras World is not scheduled that day.",
+        "note": "The final day is reserved for airport travel with no sightseeing."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

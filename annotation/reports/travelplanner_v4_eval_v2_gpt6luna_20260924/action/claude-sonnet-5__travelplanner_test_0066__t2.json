@@ -1,0 +1,171 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22782,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Minneapolis to Jacksonville (no flight available on this route/date)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Road-trip stop (self-catered/fast food en route)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Villa Gargano, Jacksonville (Tea, American, Desserts) - $51 avg",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park (Entire home/apt, $256/night)",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Oh! Fudge (French, Bakery, American, Fast Food) - $26 avg",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Goose Feathers Cafe and Bakery (Tea, Fast Food, Italian) - $57 avg",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Giani (Tea, Seafood, BBQ, Fast Food) - $37 avg",
+        "record_name": "Giani",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park (Entire home/apt, $256/night)",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Jacksonville to Minneapolis (no flight available on this route/date)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Pirates' House Restaurant (Chinese, Pizza, BBQ) - $59 avg",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Road-trip stop (self-catered/fast food en route)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 27, 28, and 29, 2022.",
+        "note": "The plan has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park has maximum occupancy 2 and is booked for both nights.",
+        "note": "The listing can host the requested one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says “Self-drive from Minneapolis to Jacksonville.”",
+        "note": "The trip begins in Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as the destination and day 2 current city.",
+        "note": "Jacksonville is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Jacksonville is the sole destination city in the itinerary.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-29.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Self-drive from Minneapolis to Jacksonville”; the user specified driving on the 27th.",
+        "note": "The plan uses the requested own-car outbound travel."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “Self-drive from Jacksonville to Minneapolis”; the user specified driving back on the 29th.",
+        "note": "The plan uses the requested own-car return travel."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places intercity driving on March 27 and 29, and Jacksonville Zoo and Gardens on March 28 only.",
+        "note": "Sightseeing is confined to the one available day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 27 and 28; the listing minimum is 1 night.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park is listed as “Entire home/apt.”",
+        "note": "The booked listing has the requested room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The transportation candidate-record searches are dated 2022-03-25 and 2022-03-31, not the requested travel dates 2022-03-27 and 2022-03-29, so those records do not verify flight availability on the requested dates."
+    ]
+  }
+}

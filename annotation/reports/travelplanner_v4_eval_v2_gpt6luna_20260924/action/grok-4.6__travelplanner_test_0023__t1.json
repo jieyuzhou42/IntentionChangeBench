@@ -1,0 +1,181 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22049,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving, from Myrtle Beach to Syracuse, duration: 12 hours 16 mins, distance: 1,280 km, cost: 64",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-catering (packed food)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Silantro Fil-Mex, Syracuse",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment!, Syracuse",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tucanos, Syracuse",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Silantro Fil-Mex, Syracuse",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mezzaluna, Syracuse",
+        "record_name": "Mezzaluna",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment!, Syracuse",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving, from Syracuse to Myrtle Beach, duration: 12 hours 27 mins, distance: 1,283 km, cost: 64",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Silantro Fil-Mex, Syracuse",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-catering (packed food)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 23, 24, and 25, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is from Myrtle Beach to Syracuse.",
+        "note": "The stated origin matches."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodations are in Syracuse.",
+        "note": "The stated destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Syracuse as its destination.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-23.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-25.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate record supports self-driving from Myrtle Beach to Syracuse on 2022-03-23; the itinerary lists that drive.",
+        "note": "Outbound travel uses the requested mode, route, and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate record supports self-driving from Syracuse to Myrtle Beach on 2022-03-25; the itinerary lists that drive.",
+        "note": "Return travel uses the requested mode, route, and date."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists outbound driving on March 23, attractions only on March 24, and return driving on March 25.",
+        "note": "Sightseeing is placed on the only free day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! is listed for March 23 and March 24, with no accommodation listed on departure day March 25.",
+        "note": "Two requested nights are booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! is listed as Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Silantro Fil-Mex is rated 4.9, Tucanos 4.0, and Mezzaluna 3.8.",
+        "note": "Every restaurant meal in the plan is rated at least 3.0; packed meals do not count against this constraint."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Recorded average costs per person are $29 for Silantro Fil-Mex, $36 for Tucanos, and $41 for Mezzaluna.",
+        "note": "Every restaurant meal is under $70 per person; packed meals are not evidence against the constraint."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

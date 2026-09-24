@@ -1,0 +1,120 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22874,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight Number: F4050983, DepTime: 20:26, ArrTime: 22:05, Price: 113",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Arrived in New York (Flight F4050983, 20:26-22:05)",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Accommodation booked: Versatile private room in Harlem/Hamilton Heights! (Room Type: Private Room)",
+        "record_name": "Versatile private room in Harlem/Hamilton Heights!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight Number: F3641657, DepTime: 16:45, ArrTime: 18:28, Price: 182",
+        "record_name": "F3641657",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has Day 1, Day 2, and Day 3.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked New York listing has maximum occupancy 1.",
+        "note": "The listing can host the individual traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F4050983 has OriginCityName Wilmington.",
+        "note": "The trip starts in Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F4050983 has DestCityName New York; the return flight departs New York.",
+        "note": "The itinerary goes to New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination stay is in New York.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F4050983 is dated 2022-03-12.",
+        "note": "The trip begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F3641657 is dated 2022-03-14.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4050983 flies from Wilmington to New York on 2022-03-12, departing at 20:26.",
+        "note": "The route, date, and late departure match the requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3641657 flies from New York to Wilmington on 2022-03-14, departing at 16:45.",
+        "note": "The route, date, and late-afternoon departure match the requirement."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on Day 2; the requested nights are 2022-03-12 and 2022-03-13.",
+        "note": "Only one night is booked in the itinerary, not both requested nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The listing meets the requested rating of 4."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The listing's room type is Private room.",
+        "note": "The requirement is Entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22556,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Driving from Minneapolis to Jacksonville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery (rating 4.2, $57)",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Villa Gargano (rating 3.7, $51)",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant (rating 3.8, $59)",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC Sanctuary, Skyline Views & Rooftop (rating 5.0, $954 for 2 nights)",
+        "record_name": "NYC Sanctuary, Skyline Views & Rooftop",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Driving from Jacksonville to Minneapolis",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 27, March 28, and March 29.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 6.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is listed as “Driving from Minneapolis to Jacksonville.”",
+        "note": "The itinerary starts from Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as the destination and current city on March 28.",
+        "note": "The requested destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The only destination city listed for the visit is Jacksonville.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-27.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-29.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "March 27 transportation is “Driving from Minneapolis to Jacksonville.”",
+        "note": "The plan specifies self-driving from Minneapolis to Jacksonville on the requested date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "March 29 transportation is “Driving from Jacksonville to Minneapolis.”",
+        "note": "The plan specifies self-driving back on the requested date."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists driving on March 27 and March 29, and Jacksonville Zoo and Gardens on March 28 only.",
+        "note": "The sightseeing is confined to the requested day between the driving days."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on March 28; March 27 has “-”.",
+        "note": "Only one night is booked in the itinerary, not the required nights of March 27 and March 28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing “NYC Sanctuary, Skyline Views & Rooftop” has room type “Entire home/apt.”",
+        "note": "Matches the preferred room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing’s review rate number is 5.0.",
+        "note": "The recorded rating meets the 3.5 minimum."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records give Aggregate Ratings of 4.2 (Goose Feathers Cafe and Bakery), 3.7 (Villa Gargano), and 3.8 (Pirates' House Restaurant).",
+        "note": "Each restaurant meal meets the 3.0 minimum."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Goose Feathers Cafe and Bakery has Cuisines “Tea, Fast Food, Italian.”",
+        "note": "The March 28 breakfast restaurant carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "Breakfast, lunch, and dinner list Goose Feathers Cafe and Bakery, Villa Gargano, and Pirates' House Restaurant, respectively.",
+        "note": "They are three different restaurants on March 28."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation listing names refer to New York locations (for example, “NYC Sanctuary” and “Heart of Williamsburg”), while their records identify the city as Jacksonville; this inconsistency makes the actual lodging location unclear."
+    ]
+  }
+}

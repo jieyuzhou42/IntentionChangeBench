@@ -1,0 +1,193 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22645,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4046779 (06:56 Moline → 09:08 Dallas)",
+        "record_name": "F4046779",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Pre-flight meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Cafe Gatherings (Bakery/Indian/Desserts)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "1918 Bistro & Grill (Tea/Pizza/BBQ/Seafood)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Exclusive Modern Penthouse Apartment (Entire home/apt, rating 3)",
+        "record_name": "Exclusive Modern Penthouse Apartment",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cafe Gatherings",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Yanki Sizzlers (Cafe/French/Tea/Mediterranean)",
+        "record_name": "Yanki Sizzlers",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Exclusive Modern Penthouse Apartment",
+        "record_name": "Exclusive Modern Penthouse Apartment",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4047063 (18:48 Dallas → 20:40 Moline)",
+        "record_name": "F4047063",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Cafe Gatherings",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 25, 26, and 27, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 departs Moline; the return flight F4047063 arrives in Moline.",
+        "note": "Moline is the trip's origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 arrives in Dallas; the return flight F4047063 departs Dallas.",
+        "note": "Dallas is the trip's destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Dallas as the current city on all three days.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-25.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-27.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 departs Moline at 06:56 on 2022-03-25 and arrives in Dallas at 09:08.",
+        "note": "It is the requested early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4047063 departs Dallas at 18:48 on 2022-03-27 and arrives in Moline at 20:40.",
+        "note": "It is the requested evening return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 25 and March 26; the March 27 departure day has no accommodation.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Exclusive Modern Penthouse Apartment has room type Entire home/apt.",
+        "note": "The booked accommodation matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Exclusive Modern Penthouse Apartment has review rate number 3.",
+        "note": "The required rating is 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant meals from records have ratings of 4.4 (Cafe Gatherings), 4.4 (1918 Bistro & Grill), and 4.1 (Yanki Sizzlers).",
+        "note": "Every recorded restaurant meal meets the 4.0 minimum; the pre-flight meal has no matching restaurant record."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Cafe Gatherings, 1918 Bistro & Grill, and Yanki Sizzlers do not have Fast Food in their Cuisines.",
+        "note": "No recorded Dallas restaurant meal carries the prohibited tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Violates accommodation_rating must-have (best available entire home has rating 3)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

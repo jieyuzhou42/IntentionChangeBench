@@ -1,0 +1,176 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23291,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4046779 departing Moline at 06:56, arriving Dallas at 09:08 ($178)",
+        "record_name": "F4046779",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Cafe Gatherings (Agg. Rating: 4.4, Cuisines: Bakery, Indian, Desserts, $17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "1918 Bistro & Grill (Agg. Rating: 4.4, Cuisines: Tea, Pizza, BBQ, Seafood, $90)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Bright and modern apartment in Williamsburg! ($865, Entire home/apt, Rating: 4, min 6 nights)",
+        "record_name": "Bright and modern apartment in Williamsburg!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Coconuts Fish Cafe (Agg. Rating: 4.5, Cuisines: Cafe, BBQ, Mediterranean, Fast Food, $38)",
+        "record_name": "Coconuts Fish Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Yanki Sizzlers (Agg. Rating: 4.1, Cuisines: Cafe, French, Tea, Mediterranean, $96)",
+        "record_name": "Yanki Sizzlers",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Bright and modern apartment in Williamsburg! ($865, Entire home/apt, Rating: 4, min 6 nights)",
+        "record_name": "Bright and modern apartment in Williamsburg!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4047063 departing Dallas at 18:48, arriving Moline at 20:40 ($272)",
+        "record_name": "F4047063",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Drifters Cafe (Agg. Rating: 3.9, Cuisines: Tea, French, Mexican, Cafe, Seafood, $21)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-25, 2022-03-26, and 2022-03-27.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Bright and modern apartment in Williamsburg!, has maximum occupancy 5 on each booked night.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 has OriginCityName Moline; return flight F4047063 has DestCityName Moline.",
+        "note": "The flights establish Moline as the origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 has DestCityName Dallas; return flight F4047063 has OriginCityName Dallas.",
+        "note": "The flights establish Dallas as the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Each itinerary day lists Dallas as the current city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F4046779 has FlightDate 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F4047063 has FlightDate 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4046779 is Moline to Dallas on 2022-03-25, departing 06:56 and arriving 09:08.",
+        "note": "The scheduled outbound flight is early and on the requested date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4047063 is Dallas to Moline on 2022-03-27, departing 18:48 and arriving 20:40.",
+        "note": "The scheduled return flight is in the evening and on the requested date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books accommodation on 2022-03-25 and 2022-03-26, and none on departure day 2022-03-27.",
+        "note": "Two nights are listed on the requested dates; the listing's minimum-night rule does not change this stay-count judgment."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The record for Bright and modern apartment in Williamsburg! lists room type Entire home/apt.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The record for Bright and modern apartment in Williamsburg! has review rate number 4.",
+        "note": "The listing meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Drifters Cafe has Aggregate Rating 3.9; the other listed restaurant meals have ratings of 4.1 or higher.",
+        "note": "Drifters Cafe is below the required 4.0."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Coconuts Fish Cafe has Cuisines listed as Cafe, BBQ, Mediterranean, Fast Food.",
+        "note": "A Dallas meal carries the prohibited Fast Food tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "requires minimum 6 nights stay, violating 2-night constraint"
+      },
+      {
+        "gold_field": "dining_style",
+        "quote": "except Coconuts Fish Cafe which includes Fast Food in cuisines"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

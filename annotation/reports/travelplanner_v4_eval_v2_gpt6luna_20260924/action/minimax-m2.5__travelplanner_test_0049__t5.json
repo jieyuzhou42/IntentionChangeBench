@@ -1,0 +1,163 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25400,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3560505 Kansas City (20:41) → Orlando (00:42+1)",
+        "record_name": "F3560505",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private room in Jackson Heights Apartment ($1,081 for 2 nights)",
+        "record_name": "Private room in Jackson Heights Apartment 2+",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Turquoise Villa (French/BBQ, Rating 4.0, $55)",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Fuji Japanese Steakhouse (Japanese, Rating 3.8/4.0 equivalent, $75)",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private room in Jackson Heights Apartment (continuing)",
+        "record_name": "Private room in Jackson Heights Apartment 2+",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3629193 Orlando (17:43) → Kansas City (20:46)",
+        "record_name": "F3629193",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 7, 8, and 9, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Orlando listing has maximum occupancy 1 on both listed nights.",
+        "note": "The listing capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Kansas City as the origin.",
+        "note": "The itinerary starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Orlando as the destination.",
+        "note": "The itinerary travels to Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as its only visiting city.",
+        "note": "It plans one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-07.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-09.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3560505; the gold requirement is self-driving from Kansas City to Orlando in the user's own car.",
+        "note": "The outbound plan is a flight, not self-driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3629193; the gold requirement is self-driving from Orlando to Kansas City in the user's own car.",
+        "note": "The return plan is a flight, not self-driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed on March 7 and March 8 only; March 9 has none.",
+        "note": "Two nights are booked, not the required three nights from March 7."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan has flights on March 7 and 9, rather than intercity driving on those days; it lists sightseeing on March 8.",
+        "note": "The sightseeing day is correctly limited to March 8, but the required driving schedule is not followed."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "violated",
+        "evidence": "The flight records cost $508 and $299; the accommodation record is $1,081 and the two restaurant records cost $55 and $75. These recorded amounts total $2,018, above the $1,800 cap.",
+        "note": "The plan selects flights even though the recorded trip costs exceed the cap that conditions the flying preference."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing, Private room in Jackson Heights Apartment 2+, has room type 'Private room'.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Turquoise Villa has Aggregate Rating 4.0; Fuji Japanese Steakhouse has Aggregate Rating 3.8.",
+        "note": "The dinner restaurant is below the required 4.0 rating."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Turquoise Villa's Cuisines field includes 'Fast Food'.",
+        "note": "An Orlando meal is at a restaurant tagged Fast Food."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "March 8 lists lunch at Turquoise Villa and dinner at Fuji Japanese Steakhouse; breakfast is empty.",
+        "note": "There are not three restaurant meals at three different restaurants that day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "Cannot satisfy the 'entire home/apt' preference as all options require 3+ nights or exceed budget."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

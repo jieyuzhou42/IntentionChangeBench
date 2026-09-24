@@ -1,0 +1,160 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22615,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720: St. Louis (21:59) → Oklahoma City (23:42), $105",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Lake House Restaurant (Rating: 4.3, Avg Cost: $38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy 1 bedroom in Clinton Hill (Entire home/apt, $702, Rating: 5)",
+        "record_name": "Cozy 1 bedroom in Clinton Hill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Buffet 101 (Rating: 4.0, Avg Cost: $74)",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cafe Delhi Heights (Rating: 4.0, Avg Cost: $74)",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lake House Restaurant (Rating: 4.3, Avg Cost: $38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy 1 bedroom in Clinton Hill (Entire home/apt, $702, Rating: 5)",
+        "record_name": "Cozy 1 bedroom in Clinton Hill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607: Oklahoma City (06:27) → St. Louis (07:44), $201",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 17, 18, and 19, 2022.",
+        "note": "Three itinerary days are listed."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 lists St. Louis as the origin city.",
+        "note": "The outbound trip starts in St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 lists Oklahoma City as the destination city.",
+        "note": "The outbound trip reaches Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Oklahoma City as its destination.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-17.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-19.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F4025720 from St. Louis to Oklahoma City; the record gives departure 21:59 and arrival 23:42.",
+        "note": "The requirement is self-driving in an own car, not flying."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3950607 from Oklahoma City to St. Louis; the record gives departure 06:27 and arrival 07:44.",
+        "note": "The requirement is self-driving in an own car, not flying."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed for 2022-03-17 and 2022-03-18, with none on the departure day.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant has Aggregate Rating 4.3; Buffet 101 and Cafe Delhi Heights each have Aggregate Rating 4.",
+        "note": "Every restaurant meal in the plan meets the 4.0 floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F4025720 and F3950607, matching the requested late outbound and early return times in their records.",
+        "note": "The preference is to fly when the cap allows it, and the plan flies."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Cozy 1 bedroom in Clinton Hill record lists room type Entire home/apt.",
+        "note": "The booked listing meets the room-type requirement."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 18, breakfast is Buffet 101, lunch is Cafe Delhi Heights, and dinner is Lake House Restaurant.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22741,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Minneapolis to Jacksonville (21h 14m, 2370km, $118)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Dinner at local Jacksonville restaurant (estimated $30)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park ($256/night, minimum 1 night, accommodates 2)",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery ($15, rated 4.2)",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ashoka Restaurant ($20, diverse cuisine)",
+        "record_name": "Ashoka Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant ($30, rated 3.8)",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park ($256/night, second night)",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Jacksonville to Minneapolis (21h 20m, 2377km, $118)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 27, March 28, and March 29, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park has maximum occupancy 2 on both booked nights.",
+        "note": "The booked capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation says it is self-driving from Minneapolis to Jacksonville.",
+        "note": "The stated origin matches Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and booked accommodation city are Jacksonville.",
+        "note": "The stated destination matches Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as its destination and lists no other destination city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is March 27, 2022.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is March 29, 2022.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Self-driving from Minneapolis to Jacksonville”; the candidate transportation record gives self-driving from Minneapolis to Jacksonville, duration 21 hours 14 minutes, distance 2,370 km, cost 118.",
+        "note": "The plan specifies the requested own-car drive on March 27."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “Self-driving from Jacksonville to Minneapolis”; the candidate transportation record gives self-driving from Jacksonville to Minneapolis, duration 21 hours 20 minutes, distance 2,377 km, cost 118.",
+        "note": "The plan specifies the requested own-car drive on March 29."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has intercity driving on March 27 and March 29, and lists Jacksonville Zoo and Gardens on March 28 only.",
+        "note": "Sightseeing is placed on the only available activity day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books Cute Studio near Prospect Park on March 27 and March 28, and no accommodation on the March 29 departure day.",
+        "note": "The two booked nights match the requested dates."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 4,
+  "prompt_chars": 22489,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Charleston to St. Louis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "El Super Burrito (rating 4.1, cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Self-drive arrival",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Kan house (Private room - no Entire home/apt available meeting constraints, sacrificed must_have room_type)",
+        "record_name": "Kan house",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive local",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Starbucks (rating 4.1, cost $92)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "El Super Burrito (rating 4.1, cost $43)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Kan house (Private room)",
+        "record_name": "Kan house",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Self-drive departure to Charleston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 16 through March 18, 2022.",
+        "note": "The plan spans the requested three calendar days; the additional row is an evening-arrival entry for March 16."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Kan house has maximum occupancy 2; it is booked for both nights.",
+        "note": "The listing capacity covers 1 traveler, and the plan does not assume a different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The first transportation slot says “Self-drive from Charleston to St. Louis.”",
+        "note": "The plan begins in Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The plan identifies St. Louis as the destination and includes St. Louis activities and accommodation.",
+        "note": "The requested destination is reflected in the itinerary."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The only destination city with planned activities and accommodation is St. Louis.",
+        "note": "Charleston is the origin; St. Louis is the one visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-16.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's departure entry is dated 2022-03-18.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 16 transportation slot says “Self-drive from Charleston to St. Louis.”",
+        "note": "The plan specifies self-driving for the requested outbound route; no flight record is needed for the own-car requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 18 transportation slot says “Self-drive departure to Charleston.”",
+        "note": "The plan specifies self-driving back to Charleston."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "El Super Burrito has Aggregate Rating 4.1; the matched Starbucks listing has Aggregate Rating 4.1. The other meal slots are self-catered or empty.",
+        "note": "Every restaurant meal in the plan meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Kan house is listed as “Private room,” not “Entire home/apt.”",
+        "note": "The booked accommodation does not meet the required room type. The records also include entire-home listings, including Pet & Tony's Residence (minimum nights 1) and 1800sf Urban Goddess Brooklyn Loft (minimum nights 2)."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Kan house has review rate number 4.",
+        "note": "The listing meets the preferred rating threshold of 4."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Kan house is listed for the March 16 evening-arrival entry and again for March 17; its minimum nights is 1.",
+        "note": "The plan books the two requested nights, March 16 and March 17."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "The room_type requirement is explicitly sacrificed - no supported alternative exists after research."
+      }
+    ],
+    "annotation_issues": [
+      "The return transportation candidate query is dated 2022-03-20, although the requested return date is 2022-03-18."
+    ]
+  }
+}

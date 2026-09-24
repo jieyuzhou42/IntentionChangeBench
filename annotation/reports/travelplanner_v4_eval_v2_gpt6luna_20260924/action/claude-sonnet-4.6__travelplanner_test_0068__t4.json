@@ -1,0 +1,188 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23625,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180: Panama City → Chicago, departs 10:13, arrives 12:17, $212",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Eat at home / airport before 10:13 departure (self-arranged)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Pantry d'or (avg cost $53) — arrived Chicago ~12:17, lunch in Chicago",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Black Pearl (avg cost $63)",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN, $109/night (billed minimum 3 nights = $327 total; user sleeps 2 nights, but min-night rule requires 3-night charge — disclosed violation of 2-paid-nights preference)",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Starbucks (avg cost $46)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "FIO Cookhouse and Bar (avg cost $31)",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pantry d'or (avg cost $53)",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC Firehouse-Greenpoint BRKLYN (night 2 of stay)",
+        "record_name": "NYC Firehouse-Greenpoint BRKLYN",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive back to Panama City (most of the day)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gyan Vaishnav (avg cost $14) — early, before departing",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/road food (self-catered during drive)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Arrive Panama City — self-catered at home",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 12, 13, and 14, 2022.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3 on both nights.",
+        "note": "The nightly capacity covers one traveler, and nothing in the plan assumes a different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Panama City as the origin; the return is described as a self-drive to Panama City.",
+        "note": "The plan departs from and returns to Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Chicago as the destination, and the itinerary places the stay and sightseeing there.",
+        "note": "Chicago is the planned destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Chicago as the destination city; Panama City is the origin and return city.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The flight record is dated 2022-03-12 and the itinerary begins on that date.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's March 14 entry is the self-drive back to Panama City.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is from Panama City to Chicago on 2022-03-12 and departs at 10:13.",
+        "note": "It matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 14 transportation slot says: \"Self-drive back to Panama City (most of the day)\"; the user specified their own car.",
+        "note": "The plan uses the requested self-drive return."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The March 12 itinerary includes \"Millennium Park — afternoon stroll after arrival,\" while the activity requirement says March 13 is the only day available in Chicago for sightseeing.",
+        "note": "Sightseeing is scheduled on March 12, outside the only available sightseeing day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing appears as the accommodation for March 12 and March 13, and no accommodation is listed for the March 14 departure day.",
+        "note": "Two nights are actually booked, on the requested dates; the three-night minimum charge does not change the nights booked."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "NYC Firehouse-Greenpoint BRKLYN has review rate number 5.0.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "disclosed violation of 2-paid-nights preference"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

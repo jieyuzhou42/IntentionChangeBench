@@ -1,0 +1,178 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22998,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3920918, departing Scranton at 05:57 and arriving in Newark at 06:44; fare $33",
+        "record_name": "F3920918",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Angeethi Restaurant; average cost $12",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Drifters Cafe; average cost $24",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jaguar; average cost $38",
+        "record_name": "Jaguar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Contemporary Brooklyn Lifestyle Apt /JFK Airport; night 1 of 2 at $610 per night",
+        "record_name": "Contemporary Brooklyn Lifestyle Apt /JFK Airport",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Walking between the selected Newark stops; no separately priced local transport selected",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Angeethi Restaurant; average cost $12",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Drifters Cafe; average cost $24",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Anaicha's Food Joint; average cost $43",
+        "record_name": "Anaicha's Food Joint",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Contemporary Brooklyn Lifestyle Apt /JFK Airport; night 2 of 2 at $610 per night",
+        "record_name": "Contemporary Brooklyn Lifestyle Apt /JFK Airport",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3919859, departing Newark at 21:46 and arriving in Scranton at 22:23; fare $22",
+        "record_name": "F3919859",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Angeethi Restaurant; average cost $12",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Drifters Cafe; average cost $24",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Jaguar; average cost $38",
+        "record_name": "Jaguar",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 24, March 25, and March 26.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 6; the plan describes one traveler.",
+        "note": "The listing can host the one traveler and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Scranton as OriginCityName.",
+        "note": "The plan departs from Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Newark as DestCityName, and the itinerary identifies Newark as the destination.",
+        "note": "The destination is Newark."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's visit activities and overnight accommodation are in Newark; the flight endpoints are Scranton and Newark.",
+        "note": "It visits one destination city, Newark."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 is dated 2022-03-24.",
+        "note": "The itinerary begins on March 24, 2022."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3919859 is dated 2022-03-26.",
+        "note": "The itinerary ends on March 26, 2022."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 travels Scranton to Newark on 2022-03-24 and departs at 05:57; the other listed outbound flight departs at 13:40.",
+        "note": "The plan selects the earliest listed outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3919859 travels Newark to Scranton on 2022-03-26 and departs at 21:46; it is the only listed return flight.",
+        "note": "The plan selects the latest supported return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on itinerary days 1 and 2, corresponding to March 24 and March 25; there is no accommodation on the March 26 departure day. Its minimum nights is 2.",
+        "note": "The plan books the requested two nights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23002,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733 from Tulsa to Phoenix",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Pizza Hut",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Village Restaurant",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Penguin Bakers & Shakers",
+        "record_name": "Penguin Bakers & Shakers",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "record_name": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3803478 from Phoenix to Tulsa",
+        "record_name": "F3803478",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Pizza Hut",
+        "record_name": "Pizza Hut",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 6, 7, and 8, 2022.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 10.",
+        "note": "The listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Tulsa as OriginCityName.",
+        "note": "The itinerary starts from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Phoenix as DestCityName.",
+        "note": "The itinerary travels to Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Phoenix as its destination and return origin, with no other destination city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-06.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-08.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books Flight F3996733; its record shows Tulsa to Phoenix, departing at 11:28 on 2022-03-06.",
+        "note": "The flight is midday, but the requirement is to self-drive in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books Flight F3803478; its record shows Phoenix to Tulsa, departing at 13:51 on 2022-03-08.",
+        "note": "The flight is in the afternoon, but the requirement is to self-drive in an own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-07; 2022-03-06 has no accommodation.",
+        "note": "Only one night is booked, rather than the required nights of March 6 and 7."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS has room type Entire home/apt.",
+        "note": "The booked listing is an entire home/apt."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary selects flights for both directions.",
+        "note": "The preferred mode is flying, and the plan flies."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Penguin Bakers & Shakers has Aggregate Rating 2.8, below 3.5.",
+        "note": "At least one restaurant meal is below the preferred rating floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut is tagged Tea, Chinese, Desserts, Seafood; Village Restaurant is tagged Tea, Cafe, Desserts, Italian; Penguin Bakers & Shakers is tagged Cafe, Pizza. None has a Fast Food tag.",
+        "note": "No listed Phoenix meal has Fast Food in its Cuisines."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-07 the plan lists Pizza Hut for breakfast, Village Restaurant for lunch, and Penguin Bakers & Shakers for dinner.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

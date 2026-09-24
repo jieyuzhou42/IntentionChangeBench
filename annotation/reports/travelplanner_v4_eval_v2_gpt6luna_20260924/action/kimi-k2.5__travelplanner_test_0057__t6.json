@@ -1,0 +1,208 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25092,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164 Houston to Reno (Dep 09:50, Arr 12:04) - $688",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Queens Cakes - Bakery, Desserts, Indian, BBQ - $58 (Rating 3.5 - BELOW REQUIRED 4.0, see rationale)",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Queens Cakes - Bakery, Desserts, Indian, BBQ - $58 same place (Rating 3.5 - BELOW REQUIRED 4.0, see rationale)",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern townhouse convenient to everything - $637 (minimum 3 nights required, only 2 nights available - see rationale)",
+        "record_name": "Modern townhouse convenient to everything",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit/walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Olive Bistro - Tea, Cafe, Pizza, BBQ - $66 (Rating 3.9 - BELOW REQUIRED 4.0, see rationale)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mustake Multicuisine Restaurant - Tea, Bakery, Pizza, Mediterranean - $91 (EXCEEDS $70 MEAL BUDGET, see rationale)",
+        "record_name": "Mustake Multicuisine Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Kanha Sweets - Italian, Bakery, Fast Food (AVOIDED - Fast Food), selected Olive Bistro instead - $66 (Rating 3.9 - BELOW REQUIRED 4.0, see rationale)",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern townhouse convenient to everything - $637 (2nd night, continuing violation of minimum nights)",
+        "record_name": "Modern townhouse convenient to everything",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705 Reno to Houston (Dep 12:58, Arr 18:31) - $446",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Leme Light - Cafe, Mexican, Fast Food (CONTAINS Fast Food tag, must avoid - see rationale). Substituting with available option: Kanha Sweets - $28 (Rating 4.1, BUT CONTAINS Fast Food tag - ALL REMAINING OPTIONS HAVE FAST FOOD, see rationale)",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "On flight or at airport - $20 estimated",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Arrive Houston 18:31, dinner in Houston - not part of Reno budget",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 11, March 12, and March 13, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Reno listing has maximum occupancy 6.",
+        "note": "The accommodation can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 departs Houston; flight F3875705 returns to Houston.",
+        "note": "The itinerary originates in Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 travels from Houston to Reno.",
+        "note": "Reno is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Reno as the destination and visiting city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-11, and flight F3879164 has FlightDate 2022-03-11.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is dated 2022-03-13, and flight F3875705 has FlightDate 2022-03-13.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 goes Houston to Reno on 2022-03-11 and departs at 09:50.",
+        "note": "It matches the required outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3875705 goes Reno to Houston on 2022-03-13 and departs at 12:58.",
+        "note": "It matches the required return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan lists the Reno accommodation on March 11 and March 12, with none on departure day March 13.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Queens Cakes is rated 3.5, Olive Bistro 3.9, and Mustake Multicuisine Restaurant 3.7.",
+        "note": "Restaurant meals in the plan include ratings below 4.0."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Kanha Sweets has cuisines listed as Italian, Bakery, Fast Food, Cafe, American; the Day 3 breakfast identifies Kanha Sweets as the substitution.",
+        "note": "The planned Reno meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 12 breakfast is Olive Bistro, lunch is Mustake Multicuisine Restaurant, and dinner selects Olive Bistro.",
+        "note": "There are only two distinct restaurants across the three meals."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "Mustake Multicuisine Restaurant has an Average Cost of 91 per person.",
+        "note": "That recorded restaurant meal exceeds the under-70-per-person limit."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "NO restaurants meet the 4.0+ rating requirement"
+      },
+      {
+        "gold_field": "dining_style",
+        "quote": "Kanha Sweets - $28 (Rating 4.1, BUT CONTAINS Fast Food tag - ALL REMAINING OPTIONS HAVE FAST FOOD, see rationale)"
+      },
+      {
+        "gold_field": "meal_cost",
+        "quote": "Mustake Multicuisine at $91 exceeds $70 meal budget."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

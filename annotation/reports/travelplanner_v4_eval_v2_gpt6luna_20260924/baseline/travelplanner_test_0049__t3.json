@@ -1,0 +1,214 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 3,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1194.0,
+      "budget": 1800,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21895,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget cap at $1,800"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Kansas City"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Orlando"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-07"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-09"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-driving from Kansas City to Orlando on 2022-03-07 in own car"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-driving from Orlando to Kansas City on 2022-03-09 in own car"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights: 2022-03-07 and 2022-03-08"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "schedule",
+        "value": "Reserve 2022-03-07 for intercity driving"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "schedule",
+        "value": "Reserve 2022-03-09 for intercity driving"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "schedule",
+        "value": "Sightsee only on 2022-03-08"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "transportation",
+        "value": "Prefer flying when the budget cap allows it"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "transportation",
+        "value": "Driving is acceptable to stay inside the budget"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-07",
+        "requirement": "Outbound travel should be in the evening.",
+        "source_turn": 1,
+        "quote": "Fly me out on the evening of the 7th"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-09",
+        "requirement": "Return travel should be in the evening.",
+        "source_turn": 1,
+        "quote": "back on the evening of the 9th"
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-08",
+        "requirement": "The 8th is the only day available for sightseeing; the 7th and 9th are full-day driving days.",
+        "source_turn": 2,
+        "quote": "It's a full day at the wheel each way though, so the 8th is the only day I've really got."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference itinerary covers 2022-03-07 through 2022-03-09, three days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked unit has maximum occupancy 2 for one traveler; the plan specifies one unit for one person."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound leg starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The itinerary travels to Orlando and returns from Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Orlando is the only destination city in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-07."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return itinerary is dated 2022-03-09."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The 2022-03-07 plan specifies self-driving from Kansas City to Orlando in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The 2022-03-09 plan specifies self-driving from Orlando to Kansas City."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The itinerary has accommodation on March 7 and March 8; March 9 is the departure day and needs no accommodation night."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "The itinerary assigns intercity driving to March 7 and March 9 and lists no sightseeing outside March 8."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "violated",
+        "evidence": "The plan drives both legs, although evening flights are available in the candidate records and the lowest-priced evening options total $532, which fits within the $1,800 cap alongside the listed meals and accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing is identified as Entire home/apt."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

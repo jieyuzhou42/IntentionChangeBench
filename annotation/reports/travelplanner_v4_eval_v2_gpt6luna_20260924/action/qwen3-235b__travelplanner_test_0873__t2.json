@@ -1,0 +1,206 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25220,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive from Charlotte to New Orleans (10h 28m, $57)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Town Table Restaurant ($100 for 2)",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan ($186, Entire home/apt)",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gupha ($11 for 2)",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Fish House ($20 for 2)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sage ($87 for 2)",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan ($186, Entire home/apt)",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "PKay ($22 for 2)",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "New Sukh Sagar ($31 for 2)",
+        "record_name": "New Sukh Sagar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Momo-Cha ($80 for 2)",
+        "record_name": "Momo-Cha",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan ($186, Entire home/apt)",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Gupha ($11 for 2)",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Jimmy's Pancake House ($50 for 2)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Shenanigan's Irish Pub ($43 for 2)",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Lovely One bedroom apartment 20 min to Manhattan ($186, Entire home/apt)",
+        "record_name": "Lovely One bedroom apartment 20 min to Manhattan",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Drive from New Orleans to Charlotte (10h 27m, $57)",
+        "record_name": null,
+        "revised": true
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Gupha ($11 for 2)",
+        "record_name": "Gupha",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Driving return is selected as most feasible fallback.",
+        "effect": "Revised March 13 transportation from 'No transportation required; day reserved for departure prep and airport' to a drive from New Orleans to Charlotte, consistent with the action's explicit selection of a driving return."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Each itinerary day lists New Orleans as the current city.",
+        "note": "The plan is based in one city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Lovely One bedroom apartment 20 min to Manhattan, has room type 'Entire home/apt'.",
+        "note": "The listing's recorded room type matches the requirement."
+      },
+      {
+        "gold_field": "required_cities",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New Orleans as the current city throughout, and the booked accommodation record has city 'New Orleans'.",
+        "note": "New Orleans is the only planned base."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The transportation record provides self-driving from Charlotte to New Orleans, duration 10 hours 28 minutes; the March 9 itinerary says to drive that route.",
+        "note": "The route and mode match the requested shared drive."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The flight search record says, 'There is no flight from New Orleans to Charlotte on 2022-03-13.' The action selects a drive from New Orleans to Charlotte instead.",
+        "note": "The plan returns by car rather than by the required flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 13 has no sightseeing, but the action selects a drive from New Orleans to Charlotte and the flight search record reports no flight on that date.",
+        "note": "The day is free of sightseeing, but it is not reserved for the requested airport transfer and flight home."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "The return flight requirement cannot be met"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

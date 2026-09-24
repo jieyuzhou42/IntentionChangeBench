@@ -1,0 +1,219 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23500,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Driving from Minneapolis to Jacksonville (approximately 16-17 hours)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catering/packed in car",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-catering/packed in car",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Self-catering/packed in car",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park (entire home/apt, rating 3.0, 1 night minimum, $256/night)",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Villa Gargano (Tea, American, Desserts, rating 3.7, $51)",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant (Chinese, Pizza, BBQ, rating 3.8, $59)",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park (night 2)",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Driving from Jacksonville to Minneapolis (approximately 16-17 hours)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-catering/packed in car",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Self-catering/packed in car",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has three dates: 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park has maximum occupancy 2; it is booked for both nights.",
+        "note": "The listing capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation says driving from Minneapolis to Jacksonville.",
+        "note": "The departure city is Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as the destination on March 27 and the city for March 28.",
+        "note": "The destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Jacksonville as the destination and sightseeing city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The third itinerary day is 2022-03-29.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says: \"Driving from Minneapolis to Jacksonville (approximately 16-17 hours)\".",
+        "note": "The plan uses self-driving on March 27."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says: \"Driving from Jacksonville to Minneapolis (approximately 16-17 hours)\".",
+        "note": "The plan uses self-driving on March 29."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The activity is Jacksonville Zoo and Gardens on March 28; the itinerary has intercity driving on March 27 and March 29.",
+        "note": "Sightseeing is placed only on the requested available day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park is listed on March 27 and again on March 28.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park is recorded as Entire home/apt.",
+        "note": "The booked room type meets the requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Cute Studio near Prospect Park has review rate number 3.0.",
+        "note": "The listing rating is below the required 3.5."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Villa Gargano has Aggregate Rating 3.7 and Pirates' House Restaurant has Aggregate Rating 3.8.",
+        "note": "Both restaurant meals in the plan meet the 3.0 rating floor; self-catered meals are not restaurant evidence."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Villa Gargano cuisines are Tea, American, Desserts; Pirates' House Restaurant cuisines are Chinese, Pizza, BBQ.",
+        "note": "Neither restaurant meal has a Fast Food tag; self-catered meals do not count against the restriction."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 28, breakfast is self-catered, lunch is Villa Gargano, and dinner is Pirates' House Restaurant.",
+        "note": "Only two different restaurants are listed, not three across breakfast, lunch, and dinner."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Unmet: accommodation_rating preferred 3.5 not achieved (actual 3.0)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23297,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from St. Louis to Oklahoma City (~462 miles, approx. 7 hours)",
+        "record_name": null,
+        "revised": true
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Lake House Restaurant, Oklahoma City — Cafe/American/Mediterranean/BBQ, Avg $38, Rating 4.3",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Lake House Restaurant, Oklahoma City — Cafe/American/Mediterranean/BBQ, Avg $38, Rating 4.3",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! — Private room, $151/night, Rating 4, 1 guest max 2, min 1 night",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local self-drive / walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Buffet 101 — Tea/Pizza/Fast Food/American/Seafood, Avg $74, Rating 4.0",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cafe Delhi Heights — Chinese/Pizza/Cafe/Seafood, Avg $74, Rating 4.0",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cappuccino Blast — Cafe/Bakery/American/Seafood, Avg $84, Rating 4.0",
+        "record_name": "Cappuccino Blast",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! — Private room, $151/night, Rating 4",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive return from Oklahoma City to St. Louis (~462 miles)",
+        "record_name": null,
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Lake House Restaurant — Cafe/American/Mediterranean/BBQ, Avg $38, Rating 4.3",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/road food en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Back in St. Louis (trip ends)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "The drive's fine after all, if that's what keeps the food decent.",
+        "effect": "Switch the outbound and return transportation from flying to self-driving."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 17, 18, and 19, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 and is booked for both nights.",
+        "note": "The one traveler is within the listing's capacity."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is from St. Louis to Oklahoma City.",
+        "note": "The trip starts in St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is from St. Louis to Oklahoma City, and the overnight stays are in Oklahoma City.",
+        "note": "The destination is Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Oklahoma City and returns to St. Louis.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-17.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-19.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says: “Self-drive from St. Louis to Oklahoma City”.",
+        "note": "The plan specifies self-driving on the requested outbound date and route."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says: “Self-drive return from Oklahoma City to St. Louis”.",
+        "note": "The plan specifies self-driving on the requested return date and route."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books Upper East Side Space and Access!! on March 17 and March 18; the listing's minimum nights is 1.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Candidate records give Lake House Restaurant 4.3, Buffet 101 4.0, Cafe Delhi Heights 4.0, and Cappuccino Blast 4.0.",
+        "note": "Every restaurant meal taken from the records meets the 4.0 floor; home, packed, and empty meals do not count against it."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The user said, “The drive's fine after all, if that's what keeps the food decent,” and the plan self-drives while its recorded restaurant meals all rate at least 4.0.",
+        "note": "The preference explicitly permits driving to protect the restaurant-rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "transportation",
+        "quote": "The originally preferred flights (F4025720 outbound, F3950607 return) are sacrificed"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

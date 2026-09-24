@@ -1,0 +1,190 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21753,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883, departing Phoenix at 12:24 and arriving in Billings at 15:50",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast brought from Phoenix",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch for the flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "L'Angoor (rating 3.5; average cost $19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! Can wait to see you! — Private room, review score 5, night 1 of 2",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "L'Angoor (rating 3.5; average cost $19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Holy Smoke (rating 3.6; average cost $38)",
+        "record_name": "Holy Smoke",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chakhnaa Wala (rating 3.5; average cost $58)",
+        "record_name": "Chakhnaa Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! Can wait to see you! — Private room, review score 5, night 2 of 2",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Return to Phoenix is infeasible from the supported results: no actual Billings-to-Phoenix return flight is provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "L'Angoor (rating 3.5; average cost $19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Tsui Wong (rating 3.8; average cost $40)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "L'Angoor (rating 3.5; average cost $19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes March 18, 19, and 20, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on both nights.",
+        "note": "The listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 departs Phoenix.",
+        "note": "The itinerary starts from Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 arrives in Billings; the itinerary's later days are in Billings.",
+        "note": "Billings is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Billings as the destination city.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's first day and outbound flight date are 2022-03-18.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes a third day, 2022-03-20.",
+        "note": "The plan runs through the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804883 is a Phoenix-to-Billings flight on 2022-03-18, departing 12:24 and arriving 15:50.",
+        "note": "It matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan provides no actual return flight; the only transportation result is a message stating there is no flight on 2022-03-21.",
+        "note": "No Billings-to-Phoenix flight on the required 2022-03-20 is included."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked for the nights of March 18 and March 19; its minimum nights is 2.",
+        "note": "Both required nights are covered."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant meals are L'Angoor (3.5), Holy Smoke (3.6), Chakhnaa Wala (3.5), and Tsui Wong (3.8).",
+        "note": "Every restaurant meal from the records meets the 3.5 minimum; packed meals are not restaurant meals."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked Billings listing, Great Room! Great Price! Can wait to see you !, has review rate number 5.",
+        "note": "The listing meets the required rating of 5."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "The must-have return flight is unmet because the fixed results contain no supported Billings-to-Phoenix flight"
+      }
+    ],
+    "annotation_issues": [
+      "The return-flight search result is for 2022-03-21, while the requested return date is 2022-03-20; no candidate result for the requested return date is supplied."
+    ]
+  }
+}

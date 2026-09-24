@@ -1,0 +1,206 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 34661,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 from Sioux Falls (18:40-19:26)",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Arrival meal at hotel area",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Large Sunny Room with Huge patio in Wburg (Entire home/apt, $881, max occupancy 10, rating 5)",
+        "record_name": "Large Sunny Room with Huge patio in Wburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Hotel or nearby cafe",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Sit-down lunch",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sit-down dinner",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Same as March 16",
+        "record_name": "Large Sunny Room with Huge patio in Wburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 Phoenix to Flagstaff (08:49-09:47)",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Breakfast before flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sit-down dinner in Flagstaff",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Air conditioned Excellent Private Room for 1 ($185, 2 nights, rating 4, max occupancy 2) - ***NOTE: Need entire home for 3, shared room is compromise***",
+        "record_name": "Air conditioned Excellent Private Room for 1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Hotel or nearby cafe",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Sit-down lunch",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Sit-down dinner",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Same as March 18",
+        "record_name": "Air conditioned Excellent Private Room for 1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving (19h 57m, $104) to Sioux Falls",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Hotel or nearby cafe",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The Phoenix listing has maximum occupancy 2; Air conditioned Excellent Private Room for 1 has maximum occupancy 2.",
+        "note": "Each city’s booked listing falls short of the 3 travelers."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 4; the Flagstaff listing has review rate number 4.",
+        "note": "Both booked listings meet the 3+ rating floor."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4045477 flies Sioux Falls to Phoenix on March 16 and arrives at 19:26.",
+        "note": "Arrival is before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804854 flies Phoenix to Flagstaff on March 18 and arrives at 09:47.",
+        "note": "Arrival is before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "March 20 transportation is listed as “Self-driving (19h 57m, $104) to Sioux Falls.”",
+        "note": "The plan includes a journey home instead of ending in Flagstaff."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 17 attraction is “Heard Museum and Desert Botanical Garden (prioritized).”",
+        "note": "Both required Phoenix attractions are placed on March 17."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "Hole in the Rock is not listed in the itinerary’s attractions.",
+        "note": "The plan excludes the prohibited attraction."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 17 lists two attractions: Heard Museum and Desert Botanical Garden.",
+        "note": "The requirement is fewer than two attractions per day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "people_number",
+        "quote": "which is a compromise on the group requirement."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

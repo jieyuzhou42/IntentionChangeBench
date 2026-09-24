@@ -1,0 +1,138 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21877,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (08:04 Dep Buffalo, 09:30 Arr Boston)",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant (4.5 rating)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home/apt)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Irish Democrat",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Apni Rasoi (4.7 rating from reviews; assumed high quality)",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home/apt)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3757097 (21:44 Dep Boston, 23:34 Arr Buffalo)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Club Cubana",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Irish Democrat",
+        "record_name": "Irish Democrat",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5 on both accommodation nights.",
+        "note": "Its capacity covers all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The itinerary lists one attraction per day and does not list seated breaks.",
+        "note": "One attraction per day stays within the two-attraction limit and is slow-paced, but the plan does not include the requested regular seated breaks."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Red Mesa Restaurant is rated 4.5 on March 4; Irish Democrat is rated 4.4 on March 5; Club Cubana and Irish Democrat are each rated 4.4 on March 6.",
+        "note": "There is at least one restaurant meal rated 4 or higher on each day."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "The booked listing matches the required room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing is booked for both nights and has maximum occupancy 5.",
+        "note": "One property can host all four travelers."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "Average costs per person are $18 for Irish Democrat, $28 for Apni Rasoi, and $18 for Irish Democrat on March 5 and 6; the higher-cost Red Mesa Restaurant ($65) and Club Cubana ($65) provide highly rated meals.",
+        "note": "The other listed meals are relatively inexpensive compared with the selected highly rated meals."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The selected restaurants' recorded cuisines include American for Apni Rasoi, but none of the selected restaurants lists French cuisine.",
+        "note": "The plan does not provide both French and American cuisine."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

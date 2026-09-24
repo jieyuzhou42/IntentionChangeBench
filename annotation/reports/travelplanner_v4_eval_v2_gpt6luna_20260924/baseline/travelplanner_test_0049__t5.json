@@ -1,0 +1,260 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 5,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1216.0,
+      "budget": 1800,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22686,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 1800
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Kansas City"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Orlando"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-07"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-09"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-driving Kansas City to Orlando on 2022-03-07; own car"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-driving Orlando to Kansas City on 2022-03-09; own car"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "3 nights from 2022-03-07; paying for one night after departure is acceptable"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "schedule",
+        "value": "2022-03-07 reserved for intercity driving"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "schedule",
+        "value": "2022-03-09 reserved for intercity driving"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "schedule",
+        "value": "Sightseeing only 2022-03-08"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "transportation",
+        "value": "Prefer flying when the cap allows it"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "transportation",
+        "value": "Driving is acceptable to stay inside the budget"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "restaurant_rating",
+        "value": 4
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "dining_style",
+        "value": "No Orlando meal may carry a Fast Food tag in Cuisines"
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "dining_variety",
+        "value": "Three different restaurants across breakfast, lunch and dinner on 2022-03-08"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-07",
+        "requirement": "Outbound flight is requested for the evening.",
+        "source_turn": 1,
+        "quote": "Fly me out on the evening of the 7th"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-09",
+        "requirement": "Return flight is requested for the evening.",
+        "source_turn": 1,
+        "quote": "back on the evening of the 9th"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-07",
+        "requirement": "The drive toward the destination takes a full day.",
+        "source_turn": 2,
+        "quote": "It's a full day at the wheel each way"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-09",
+        "requirement": "The drive back takes a full day.",
+        "source_turn": 2,
+        "quote": "It's a full day at the wheel each way"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-08",
+        "requirement": "March 8 is the only day available for sightseeing or other activities.",
+        "source_turn": 2,
+        "quote": "the 8th is the only day I've really got"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers March 7, 8, and 9."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked unit has maximum occupancy 2, enough for one traveler, and the plan is for one unit."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound route starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The plan travels to Orlando and returns from Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Orlando is the single destination city in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-07."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return trip is listed on 2022-03-09."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The March 7 outbound leg is explicitly listed as self-driving in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The March 9 return leg is explicitly listed as self-driving in an own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The plan books the unit for three nights, March 7 through checkout on March 10, with the extra post-departure night allowed by the constraint."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "The plan assigns intercity driving to March 7 and 9 and lists no sightseeing outside March 8."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "violated",
+        "evidence": "Candidate flights are available for both dates, including evening options; the lowest listed fares total $532, which with the plan's listed driving-trip accommodation and meal costs would remain under the $1,800 cap. The reference plan drives instead."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing is an Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "violated",
+        "evidence": "The March 8 restaurants have listed ratings 3.4, 3.6, and 3.1, all below 4."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "satisfied",
+        "evidence": "None of the three listed March 8 restaurants has Fast Food in its Cuisines."
+      },
+      {
+        "gold_field": "dining_variety",
+        "status": "satisfied",
+        "evidence": "Breakfast, lunch, and dinner on March 8 list three different restaurants."
+      }
+    ],
+    "annotation_issues": [
+      "The dialogue asks for evening flights on March 7 and 9, then says driving is acceptable if necessary; it does not explicitly direct the traveler to self-drive. The gold outbound and return constraints make self-driving mandatory, turning conditional permission into a firm requirement."
+    ]
+  },
+  "out_of_scope_fields": []
+}

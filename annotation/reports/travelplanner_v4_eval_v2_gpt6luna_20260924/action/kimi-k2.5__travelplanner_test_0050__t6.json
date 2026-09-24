@@ -1,0 +1,224 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24357,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3996733: Tulsa 11:28 → Phoenix 13:07 ($195)",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Mama Loca (Italian/Pizza, rating 4.2, cost $27) - earliest available upon arrival, rating below 4.0 preference",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut (Chinese/Tea/Seafood, rating 4.4, cost $30) - meets rating requirement, not Fast Food",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) - Entire home/apt, $834, 2 nights",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering in apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Village Restaurant (Tea/Cafe/Italian, rating 3.7, cost $35) - rating below 4.0, no other qualifying options available",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jungle The Restaurant (Seafood/Desserts, rating 3.7, cost $27) - rating below 4.0, third unique restaurant for dining variety on day 2",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train) - Entire home/apt, night 2",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4017496: Phoenix 13:22 → Tulsa 16:20 ($428)",
+        "record_name": "F4017496",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering in apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Mocambo (Tea/Chinese, rating 3.5, cost $76) - rating below 4.0, Fast Food excluded as per preference",
+        "record_name": "Mocambo",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 6, March 7, and March 8.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 8 on both nights.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Tulsa as the origin; the return plan is Phoenix to Tulsa.",
+        "note": "The itinerary departs from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Phoenix as the destination; the return flight departs Phoenix.",
+        "note": "The itinerary travels to Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The trip itinerary identifies Phoenix as the destination and stay city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins March 6, 2022; flight F3996733 is dated 2022-03-06.",
+        "note": "The planned start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends March 8, 2022; flight F4017496 is dated 2022-03-08.",
+        "note": "The planned end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3996733 from Tulsa to Phoenix, not self-driving in an own car.",
+        "note": "The required outbound mode is self-driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F4017496 from Phoenix to Tulsa, not self-driving in an own car.",
+        "note": "The required return mode is self-driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked for March 6 and March 7; there is no accommodation listed on the March 8 departure day.",
+        "note": "The itinerary books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing record gives room type \"Entire home/apt\".",
+        "note": "The booked accommodation has the required room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "Both transportation slots are flights, F3996733 and F4017496.",
+        "note": "The preferred option is flying, and the plan flies."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant records show ratings of 4.2 (Mama Loca), 4.4 (Pizza Hut), 3.7 (Village Restaurant), 3.7 (Jungle The Restaurant), and 3.5 (Mocambo).",
+        "note": "Every restaurant meal meets the listed 3.5 preferred floor; self-catered meals do not count against it."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Mama Loca and Mocambo both have \"Fast Food\" in their Cuisines record.",
+        "note": "Both are planned Phoenix meals, contrary to the requirement that no meal carry that tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 7, breakfast is self-catering, lunch is Village Restaurant, and dinner is Jungle The Restaurant.",
+        "note": "Only two different restaurants are listed; breakfast is not a restaurant meal."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Restaurant rating 4.0+ - only 2 restaurants in search results meet this (Pizza Hut 4.4, Mama Loca 4.2), insufficient to cover 5 meals without repeats; used best available ratings."
+      },
+      {
+        "gold_field": "dining_style",
+        "quote": "Exclude Fast Food - honored where possible."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

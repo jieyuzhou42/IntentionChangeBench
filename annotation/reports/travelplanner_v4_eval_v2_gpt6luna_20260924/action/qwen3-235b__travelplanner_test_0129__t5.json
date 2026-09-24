@@ -1,0 +1,245 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 37502,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 from Sioux Falls to Phoenix, departs 18:40, arrives 19:26",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut (Chinese options available, cost $30)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! (Entire home/apt, $209/night, occupancy 3, rating 5)",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare/taxi between sites in Phoenix",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Village Restaurant (Chinese tea, $35)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Domino's Pizza (Chinese options, $96 total for 3, split $32/person)",
+        "record_name": "Domino's Pizza",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mocambo (Chinese cuisine, $76 total, under $50/person)",
+        "record_name": "Mocambo",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 from Phoenix to Flagstaff, departs 08:49, arrives 09:47 (under $50, meets noon deadline)",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Amritsari Naan Hut (Chinese fast food, $21 total)",
+        "record_name": "Amritsari Naan Hut",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "38 Barracks (Chinese-inclusive menu, $35 total)",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Rhubarb Le Restaurant (Chinese cuisine, $157 total, slightly over meal limit but within group budget)",
+        "record_name": "Rhubarb Le Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York (Entire home/apt, $1086 total for 2 nights, occupancy 8, rating 3)",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Taxis between lodging and attractions",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Costa Coffee (Chinese food option, $67 total)",
+        "record_name": "Costa Coffee",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Communiti (Chinese tea, $16 total)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Bamboo Boat (Chinese BBQ available, $77 total)",
+        "record_name": "Bamboo Boat",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Flagstaff to Sioux Falls (19h57m, $104 fuel, only feasible return option)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Frontier (American/BBQ, $47 total)",
+        "record_name": "Frontier",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "En route, packed snacks",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "Arrival in Sioux Falls; meal at destination",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has maximum occupancy 3 and is booked for both Phoenix nights; the Flagstaff listing has maximum occupancy 8 and is booked for both Flagstaff nights.",
+        "note": "The booked capacity covers all 3 travelers each night."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing is rated 5; the Flagstaff listing is rated 3.",
+        "note": "Both cities meet the preferred 3+ rating."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 on March 16 runs Sioux Falls to Phoenix, departing 18:40 and arriving 19:26.",
+        "note": "The recorded arrival is before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 on March 18 runs Phoenix to Flagstaff, departing 08:49 and arriving 09:47.",
+        "note": "The recorded arrival is before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 20 transportation slot says “Self-driving from Flagstaff to Sioux Falls”.",
+        "note": "The itinerary includes a return journey despite the requirement that no return journey belongs to this one-way visit."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The requested March 17 Phoenix attractions and March 19 Flagstaff attractions are listed, but March 18 also says “visit to Museum of Northern Arizona and Lowell Observatory via direct taxis” on the transfer day.",
+        "note": "The extra scheduled sightseeing on March 18 conflicts with the requirement to protect that transfer."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary lists two attractions on March 17 and two on March 19; it also lists two on March 18.",
+        "note": "The stated relaxed-pace limit is fewer than two attractions per day."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Record cuisine labels include Chinese for Pizza Hut, Domino's Pizza, Mocambo, 38 Barracks, and Rhubarb Le Restaurant, but not for Village Restaurant, Communiti, Bamboo Boat, Costa Coffee, or Frontier.",
+        "note": "Several planned restaurant meals do not have a Chinese cuisine label."
+      },
+      {
+        "gold_field": "cuisine_coverage",
+        "action_status": "satisfied",
+        "evidence": "Phoenix meals include Pizza Hut and Mocambo, both labeled Chinese; Flagstaff meals include 38 Barracks and Rhubarb Le Restaurant, both labeled Chinese.",
+        "note": "Each city has at least one planned meal with a Chinese cuisine label."
+      },
+      {
+        "gold_field": "dining_budget",
+        "action_status": "violated",
+        "evidence": "Record Average Costs exceed $50 for Domino's Pizza ($96), Mocambo ($76), Rhubarb Le Restaurant ($157), Costa Coffee ($67), and Bamboo Boat ($77).",
+        "note": "Each planned restaurant meal must be below $50 per person; these listed costs exceed the cap."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix attraction slot lists Heard Museum and Desert Botanical Garden, and does not list Hole in the Rock.",
+        "note": "Hole in the Rock is excluded from the plan."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_budget",
+        "quote": "One dinner (Rhubarb Le Restaurant at $157 for 3) exceeds $50 per meal slightly but stays under group dining budget allocation."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21575,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720 from St. Louis at 21:59, arriving at 23:42",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Lake House Restaurant (Rating: 4.3, Cost: $38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Buffet 101 (Rating: 4.0, Cost: $74)",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cafe Delhi Heights (Rating: 4.0, Cost: $74)",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607 from Oklahoma City at 06:27, arriving at 07:44",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-17, 2022-03-18, and 2022-03-19.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "No accommodation is booked on either overnight date.",
+        "note": "There are no booked listings whose combined maximum occupancy can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is from St. Louis.",
+        "note": "The plan starts in the requested origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F4025720 has DestCityName Oklahoma City.",
+        "note": "The itinerary travels to Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oklahoma City as its destination and stay city.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-17.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-19.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F4025720; its record lists a 21:59 departure from St. Louis on 2022-03-17.",
+        "note": "The gold requirement is self-driving in an own car, not flying."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3950607; its record lists a 06:27 departure from Oklahoma City on 2022-03-19.",
+        "note": "The gold requirement is self-driving in an own car, not flying."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The plan has accommodation listed as '-' on 2022-03-17 and 2022-03-18.",
+        "note": "No accommodation is booked for either of the two required nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant has Aggregate Rating 4.3; Buffet 101 and Cafe Delhi Heights each have Aggregate Rating 4.",
+        "note": "Every restaurant meal in the plan meets the 4.0 floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan flies on F4025720 and F3950607; records show fares of $105 and $201, respectively.",
+        "note": "The preferred option is flying when the cap allows it, and the plan chooses flights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "Accommodation candidate records have apparent city/name inconsistencies: several listings named for New York or Brooklyn are labeled as being in Oklahoma City."
+    ]
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21848,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883: Phoenix to Billings, 12:24-15:50 ($359)",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home/departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "L'Angoor (Indian/Cafe, $19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Tsui Wong (Seafood, $40)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Express (BBQ/Seafood, $43)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Elation (Seafood/Fast Food, $87)",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3579622: Billings to Phoenix, 17:28-18:57 ($290)",
+        "record_name": "F3579622",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "L'Angoor (Indian/Cafe, $19)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "At home/arrival",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-18, 2022-03-19, and 2022-03-20.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked for either night.",
+        "note": "No booked lodging capacity is provided to host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 departs Phoenix; the return flight F3579622 arrives in Phoenix.",
+        "note": "The itinerary originates in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 arrives in Billings; the return flight F3579622 departs Billings.",
+        "note": "The destination is Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Billings as the destination city and Phoenix on the return day.",
+        "note": "It visits one destination city, Billings."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-18, and flight F3804883 is dated 2022-03-18.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-20, and flight F3579622 is dated 2022-03-20.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804883 is dated 2022-03-18, departs Phoenix at 12:24, and arrives in Billings at 15:50.",
+        "note": "It is the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3579622 is dated 2022-03-20, departs Billings at 17:28, and arrives in Phoenix at 18:57.",
+        "note": "It is the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The accommodation slot is '-' on 2022-03-18 and 2022-03-19.",
+        "note": "No lodging is booked for either of the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked; the rationale says no valid option was found meeting the entire home/apt preference.",
+        "note": "There is no booked listing with the preferred room type."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "people_number",
+        "quote": "no valid accommodation found meeting minimum nights=2, max_occupancy=1, and entire home/apt preference"
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "Accommodation gap remains unresolved."
+      },
+      {
+        "gold_field": "room_type",
+        "quote": "no valid accommodation found meeting minimum nights=2, max_occupancy=1, and entire home/apt preference"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

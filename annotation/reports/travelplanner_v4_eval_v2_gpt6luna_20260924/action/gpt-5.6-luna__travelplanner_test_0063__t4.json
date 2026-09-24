@@ -1,0 +1,199 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23818,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4031463: Denver 08:39 to Oakland 10:13",
+        "record_name": "F4031463",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered cereal, fruit, and coffee before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-catered sandwich and fruit from groceries",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Self-catered pasta dinner at Historic Far Rockaway Beach Bungalow",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow — entire home/apt, rating 5.0, $222 per night",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transportation to and from Oakland Zoo",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered eggs, toast, and coffee",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Self-catered packed sandwich, fruit, and snacks",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Self-catered rice-and-vegetable dinner",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow — entire home/apt, rating 5.0, $222 per night",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3958709: Oakland 06:10 to Denver 09:25",
+        "record_name": "F3958709",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed breakfast of fruit, granola, and coffee for the airport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Historic Far Rockaway Beach Bungalow — third billed night, with checkout after the return trip",
+        "record_name": "Historic Far Rockaway Beach Bungalow",
+        "revised": true
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Historic Far Rockaway Beach Bungalow is the only supported entire-home stay rated 5.0, but it requires 3 nights, so the user's later offer to pay for a third night is used.",
+        "effect": "Adds a third billed night at Historic Far Rockaway Beach Bungalow on 2022-03-28."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-26, 2022-03-27, and 2022-03-28.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow has maximum occupancy 2.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4031463 departs Denver; flight F3958709 arrives in Denver.",
+        "note": "The plan starts from Denver."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4031463 goes to Oakland; the plan lists Oakland as the current city on each day.",
+        "note": "Oakland is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oakland as the current city on all three days.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists FlightDate 2022-03-26.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record lists FlightDate 2022-03-28.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4031463 flies Denver to Oakland on 2022-03-26, departing at 08:39.",
+        "note": "It matches the specified morning departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The requested return specifies landing at 11:49; F3958709 lands at 09:25.",
+        "note": "The selected flight is not the specified 11:49 landing flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan books Historic Far Rockaway Beach Bungalow for the nights of 2022-03-26, 2022-03-27, and 2022-03-28; the record's minimum nights is 3.",
+        "note": "Three nights are booked, including the accepted night after departure."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "F3958709 arrives in Denver at 09:25 on 2022-03-28.",
+        "note": "The return is before noon."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow is listed as Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Historic Far Rockaway Beach Bungalow has review rate number 5.",
+        "note": "The booked listing meets the 5.0 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "The original two-night limit is sacrificed because no qualifying 5.0-rated entire-home option supports only two nights."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

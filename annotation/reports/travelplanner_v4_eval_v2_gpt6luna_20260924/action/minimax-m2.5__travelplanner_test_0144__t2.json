@@ -1,0 +1,104 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 28698,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Moab to Denver (5h 23min, 570km, $28)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights (Entire home/apt, $457, rating 4) - NOTE: min 4 nights may conflict with 2-night stay",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Denver to Gunnison (3h 39min, 323km, $16)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village (Private room, $104, rating 4) - NOTE: room type is private room not entire home/apt",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Gunnison to Moab (4h 1min, 380km, $19)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Denver on March 19–20 and Gunnison on March 21–22.",
+        "note": "It visits the requested two cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Denver's Harlem cozy nights is Entire home/apt; Gunnison's Full-size loft bed in East Village is Private room.",
+        "note": "The preferred Entire home/apt room type is not met in Gunnison."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings have review rate number 4.",
+        "note": "Each city's booked accommodation meets the 4+ rating floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary specifies self-driving for Moab–Denver, Denver–Gunnison, and Gunnison–Moab; candidate reference text identifies each route as self-driving.",
+        "note": "The plan uses the traveler's own car."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan assigns Denver to March 19–20 and Gunnison to March 21–22, but schedules Denver Zoo or Denver Botanic Gardens on March 19 and Gunnison Pioneer Museum on March 21. The activity requirements say to protect travel and rest time and not schedule main sightseeing on those dates.",
+        "note": "Although it allocates two days to each city, sightseeing is scheduled on both protected travel/rest days."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "No Gunnison apartments with both rating 4+ AND entire home/apt room type exist in results - selected highest rated (4) but room is private room not entire apartment."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 29335,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving from Moab (5h23m, $28)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fatty Bao - Asian Gastro Bar ($93)",
+        "record_name": "The Fatty Bao - Asian Gastro Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights ($457, Entire home/apt, rating: 4)",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Urban Socialite ($34)",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Nukkadwala ($31)",
+        "record_name": "Nukkadwala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights ($457, Entire home/apt, rating: 4)",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving from Denver (3h39m, $16)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "SALT ($44)",
+        "record_name": "SALT",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village ($104, Private room, rating: 4)",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Mocha ($30)",
+        "record_name": "Mocha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Cyber Hub Social ($95)",
+        "record_name": "Cyber Hub Social",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village ($104, Private room, rating: 4)",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving from Gunnison (4h01m, $19)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Denver on March 19–20 and Gunnison on March 21–22.",
+        "note": "It visits the two requested cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Denver's Harlem cozy nights is Entire home/apt; Gunnison's Full-size loft bed in East Village is Private room.",
+        "note": "The Gunnison accommodation does not meet the preferred Entire home/apt room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Harlem cozy nights has review rate number 4; Full-size loft bed in East Village has review rate number 4.",
+        "note": "Both booked listings meet the 4+ rating threshold."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary specifies self-driving from Moab to Denver, Denver to Gunnison, and Gunnison to Moab; the transportation reference records confirm self-driving for these routes.",
+        "note": "The plan uses driving for all travel legs, consistent with the own-car requirement."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary assigns two days to Denver and two to Gunnison. However, it lists Denver Botanic Gardens on March 19 and Black Canyon of the Gunnison National Park on March 21, when the activity requirements say to protect travel and rest time and not schedule main sightseeing.",
+        "note": "The two-day allocation is met, but sightseeing is scheduled on protected travel/rest days."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "In Gunnison, the only rated 4+ accommodation is a private room (not entire apartment), violating 'apartment' requirement"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

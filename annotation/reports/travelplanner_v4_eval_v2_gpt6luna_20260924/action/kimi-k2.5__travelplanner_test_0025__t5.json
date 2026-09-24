@@ -1,0 +1,167 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24259,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983: Wilmington to New York, Departs 20:26, Arrives 22:05 ($113)",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Aryan's Rajasthani Pyaz Ki Kachori (Indian/Pizza/Seafood, $17, Rating 3.1)",
+        "record_name": "Aryan's Rajasthani Pyaz Ki Kachori",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK - Entire home/apt ($228, 2 nights, rating 2.0, min 2 nights, max 2 occupants)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Green Chick Chop (Tea/French/Cafe/Seafood, $26, Rating 3.3)",
+        "record_name": "Green Chick Chop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Seasons 52 Fresh Grill (Seafood/Indian/Italian, $30, Rating 4.4)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A Contemporary Homelike Stay in the Best of BK - Entire home/apt (night 2 of 2)",
+        "record_name": "A Contemporary Homelike Stay in the Best of BK",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657: New York to Wilmington, Departs 16:45, Arrives 18:28 ($182)",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Golooji's Chat Waat (Pizza/BBQ, $53, Rating 3.3)",
+        "record_name": "Golooji's Chat Waat",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked New York listing has maximum occupancy 2; the trip is for an individual.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 departs Wilmington for New York; the return flight is from New York to Wilmington.",
+        "note": "Wilmington is the origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is from Wilmington to New York, and the return flight departs New York.",
+        "note": "New York is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits New York between the Wilmington-to-New York and New York-to-Wilmington flights.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-12 and the first itinerary day is 2022-03-12.",
+        "note": "The plan begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record has FlightDate 2022-03-14 and the final itinerary day is 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is Wilmington to New York on 2022-03-12 and departs at 20:26.",
+        "note": "The record confirms the route, date, and late departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 is New York to Wilmington on 2022-03-14 and departs at 16:45.",
+        "note": "The record confirms the route, date, and late-afternoon departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-12 for two nights and again on 2022-03-13 as night 2 of 2.",
+        "note": "The booked nights are March 12 and March 13."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The listing record for A Contemporary Homelike Stay in the Best of BK has review rate number 2.",
+        "note": "The preferred rating of 4 is not met."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing record identifies A Contemporary Homelike Stay in the Best of BK as Entire home/apt.",
+        "note": "The booked room type meets the requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "This accommodation has rating 2.0, failing the preferred 4.0+ rating; this is disclosed as a necessary trade-off"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

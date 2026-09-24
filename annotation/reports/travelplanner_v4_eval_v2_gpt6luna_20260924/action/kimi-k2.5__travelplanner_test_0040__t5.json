@@ -1,0 +1,197 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 24432,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4046779, 06:56-09:08, $178",
+        "record_name": "F4046779",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Cafe Gatherings (4.4 rating, $17, Indian/Bakery)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "1918 Bistro & Grill (4.4 rating, $90, Pizza/BBQ/Seafood)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury Williamsburg duplex, private roof terrace ($241/night, 5.0 rating, Entire home/apt) - VIOLATION: 4 night minimum stay required, booking 2 nights not feasible per resource constraints. Alternative: Exclusive Modern Penthouse Apartment ($483/night, 3.0 rating) or *Fresh Budget Room (Private room, 4.0 rating) - neither meets all must-haves. Best compromising option selected below with disclosure.",
+        "record_name": "Luxury Williamsburg duplex, private roof terrace",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Coconuts Fish Cafe (4.5 rating, $38, Cafe/Mediterranean - NO FAST FOOD despite tag, selecting for rating priority)",
+        "record_name": "Coconuts Fish Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Yanki Sizzlers (4.1 rating, $96, French/Mediterranean)",
+        "record_name": "Yanki Sizzlers",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "1918 Bistro & Grill (4.4 rating, $90)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury Williamsburg duplex - INFEASIBLE: 4 night minimum. Substituting with available option.",
+        "record_name": "Luxury Williamsburg duplex, private roof terrace",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4047063, 18:48-20:40, $272",
+        "record_name": "F4047063",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings (4.4 rating, $17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "1918 Bistro & Grill (4.4 rating, $90)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 25, 26, and 27, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Luxury Williamsburg duplex, private roof terrace has maximum occupancy 3.",
+        "note": "The named lodging is listed on both accommodation nights and can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 departs Moline; flight F4047063 arrives in Moline.",
+        "note": "The itinerary starts from Moline."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4046779 arrives in Dallas; flight F4047063 departs Dallas.",
+        "note": "Dallas is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Dallas as the destination city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F4046779 has FlightDate 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record F4047063 has FlightDate 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4046779 travels Moline to Dallas on 2022-03-25 and departs at 06:56.",
+        "note": "The record verifies the route, date, and early departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4047063 travels Dallas to Moline on 2022-03-27 and departs at 18:48.",
+        "note": "The record verifies the route, date, and evening departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Luxury Williamsburg duplex, private roof terrace on March 25 and March 26; March 27 has no accommodation.",
+        "note": "Two accommodation nights are listed on the requested dates. The listing's four-night minimum is a separate constraint."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury Williamsburg duplex, private roof terrace is listed as Entire home/apt.",
+        "note": "The named accommodation meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Luxury Williamsburg duplex, private roof terrace has review rate number 5.",
+        "note": "The listing rating meets the minimum of 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant meals are from Cafe Gatherings (4.4), 1918 Bistro & Grill (4.4), Coconuts Fish Cafe (4.5), and Yanki Sizzlers (4.1).",
+        "note": "Every restaurant meal has an Aggregate Rating of at least 4."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Coconuts Fish Cafe has Cuisines listed as Cafe, BBQ, Mediterranean, Fast Food.",
+        "note": "The March 26 breakfast carries the prohibited Fast Food tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "4 night minimum stay required, booking 2 nights not feasible per resource constraints."
+      },
+      {
+        "gold_field": "dining_style",
+        "quote": "Coconuts Fish Cafe (4.5 rating, $38, Cafe/Mediterranean - NO FAST FOOD despite tag, selecting for rating priority)"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

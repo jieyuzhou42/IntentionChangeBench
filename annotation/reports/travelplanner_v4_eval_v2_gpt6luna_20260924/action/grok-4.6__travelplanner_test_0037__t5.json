@@ -1,0 +1,202 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22356,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974 from Atlanta to Bozeman, Departure 09:37, Arrival 11:50, $345",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Jiquitaia, Bozeman (rating 4.1, $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jiquitaia, Bozeman (rating 4.1, $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely 3 bedroom Townhouse in BK Historic District",
+        "record_name": "Lovely 3 bedroom Townhouse in BK Historic District",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Jiquitaia, Bozeman (rating 4.1, $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Jiquitaia, Bozeman (rating 4.1, $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jiquitaia, Bozeman (rating 4.1, $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely 3 bedroom Townhouse in BK Historic District",
+        "record_name": "Lovely 3 bedroom Townhouse in BK Historic District",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979 from Bozeman to Atlanta, Departure 13:08, Arrival 18:37, $803",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Jiquitaia, Bozeman (rating 4.1, $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Lovely 3 bedroom Townhouse in BK Historic District",
+        "record_name": "Lovely 3 bedroom Townhouse in BK Historic District",
+        "revised": true
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "used the user-allowed third night on the only 4.0+ option that can approach the budget, Lovely 3 bedroom Townhouse (rating 5, $350 x 3 = $1050), paying for an unused night of 27 Mar after the return flight.",
+        "effect": "Added the townhouse as the March 27 accommodation, changing that slot from '-' to the listing for the third paid night."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 25, 26, and 27, 2022.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked townhouse has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 lists Atlanta as its origin.",
+        "note": "The trip starts in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 lists Bozeman as its destination.",
+        "note": "The trip goes to Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels from Atlanta to Bozeman and lists Bozeman activities and accommodation.",
+        "note": "Bozeman is the one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500974 is dated 2022-03-25, Atlanta to Bozeman, departing 09:37 and arriving 11:50.",
+        "note": "The requested outbound flight is listed."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3500979 is dated 2022-03-27, Bozeman to Atlanta, departing 13:08 and arriving 18:37.",
+        "note": "The requested return flight is listed."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The townhouse is listed for March 25 and 26, and the action explicitly adds a paid March 27 night after the return flight.",
+        "note": "The revised plan includes three nights from March 25, with the post-departure night accepted by the requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The townhouse candidate record has review rate number 5.",
+        "note": "The booked listing meets the rating floor of 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Jiquitaia's candidate record has Aggregate Rating 4.1; every listed restaurant meal is at Jiquitaia.",
+        "note": "All restaurant meals meet the rating floor of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

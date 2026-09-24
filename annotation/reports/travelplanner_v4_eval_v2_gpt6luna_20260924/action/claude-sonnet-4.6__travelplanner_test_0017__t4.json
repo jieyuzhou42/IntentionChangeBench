@@ -1,0 +1,148 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21789,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511, Lihue to San Francisco, departs 13:08, arrives 21:32, $867",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Tokyo Sushi — Cafe, Pizza, BBQ; avg cost $18/person; rating 3.7",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Spacious 1 bedroom in Woodlawn NYC (Entire home/apt, San Francisco), $163/night, 2 nights = $326",
+        "record_name": "Spacious 1 bedroom in Woodlawn NYC",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tokyo Sushi — Cafe, Pizza, BBQ; avg cost $18/person; rating 3.7",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tokyo Sushi — Cafe, Pizza, BBQ; avg cost $18/person; rating 3.7",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tokyo Sushi — Cafe, Pizza, BBQ; avg cost $18/person; rating 3.7",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Spacious 1 bedroom in Woodlawn NYC (Entire home/apt, San Francisco), night 2",
+        "record_name": "Spacious 1 bedroom in Woodlawn NYC",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709, San Francisco to Lihue, departs 09:10, arrives 11:57, $1,204",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1 through Day 3, dated March 27–29, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 is recorded from Lihue to San Francisco; F3870709 returns from San Francisco to Lihue.",
+        "note": "The trip starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 is recorded from Lihue to San Francisco.",
+        "note": "The outbound destination is San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits San Francisco between the Lihue-origin and Lihue-return flights.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-27 and flight F3880511 is recorded for 2022-03-27.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is dated 2022-03-29 and flight F3870709 is recorded for 2022-03-29.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3880511 is Lihue to San Francisco on 2022-03-27, departing 13:08 and arriving 21:32.",
+        "note": "It matches the requested flight and landing time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3870709 is San Francisco to Lihue on 2022-03-29, departing 09:10.",
+        "note": "It matches the requested return flight and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is booked on Day 1 and Day 2; the listing's minimum nights is 2.",
+        "note": "Those itinerary nights are March 27 and 28, with no accommodation needed on departure day."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's record gives room type \"Entire home/apt\".",
+        "note": "The listing meets the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Tokyo Sushi has Aggregate Rating 3.7; all listed restaurant meals use Tokyo Sushi.",
+        "note": "Every restaurant meal meets the 3.7 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

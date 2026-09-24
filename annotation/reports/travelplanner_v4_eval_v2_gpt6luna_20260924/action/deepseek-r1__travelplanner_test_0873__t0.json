@@ -1,0 +1,210 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31122,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving (11h 13m, $61)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed meals",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed meals",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Taste of India ($56 total)",
+        "record_name": "Taste of India",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely West Village 1 BR ($260/2 nights)",
+        "record_name": "Lovely West Village 1 BR - Quiet and Comfortable",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bluebird Diner ($26)",
+        "record_name": "Bluebird Diner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Jimmy Jack's Rib Shack ($24)",
+        "record_name": "Jimmy Jack's Rib Shack",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Zen Japanese Steakhouse ($40)",
+        "record_name": "Zen Japanese Steakhouse and Sushi Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely West Village 1 BR",
+        "record_name": "Lovely West Village 1 BR - Quiet and Comfortable",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving (1h 17m, $6)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Mogli's Coffee ($24)",
+        "record_name": "Mogli's Coffee",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Pizza Di Rocco ($122)",
+        "record_name": "Pizza Di Rocco",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "The Fish House ($40)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill ($205/2 nights)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House ($100)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Shenanigan's Irish Pub ($86)",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Town Table Restaurant ($200)",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving (10h 27m, $57)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "PKay ($44)",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Packed meals",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Baton Rouge and New Orleans, two different Louisiana cities.",
+        "note": "Charlotte is the starting and return city, not one of the Louisiana destinations."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Lovely West Village 1 BR - Quiet and Comfortable and Cozy in Cobble Hill are both listed as Entire home/apt.",
+        "note": "Neither booked accommodation is a private room."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Lovely West Village 1 BR - Quiet and Comfortable lists 'No visitors'; Cozy in Cobble Hill lists 'No visitors & No smoking'. Neither listing says 'No parties'.",
+        "note": "The requirement is to allow parties; the listings do not prohibit parties."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The intercity transportation slots are self-driving; the other transportation slots are local transit.",
+        "note": "No flight is listed or matched."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "house_rule",
+        "quote": "Violates must_have 'parties allowed' requirement: No listed accommodations permit parties."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

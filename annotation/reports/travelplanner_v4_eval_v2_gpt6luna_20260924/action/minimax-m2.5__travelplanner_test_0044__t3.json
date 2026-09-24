@@ -1,0 +1,128 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21922,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3920918 from Scranton at 05:57 ($33)",
+        "record_name": "F3920918",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Bernardo's (rated 4.0, $84)",
+        "record_name": "Bernardo's",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sonder | Stock Exchange | Ideal 1BR + Kitchen (rated 4.0, $903)",
+        "record_name": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Drifters Cafe (rated 4.1, $24)",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sonder | Stock Exchange | Ideal 1BR + Kitchen (rated 4.0, $903)",
+        "record_name": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3919859 to Scranton at 21:46 ($22)",
+        "record_name": "F3919859",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 24, March 25, and March 26, 2022.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Newark listing, Sonder | Stock Exchange | Ideal 1BR + Kitchen, has maximum occupancy 9.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 departs Scranton; flight F3919859 arrives in Scranton.",
+        "note": "The itinerary begins and returns to Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 travels from Scranton to Newark, and the itinerary lists Newark as the city for all three days.",
+        "note": "Newark is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Newark as the current city on each day.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight F3920918 are dated 2022-03-24.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight F3919859 are dated 2022-03-26.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight record F3920918 is Scranton to Newark on 2022-03-24, departing at 05:57.",
+        "note": "It matches the requested first outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight record F3919859 is Newark to Scranton on 2022-03-26, departing at 21:46.",
+        "note": "It matches the requested last return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan books Sonder | Stock Exchange | Ideal 1BR + Kitchen on March 24 and March 25, with no accommodation listed on the March 26 departure day.",
+        "note": "The two booked nights match the requested dates."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The candidate record for Sonder | Stock Exchange | Ideal 1BR + Kitchen lists a review rate number of 4.0.",
+        "note": "The booked Newark accommodation meets the rating floor of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

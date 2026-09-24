@@ -1,0 +1,122 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21160,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Depart Lihue on flight F3880511 at 13:08",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Arrive in San Francisco at 21:32 on F3880511",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Dinner at Cafe (coffee & light snacks) at Coffee & Chai Co.",
+        "record_name": "Coffee & Chai Co.",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Stay at spacious pretty east harlem apt., Entire home/apt, $470/night for two nights",
+        "record_name": "spacious pretty east harlem apt.",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Depart San Francisco on flight F3870709 at 09:10",
+        "record_name": "F3870709",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Breakfast at Coffee & Chai Co.",
+        "record_name": "Coffee & Chai Co.",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has Day 1, Day 2, and Day 3.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked San Francisco listing has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 has OriginCityName Lihue.",
+        "note": "The outbound trip starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 has DestCityName San Francisco; the return flight originates in San Francisco.",
+        "note": "The destination city is San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists San Francisco as its destination city.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 has FlightDate 2022-03-27.",
+        "note": "The outbound flight is on the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3870709 has FlightDate 2022-03-29.",
+        "note": "The return flight is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3880511 is Lihue to San Francisco on 2022-03-27, departing 13:08 and arriving 21:32.",
+        "note": "The plan uses the requested flight landing at 21:32 on March 27."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3870709 is San Francisco to Lihue on 2022-03-29, departing 09:10.",
+        "note": "The plan uses the requested 09:10 return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The only accommodation slot is on Day 2; Day 1 and Day 3 have no accommodation.",
+        "note": "Counting one night per itinerary day with accommodation gives one booked night, not the requested two nights on March 27 and 28."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

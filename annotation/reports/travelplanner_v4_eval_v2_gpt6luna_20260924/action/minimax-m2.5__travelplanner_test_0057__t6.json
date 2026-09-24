@@ -1,0 +1,172 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23080,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164 Houston to Reno, 09:50-12:04, $688",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Leme Light (Rating 4.2, $55)",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Kanha Sweets (Rating 4.1, $28)",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse - $361/night",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Leme Light (Rating 4.2, $55)",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Kanha Sweets (Rating 4.1, $28)",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Leme Light (Rating 4.2, $55)",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse - $361/night",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705 Reno to Houston, 12:58-18:31, $446",
+        "record_name": "F3875705",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 11, 12, and 13, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, A bright, beautiful treehouse, has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 departs Houston.",
+        "note": "The itinerary departs from Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 arrives in Reno.",
+        "note": "Reno is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Reno as the destination and the current city on all three days.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins with the March 11, 2022 flight from Houston to Reno.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends with the March 13, 2022 flight from Reno to Houston.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3879164 is dated 2022-03-11, Houston to Reno, departing 09:50.",
+        "note": "It matches the required outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3875705 is dated 2022-03-13, Reno to Houston, departing 12:58.",
+        "note": "It matches the required return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "A bright, beautiful treehouse is listed on March 11 and March 12; its record has a 2-night minimum.",
+        "note": "The itinerary books the two requested nights and no more."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Leme Light has Aggregate Rating 4.2 and Kanha Sweets has Aggregate Rating 4.1.",
+        "note": "Every restaurant meal in the plan meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Leme Light's Cuisines include Fast Food; Kanha Sweets' Cuisines also include Fast Food.",
+        "note": "Every restaurant used in the Reno meals carries the prohibited Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 12 the plan uses Leme Light for breakfast and dinner and Kanha Sweets for lunch.",
+        "note": "There are only two different restaurants that day, not three."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The recorded Average Cost is $55 for Leme Light and $28 for Kanha Sweets.",
+        "note": "Each restaurant meal is under $70 per person."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Both are below 4.0 rating, so preferred criterion relaxed to keep Fast Food exclusion (must_have)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

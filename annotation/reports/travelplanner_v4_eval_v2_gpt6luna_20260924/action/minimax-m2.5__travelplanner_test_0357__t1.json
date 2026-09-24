@@ -1,0 +1,149 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21333,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (Buffalo 08:04 → Boston 09:30), then rideshare to accommodation",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Irish Democrat (American/Tea)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Apni Rasoi (American/Mediterranean)",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant (Indian/Seafood)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Guest house in Boston (2-night stay, to be booked)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare between attractions",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Irish Democrat (American/Tea)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Apni Rasoi (American/Mediterranean)",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cake Factory (French/Seafood)",
+        "record_name": "Cake Factory",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Guest house in Boston (continued)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare to airport, Flight F3757097 (Boston 21:44 → Buffalo 23:34)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Irish Democrat (American/Tea)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Total Food Court (Bakery/Fast Food)",
+        "record_name": "Total Food Court",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Foody Goody (Cafe/Indian/Seafood)",
+        "record_name": "Foody Goody",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "It spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The plan names a Boston guest house to be booked, but no matching accommodation record is supplied; its maximum occupancy cannot be established from the records.",
+        "note": "The unlisted lodging cannot be verified to host four travelers."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Apni Rasoi lists American among its cuisines, and Cake Factory lists French.",
+        "note": "The restaurant meals include both requested cuisines."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "There are two listed attractions each day. Public Garden and Boston Common are close together, as are the Museum of Fine Arts, Boston and Fenway Park. Faneuil Hall Marketplace and View Boston are about 1.6 miles apart based on their candidate-record coordinates, so the March 6 pair is not geographically clustered.",
+        "note": "The daily count is met, but the nearby-attractions requirement is not met on March 6."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "cuisine",
+        "quote": "Cuisine requirements partially met"
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation candidate records are labeled as Boston, but several listing names refer to NYC locations; none matches the planned Boston guest house, so its occupancy cannot be audited."
+    ]
+  }
+}

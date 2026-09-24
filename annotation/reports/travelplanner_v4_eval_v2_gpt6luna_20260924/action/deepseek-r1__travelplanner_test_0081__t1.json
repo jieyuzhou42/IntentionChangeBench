@@ -1,0 +1,141 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21984,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073 (Tampa→Cleveland @ 10:37)",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Bikanerwala ($10)",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner ($25)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Self-catered meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "record_name": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Keventers ($54)",
+        "record_name": "Keventers",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Green Leaf ($73)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Self-catered meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "record_name": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247 (Cleveland→Tampa @ 21:20)",
+        "record_name": "F3559247",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Master Bakers ($80)",
+        "record_name": "Master Bakers",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Big Chicken ($27)",
+        "record_name": "Big Chicken",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland accommodation has maximum occupancy 1.",
+        "note": "Its capacity covers the single passenger."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3915073 is listed from Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The selected flight matches the required route, date, and times."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "The March 2 itinerary lists Rock & Roll Hall of Fame as an attraction.",
+        "note": "The plan includes sightseeing despite the no-sightseeing requirement."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "The March 2 lunch is Makhan Fish and Chicken Corner, a restaurant in the candidate records.",
+        "note": "A restaurant lunch is planned on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

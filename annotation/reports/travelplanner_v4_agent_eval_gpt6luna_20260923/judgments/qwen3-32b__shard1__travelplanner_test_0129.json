@@ -1,0 +1,1643 @@
+{
+  "pass_a": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction gives $5,000 rather than the $2,500 soft budget; the itinerary lacks enough cost detail to verify its total."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Sioux Falls, Flagstaff, and Phoenix",
+        "days: 5",
+        "city_sequence: specified day-by-day itinerary",
+        "outbound_transportation: ground",
+        "intercity_transportation: ground",
+        "return_transportation: ground",
+        "dining_style: local_cuisine",
+        "accommodation_stay: Flagstaff and Phoenix"
+      ],
+      "priority_order_score": 0.0,
+      "no_match_appropriate": false,
+      "summary": "The $2,500 budget was misread as $5,000, and numerous unprovided itinerary constraints were added."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $2,500 ceiling is represented correctly, but the itinerary does not provide enough cost information to verify the total."
+        },
+        {
+          "gold_field": "city_sequence",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Phoenix precedes Flagstaff as requested, though the action also adds an unwanted trip back to Sioux Falls."
+        },
+        {
+          "gold_field": "accommodation_stay",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction captures two nights in each city; the itinerary shows Phoenix on March 16–17 and Flagstaff on March 18–19."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction omits the private-room requirement, and the Flagstaff lodging is listed as an entire home/apartment."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction's rating of 3 matches the 3+ threshold, but the action provides no ratings for the selected lodgings."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not capture the outbound flight requirement; the selected flight arrives in Phoenix before 21:00."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction identifies a flight but omits the noon deadline; the selected March 18 flight arrives at 14:26."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction does not capture the one-way requirement, and the action schedules a drive from Flagstaff to Sioux Falls."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "days: March 16–20"
+      ],
+      "priority_order_score": 0.4737,
+      "no_match_appropriate": false,
+      "summary": "The city order and stay lengths are understood, but the Flagstaff flight misses its deadline and the action adds a return trip."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $5,000 ceiling is captured, but the action does not establish the complete trip cost."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies three travelers and both selected listings indicate capacity for three."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction specifies entire-home apartments rather than private rooms."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected listings are shown with ratings 5 and 3, meeting the 3+ requirement."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction identifies the March 16 Sioux Falls–Phoenix flight and arrival by 21:00."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction identifies the March 18 Phoenix–Flagstaff flight arriving by noon."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The one-way condition is not represented, and the action schedules a drive back to Sioux Falls."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "dining_budget: Phoenix and Flagstaff restaurant selections",
+        "attraction: Phoenix Zoo and Riordan Mansion State Historic Park",
+        "day_1 through day_5: individually specified dates",
+        "accommodation: specific named listings as user requirements"
+      ],
+      "priority_order_score": 0.5625,
+      "no_match_appropriate": false,
+      "summary": "The group size, rating threshold, and flights are captured, but the lodging type conflicts with the private-room requirement and a return drive is added."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction includes $5,000, but the action lacks enough cost detail to verify the total."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "Three travelers are recognized, but the selected lodging's capacity is not established in the action evidence."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction specifies rating 3, but the selected properties' ratings are not provided in the action evidence."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction identifies the route, date, and flight mode but omits the 21:00 arrival deadline; action timing is not established here."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction identifies the route, date, and flight mode but omits the noon arrival deadline; action timing is not established here."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not specify that the trip is one-way, but the action ends in Flagstaff without scheduling a return journey."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Both Heard Museum and Desert Botanical Garden appear in the action."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction positively includes Hole in the Rock instead of recognizing its exclusion; the action omits it."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "No relaxed-pace constraint is predicted; the action schedules at most one listed attraction per day."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Sioux Falls, Phoenix, and Flagstaff",
+        "days: March 16 and March 18 as must-have dates",
+        "dining_budget: $5,000",
+        "accommodation_stay: two nights in each city",
+        "activity: Hole in the Rock",
+        "accommodation: specific named properties as user requirements"
+      ],
+      "priority_order_score": 0.15,
+      "no_match_appropriate": false,
+      "summary": "The named Phoenix attractions are understood and included, but the exclusion of Hole in the Rock and the relaxed-pace preference are not understood."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction gives $5,000, but the action does not provide enough cost detail to verify the total."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "Three travelers are recognized, but occupancy of the selected lodgings is not confirmed in the action."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction says rated 2+, below the required 3+; the action gives no ratings for the selected properties."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction captures the route, date, and flight mode but omits the 21:00 deadline; the action gives no flight time."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction captures the route, date, and flight mode but omits the noon deadline; the action gives no flight time."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not state the one-way condition, but the itinerary ends in Flagstaff without a return journey."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction and action specify only the requested Phoenix attractions on March 17 and Flagstaff attractions on March 19."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction includes meal scheduling but not the fewer-than-two-attractions-per-day pace; the action schedules two attractions on both March 17 and 19."
+        },
+        {
+          "gold_field": "local_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction mentions taxis or rideshares in both cities but not the specified Flagstaff point-to-point routing; the action lists a taxi on the Flagstaff attraction day."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted attraction sets exclude Hole in the Rock, and the action does too."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "days: five-day itinerary as a must-have",
+        "cuisine_coverage: sit-down restaurant meals",
+        "accommodation_stay: specified check-in and check-out dates",
+        "accommodation: private room rated 2+"
+      ],
+      "priority_order_score": 0.3913,
+      "no_match_appropriate": false,
+      "summary": "The attraction selections and taxi use are reflected, but the relaxed pace is violated and the accommodation rating prediction is too low."
+    },
+    "5": {
+      "turn_id": 5,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction gives $5,000, but the action does not provide enough cost detail to verify the total."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "Three travelers are recognized, but occupancy of the selected lodgings is not confirmed in the action."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "No 3+ rating requirement is captured, and the selected properties' ratings are not provided."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected flight is listed as departing Sioux Falls at 18:40 and arriving in Phoenix at 19:26 on March 16."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction omits the noon deadline, and the selected March 18 flight arrives at 14:26."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The one-way condition is not captured, and the action schedules travel from Flagstaff back to Sioux Falls."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted and selected attractions match the specified Phoenix and Flagstaff stops and dates."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "No relaxed-pace constraint is predicted, and the action schedules two attractions on both March 17 and 19."
+        },
+        {
+          "gold_field": "local_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction specifies local transport only in Phoenix, but the action includes taxis or rideshares between the Flagstaff lodging and attractions."
+        },
+        {
+          "gold_field": "cuisine",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Chinese cuisine is named in the prediction, but the selected itinerary includes no meals."
+        },
+        {
+          "gold_field": "cuisine_coverage",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The prediction names a Chinese meal in each city, but the action leaves all meal slots unfilled."
+        },
+        {
+          "gold_field": "dining_budget",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "No under-$50-per-person meal limit is predicted, and the action leaves the required meal choices unresolved."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The specified attraction lists and action omit Hole in the Rock."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "breakfast: optional value '-'",
+        "lunch: optional value '-'",
+        "dinner: optional value '-'",
+        "accommodation: specific named listings and prices as user requirements",
+        "budget_max: $5,000 as a duplicate budget constraint"
+      ],
+      "priority_order_score": 0.1111,
+      "no_match_appropriate": false,
+      "summary": "The attraction list and outbound flight are captured, but the intercity flight misses its deadline and no meals are selected despite the Chinese-meal and price requirements."
+    }
+  },
+  "pass_b": {
+    "0": {
+      "turn_id": 0,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": "budget",
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 5,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 6,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 7,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 8,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "1": {
+      "turn_id": 1,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": "budget",
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": "city_sequence",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": "accommodation_rating",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": "intercity_transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": "accommodation_stay",
+          "value_match": true
+        }
+      ]
+    },
+    "2": {
+      "turn_id": 2,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": "intercity_transportation",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": "room_type",
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": "people_number",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 6,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 7,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 8,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 9,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 10,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 11,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "3": {
+      "turn_id": 3,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 5,
+          "gold_field": "people_number",
+          "value_match": true
+        },
+        {
+          "index": 6,
+          "gold_field": "intercity_transportation",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": "activity",
+          "value_match": true
+        },
+        {
+          "index": 8,
+          "gold_field": "activity 2",
+          "value_match": false
+        },
+        {
+          "index": 9,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 10,
+          "gold_field": "accommodation_rating",
+          "value_match": true
+        },
+        {
+          "index": 11,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "4": {
+      "turn_id": 4,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": "outbound_transportation",
+          "value_match": true
+        },
+        {
+          "index": 4,
+          "gold_field": "intercity_transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": "local_transportation",
+          "value_match": true
+        },
+        {
+          "index": 6,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 7,
+          "gold_field": "accommodation_rating",
+          "value_match": false
+        },
+        {
+          "index": 8,
+          "gold_field": "people_number",
+          "value_match": true
+        },
+        {
+          "index": 9,
+          "gold_field": "activity",
+          "value_match": true
+        },
+        {
+          "index": 10,
+          "gold_field": "activity",
+          "value_match": true
+        },
+        {
+          "index": 11,
+          "gold_field": "activity",
+          "value_match": true
+        },
+        {
+          "index": 12,
+          "gold_field": "activity",
+          "value_match": true
+        },
+        {
+          "index": 13,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 14,
+          "gold_field": "schedule",
+          "value_match": false
+        }
+      ]
+    },
+    "5": {
+      "turn_id": 5,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": "intercity_transportation",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": "local_transportation",
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 5,
+          "gold_field": "activity",
+          "value_match": true
+        },
+        {
+          "index": 6,
+          "gold_field": "cuisine",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 8,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 9,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 10,
+          "gold_field": "people_number",
+          "value_match": true
+        },
+        {
+          "index": 11,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 12,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 13,
+          "gold_field": "budget",
+          "value_match": false
+        }
+      ]
+    }
+  },
+  "pass_a_grounded": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction gives $5,000 rather than the $2,500 soft ceiling; the action provides no reliable total cost."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Sioux Falls, Flagstaff, and Phoenix",
+        "days: 5",
+        "city_sequence: specified day-by-day city assignments",
+        "outbound_transportation: ground",
+        "intercity_transportation: ground",
+        "return_transportation: ground",
+        "dining_style: local_cuisine",
+        "accommodation_stay: Flagstaff and Phoenix"
+      ],
+      "priority_order_score": 0.0,
+      "no_match_appropriate": false,
+      "summary": "A concrete itinerary was selected, but most predicted requirements were unsupported and the budget value and tier were wrong."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction treats $2,500 as a maximum; the itinerary gives no verifiable total cost."
+        },
+        {
+          "gold_field": "city_sequence",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted route includes Phoenix followed by Flagstaff, and the itinerary visits them in that order."
+        },
+        {
+          "gold_field": "accommodation_stay",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The prediction captures two nights in each city, but the itinerary shows no Flagstaff accommodation on March 18."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "No private-room requirement is predicted; the Flagstaff selection is an entire home/apartment."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "A rating of 3 is predicted, and the selected Phoenix and Flagstaff listings are rated 4 and 3."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not specify the Sioux Falls–Phoenix flight timing; the selected flight arrives at 19:26 on March 16."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction says flight but omits the required arrival time; the selected flight arrives at 14:26, after noon."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The one-way constraint is omitted from the prediction, and the itinerary drives from Flagstaff to Sioux Falls."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.4737,
+      "no_match_appropriate": false,
+      "summary": "The route and stays are partly understood, but the Flagstaff flight misses the deadline and the itinerary adds a return drive."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The $5,000 ceiling is predicted, but two nights at each listed lodging total $3,840 and three travelers' listed flights add about $1,356."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Three travelers are explicitly predicted; both selected listings accommodate at least three."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction explicitly selects entire-home listings rather than the required private room."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted listings are rated 5 and 3, meeting the 3+ threshold."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected March 16 flight arrives in Phoenix at 19:26, before 21:00."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected March 18 flight arrives in Flagstaff at 09:47, before noon."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The one-way ending is not predicted, and the itinerary drives from Flagstaff to Sioux Falls."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "dining_budget: Phoenix and Flagstaff restaurant selections",
+        "attraction: Phoenix Zoo and Riordan Mansion State Historic Park",
+        "accommodation: specific named lodging choices not requested by the user"
+      ],
+      "priority_order_score": 0.4737,
+      "no_match_appropriate": false,
+      "summary": "The flights and group size are handled, but the lodging type and one-way ending are wrong, and listed costs exceed the budget."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The $5,000 budget is predicted and the listed lodging, flights, and meal costs appear compatible with it."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Three travelers are predicted, and the selected accommodations have capacity for at least three."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected Phoenix and Flagstaff listings have ratings of 5 and 3."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction names the correct flight and date but omits the arrival deadline; the selected flight arrives at 19:26."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction names the correct flight and date but omits the noon deadline; the selected flight arrives at 09:47."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "No return journey is included, and the itinerary ends in Flagstaff on March 20."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Both attractions are predicted, but the itinerary places Desert Botanical Garden on March 20 while the travelers are in Flagstaff."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction positively lists Hole in the Rock instead of recognizing the request to exclude it; the action does omit it."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "A relaxed pace is not predicted; the itinerary schedules no more than one attraction per day."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "dining_budget: $5,000, duplicating or mislabeling the overall budget",
+        "activity: Hole in the Rock as a preferred activity, contrary to the exclusion",
+        "accommodation: specific named lodging choices not requested as constraints"
+      ],
+      "priority_order_score": 0.15,
+      "no_match_appropriate": false,
+      "summary": "The flights, group size, and relaxed schedule are workable, but the itinerary puts a required Phoenix attraction in Flagstaff and the prediction reverses the Hole in the Rock exclusion."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $5,000 ceiling is predicted, but the action does not provide a complete cost total."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "Three travelers are predicted, but the Phoenix lodging capacity is not evidenced."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction lowers the threshold to 2+; the Flagstaff listing is rated 3, but the Phoenix listing has no rating evidence."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The flight is predicted without the arrival deadline, and the action supplies no flight time."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The flight is predicted without the noon deadline, and the action supplies no flight time."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the one-way constraint, but the itinerary ends in Flagstaff without a return journey."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction includes the four requested visits but omits the explicit exclusions; the action includes only those visits and excludes Hole in the Rock and Riordan Mansion."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction does not capture the fewer-than-two-attractions pace, and the action schedules two attractions on both March 17 and March 19."
+        },
+        {
+          "gold_field": "local_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "Taxi or rideshare is predicted generically; the action says Taxi but does not establish direct transfers between each specified location."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not state the Hole in the Rock exclusion, though the action omits it."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "city_sequence: Sioux Falls, Phoenix, Flagstaff",
+        "accommodation_stay: dated check-in and check-out requirements not present as gold constraints on this turn",
+        "accommodation: private room rated 2+, which lowers the stated rating threshold"
+      ],
+      "priority_order_score": 0.2609,
+      "no_match_appropriate": false,
+      "summary": "The selected attractions and route endpoint fit, but the plan is too busy and key transport, lodging, and direct-transfer details are not established."
+    },
+    "5": {
+      "turn_id": 5,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $5,000 ceiling is predicted, but the action has no complete trip-cost total."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The Flagstaff private room has maximum occupancy 2 for three travelers."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not state a 3+ rating requirement; the selected listings are rated 5 and 4."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the deadline, but the selected March 16 flight arrives at 19:26."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction omits the noon deadline, and the selected March 18 flight arrives at 14:26."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The one-way constraint is omitted, and the itinerary includes travel from Flagstaff to Sioux Falls."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The required attractions and dates are predicted and selected; the action omits Hole in the Rock and Riordan Mansion."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The relaxed-pace requirement is not predicted, and the action schedules two attractions on March 17 and two on March 19."
+        },
+        {
+          "gold_field": "local_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction describes Phoenix transport rather than the Flagstaff request; the action specifies taxis or rideshares between the Flagstaff lodging, museum, and observatory."
+        },
+        {
+          "gold_field": "cuisine",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Chinese cuisine is predicted for both cities, but the actual itinerary assigns no meals."
+        },
+        {
+          "gold_field": "cuisine_coverage",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The prediction covers both cities, but no Chinese meals are selected in the itinerary."
+        },
+        {
+          "gold_field": "dining_budget",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction does not capture the under-$50 limit, and the action supplies no planned restaurant meals or meal costs."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not state the Hole in the Rock exclusion, though the action omits it."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation: specific named lodging choices not requested as constraints",
+        "breakfast, lunch, and dinner: optional blank meal-slot requirements",
+        "budget_max: duplicate representation of the overall budget"
+      ],
+      "priority_order_score": 0.16,
+      "no_match_appropriate": false,
+      "summary": "The plan selects the requested attractions and local Flagstaff transport, but omits all meals, exceeds the flight-arrival deadline, and chooses lodging too small for the group."
+    }
+  },
+  "pass_a_pool": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The agent predicts $5,000 rather than the user's soft $2,500 budget; no reliable total itinerary cost is supplied."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Sioux Falls, Flagstaff, Phoenix",
+        "days: 5",
+        "city_sequence: Sioux Falls, Flagstaff, Flagstaff, Phoenix, Sioux Falls",
+        "outbound_transportation: ground",
+        "intercity_transportation: ground",
+        "return_transportation: ground",
+        "dining_style: local_cuisine",
+        "accommodation_stay: Flagstaff and Phoenix"
+      ],
+      "priority_order_score": 0.0,
+      "no_match_appropriate": false,
+      "summary": "The budget is understood but misstated and assigned the wrong tier; real plan candidates exist."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $2,500 amount is captured, but the itinerary does not provide a dependable total cost."
+        },
+        {
+          "gold_field": "city_sequence",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted route and itinerary visit Phoenix before Flagstaff."
+        },
+        {
+          "gold_field": "accommodation_stay",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Two nights per city are predicted, but the plan lacks Flagstaff lodging on March 18 and the Phoenix listing requires three nights."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "No private-room constraint is predicted; the Flagstaff selection is an entire home/apartment."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction captures a 3+ threshold and the selected listings are rated 4 and 3."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction omits the specific route and arrival deadline; the selected 18:40 flight arrives Phoenix at 19:26."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "Flight mode is recognized, but the prediction misses the route timing; the selected flight arrives after the noon deadline."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The one-way/no-return constraint is not predicted, and the itinerary drives back to Sioux Falls."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "days: March 16–20 as a date list"
+      ],
+      "priority_order_score": 0.4737,
+      "no_match_appropriate": false,
+      "summary": "The city order, stay durations, and rating threshold are understood, but room type, timing, and one-way return handling fail."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $5,000 budget is captured, but the evidence does not establish the complete trip total."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies three travelers, and both selected accommodations have capacity for at least three."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The accommodation predictions explicitly select entire homes/apartments rather than private rooms."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The chosen accommodations are rated 5 and 3, meeting the 3+ threshold."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted flight is Sioux Falls to Phoenix at 18:40, arriving 19:26 before 21:00."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction and itinerary use the 08:49 Phoenix–Flagstaff flight, arriving 09:47 before noon."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The one-way/no-return constraint is not predicted; the itinerary instead drives to Sioux Falls."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "city_sequence: Sioux Falls, Phoenix, Flagstaff",
+        "dining_budget: Phoenix and Flagstaff restaurants",
+        "attraction: Phoenix Zoo and Riordan Mansion",
+        "day_1 through day_5: specific travel dates"
+      ],
+      "priority_order_score": 0.5625,
+      "no_match_appropriate": false,
+      "summary": "The group size, ratings, and flight timing are captured, but private-room and one-way constraints are not met."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $5,000 amount is predicted, but the itinerary provides no complete cost total."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Three travelers are predicted and the selected properties accommodate at least three."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The properties selected are rated 5 and 3, meeting the 3+ requirement."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected Sioux Falls–Phoenix flight arrives at 19:26, before 21:00."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected Phoenix–Flagstaff flight arrives at 09:47, before noon."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction does not state the one-way constraint, but the itinerary ends in Flagstaff without a return journey."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Both attractions are predicted, but Desert Botanical Garden is scheduled on March 20 in Flagstaff rather than in Phoenix."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction treats Hole in the Rock as a preferred activity rather than an activity to exclude; the itinerary does omit it."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "No relaxed-pace constraint is predicted; the itinerary has no more than one listed attraction per day."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Sioux Falls, Phoenix, Flagstaff",
+        "city_sequence: Sioux Falls, Phoenix, Flagstaff",
+        "days: March 16 and March 18 only",
+        "dining_budget: $5,000",
+        "accommodation_stay: two nights in each city",
+        "activity: Hole in the Rock as preferred"
+      ],
+      "priority_order_score": 0.15,
+      "no_match_appropriate": false,
+      "summary": "Flights, group size, and ratings are handled, but the garden is placed in the wrong city and the requested exclusion is misinterpreted."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $5,000 amount is captured, but there is no complete trip cost."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies three travelers, and the selected properties have sufficient capacity."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The predicted threshold is only 2+, and the selected Phoenix accommodation is rated 2, below the required 3+."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The flight route and date are predicted, but the arrival deadline is omitted and the selected flight time is not shown."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The flight route and date are predicted, but the deadline is omitted and the selected flight time is not shown."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The one-way constraint is not predicted, but the itinerary ends in Flagstaff without a return journey."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The requested attractions and dates are predicted, but the prediction omits the specified exclusions; the itinerary includes only the requested stops."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "A schedule is predicted but not the relaxed-pace limit; the itinerary schedules two attractions on each of March 17 and March 19."
+        },
+        {
+          "gold_field": "local_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "Taxi/rideshare is predicted generally, and the March 19 itinerary specifies a taxi for Flagstaff visits."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The no-Hole-in-the-Rock constraint is not predicted, though the itinerary excludes it."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "days: 5",
+        "accommodation_stay: Phoenix March 16–18 and Flagstaff March 18–20",
+        "cuisine_coverage: sit-down meals at restaurants"
+      ],
+      "priority_order_score": 0.2609,
+      "no_match_appropriate": false,
+      "summary": "The requested visits and taxi transport are included, but pacing and the Phoenix lodging rating fail; flight timing is unspecified."
+    },
+    "5": {
+      "turn_id": 5,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $5,000 amount is predicted, but no complete trip total is given."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Three travelers are predicted, but the selected Flagstaff room has a maximum occupancy of two."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "No 3+ rating constraint is predicted; both selected listings are rated at least 3."
+        },
+        {
+          "gold_field": "outbound_transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The selected flight arrives in Phoenix at 19:26, before 21:00."
+        },
+        {
+          "gold_field": "intercity_transportation",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The predicted flight is on the right route and date, but it arrives at 14:26, after the noon deadline."
+        },
+        {
+          "gold_field": "return_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The one-way constraint is not predicted, and the itinerary includes travel from Flagstaff to Sioux Falls."
+        },
+        {
+          "gold_field": "activity",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary schedules the requested Phoenix and Flagstaff attractions on the specified dates."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "No relaxed-pace constraint is predicted, and two attractions are scheduled on both March 17 and March 19."
+        },
+        {
+          "gold_field": "local_transportation",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction covers only Phoenix local transport, but the itinerary specifies taxis or rideshares between Flagstaff stops."
+        },
+        {
+          "gold_field": "cuisine",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Chinese meals are predicted for both cities, but the action itinerary does not actually schedule any meals."
+        },
+        {
+          "gold_field": "cuisine_coverage",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Chinese restaurant selections are predicted for both cities, but no restaurant meals appear in the itinerary."
+        },
+        {
+          "gold_field": "dining_budget",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The predicted Phoenix Chinese meal costs $76, above the limit; the action itself lists no meal costs to assess."
+        },
+        {
+          "gold_field": "activity 2",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The no-Hole-in-the-Rock constraint is not predicted, though the itinerary excludes it."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "days: March 16–20",
+        "required_cities: Phoenix and Flagstaff",
+        "breakfast: none",
+        "lunch: none",
+        "dinner: none",
+        "budget_max: $5,000"
+      ],
+      "priority_order_score": 0.2222,
+      "no_match_appropriate": false,
+      "summary": "The Chinese-meal constraint is recognized but no meals are scheduled, and the Flagstaff flight misses its deadline."
+    }
+  }
+}

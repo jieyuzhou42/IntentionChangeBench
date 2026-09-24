@@ -1,0 +1,135 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 35251,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight (F4045477): Sioux Falls to Phoenix (18:40 - 19:26)",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! (Phoenix)",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight (F3805049): Phoenix to Flagstaff (13:42 - 14:26)",
+        "record_name": "F3805049",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Air conditioned Excellent Private Room for 1 (Flagstaff)",
+        "record_name": "Air conditioned Excellent Private Room for 1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Taxis or rideshares between lodging, museum, and observatory",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Air conditioned Excellent Private Room for 1 (Flagstaff)",
+        "record_name": "Air conditioned Excellent Private Room for 1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving or taxi: Flagstaff to Sioux Falls",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Phoenix listing maximum occupancy is 3; “Air conditioned Excellent Private Room for 1” has maximum occupancy 2.",
+        "note": "The Flagstaff lodging cannot host all 3 travelers."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 5 and the Flagstaff listing has review rate number 4.",
+        "note": "Both booked listings meet the 3+ rating threshold."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4045477 travels Sioux Falls to Phoenix on March 16 and arrives at 19:26.",
+        "note": "The recorded arrival is before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "violated",
+        "evidence": "F3805049 arrives in Flagstaff at 14:26 on March 18.",
+        "note": "The requested arrival deadline is 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 20 transportation slot says “Self-driving or taxi: Flagstaff to Sioux Falls”.",
+        "note": "The one-way itinerary is to end in Flagstaff, with no return journey."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "March 17 lists Heard Museum and Desert Botanical Garden only; March 19 lists Museum of Northern Arizona and Lowell Observatory only.",
+        "note": "The required attractions are included on the specified days, with Hole in the Rock and Riordan Mansion excluded."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary lists two attractions on March 17 and two on March 19.",
+        "note": "Both days exceed the stated limit of fewer than two attractions per day."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "unknown",
+        "evidence": "No restaurant meal is listed in the itinerary.",
+        "note": "There are no planned restaurant meals whose cuisine can be checked."
+      },
+      {
+        "gold_field": "cuisine_coverage",
+        "action_status": "violated",
+        "evidence": "No restaurant meals are listed for either Phoenix or Flagstaff.",
+        "note": "The itinerary does not include a Chinese-cuisine meal in each city."
+      },
+      {
+        "gold_field": "dining_budget",
+        "action_status": "satisfied",
+        "evidence": "No restaurant meals are listed.",
+        "note": "There are no planned restaurant meals exceeding the per-person cost cap."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "Hole in the Rock is not listed among the itinerary attractions.",
+        "note": "The itinerary excludes Hole in the Rock."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

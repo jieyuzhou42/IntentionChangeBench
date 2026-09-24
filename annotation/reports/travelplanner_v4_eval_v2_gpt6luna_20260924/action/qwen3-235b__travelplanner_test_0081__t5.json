@@ -1,0 +1,185 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24817,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073 from Tampa to Cleveland, departs 10:37, arrives 12:59, cost $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner (Chinese cuisine, not fast-food style, cost ~$25)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pind Balluchi (Chinese cuisine, cost ~$96)",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Comfy bed in Cozy Home - GRAND ARMY PLAZA (rating 5, price $996, Cleveland)",
+        "record_name": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Green Leaf (includes Tea/Chinese options, cost ~$73)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner (revisit or similar portion, cost ~$25)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pind Balluchi (full meal, cost ~$96)",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "record_name": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247 from Cleveland to Tampa, departs 21:20, arrives 23:34, cost $198",
+        "record_name": "F3559247",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Green Leaf (light breakfast, cost included in prior day or estimate ~$20)",
+        "record_name": "Green Leaf",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Comfy bed in Cozy Home - GRAND ARMY PLAZA, has maximum occupancy 1.",
+        "note": "The nightly listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The planned outbound flight matches the requested flight and times."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Rock & Roll Hall of Fame; Day 3 lists a return flight departing at 21:20.",
+        "note": "Day 1 is not reserved for arrival and rest, and Day 3 is not reserved for early checkout and an airport transfer."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The itinerary lists Rock & Roll Hall of Fame on Day 1 and The Cleveland Museum of Art on Day 2; it does not list the Cleveland Cultural Gardens.",
+        "note": "It includes Day 1 sightseeing and omits the requested Day 2 priority sightseeing."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Makhan Fish and Chicken Corner; Day 3 lunch is empty.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The itinerary books Comfy bed in Cozy Home - GRAND ARMY PLAZA, not Richmond Hill 3 Bedroom apartment in Private home!.",
+        "note": "The booked accommodation does not match the requested listing."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Comfy bed in Cozy Home - GRAND ARMY PLAZA is listed as a Private room.",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Comfy bed in Cozy Home - GRAND ARMY PLAZA has review rate number 5.",
+        "note": "The booked listing meets the rating-5 requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3559247, which departs Cleveland at 21:20 and arrives in Tampa at 23:34. The requested F3623037 departs at 08:40 and arrives at 10:57.",
+        "note": "The planned flight does not match the requested return flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "violated",
+        "evidence": "Day 3 breakfast is Green Leaf, a restaurant in the candidate records.",
+        "note": "A restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Makhan Fish and Chicken Corner lists Fast Food among its cuisines and is planned for Day 2 lunch.",
+        "note": "The requirement excludes restaurants listing Fast Food for Day 1 dinner and all Day 2 meals."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 attraction is Rock & Roll Hall of Fame.",
+        "note": "The plan includes sightseeing on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Makhan Fish and Chicken Corner.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "violated",
+        "evidence": "Record F3559247 arrives in Tampa at 23:34 on March 4.",
+        "note": "The planned flight arrives after 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_style",
+        "quote": "former offers Chinese and is not exclusively fast-food, though it is labeled as such — this partially violates avoiding fast food."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

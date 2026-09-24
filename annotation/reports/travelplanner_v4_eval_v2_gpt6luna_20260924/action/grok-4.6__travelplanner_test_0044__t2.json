@@ -1,0 +1,177 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22909,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight Number: F3920918, from Scranton to Newark, Departure Time: 05:57, Arrival Time: 06:44, Price: $33",
+        "record_name": "F3920918",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Angeethi Restaurant",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Drifters Cafe",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jaguar",
+        "record_name": "Jaguar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "record_name": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Angeethi Restaurant",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Drifters Cafe",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Angeethi Restaurant",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "record_name": "Sonder | Stock Exchange | Ideal 1BR + Kitchen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight Number: F3919859, from Newark to Scranton, Departure Time: 21:46, Arrival Time: 22:23, Price: $22",
+        "record_name": "F3919859",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Angeethi Restaurant",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Drifters Cafe",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Angeethi Restaurant",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes March 24, 25, and 26, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sonder | Stock Exchange | Ideal 1BR + Kitchen has maximum occupancy 9.",
+        "note": "The booked listing can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 departs Scranton; the return flight F3919859 arrives in Scranton.",
+        "note": "The itinerary originates in Scranton."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920918 goes from Scranton to Newark, and the itinerary lists Newark as the destination city.",
+        "note": "The destination is Newark."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Newark as the visiting city.",
+        "note": "One visiting city is specified."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F3920918 is dated 2022-03-24.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight F3919859 is dated 2022-03-26.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3920918 departs Scranton for Newark on 2022-03-24 at 05:57; the other listed outbound flight departs at 13:40.",
+        "note": "The selected flight is the first flight out."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3919859 departs Newark for Scranton on 2022-03-26 at 21:46, the only candidate return flight.",
+        "note": "The selected flight is the last available flight back."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Sonder | Stock Exchange | Ideal 1BR + Kitchen is listed on March 24 and March 25, with no accommodation on the March 26 departure day.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Sonder | Stock Exchange | Ideal 1BR + Kitchen has a review rate number of 4.0.",
+        "note": "The booked listing meets the 4.0 rating floor."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20719,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511, Lihue to San Francisco, Dep 13:08 Arr 21:32, $867",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Coffee & Chai Co., San Francisco ($10)",
+        "record_name": "Coffee & Chai Co.",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Room in Down town Brooklyn Parkslop, San Francisco",
+        "record_name": "Room in Down town Brooklyn Parkslop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tokyo Sushi, San Francisco ($18)",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Empress, San Francisco ($24)",
+        "record_name": "Empress",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Coffee & Chai Co., San Francisco ($10)",
+        "record_name": "Coffee & Chai Co.",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Room in Down town Brooklyn Parkslop, San Francisco",
+        "record_name": "Room in Down town Brooklyn Parkslop",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709, San Francisco to Lihue, Dep 09:10 Arr 11:57, $1204",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days dated 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Room in Down town Brooklyn Parkslop has maximum occupancy 2 and is booked for both nights.",
+        "note": "The booked capacity covers one traveler; nothing in the plan assumes a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 departs Lihue for San Francisco on 2022-03-27.",
+        "note": "The trip starts in Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "violated",
+        "evidence": "The day 3 itinerary says San Francisco to Lihue, and flight F3870709 is recorded from San Francisco to Lihue, arriving in Lihue.",
+        "note": "The itinerary ends in Lihue rather than San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination-city stay and listed attraction are in San Francisco; the other city is the trip's origin and return endpoint.",
+        "note": "The plan visits one destination city, San Francisco."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight F3880511 are dated 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight F3870709 are dated 2022-03-29.",
+        "note": "The plan's final travel day is the requested date."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

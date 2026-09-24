@@ -1,0 +1,120 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0044",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20652,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Depart Scranton at 13:40, Flight F3920949, Arrive Newark at 14:46",
+        "record_name": "F3920949",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Escargot Lounge, New York City, New York, NY, NY 10004",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Angeethi Restaurant",
+        "record_name": "Angeethi Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "AMAZING TIME SQUARE!!BRICK WALLS!!, Newark",
+        "record_name": "AMAZING TIME SQUARE!!BRICK WALLS!!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jaguar",
+        "record_name": "Jaguar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "AMAZING TIME SQUARE!!BRICK WALLS!!, Newark",
+        "record_name": "AMAZING TIME SQUARE!!BRICK WALLS!!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Depart Newark at 21:46, Flight F3919859, Arrive Scranton at 22:23",
+        "record_name": "F3919859",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Artistry",
+        "record_name": "Artistry",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has Day 1, Day 2, and Day 3.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3 on each accommodation night.",
+        "note": "Each night's listing can host the requested one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920949 lists OriginCityName Scranton; flight F3919859 lists DestCityName Scranton.",
+        "note": "The outbound journey begins in Scranton and the return ends there."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920949 lists DestCityName Newark; the itinerary lists Newark attractions and accommodation.",
+        "note": "Newark is the planned destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is listed as “Escargot Lounge, New York City, New York, NY, NY 10004,” while the trip destination and other listed activities are in Newark.",
+        "note": "The plan explicitly places a meal in New York City as well as Newark."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3920949 has FlightDate 2022-03-24.",
+        "note": "The outbound flight is on the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3919859 has FlightDate 2022-03-26.",
+        "note": "The return flight is on the requested end date."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The Day 1 lunch, Escargot Lounge, has no matching restaurant in the candidate records."
+    ]
+  }
+}

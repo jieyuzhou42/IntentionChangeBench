@@ -1,0 +1,172 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1919.0,
+      "budget": 2000,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20094,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is 2000"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The trip lasts 3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "There is 1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Depart from Tulsa"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Travel to Phoenix"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-06"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-08"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-drive from Tulsa to Phoenix on 2022-03-06 in the traveler's own car"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-drive from Phoenix to Tulsa on 2022-03-08 in the traveler's own car"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights, on 2022-03-06 and 2022-03-07"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "room_type",
+        "value": "Book an Entire home/apt"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "transportation",
+        "value": "Prefer flying when the cap allows it"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "transportation",
+        "value": "Driving is acceptable to protect the room type"
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers March 6, 7, and 8, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked unit has maximum occupancy 8, enough for 1 traveler; the plan does not establish a different party size."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound leg is self-driving from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The plan travels to Phoenix and identifies Phoenix as the stay city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Phoenix is the sole destination city in the plan."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The outbound leg and check-in are on 2022-03-06."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return leg is on 2022-03-08."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Tulsa to Phoenix in an own car on 2022-03-06."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Phoenix to Tulsa in an own car on 2022-03-08."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in 2022-03-06 and check-out 2022-03-08, covering the nights of March 6 and 7."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing is recorded as Entire home/apt."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "satisfied",
+        "evidence": "The plan drives, which is acceptable to protect the requested room type. The listed flights cost at least $470 total, which with the $1,668 accommodation alone exceeds the $2,000 cap."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,788 @@
+{
+  "pass_a": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction correctly identifies one traveler, but the itinerary does not specify accommodation occupancy."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "The sole gold constraint is correctly understood; the plan does not confirm occupancy."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "city_sequence",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted city order matches Wilmington followed by Fayetteville, and the itinerary follows that order."
+        },
+        {
+          "gold_field": "accommodation_stay",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction gives only a two-night duration, not the specified city/date allocation; no Wilmington accommodation is listed for March 13."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "No room-type requirement is predicted, and the accommodation names do not establish room type."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction captures the 4+ threshold, but no selected accommodation ratings are provided."
+        },
+        {
+          "gold_field": "night_policy",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "A two-night duration does not capture the no-extra-night/no-overlap policy, and booking-night evidence is absent."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving matches use of the user's own car and is shown for the drives."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction captures March 13 driving and breaks but omits the March 17 rest/driving day and March 15 transfer-time detail; the itinerary has no sightseeing on March 13 or 17 and includes the March 15 transfer."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.3529,
+      "no_match_appropriate": false,
+      "summary": "The itinerary follows the city order and driving mode, but misses a specified Wilmington night; several lodging details are not evidenced."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "Two travelers are correctly predicted, but the itinerary does not confirm lodging occupancy."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "No room-type constraint is predicted; both lodging descriptions identify a private bedroom/room."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction captures 4+, but no ratings are supplied for either accommodation."
+        },
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $2,100 budget is correctly predicted, but the itinerary lacks total trip costs."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.3333,
+      "no_match_appropriate": false,
+      "summary": "The prediction captures the traveler count, rating threshold, and budget; the plan does not establish occupancy, ratings, or total cost."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "Two travelers are correctly predicted, but lodging occupancy is not specified."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The predicted list does not assign the allowed apartment/private-room options by city; the Wilmington listing type is unclear, while Fayetteville is explicitly a private room."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The 4+ threshold is predicted, but neither accommodation's rating is shown."
+        },
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Listed lodging, transport, and meals total at least $2,593, exceeding the $2,100 cap."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "house_rule=No smoking",
+        "dining_budget=2100"
+      ],
+      "priority_order_score": 0.6,
+      "no_match_appropriate": false,
+      "summary": "The prediction captures the main numeric constraints, but the city-specific room preference is underspecified and listed costs exceed budget."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $2,600 ceiling is correctly predicted, but the selected itinerary provides no cost evidence."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "Two travelers are correctly predicted, but accommodation occupancy is not specified."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction specifies entire homes/apartments in both cities, but the listing names do not establish the actual accommodation types."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The 4+ rating constraint is not predicted, and no ratings are provided for the selected accommodations."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation_stay=1 night each (contradicts the previously specified two nights per city)"
+      ],
+      "priority_order_score": 0.9,
+      "no_match_appropriate": false,
+      "summary": "The apartment, budget, and traveler-count intentions are recognized, but the action supplies no evidence for type, occupancy, cost, or rating."
+    }
+  },
+  "pass_b": {
+    "0": {
+      "turn_id": 0,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 5,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 6,
+          "gold_field": "people_number",
+          "value_match": true
+        }
+      ]
+    },
+    "1": {
+      "turn_id": 1,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": "city_sequence",
+          "value_match": true
+        },
+        {
+          "index": 1,
+          "gold_field": "accommodation_rating",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": "accommodation_stay",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 6,
+          "gold_field": "schedule",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 8,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "2": {
+      "turn_id": 2,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": "accommodation_rating",
+          "value_match": true
+        },
+        {
+          "index": 1,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 2,
+          "gold_field": "people_number",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": "budget",
+          "value_match": true
+        }
+      ]
+    },
+    "3": {
+      "turn_id": 3,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": "accommodation_rating",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 5,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 6,
+          "gold_field": "people_number",
+          "value_match": true
+        },
+        {
+          "index": 7,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 8,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "4": {
+      "turn_id": 4,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 1,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": "people_number",
+          "value_match": true
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 5,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    }
+  },
+  "pass_a_grounded": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies one traveler, matching the user's solo trip; the itinerary is consistent with that."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "The sole gold constraint was correctly recognized and reflected in the plan."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "city_sequence",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted Wilmington-then-Fayetteville route matches the requested sequence, and the itinerary follows it."
+        },
+        {
+          "gold_field": "accommodation_stay",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "A two-night duration is predicted, but the required city-specific dates are not captured. The itinerary lists accommodation in Wilmington only on March 14, not for both requested Wilmington nights."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "No room type is predicted, and the selected lodging records do not establish the room types of the named properties."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The prediction captures the 4+ threshold, but no supplied property record confirms ratings for the selected accommodations."
+        },
+        {
+          "gold_field": "night_policy",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The two-night stay is partly represented, but the exact occupied-night/no-extra-night policy is not. The itinerary omits the requested Wilmington accommodation night."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving matches use of the user's own car, and the itinerary specifies self-driving."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The prediction captures March 13 as a driving-and-breaks day but not the full March 13 and 17 schedule. The itinerary has no sightseeing on either driving day and includes the March 15 transfer."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.3529,
+      "no_match_appropriate": false,
+      "summary": "The route and driving are reflected, but the accommodation schedule and type are incomplete, and selected lodging ratings are unverified."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies two travelers, and the selected Fayetteville room has capacity for two."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "Room type is omitted from the prediction. The named Wilmington private bedroom and the Fayetteville reference record both indicate private rooms."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The 4+ threshold is recognized. The Fayetteville room is rated 4, and the Wilmington private-bedroom record is rated 5."
+        },
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $2,100 ceiling is recognized, but the supplied evidence does not establish the complete trip cost, including all activities and any other expenses."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.3333,
+      "no_match_appropriate": false,
+      "summary": "The party size and accommodation rating are handled, but room type is omitted from the prediction and the complete budget total is unverified."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies two travelers, and the selected accommodations have capacity for two or more."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction lists both room types without the city-specific preference and requirement. Wilmington's apartment is an allowed alternative only if it fits the budget; its stated cost does not. The Fayetteville room is private."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The 4+ threshold is predicted, but the selected Fayetteville private room is rated 1."
+        },
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The $2,100 ceiling is predicted, but the Wilmington stay alone is listed at $978 per night with a four-night minimum; the two listed cities' minimum-stay charges exceed the budget."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "house_rule: No smoking",
+        "dining_budget: 2100"
+      ],
+      "priority_order_score": 0.6,
+      "no_match_appropriate": false,
+      "summary": "The prediction captures the party size, budget, and rating threshold, but the selected lodging fails the budget and Fayetteville rating requirements."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The $2,600 ceiling is recognized, but the Wilmington property's four-night minimum at $978 per night alone exceeds it."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies two travelers, and the selected apartments list capacities of seven and three."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted city-specific entire-home/apartment requirement matches both selected properties."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The 4+ rating constraint is omitted from the prediction. The Fayetteville apartment is rated 2."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.9,
+      "no_match_appropriate": false,
+      "summary": "The party size and apartment types match, but the plan exceeds the budget and the Fayetteville property is below the required rating."
+    }
+  },
+  "pass_a_pool": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The agent predicts one traveler, and the itinerary accommodates a solo traveler."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Fayetteville and Wilmington",
+        "outbound_transportation: Providence to Fayetteville on 2022-03-13",
+        "intercity_transportation: Fayetteville to Wilmington on 2022-03-15",
+        "return_transportation: Wilmington to Providence on 2022-03-17"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "The sole gold constraint is correctly understood and met; specific cities and routes were invented."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "city_sequence",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted city sequence matches Wilmington followed by Fayetteville, and the itinerary follows that order."
+        },
+        {
+          "gold_field": "accommodation_stay",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The agent captured two nights per city but not the specified dates; the itinerary has no Wilmington accommodation on March 13 and its listed stays conflict with the requested exact nights."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "No private-room requirement is predicted; the selected Wilmington Wyndham and Fayetteville Brownstone are entire units."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The 4+ threshold is recognized, but the Wilmington property is rated 2."
+        },
+        {
+          "gold_field": "night_policy",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The selected Wilmington property requires at least 3 nights and Brownstone requires 3 nights, rather than only the specified occupied nights."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary uses self-driving, consistent with taking the user's own car."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The agent captures March 13 as a driving/breaks day but omits the March 17 and transfer-time details; the itinerary has no sightseeing on March 13 or 17 and includes the March 15 transfer."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.4,
+      "no_match_appropriate": false,
+      "summary": "The route and driving mode are understood, but the lodging choices fail several specified accommodation constraints."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The agent predicts two people, and the selected rooms accommodate two."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The agent does not predict private rooms, but the itinerary selects private rooms in both cities."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The 4+ threshold is recognized; both selected rooms meet it."
+        },
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The $2,100 budget is recognized, and the listed trip costs are within that ceiling."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.333,
+      "no_match_appropriate": false,
+      "summary": "The changed party size, rating threshold, and budget are understood; private-room intent is not predicted but the action meets it."
+    },
+    "3": {
+      "turn_id": 3,
+      "constraint_judgments": [
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The agent predicts two travelers, and both selected accommodations allow two guests."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "satisfied",
+          "note": "The agent lists both room types without preserving the city-specific preference and requirement; the action uses an allowed apartment in Wilmington and a private room in Fayetteville."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "Although the 4+ threshold is predicted, the Fayetteville private room is rated 1."
+        },
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The selected lodging alone costs $2,068 for two nights in each city, and listed transportation adds $127, exceeding the $2,100 ceiling."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "house_rule: No smoking",
+        "dining_budget: $2,100"
+      ],
+      "priority_order_score": 0.6,
+      "no_match_appropriate": false,
+      "summary": "The party size and budget ceiling are captured, but the action exceeds the budget and selects a below-threshold room."
+    },
+    "4": {
+      "turn_id": 4,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "violated",
+          "note": "The agent updates the budget to $2,600, but the selected lodging costs $2,974 for the two-city stays alone."
+        },
+        {
+          "gold_field": "people_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The two selected entire-home listings each accommodate two guests."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies entire homes/apartments in both cities, matching the selected lodging."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The 4+ preference is omitted; the Fayetteville apartment is rated 2."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation_stay: one night in Wilmington and one night in Fayetteville"
+      ],
+      "priority_order_score": 0.9,
+      "no_match_appropriate": false,
+      "summary": "The apartment requirement and revised budget are understood, but the selected lodging exceeds the budget and one property misses the rating preference."
+    }
+  }
+}

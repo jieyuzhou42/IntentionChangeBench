@@ -1,0 +1,202 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24230,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409 to Charlotte",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Olive Tree Cafe",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Grover's - The Baker Shop",
+        "record_name": "Grover's - The Baker Shop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "China Garden",
+        "record_name": "China Garden",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Luxury 2 bdr/2 bath prime Williamburg",
+        "record_name": "Luxury 2 bdr/2 bath prime Williamburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3794105 to Gulfport",
+        "record_name": "F3794105",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Olive Tree Cafe",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-05, 2022-03-06, and 2022-03-07.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The accommodation has maximum occupancy 3 on both booked nights.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 lists Gulfport as its origin.",
+        "note": "The outbound trip departs from Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 lists Charlotte as its destination.",
+        "note": "Charlotte is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Charlotte as the destination and has no other destination city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-05.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-07.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793409 is Gulfport to Charlotte on 2022-03-05 and departs at 06:58.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "F3794105 is Charlotte to Gulfport on 2022-03-07 but departs at 12:53; the requested departure is 20:36.",
+        "note": "The selected return flight does not match the required departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books the accommodation on 2022-03-05 and 2022-03-06.",
+        "note": "Both requested nights are booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Luxury 2 bdr/2 bath prime Williamburg is listed as Entire home/apt.",
+        "note": "The booked listing has the required room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules include No smoking.",
+        "note": "The booked listing prohibits smoking."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Olive Tree Cafe is rated 4.6, Grover's - The Baker Shop 3.0, and China Garden 3.8.",
+        "note": "Each restaurant meal meets the rating floor of 3."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Average Cost is 23 for Olive Tree Cafe, 30 for Grover's - The Baker Shop, and 14 for China Garden.",
+        "note": "Each restaurant meal is under 60 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The cuisines for Olive Tree Cafe, Grover's - The Baker Shop, and China Garden contain no Fast Food tag.",
+        "note": "No planned restaurant meal carries the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "The March 6 breakfast, lunch, and dinner are Olive Tree Cafe, Grover's - The Baker Shop, and China Garden.",
+        "note": "All three meals are at different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Cuisines include Mediterranean.",
+        "note": "At least one March 6 meal is Mediterranean-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 6 itinerary lists The Mint Museum and Discovery Place Science without assigning either to 15:00–17:00.",
+        "note": "No planned activity is placed in the protected time block."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 6 attraction list is The Mint Museum followed by Discovery Place Science.",
+        "note": "Both requested attractions are listed on the requested day and in the requested order; no activity is placed in the 15:00–17:00 block."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "China Garden's Cuisines include Mediterranean.",
+        "note": "The March 6 dinner meets the cuisine requirement."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Grover's - The Baker Shop's Cuisines include Indian.",
+        "note": "The March 6 lunch meets the cuisine requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

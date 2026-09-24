@@ -1,0 +1,181 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23122,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving, from Ithaca to Philadelphia, duration: 3 hours 52 mins, distance: 369 km, cost: 18",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Red Mesa Cantina, Philadelphia",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pind Balluchi, Philadelphia",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern Luxury Apartment in Heart of Williamsburg, Philadelphia",
+        "record_name": "Modern Luxury Apartment in Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala, Philadelphia",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Brothers Dhaba, Philadelphia",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Hong Kong Cafe, Philadelphia",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Luxury Apartment in Heart of Williamsburg, Philadelphia",
+        "record_name": "Modern Luxury Apartment in Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving, from Philadelphia to Ithaca, duration: 3 hours 54 mins, distance: 369 km, cost: 18",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala, Philadelphia",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Red Mesa Cantina, Philadelphia",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-01, 2022-03-02, and 2022-03-03.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3 on each of the two nights.",
+        "note": "The listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is self-driving from Ithaca to Philadelphia.",
+        "note": "The origin is Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is self-driving from Ithaca to Philadelphia; the itinerary lists Philadelphia as the destination.",
+        "note": "The destination is Philadelphia."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and listed activities, meals, and accommodation are in Philadelphia.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-01.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-03.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record is “self-driving, from Ithaca to Philadelphia, duration: 3 hours 52 mins, distance: 369 km, cost: 18”.",
+        "note": "The plan includes the requested own-car drive on March 1."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record is “self-driving, from Philadelphia to Ithaca, duration: 3 hours 54 mins, distance: 369 km, cost: 18”.",
+        "note": "The plan includes the requested own-car drive on March 3."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on March 1 and March 2; its minimum stay is 2 nights.",
+        "note": "The two booked nights match the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Modern Luxury Apartment in Heart of Williamsburg is listed as Entire home/apt.",
+        "note": "The booked listing matches the required room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Modern Luxury Apartment in Heart of Williamsburg has house rules “No parties”.",
+        "note": "The listing prohibits parties as required."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant meals have Aggregate Ratings from 3.6 to 4.6: Hong Kong Cafe 3.6, Pind Balluchi 3.7, Brothers Dhaba 3.8, Gurdas Ram Jalebi Wala 4.1, and Red Mesa Cantina 4.6.",
+        "note": "Every restaurant meal meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The restaurant meals have Average Costs per person from 20 to 52: Gurdas Ram Jalebi Wala 20, Pind Balluchi 44, Hong Kong Cafe 47, Brothers Dhaba 52, and Red Mesa Cantina 36.",
+        "note": "Every restaurant meal is under $60 per person."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

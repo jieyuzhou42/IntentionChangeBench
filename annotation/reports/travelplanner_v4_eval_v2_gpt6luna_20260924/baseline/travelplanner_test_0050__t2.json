@@ -1,0 +1,172 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1020.0,
+      "budget": 1700,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19895,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "1700"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Tulsa"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Phoenix"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-06"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-08"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Tulsa to Phoenix on 2022-03-06, the 11:28 departure"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Flight from Phoenix to Tulsa on 2022-03-08, the 13:51 departure"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "2 nights 2022-03-06 and 2022-03-07"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-06",
+        "requirement": "Take the midday outbound flight from Tulsa.",
+        "source_turn": 1,
+        "quote": "The midday one out on the 6th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-08",
+        "requirement": "Take the afternoon return flight.",
+        "source_turn": 1,
+        "quote": "the afternoon one back on the 8th"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers March 6, 7, and 8, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 1, and the flight entries are priced for 1 traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Phoenix, where the itinerary stays on March 7."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Phoenix is the only destination city shown in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins with travel on 2022-03-06."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return flight is on 2022-03-08."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan lists Flight F3996733 from Tulsa to Phoenix on 2022-03-06, departing at 11:28."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan lists Flight F3803478 from Phoenix to Tulsa on 2022-03-08, departing at 13:51."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in on 2022-03-06 and checkout on 2022-03-08, covering the nights of March 6 and 7."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The plan books a Private room, while the requirement is Entire home/apt."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

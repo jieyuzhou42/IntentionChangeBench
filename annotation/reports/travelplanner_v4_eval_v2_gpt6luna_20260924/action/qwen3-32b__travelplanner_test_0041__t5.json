@@ -1,0 +1,179 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24811,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3583571 (10:26 - 13:18)",
+        "record_name": "F3583571",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Vikings",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to staten island ferry",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "BrewBakes",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Vikings",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Fat Belly",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to staten island ferry",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3880458 (22:57 - 06:53)",
+        "record_name": "F3880458",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "BrewBakes",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "New Town Cafe - Park Plaza",
+        "record_name": "New Town Cafe - Park Plaza",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-25, 2022-03-26, and 2022-03-27.",
+        "note": "It lists three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 lists OriginCityName as San Francisco.",
+        "note": "The outbound flight departs from the requested city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 lists DestCityName as Kahului; the return flight lists OriginCityName as Kahului.",
+        "note": "The plan travels to the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination activities and accommodation are in Kahului.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-25.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "Flight F3880458 departs Kahului on 2022-03-27 at 22:57 and arrives in San Francisco at 06:53 the following day.",
+        "note": "The actual return arrival is 2022-03-28, after the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 is dated 2022-03-25, from San Francisco to Kahului, departing 10:26 and arriving 13:18.",
+        "note": "It matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "Flight F3880458 is dated 2022-03-27 and flies from Kahului to San Francisco, but arrives at 06:53 the following day.",
+        "note": "The flight is on the requested date but does not land by 21:00 on 2022-03-27."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same accommodation is listed on 2022-03-25 and 2022-03-26, with no accommodation on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "This matches the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Flight F3880458 arrives in San Francisco at 06:53 the following day after its 2022-03-27 departure.",
+        "note": "The traveler does not arrive back by 21:00 on 2022-03-27."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "NYC cozy apartment close to staten island ferry has review rate number 4.",
+        "note": "The listing rating is below the required 5."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "New Town Cafe - Park Plaza has Aggregate Rating 3.7; the other restaurant meals are Vikings 4.2, BrewBakes 4.0, and Fat Belly 4.1.",
+        "note": "The New Town Cafe meal is below the required 4.0."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Slight adjustments were considered for higher-rated accommodations but were not available under the budget constraint."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 20881,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3880511: Lihue to San Francisco, departs 13:08 arrives 21:32 ($867)",
+        "record_name": "F3880511",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Room in Down town Brooklyn Parkslop (Private room, $79/night, min 1 night, review rate 1)",
+        "record_name": "Room in Down town Brooklyn Parkslop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Coffee & Chai Co. ($10)",
+        "record_name": "Coffee & Chai Co.",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tokyo Sushi ($18)",
+        "record_name": "Tokyo Sushi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Empress ($24)",
+        "record_name": "Empress",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Room in Down town Brooklyn Parkslop",
+        "record_name": "Room in Down town Brooklyn Parkslop",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3870709: San Francisco to Lihue, departs 09:10 arrives 11:57 ($1,204)",
+        "record_name": "F3870709",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries dated 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation listing has maximum occupancy 2; the trip is for 1 person.",
+        "note": "The listing can host the traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3880511 has OriginCityName Lihue.",
+        "note": "The trip departs from Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "violated",
+        "evidence": "Flight F3870709 has DestCityName Lihue; the itinerary says it returns to Lihue on March 29.",
+        "note": "The requested ending city is San Francisco, but the final flight ends in Lihue."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the stay and attractions in San Francisco; Lihue is the origin and return point.",
+        "note": "San Francisco is the one destination city visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-27.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-29.",
+        "note": "The itinerary ends on the requested date."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dest",
+        "quote": "The itinerary honors the user dates but requires returning to Lihue on day 3, not ending in San Francisco."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22397,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720 St. Louis to Oklahoma City, 21:59-23:42, $105",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Lake House Restaurant",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lake House Restaurant",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lake House Restaurant",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607 Oklahoma City to St. Louis, 06:27-07:44, $201",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 17, 18, and 19, 2022.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio has maximum occupancy 4; it is booked for both nights.",
+        "note": "The listing capacity covers the one traveler specified in the dialogue."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 departs St. Louis; flight F3950607 returns to St. Louis.",
+        "note": "The plan starts from the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 arrives in Oklahoma City, and the March 18 itinerary is in Oklahoma City.",
+        "note": "The requested destination is the trip's destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oklahoma City as the destination and has no other destination city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight is dated 2022-03-17.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight is dated 2022-03-19.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F4025720; the record lists air travel from St. Louis to Oklahoma City.",
+        "note": "The requirement is self-driving in the traveler's own car, not flying."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3950607; the record lists air travel from Oklahoma City to St. Louis.",
+        "note": "The requirement is self-driving in the traveler's own car, not flying."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio is listed on March 17 and March 18; its minimum stay is 2 nights.",
+        "note": "The two booked nights match the requested dates and minimum stay."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant has Aggregate Rating 4.3.",
+        "note": "Every restaurant meal in the plan is at a restaurant rated at least 4.0."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F4025720 and F3950607, matching the stated preference for flying.",
+        "note": "The preferred mode is selected; the constraint also says driving is acceptable."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio is listed as Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment, not a room in someone's flat."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "budget",
+        "quote": "Budget is the sacrificed must-have."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

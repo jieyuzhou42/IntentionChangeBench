@@ -1,0 +1,202 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 1,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 665.0,
+      "budget": 700,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20433,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget: $700"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "Trip duration: 3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "Traveler count: 1 person"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Origin: St. Louis"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Destination: Oklahoma City"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "Start date: 2022-03-17"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "End date: 2022-03-19"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Outbound transportation is a flight"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Outbound flight is late"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "Outbound flight is from St. Louis to Oklahoma City"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "outbound_transportation",
+        "value": "Outbound flight is on 2022-03-17"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "Return transportation is a flight"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "Return flight is early"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "return_transportation",
+        "value": "Return flight is from Oklahoma City to St. Louis"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "return_transportation",
+        "value": "Return flight is on 2022-03-19"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "accommodation_stay",
+        "value": "Stay for 2 nights"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "accommodation_stay",
+        "value": "One night is 2022-03-17"
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "accommodation_stay",
+        "value": "One night is 2022-03-18"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-17",
+        "requirement": "Take a late flight out on 2022-03-17.",
+        "source_turn": 1,
+        "quote": "the late one out on the 17th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-19",
+        "requirement": "Take an early flight back on 2022-03-19.",
+        "source_turn": 1,
+        "quote": "the early one back on the 19th"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The plan covers 2022-03-17, 2022-03-18, and 2022-03-19: three days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan specifies one traveler; the booked accommodation has maximum occupancy 2."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs from St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Oklahoma City is the sole destination city in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary starts with travel on 2022-03-17."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends with the return flight on 2022-03-19."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F4025720 is a St. Louis-to-Oklahoma City flight on 2022-03-17, departing at 21:59."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3950607 is an Oklahoma City-to-St. Louis flight on 2022-03-19, departing at 06:27."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked from 2022-03-17 to 2022-03-19, covering the nights of March 17 and 18."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

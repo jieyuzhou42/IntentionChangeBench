@@ -1,0 +1,170 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 3,
+  "prompt_chars": 23054,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720, depart St. Louis 21:59, arrive Oklahoma City 23:42, $105",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in St. Louis before travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "At home / self-arranged in St. Louis before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Lake House Restaurant, Oklahoma City (rating 4.3, avg cost $38) — late dinner or upon arrival",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! (Private room, review 4.0, $151/night)",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit / walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Lake House Restaurant (rating 4.3, avg cost $38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Buffet 101 (rating 4.0, avg cost $74)",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cafe Delhi Heights (rating 4.0, avg cost $74)",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Upper East Side Space and Access!! (Private room, review 4.0, $151/night)",
+        "record_name": "Upper East Side Space and Access!!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607, depart Oklahoma City 06:27, arrive St. Louis 07:44, $201",
+        "record_name": "F3950607",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Cappuccino Blast (rating 4.0, avg cost $84) — early morning before airport",
+        "record_name": "Cappuccino Blast",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1 through Day 3, March 17–19, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Upper East Side Space and Access!!, has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F4025720 departs St. Louis; the return flight F3950607 arrives in St. Louis.",
+        "note": "The itinerary starts from St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 flies from St. Louis to Oklahoma City, and the itinerary lists Oklahoma City as the destination.",
+        "note": "The stated destination is Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Oklahoma City between the St. Louis outbound and return flights.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-17; the outbound flight record F4025720 is dated 2022-03-17.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is dated 2022-03-19; the return flight record F3950607 is dated 2022-03-19.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4025720 is a St. Louis–Oklahoma City flight on 2022-03-17 departing at 21:59.",
+        "note": "The listed outbound flight is on the requested date and is the late flight in the available records."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3950607 is an Oklahoma City–St. Louis flight on 2022-03-19 departing at 06:27.",
+        "note": "The listed return flight is on the requested date and is the early flight in the available records."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Upper East Side Space and Access!! is listed on March 17 and March 18; the March 19 accommodation slot is empty.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant is rated 4.3; Buffet 101, Cafe Delhi Heights, and Cappuccino Blast are each rated 4.0 in the records.",
+        "note": "Every restaurant meal taken from the records meets the 4.0 floor; the at-home and self-arranged meals do not count against it."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

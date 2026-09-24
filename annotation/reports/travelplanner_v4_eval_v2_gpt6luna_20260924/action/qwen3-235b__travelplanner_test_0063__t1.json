@@ -1,0 +1,135 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22945,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4031463 from Denver to Oakland, departs 08:39, arrives 10:13, $255",
+        "record_name": "F4031463",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Malais By Anands (Mexican, Pizza, $37)",
+        "record_name": "Malais By Anands",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern luxury w/views of WTC ($55, Private room)",
+        "record_name": "Modern luxury w/views of WTC",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bikanervala (Cafe, Bakery, $39)",
+        "record_name": "Bikanervala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi (Seafood, BBQ, $52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern luxury w/views of WTC ($55, Private room)",
+        "record_name": "Modern luxury w/views of WTC",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3958710 from Oakland to Denver, departs 08:29, arrives 11:49, $256",
+        "record_name": "F3958710",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-26, 2022-03-27, and 2022-03-28.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Oakland listing has maximum occupancy 2.",
+        "note": "The listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Denver as the origin.",
+        "note": "The trip starts from Denver."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Oakland as the destination, and the itinerary places the traveler in Oakland.",
+        "note": "Oakland is the destination city."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oakland as the only destination city.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight is dated 2022-03-26, and the first itinerary day is 2022-03-26.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight and final itinerary day are dated 2022-03-28.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4031463 travels Denver to Oakland on 2022-03-26 and departs at 08:39.",
+        "note": "The recorded departure is in the morning and matches the requested flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3958710 travels Oakland to Denver on 2022-03-28 and arrives at 11:49.",
+        "note": "The return flight matches the requested flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-26 and 2022-03-27, with none on the departure day. The listing's minimum stay is 1 night.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The return flight record gives an arrival time of 11:49 on 2022-03-28.",
+        "note": "The traveler arrives in Denver before noon."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

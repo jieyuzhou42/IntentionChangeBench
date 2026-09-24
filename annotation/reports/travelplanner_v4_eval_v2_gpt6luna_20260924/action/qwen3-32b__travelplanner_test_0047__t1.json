@@ -1,0 +1,188 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22800,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Arrival - Flight F3793409 (06:58-09:48)",
+        "record_name": "F3793409",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Flight on-board meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe (Chinese Cuisine, $23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Unplugged Courtyard (French Cuisine, $54)",
+        "record_name": "Unplugged Courtyard",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cute Greenpoint room",
+        "record_name": "Cute Greenpoint room",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Room breakfast",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cafe Maple Street (Italian Cuisine, $91)",
+        "record_name": "Cafe Maple Street",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Kylin Skybar (Italian Cuisine, $44)",
+        "record_name": "Kylin Skybar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cute Greenpoint room",
+        "record_name": "Cute Greenpoint room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Departure - Flight F3793242 (20:36-21:40)",
+        "record_name": "F3793242",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Room breakfast",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Olive Tree Cafe (Chinese Cuisine, $23)",
+        "record_name": "Olive Tree Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 5, 6, and 7, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Cute Greenpoint room has maximum occupancy 1 and is booked for both nights.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 departs Gulfport; return flight F3793242 arrives in Gulfport.",
+        "note": "The itinerary starts and returns to Gulfport."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 is to Charlotte; the itinerary lists Charlotte on March 6 and 7.",
+        "note": "The destination is Charlotte."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Charlotte as the destination city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-05.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-07.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793409 travels Gulfport to Charlotte on 2022-03-05 and departs at 06:58.",
+        "note": "It matches the requested early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3793242 travels Charlotte to Gulfport on 2022-03-07 and departs at 20:36.",
+        "note": "It matches the requested last return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Cute Greenpoint room is listed on 2022-03-05 and 2022-03-06.",
+        "note": "The itinerary books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Cute Greenpoint room has room type Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "violated",
+        "evidence": "Cute Greenpoint room lists house rules 'No children under 10 & No pets'.",
+        "note": "The listing does not prohibit smoking as required."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant ratings are Olive Tree Cafe 4.6, Unplugged Courtyard 4.0, Cafe Maple Street 3.5, and Kylin Skybar 3.6.",
+        "note": "Every restaurant meal meets the 3.0 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "Cafe Maple Street has Average Cost 91; Olive Tree Cafe is 23, Unplugged Courtyard is 54, and Kylin Skybar is 44.",
+        "note": "Cafe Maple Street exceeds the under-60-per-person meal limit."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

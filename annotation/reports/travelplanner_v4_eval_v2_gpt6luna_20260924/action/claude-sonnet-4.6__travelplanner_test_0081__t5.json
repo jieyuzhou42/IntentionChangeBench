@@ -1,0 +1,194 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24712,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073, departs Tampa 10:37, arrives Cleveland 12:59, $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catering at home in Tampa before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Pind Balluchi, Cleveland (Chinese/BBQ/Cafe, avg $96/person) — after arrival",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Green Leaf, Cleveland (Chinese/Desserts/Tea/Cafe/BBQ, avg $73/person)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — Cleveland, rating 5, $565 (covers 2 nights, min 1 night)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit / walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Green Leaf, Cleveland (Tea/Cafe options, avg $73/person)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pind Balluchi, Cleveland (Chinese/Pizza/French/BBQ/Cafe, avg $96/person)",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Green Leaf, Cleveland (Chinese/Desserts/Cafe, avg $73/person)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — Cleveland, rating 5 (night 2)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043, departs Cleveland 07:19, arrives Tampa 09:36 (by 10:00 ✓), $336",
+        "record_name": "F3905043",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering / packed snack before early departure from hotel",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers Day 1 (2022-03-02) through Day 3 (2022-03-04).",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Richmond Hill listing has maximum occupancy 4 on both nights.",
+        "note": "The listing capacity covers the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is dated 2022-03-02, Tampa to Cleveland, departing 10:37 and arriving 12:59.",
+        "note": "The booked outbound flight matches the requested flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 lists the Rock & Roll Hall of Fame as a late-afternoon visit.",
+        "note": "Day 1 is not kept solely for arrival and rest."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The plan places the Rock & Roll Hall of Fame on Day 1 and lists the Cleveland Museum of Art and Cleveland Botanical Garden on Day 2; it does not list the Cleveland Cultural Gardens.",
+        "note": "The requested Day 2 placement of the Cultural Gardens is missing, and Day 1 sightseeing is included."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is listed as Pind Balluchi, a restaurant.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The booked listing is named Richmond Hill 3 Bedroom apartment in Private home!.",
+        "note": "The accommodation matches the requested listing."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Richmond Hill listing's room type is Entire home/apt.",
+        "note": "The listing meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Richmond Hill listing has review rate number 5.",
+        "note": "The listing meets the requested rating."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books F3905043; the requested F3623037 departs Cleveland at 08:40 and arrives Tampa at 10:57.",
+        "note": "The booked flight is not the requested return flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast is listed as self-catering / packed snack.",
+        "note": "No restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Day 1 dinner and all Day 2 restaurant meals are at Green Leaf or Pind Balluchi; neither listing includes Fast Food in its cuisines.",
+        "note": "The selected restaurants meet the instruction to avoid Fast Food."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists the Rock & Roll Hall of Fame.",
+        "note": "Sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is listed as Pind Balluchi.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Record F3905043 arrives in Tampa at 09:36 on 2022-03-04.",
+        "note": "The booked flight arrives before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22815,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving to Syracuse",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Included in hotel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos - BBQ",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Food Ka Adda - Indian",
+        "record_name": "Food Ka Adda",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy studio basement in heart of Brooklyn",
+        "record_name": "Cozy studio basement in heart of Brooklyn",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving back to Myrtle Beach",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1, Day 2, and Day 3.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Syracuse listing has maximum occupancy 1.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 transportation says self-driving to Syracuse; the candidate record gives self-driving from Myrtle Beach to Syracuse.",
+        "note": "The recorded driving route starts in Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 transportation says self-driving to Syracuse; the candidate record gives self-driving from Myrtle Beach to Syracuse.",
+        "note": "The route ends in Syracuse."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and lodging city is Syracuse.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has three days, with Day 1 driving to Syracuse and Day 3 driving back, matching the March 23–25 trip.",
+        "note": "Day 1 corresponds to 2022-03-23."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has three days, with Day 3 driving back to Myrtle Beach.",
+        "note": "Day 3 corresponds to 2022-03-25."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 slot says “self-driving to Syracuse”; the record lists self-driving from Myrtle Beach to Syracuse.",
+        "note": "The plan uses the requested own-car route."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The Day 3 slot says “self-driving back to Myrtle Beach”; the record lists self-driving from Syracuse to Myrtle Beach.",
+        "note": "The plan uses the requested own-car return route."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Day 1 and Day 3 list intercity self-driving; Day 2 lists the Erie Canal Museum and Rosamond Gifford Zoo.",
+        "note": "Sightseeing is placed on Day 2 only, corresponding to 2022-03-24."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists accommodation only on Day 2; Day 1 and Day 3 show “-”.",
+        "note": "Only one night is actually booked, rather than the requested nights of March 23 and 24."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Cozy studio basement in heart of Brooklyn is listed as “Private room.”",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Tucanos has Aggregate Rating 4; Food Ka Adda has Aggregate Rating 0.",
+        "note": "Food Ka Adda, the recorded dinner restaurant, is below the required rating of 3."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "Tucanos has Average Cost 36; Food Ka Adda has Average Cost 78.",
+        "note": "Food Ka Adda exceeds the $70 per-person limit. The hotel-included breakfast is not a restaurant meal from the records."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Food Ka Adda's Cuisines include “Fast Food.”",
+        "note": "A Syracuse restaurant meal in the plan carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "Breakfast is “Included in hotel”; lunch is Tucanos and dinner is Food Ka Adda.",
+        "note": "The plan does not provide three different restaurants across the three meal slots."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Food Ka Adda's Cuisines include “Indian.”",
+        "note": "An Indian-tagged meal is included on 2022-03-24."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Cozy studio basement in heart of Brooklyn has house_rules “No pets & No smoking & No children under 10.”",
+        "note": "The listing prohibits smoking as requested."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "Day 2 lists “Erie Canal Museum, Rosamond Gifford Zoo”; the candidate attraction records contain both in Syracuse.",
+        "note": "The museum is listed before the zoo on the sightseeing day."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Day 2 dinner is Food Ka Adda, whose Cuisines include “Indian.”",
+        "note": "The Indian-tagged meal is assigned to dinner."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 2 lunch is Tucanos, whose Cuisines include “BBQ.”",
+        "note": "Lunch carries the required BBQ tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_variety",
+        "quote": "Sacrificed requirement: 'no restaurant repeated more than 2 times' could not be enforced due to limited options within the constraints."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

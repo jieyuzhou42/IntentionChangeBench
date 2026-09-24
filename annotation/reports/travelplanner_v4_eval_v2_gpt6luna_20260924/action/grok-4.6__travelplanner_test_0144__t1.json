@@ -1,0 +1,183 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 28658,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, from Moab to Denver, duration: 5 hours 23 mins, distance: 570 km, cost: 28",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "The Urban Socialite, Denver",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fatty Bao - Asian Gastro Bar, Denver",
+        "record_name": "The Fatty Bao - Asian Gastro Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights, Denver",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Nathu's Sweets, Denver",
+        "record_name": "Nathu's Sweets",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Yakooz, Denver",
+        "record_name": "Yakooz",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tasty Fare, Denver",
+        "record_name": "Tasty Fare",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights, Denver",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Al Yousuf, Denver",
+        "record_name": "Al Yousuf",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Starve Stalkers, Denver",
+        "record_name": "Starve Stalkers",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Rain Tree Grill, Denver",
+        "record_name": "Rain Tree Grill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights, Denver",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Sweet Sensations, Denver",
+        "record_name": "Sweet Sensations",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Woods Spice, Denver",
+        "record_name": "Woods Spice",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Chawla's宊, Denver",
+        "record_name": "Chawla's宊",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights, Denver",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving, from Denver to Gunnison, duration: 3 hours 39 mins, distance: 323 km, cost: 16; Self-driving, from Gunnison to Moab, duration: 4 hours 1 min, distance: 380 km, cost: 19",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "The Urban Socialite, Denver",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "SALT, Gunnison",
+        "record_name": "SALT",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "violated",
+        "evidence": "The itinerary includes Denver and schedules 'launch at Gunnison, Hartman Rocks' on March 23; the activity requirements say Gunnison is only a road connection that day, with no sightseeing visit.",
+        "note": "Scheduling Hartman Rocks as an attraction makes Gunnison more than a road connection."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Denver listing Harlem cozy nights has room type 'Entire home/apt'.",
+        "note": "The booked Denver accommodation matches the required room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Harlem cozy nights has review rate number 4.",
+        "note": "The Denver listing meets the rating floor of 4."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary specifies 'Self-driving' from Moab to Denver and from Denver to Gunnison to Moab; the candidate transportation reference text identifies these routes as self-driving.",
+        "note": "The plan uses the traveler's own-car mode."
+      },
+      {
+        "gold_field": "launch at Gunnison",
+        "action_status": "violated",
+        "evidence": "The March 23 attraction text is 'launch at Gunnison, Hartman Rocks'; the activity requirements prohibit sightseeing in Gunnison that day.",
+        "note": "The plan schedules a Gunnison attraction instead of treating Gunnison only as a road connection."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

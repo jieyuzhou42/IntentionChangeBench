@@ -1,0 +1,178 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22711,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive from Minneapolis to Jacksonville (approximately 16+ hours, best part of day at wheel)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food/roadside",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant ($59 × 1 person = $59)",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park ($256 for 2-night minimum, Entire home/apt, no sharing)",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local driving/parking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery ($57 × 1 person = $57)",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ashoka Restaurant ($11 × 1 person = $11)",
+        "record_name": "Ashoka Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Villa Gargano ($51 × 1 person = $51)",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cute Studio near Prospect Park (2nd night, no additional charge due to minimum)",
+        "record_name": "Cute Studio near Prospect Park",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive from Jacksonville to Minneapolis (approximately 16+ hours, best part of day at wheel)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Oh! Fudge ($26 × 1 person = $26)",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food/roadside",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has three days: March 27, March 28, and March 29, 2022.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The accommodation record for Cute Studio near Prospect Park lists maximum occupancy 2; the itinerary specifies one traveler.",
+        "note": "The booked listing can host one traveler and the plan is for one person."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation text says, “Drive from Minneapolis to Jacksonville.”",
+        "note": "The stated origin is Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation text says, “Drive from Minneapolis to Jacksonville,” and the return text starts in Jacksonville.",
+        "note": "The itinerary's destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Jacksonville as the destination and visiting city.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on March 27, 2022.",
+        "note": "This matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on March 29, 2022.",
+        "note": "This matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "March 27 transportation is “Drive from Minneapolis to Jacksonville”; the user specified driving in their own car.",
+        "note": "The plan explicitly schedules the requested outbound self-drive."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "March 29 transportation is “Drive from Jacksonville to Minneapolis”; the user specified driving in their own car.",
+        "note": "The plan explicitly schedules the requested return self-drive."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary schedules the outbound drive on March 27, attractions only on March 28, and the return drive on March 29.",
+        "note": "The driving days are reserved for intercity travel and sightseeing is confined to March 28."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Cute Studio near Prospect Park is listed on March 27 and March 28; the departure day, March 29, has no accommodation.",
+        "note": "The itinerary books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The candidate record for Cute Studio near Prospect Park lists room type “Entire home/apt.”",
+        "note": "The booked listing is an entire home/apartment."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The accommodation candidate records for the Jacksonville query include NYC-themed listing names (including “Cute Studio near Prospect Park”); the record itself nevertheless identifies the selected listing's city as Jacksonville."
+    ]
+  }
+}

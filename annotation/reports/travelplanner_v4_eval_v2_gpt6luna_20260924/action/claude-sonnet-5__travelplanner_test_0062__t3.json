@@ -1,0 +1,221 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25122,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Ithaca to Philadelphia",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe (rating 3.6, $47)",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Brothers Dhaba (rating 3.8, $52)",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex (Private room, No parties)",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala (rating 4.1, $20)",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe - Italian (rating 3.6, $47)",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Brothers Dhaba - Seafood (rating 3.8, $52)",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex (Private room, No parties)",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Philadelphia to Ithaca, arriving before 18:00",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala (rating 4.1, $20)",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-01, 2022-03-02, and 2022-03-03.",
+        "note": "The plan has three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on each night.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation says “Self-driving from Ithaca to Philadelphia.”",
+        "note": "The trip starts from Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Philadelphia on March 1 and March 2.",
+        "note": "Philadelphia is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Ithaca as the origin and Philadelphia as the destination, with the stay in Philadelphia.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-01.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-03.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The day 1 transportation is “Self-driving from Ithaca to Philadelphia.”",
+        "note": "The plan uses the requested own-car drive."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The day 3 transportation is “Self-driving from Philadelphia to Ithaca.”",
+        "note": "The plan uses the requested own-car drive."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on 2022-03-01 and 2022-03-02; its minimum nights is 1.",
+        "note": "Both requested nights are included."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The record for “Top floor of an amazing duplex” lists room type “Private room.”",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing’s house rules are “No parties.”",
+        "note": "The listing prohibits parties as required."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant ratings are Hong Kong Cafe 3.6, Brothers Dhaba 3.8, and Gurdas Ram Jalebi Wala 4.1.",
+        "note": "Every restaurant meal in the plan is rated at least 3.5."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Average costs per person are Hong Kong Cafe $47, Brothers Dhaba $52, and Gurdas Ram Jalebi Wala $20.",
+        "note": "All planned restaurant meals cost less than $60 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The selected restaurants’ Cuisines are “Tea, Pizza, Italian, BBQ, Cafe”; “Cafe, Desserts, Seafood”; and “Cafe, Desserts, Bakery, BBQ.” None includes Fast Food.",
+        "note": "No planned Philadelphia restaurant meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 2 breakfast is Gurdas Ram Jalebi Wala, lunch is Hong Kong Cafe, and dinner is Brothers Dhaba.",
+        "note": "The three meals use three different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe’s Cuisines include Italian, and it is planned for lunch on March 2.",
+        "note": "An Italian-tagged meal is included that day."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The return transportation text says “arriving before 18:00.”",
+        "note": "The plan states a return to Ithaca before the deadline."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 2 attraction entry lists “Philadelphia Museum of Art, then Liberty Bell.”",
+        "note": "Both attractions are planned in the requested order."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe’s Cuisines include Italian, and it is listed for lunch on March 2.",
+        "note": "The planned lunch has the required Italian tag."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Brothers Dhaba’s Cuisines include Seafood, and it is listed for dinner on March 2.",
+        "note": "The planned dinner has the required Seafood tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "except that the accommodation is a private room rather than a full standalone home"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

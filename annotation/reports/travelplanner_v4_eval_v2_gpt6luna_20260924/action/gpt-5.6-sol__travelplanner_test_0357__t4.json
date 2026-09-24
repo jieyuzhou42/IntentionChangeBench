@@ -1,0 +1,172 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23383,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Door-to-door rideshare for all four from the Buffalo origin to the airport; flight F3754877 from Buffalo at 08:04 to Boston at 09:30; one door-to-door rideshare for all four to the accommodation and later to Boston Common",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered oatmeal and fruit before leaving Buffalo",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed sandwiches",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Sit-down meal at Irish Democrat (rating 4.4; average cost $18 per person)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! — entire home/apartment, maximum occupancy 5, first of 2 nights",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Door-to-door rideshares carrying all four travelers together between the accommodation, New England Aquarium, Irish Democrat, and the accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered oatmeal and fruit at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Packed sandwiches",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sit-down meal at Irish Democrat (rating 4.4; average cost $18 per person)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! — entire home/apartment, maximum occupancy 5, second of 2 nights",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Door-to-door rideshares carrying all four travelers together from the accommodation to the Museum of Fine Arts, then to Irish Democrat and Boston airport; flight F3757097 from Boston at 21:44 to Buffalo at 23:34; door-to-door rideshare for all four from the Buffalo airport to the trip endpoint",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered oatmeal and fruit at the apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Sit-down meal at Irish Democrat (rating 4.4; average cost $18 per person)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed sandwiches before the flight",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5; the itinerary specifies rideshares for all four travelers.",
+        "note": "The accommodation can host four travelers and the plan is for four."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists Boston Common on March 4, New England Aquarium on March 5, and Museum of Fine Arts, Boston on March 6, with no second attraction on any day.",
+        "note": "Each day stays within the two-attraction limit."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Delight in Your Home Away from Home in NYC! is listed as Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing, Delight in Your Home Away from Home in NYC!, is booked for both nights and has maximum occupancy 5.",
+        "note": "One property has capacity for all four travelers."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat has Aggregate Rating 4.4, and the plan includes it as a sit-down meal each day.",
+        "note": "The restaurant meals meet the 4.0 rating threshold."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat has Average Cost 18 per person; the other planned meals are packed or self-catered.",
+        "note": "The restaurant meals are inexpensive by the recorded per-person cost."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Irish Democrat's recorded cuisines are Tea, Cafe, Bakery, Fast Food; all three restaurant meals are there.",
+        "note": "The recorded restaurant meals provide neither French nor American cuisine."
+      },
+      {
+        "gold_field": "entities.entity_3.constraints.dining_style",
+        "action_status": "unknown",
+        "evidence": "The restaurant record for Irish Democrat gives cost, cuisines, and rating, but no vegetarian menu or entree information.",
+        "note": "The records do not establish whether a vegetarian entree is confirmed for the shared sit-down meal each day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

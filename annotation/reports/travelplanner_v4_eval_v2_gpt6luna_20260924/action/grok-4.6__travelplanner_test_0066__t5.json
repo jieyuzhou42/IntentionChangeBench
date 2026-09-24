@@ -1,0 +1,199 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23063,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Minneapolis to Jacksonville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catering before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed food for the drive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pirates' House Restaurant, Jacksonville",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Greenpoint, Jacksonville",
+        "record_name": "Private Bedroom in Greenpoint",
+        "revised": true
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery, Jacksonville",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Villa Gargano, Jacksonville",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Oh! Fudge, Jacksonville",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Greenpoint, Jacksonville",
+        "record_name": "Private Bedroom in Greenpoint",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Jacksonville to Minneapolis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery, Jacksonville",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food from Oh! Fudge, Jacksonville",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Self-catering / packed food on the return drive",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Entire-home/no-sharing is therefore traded away to keep the review-rating constraint the user said they would keep.",
+        "effect": "The two booked accommodation slots use a private room rather than an entire home/apt to preserve the review-rating requirement."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "Three itinerary days are listed."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Greenpoint has maximum occupancy 2.",
+        "note": "The same listing is booked for both nights and can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound slot says self-driving from Minneapolis to Jacksonville.",
+        "note": "The stated origin is Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary goes from Minneapolis to Jacksonville and lists Jacksonville activities and lodging.",
+        "note": "Jacksonville is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as its destination and contains no other sightseeing city.",
+        "note": "One city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is 2022-03-27.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is 2022-03-29.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 27 transportation slot says “Self-driving from Minneapolis to Jacksonville.”",
+        "note": "This matches the requested outbound self-drive in the user's own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 29 transportation slot says “Self-driving from Jacksonville to Minneapolis.”",
+        "note": "This matches the requested return self-drive in the user's own car."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has driving on March 27 and March 29, with Jacksonville Zoo and Gardens, Southbank Riverwalk, and MOSH listed only on March 28.",
+        "note": "Sightseeing is confined to the only available day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Greenpoint is listed on March 27 and March 28; March 29 has no accommodation.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Private Bedroom in Greenpoint has room type “Private room.”",
+        "note": "The preferred room type is Entire home/apt; the rationale explicitly trades that preference away."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Private Bedroom in Greenpoint has review rate number 4.0.",
+        "note": "The listing meets the 3.5 minimum."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "Entire-home/no-sharing is therefore traded away"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

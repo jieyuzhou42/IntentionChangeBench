@@ -1,0 +1,183 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21011,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883 (Phoenix->Billings)",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "L'Angoor (Cafe)",
+        "record_name": "L'Angoor",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Holy Smoke (Indian/Seafood)",
+        "record_name": "Holy Smoke",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Hong Kong Express (Mediterranean)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! (Review 5)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Chakhnaa Wala (Desserts)",
+        "record_name": "Chakhnaa Wala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tsui Wong (Seafood)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Elation (Seafood)",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Great Room! Great Price! (Review 5)",
+        "record_name": "Great Room! Great Price! \nCan wait to see you !",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Unavailable return flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Holy Smoke (Cafe)",
+        "record_name": "Holy Smoke",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Hong Kong Express (Mediterranean)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 18, 19, and 20, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Billings listing has maximum occupancy 2 on both nights.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 lists Phoenix as its origin city.",
+        "note": "The outbound trip starts in Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 lists Billings as its destination city; the itinerary's city is Billings.",
+        "note": "The destination is Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Billings as the city for all three days.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-18, and Flight F3804883 is dated 2022-03-18.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes 2022-03-20 as its third and final day.",
+        "note": "The listed trip dates end on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 is dated 2022-03-18 and records Phoenix as origin and Billings as destination; its times are 12:24–15:50.",
+        "note": "The listed flight matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The day 3 slot says \"Unavailable return flight\" and has no matching record. The transportation results contain a query for 2022-03-21, not a return flight record for 2022-03-20.",
+        "note": "No return flight is booked for the required date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing \"Great Room! Great Price! \nCan wait to see you !\" is booked on March 18 and March 19; its minimum stay is 2 nights.",
+        "note": "Accommodation is listed for both requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records show ratings of 3.5 for L'Angoor and Chakhnaa Wala, 3.6 for Holy Smoke, and 3.8 for Hong Kong Express, Tsui Wong, and Elation.",
+        "note": "Every listed restaurant meal meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has a review rate number of 5.",
+        "note": "The listing meets the required rating of 5."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "end_date",
+        "quote": "No return flight exists on 2022-03-20 - violates end_date requirement."
+      }
+    ],
+    "annotation_issues": [
+      "The transportation candidate results query Billings-to-Phoenix for 2022-03-21 rather than the required 2022-03-20, so the records do not directly establish flight availability on the required return date."
+    ]
+  }
+}

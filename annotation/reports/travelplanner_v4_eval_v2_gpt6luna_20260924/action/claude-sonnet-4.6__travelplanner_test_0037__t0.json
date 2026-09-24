@@ -1,0 +1,146 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21919,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974, depart Atlanta 09:37, arrive Bozeman 11:50, $345",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered at home before departure in Atlanta",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Jiquitaia, Bozeman (Tea, Pizza, American; avg cost $36, rating 4.1)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Saravana Bhavan, Bozeman (Tea, American, Desserts; avg cost $38, rating 4.3)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sun-Filled Artist Loft in Private Townhouse, Bozeman — Entire home/apt, max 2 guests, no parties rule; $214/night (min 2 nights)",
+        "record_name": "Sun-Filled Artist Loft in Private Townhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered at accommodation (Sun-Filled Artist Loft)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Side Wok, Bozeman (Tea, Pizza, Indian; avg cost $14, rating 3.8)",
+        "record_name": "Side Wok",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Zaroob, Bozeman (Desserts, Tea, French, BBQ, Bakery, Indian; avg cost $67, rating 3.9)",
+        "record_name": "Zaroob",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sun-Filled Artist Loft in Private Townhouse, Bozeman — $214/night",
+        "record_name": "Sun-Filled Artist Loft in Private Townhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979, depart Bozeman 13:08, arrive Atlanta 18:37, $803",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered at accommodation before check-out",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Jiquitaia, Bozeman (Tea, Pizza, American; avg cost $36, rating 4.1) — before flight departure",
+        "record_name": "Jiquitaia",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1 (2022-03-25), Day 2 (2022-03-26), and Day 3 (2022-03-27).",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Sun-Filled Artist Loft in Private Townhouse, has maximum occupancy 2.",
+        "note": "The listing can host one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has OriginCityName Atlanta.",
+        "note": "The itinerary starts with a flight departing Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "violated",
+        "evidence": "The final listed flight, F3500979, departs Bozeman and arrives Atlanta.",
+        "note": "The itinerary ends in Atlanta rather than Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Bozeman; its listed flights connect Atlanta and Bozeman.",
+        "note": "Bozeman is the one visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-25, and flight F3500974 has FlightDate 2022-03-25.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is dated 2022-03-27, and flight F3500979 has FlightDate 2022-03-27.",
+        "note": "The itinerary's final day is the requested date, although its endpoint is the wrong city."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

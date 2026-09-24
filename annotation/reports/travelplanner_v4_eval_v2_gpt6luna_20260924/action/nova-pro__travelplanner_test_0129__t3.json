@@ -1,0 +1,159 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33847,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 from Sioux Falls to Phoenix",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut in Phoenix",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mama Loca in Phoenix",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Spooky Sky in Phoenix",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 from Phoenix to Flagstaff",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sushi Thai Restaurant in Flagstaff",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Tranquil private bedroom, Hamilton Heights, NY",
+        "record_name": "Tranquil private bedroom, Hamilton Heights, NY",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Communiti in Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "38 Barracks in Flagstaff",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Tranquil private bedroom, Hamilton Heights, NY",
+        "record_name": "Tranquil private bedroom, Hamilton Heights, NY",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Bamboo Boat in Flagstaff",
+        "record_name": "Bamboo Boat",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The Phoenix accommodation has maximum occupancy 3; the Flagstaff accommodation has maximum occupancy 2.",
+        "note": "The Flagstaff listing cannot host all 3 travelers on either booked night."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Phoenix listing has review rate number 5; the Flagstaff listing has review rate number 2.",
+        "note": "The Flagstaff accommodation does not meet the preferred 3+ rating."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 flies Sioux Falls to Phoenix on March 16 and arrives at 19:26.",
+        "note": "The recorded arrival is before the 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 flies Phoenix to Flagstaff on March 18 and arrives at 09:47.",
+        "note": "The recorded arrival is before the 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan ends in Flagstaff on March 20 and lists no transportation that day.",
+        "note": "No return journey is included."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 17 attractions are Heard Museum and Desert Botanical Garden.",
+        "note": "Both required attractions are included on the requested Phoenix day."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "Hole in the Rock is not listed among the itinerary's attractions.",
+        "note": "The excluded attraction is omitted."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "March 17 lists Heard Museum and Desert Botanical Garden; March 19 lists Riordan Mansion State Historic Park and Lowell Observatory.",
+        "note": "Both days have 2 attractions, which does not meet the required pace of fewer than 2 attractions per day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

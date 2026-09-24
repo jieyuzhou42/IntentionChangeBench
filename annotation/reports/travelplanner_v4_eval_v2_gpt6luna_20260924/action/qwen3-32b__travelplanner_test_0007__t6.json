@@ -1,0 +1,186 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22854,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Depart from St. Louis on flight F4025720",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Arrival in Oklahoma City",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "At hotel, unspecified",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Buffet 101, $74",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cafe Delhi Heights, $74",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Beautiful duplex in New York",
+        "record_name": "Beautiful duplex in New York",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Cappuccino Blast, $84",
+        "record_name": "Cappuccino Blast",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Lake House Restaurant, $38",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Shakahari Restaurant, $81",
+        "record_name": "Shakahari Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Beautiful duplex in New York",
+        "record_name": "Beautiful duplex in New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Return via flight F3950607",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "violated",
+        "evidence": "The itinerary has four numbered days, while the requested trip spans March 17–19, 2022 (3 days).",
+        "note": "The written plan contains four itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Beautiful duplex in New York has maximum occupancy 2; one listing is booked for each accommodation night.",
+        "note": "The booked capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 has OriginCityName St. Louis.",
+        "note": "The outbound flight departs from the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 has DestCityName Oklahoma City; the accommodation record's city is also Oklahoma City.",
+        "note": "The records place the trip and lodging in Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Oklahoma City, with St. Louis as the origin and return city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 has FlightDate 2022-03-17.",
+        "note": "The outbound flight is on the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3950607 has FlightDate 2022-03-19.",
+        "note": "The return flight is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F4025720, which departs St. Louis at 21:59 and arrives in Oklahoma City at 23:42 on 2022-03-17.",
+        "note": "The requirement specifies self-driving in an own car, but the plan uses a flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3950607, which departs Oklahoma City at 06:27 and arrives in St. Louis at 07:44 on 2022-03-19.",
+        "note": "The requirement specifies self-driving in an own car, but the plan uses a flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The plan books Beautiful duplex in New York for two accommodation nights, between the March 17 outbound and March 19 return.",
+        "note": "The two booked nights correspond to March 17 and March 18; the return date needs no accommodation."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Shakahari Restaurant has Aggregate Rating 3.6; the required floor is 4.0.",
+        "note": "At least one listed restaurant meal is below the rating floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F4025720 and F3950607; their records show the requested March 17 outbound and March 19 return dates.",
+        "note": "Flying is preferred when feasible, and the plan flies rather than driving."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Beautiful duplex in New York has room type Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On the March 18 itinerary day, breakfast is only specified as 'At hotel, unspecified'; lunch is Buffet 101 and dinner is Cafe Delhi Heights.",
+        "note": "The plan does not provide three different restaurants across breakfast, lunch, and dinner on the required day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dest",
+        "quote": "The unmet requirement is the mislabeled location of the chosen accommodation."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

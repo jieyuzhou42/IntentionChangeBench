@@ -1,0 +1,242 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 6,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2036.0,
+      "budget": 2200,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19589,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "2200"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 person"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Houston"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Reno"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-11"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-13"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Houston to Reno on 2022-03-11, the 09:50 departure"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Flight from Reno to Houston on 2022-03-13, the 12:58 departure"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "2 nights"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "accommodation_stay",
+        "value": "Accommodation nights are 2022-03-11 and 2022-03-12"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "restaurant_rating",
+        "value": "4"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "dining_style",
+        "value": "No Reno meal may carry a Fast Food tag in Cuisines"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "dining_variety",
+        "value": "Three different restaurants across breakfast, lunch and dinner on 2022-03-12"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "meal_cost",
+        "value": "70"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Create a 3-day travel itinerary from 2022-03-11 to 2022-03-13.",
+        "source_turn": 0,
+        "quote": "Please create a 3-day travel itinerary for one person, departing from Houston and heading to Reno from March 11th to March 13th, 2022"
+      },
+      {
+        "kind": "include",
+        "date": null,
+        "requirement": "Keep the only available flights in either direction.",
+        "source_turn": 1,
+        "quote": "Those are the only flights either way, so keep them."
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Stay for no more than two nights.",
+        "source_turn": 1,
+        "quote": "Two nights, no more."
+      },
+      {
+        "kind": "exclude",
+        "date": null,
+        "requirement": "Exclude mealtime places scoring under 4.0.",
+        "source_turn": 2,
+        "quote": "Keep me out of anywhere that scores under 4.0 at mealtimes."
+      },
+      {
+        "kind": "exclude",
+        "date": null,
+        "requirement": "Exclude anything tagged Fast Food.",
+        "source_turn": 3,
+        "quote": "And nothing tagged Fast Food."
+      },
+      {
+        "kind": "exclude",
+        "date": "2022-03-12",
+        "requirement": "Do not use the same place three times on this date.",
+        "source_turn": 5,
+        "quote": "I really don't want the same place three times on the 12th."
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Keep each meal under 70 per person.",
+        "source_turn": 6,
+        "quote": "And keep each meal under 70 a head."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The plan covers March 11, 12, and 13, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "Flights are priced for one person, and the booked accommodation has maximum occupancy 2."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Houston."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Reno is the sole destination city in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-11."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-13."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3879164 is Houston to Reno on 2022-03-11, departing at 09:50."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3875705 is Reno to Houston on 2022-03-13, departing at 12:58."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The treehouse is booked for the nights of March 11 and 12, with checkout on March 13."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "violated",
+        "evidence": "The March 12 restaurants have ratings 2.7, 3.5, and 3.9, all below 4."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "unknown",
+        "evidence": "The three named March 12 restaurants have no Fast Food tag, but other Reno travel-day meal venues are unknown."
+      },
+      {
+        "gold_field": "dining_variety",
+        "status": "satisfied",
+        "evidence": "Breakfast, lunch, and dinner on March 12 name three different restaurants."
+      },
+      {
+        "gold_field": "meal_cost",
+        "status": "unknown",
+        "evidence": "The March 12 listed meal costs are under 70 per person, but the travel-day meal venues and costs are pending."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

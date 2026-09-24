@@ -1,0 +1,157 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22033,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (Buffalo 08:04 → Boston 09:30), then rideshare to accommodation and attractions",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "- (en route or before departure)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Cake Factory - French/Seafood cuisine, seated dining, $43/person",
+        "record_name": "Cake Factory",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Apni Rasoi - American/Mediterranean, seated dining, $28/person",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "INFEASIBLE: No valid Boston accommodations in search results. All listed 'Boston' accommodations are actually NYC listings with max occupancy 1-5, insufficient for 4 people with mobility needs. Minimum 2-night stay required (Mar 4-5, Mar 5-6).",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare between attractions (door-to-door for mobility)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Irish Democrat - Cafe/Bakery, seated, $18/person",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Red Mesa Restaurant - Seafood option, seated, $65/person",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Foody Goody - American/Seafood, seated, $47/person",
+        "record_name": "Foody Goody",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "INFEASIBLE: No valid Boston accommodations available in fixed search results.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare to airport, Flight F3757097 (Boston 21:44 → Buffalo 23:34)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "At accommodation or nearby cafe",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Cake Factory - French cuisine revisit, seated, $43/person",
+        "record_name": "Cake Factory",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "- (en route or after arrival)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "- (trip ends)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-04, 2022-03-05, and 2022-03-06.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Both overnight accommodation slots state that accommodation is infeasible; no listing is booked for either night.",
+        "note": "There are no booked listings whose combined capacity can host four travelers."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Cake Factory lists French cuisine; Apni Rasoi lists American cuisine.",
+        "note": "The restaurant meals include both requested cuisines."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists two nearby attractions on March 4 (Public Garden and Boston Common), two nearby attractions on March 5 (New England Aquarium and Faneuil Hall Marketplace), and one on March 6 (Museum of Fine Arts). It describes rideshares and seated/rest-area opportunities on each day.",
+        "note": "Sightseeing stays within two attractions per day and the listed pairs are geographically clustered; the final day is slower-paced with one attraction."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "people_number",
+        "quote": "insufficient for 4 people with mobility needs"
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation candidate records label the listings as Boston, but several names explicitly refer to NYC locations (for example, East Village, Times Sq NYC, and New York City), making the lodging pool's geographic validity unclear.",
+      "Attraction records do not provide accessibility or seating attributes, so the plan's claims about seated accessibility and rest areas cannot be independently verified from those records."
+    ]
+  }
+}

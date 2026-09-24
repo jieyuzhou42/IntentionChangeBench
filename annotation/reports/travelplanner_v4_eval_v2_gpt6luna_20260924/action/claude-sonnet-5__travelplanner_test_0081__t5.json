@@ -1,0 +1,222 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24663,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073, Tampa to Cleveland, Dep 10:37, Arr 12:59, $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Green Leaf (Chinese), Cleveland, $73",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! (5-star, $565/night)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Pind Balluchi (Chinese), Cleveland, $96",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Green Leaf (Chinese), Cleveland, $73",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pind Balluchi (Chinese), Cleveland, $96",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! (5-star, $565/night)",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043, Cleveland to Tampa, Dep 07:19, Arr 09:36, $336",
+        "record_name": "F3905043",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary contains March 2, 3, and 4, 2022.",
+        "note": "It covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing has maximum occupancy 4.",
+        "note": "The listing can host the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 departs Tampa at 10:37 and arrives in Cleveland at 12:59 on 2022-03-02.",
+        "note": "The planned flight matches the requested flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Rock & Roll Hall of Fame; Day 2 lists The Cleveland Museum of Art; Day 3 lists the 07:19 flight.",
+        "note": "Day 2 sightseeing and the early Day 3 airport departure fit, but Day 1 includes sightseeing despite the arrival-and-rest requirement."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The plan lists Rock & Roll Hall of Fame on Day 1 and The Cleveland Museum of Art on Day 2; there is no Cleveland Cultural Gardens listing.",
+        "note": "Day 1 sightseeing was not dropped, and the requested Cleveland Cultural Gardens are absent. No Day 3 sightseeing is listed."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Lunch is '-' on Days 1 and 3.",
+        "note": "Neither day has a planned restaurant lunch."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books Richmond Hill 3 Bedroom apartment in Private home! on both Cleveland nights.",
+        "note": "The booked listing matches the requested name."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "It matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "It meets the requested rating."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3905043, which departs Cleveland at 07:19 and arrives Tampa at 09:36. The requested flight is F3623037, which departs at 08:40 and arrives at 10:57.",
+        "note": "The planned return flight does not match the requested flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast is '-'.",
+        "note": "No restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Green Leaf lists cuisines Desserts, Tea, Cafe, BBQ, Chinese; Pind Balluchi lists Chinese, Pizza, French, BBQ, Cafe. Neither restaurant lists Fast Food.",
+        "note": "The planned Day 1 dinner and all Day 2 meals are at restaurants without a Fast Food tag."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Rock & Roll Hall of Fame.",
+        "note": "The plan includes sightseeing on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is '-'.",
+        "note": "No restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Record F3905043 arrives in Tampa at 09:36.",
+        "note": "The planned flight arrives before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "budget",
+        "quote": "Total estimated cost (flights $662 + hotel $1130 + meals $338 = $2130) exceeds the $1800 budget cap"
+      }
+    ],
+    "annotation_issues": [
+      "Cleveland Cultural Gardens is requested in the activity constraint but is absent from the supplied candidate attraction records."
+    ]
+  }
+}

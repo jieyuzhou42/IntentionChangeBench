@@ -1,0 +1,277 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 4453.0,
+      "budget": 5000,
+      "unpriced": [
+        "breakfast: pending quote: meal before departing sioux falls",
+        "lunch: pending quote: meal before departing sioux falls",
+        "taxi: direct taxis or rideshares between flagstaff lodging, museum"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31790,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 5000
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "people_number",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "accommodation_rating",
+        "value": "3+"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "outbound_transportation",
+        "value": "Fly Sioux Falls to Phoenix on March 16, 2022."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "outbound_transportation",
+        "value": "Arrive in Phoenix by 21:00 on March 16, 2022."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "intercity_transportation",
+        "value": "Fly Phoenix to Flagstaff on March 18, 2022."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "intercity_transportation",
+        "value": "Arrive in Flagstaff by 12:00 on March 18, 2022."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "return_transportation",
+        "value": "The one-way visit ends in Flagstaff on March 20, 2022."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "return_transportation",
+        "value": "No return journey belongs to this itinerary."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "activity",
+        "value": "On March 17, 2022, include the Heard Museum in Phoenix."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "activity",
+        "value": "On March 17, 2022, include the Desert Botanical Garden in Phoenix."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "activity",
+        "value": "On March 17, 2022, exclude Hole in the Rock."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "activity",
+        "value": "On March 19, 2022, include the Museum of Northern Arizona in Flagstaff."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "activity",
+        "value": "On March 19, 2022, include Lowell Observatory in Flagstaff."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "activity",
+        "value": "On March 19, 2022, exclude Riordan Mansion State Historic Park."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "schedule",
+        "value": "Keep a relaxed pace with fewer than 2 attractions per day."
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "local_transportation",
+        "value": "On March 19, 2022, in Flagstaff, use direct taxis or rideshares between the lodging, Museum of Northern Arizona, and Lowell Observatory."
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "local_transportation",
+        "value": "On March 19, 2022, preserve meal breaks."
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "activity 2",
+        "value": "Do not include Hole in the Rock."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "exclude",
+        "date": "2022-03-17",
+        "requirement": "Exclude Hole in the Rock.",
+        "source_turn": 3,
+        "quote": "drop Hole in the Rock"
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-16",
+        "requirement": "Keep March 16 mainly for arrival.",
+        "source_turn": 3,
+        "quote": "Keep March 16 mainly for arrival"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Favor a relaxed pace at preferred attractions rather than squeezing in extra stops.",
+        "source_turn": 3,
+        "quote": "A relaxed pace at preferred attractions matters more than squeezing in extra stops"
+      },
+      {
+        "kind": "order",
+        "date": "2022-03-18",
+        "requirement": "Protect the transfer to Flagstaff.",
+        "source_turn": 3,
+        "quote": "protect the March 18 transfer to Flagstaff"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-17",
+        "requirement": "Visit the Heard Museum in Phoenix.",
+        "source_turn": 4,
+        "quote": "Keep only the Heard Museum and Desert Botanical Garden in Phoenix on March 17."
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-17",
+        "requirement": "Visit the Desert Botanical Garden in Phoenix.",
+        "source_turn": 4,
+        "quote": "Keep only the Heard Museum and Desert Botanical Garden in Phoenix on March 17."
+      },
+      {
+        "kind": "exclude",
+        "date": "2022-03-17",
+        "requirement": "Keep Phoenix sightseeing to the Heard Museum and Desert Botanical Garden only; exclude other Phoenix stops.",
+        "source_turn": 4,
+        "quote": "Keep only the Heard Museum and Desert Botanical Garden in Phoenix on March 17."
+      },
+      {
+        "kind": "exclude",
+        "date": "2022-03-19",
+        "requirement": "Drop Riordan Mansion.",
+        "source_turn": 4,
+        "quote": "on March 19, drop Riordan Mansion"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-19",
+        "requirement": "Visit the Museum of Northern Arizona in Flagstaff.",
+        "source_turn": 4,
+        "quote": "between the lodging, Museum of Northern Arizona, and Lowell Observatory"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-19",
+        "requirement": "Visit Lowell Observatory in Flagstaff.",
+        "source_turn": 4,
+        "quote": "between the lodging, Museum of Northern Arizona, and Lowell Observatory"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-19",
+        "requirement": "Favor a relaxed pace rather than fitting in every Flagstaff stop.",
+        "source_turn": 4,
+        "quote": "A relaxed pace matters more than fitting in every Flagstaff stop"
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-19",
+        "requirement": "Preserve meal breaks between the lodging and the specified Flagstaff stops.",
+        "source_turn": 4,
+        "quote": "to preserve meal breaks"
+      },
+      {
+        "kind": "order",
+        "date": "2022-03-19",
+        "requirement": "Use direct taxis or rideshares between the lodging, Museum of Northern Arizona, and Lowell Observatory.",
+        "source_turn": 4,
+        "quote": "take direct taxis or rideshares between the lodging, Museum of Northern Arizona, and Lowell Observatory"
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "local_transportation",
+        "reason": "Feasibility of moving around within a city cannot be audited from the candidate records: out of scope."
+      }
+    ],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The Phoenix listing has maximum occupancy 3 and the Flagstaff listing has maximum occupancy 8; both cover the three travelers, and the plan does not indicate another party size."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The booked Phoenix listing is rated 5 and the booked Flagstaff listing is rated 3."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F4045477 travels from Sioux Falls to Phoenix on March 16 and arrives at 19:26, before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3804854 travels from Phoenix to Flagstaff on March 18 and arrives at 09:47, before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The itinerary has no return journey and ends in Flagstaff on March 20."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "March 17 lists only the Heard Museum and Desert Botanical Garden; March 19 lists only the Museum of Northern Arizona and Lowell Observatory, with no Riordan Mansion."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "violated",
+        "evidence": "The plan lists two attractions on March 17 and two on March 19, which does not meet the requirement of fewer than 2 attractions per day."
+      },
+      {
+        "gold_field": "activity 2",
+        "status": "satisfied",
+        "evidence": "Hole in the Rock is not listed in the plan."
+      }
+    ],
+    "annotation_issues": [
+      "The gold schedule requirement of fewer than 2 attractions per day conflicts with the gold activity requirement to visit two attractions on March 17 and two attractions on March 19.",
+      "The dialogue explicitly requests private rooms rated 3+ (turn 1), but the gold constraints omit a room-type constraint.",
+      "The dialogue explicitly requests just two nights in each city (turn 1), but the gold constraints omit an accommodation-stay constraint."
+    ]
+  },
+  "out_of_scope_fields": [
+    "local_transportation"
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 5,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "violated",
+      "total": 2280.0,
+      "budget": 1500,
+      "unpriced": [
+        "breakfast: simple self-catered breakfast at the apartment.",
+        "breakfast: simple self-catered breakfast at the apartment.",
+        "breakfast: simple self-catered breakfast at the apartment.",
+        "breakfast: simple self-catered breakfast at the apartment before early "
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22207,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is $1500."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": "Accommodation room type must be Entire home/apt."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "schedule",
+        "value": "Keep March 13 free of sightseeing."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dining_style",
+        "value": "Have simple self-catered breakfasts at the apartment."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "dining_style",
+        "value": "Choose sit-down restaurants rather than fast-food options for lunch."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "dining_style",
+        "value": "Choose sit-down restaurants rather than fast-food options for dinner."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "activity",
+        "value": "Schedule no more than two substantial attractions on each full sightseeing day."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "activity",
+        "value": "Treat The Cabildo and The Singing Oak as the first stops to drop."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "transportation",
+        "value": "Use self-drive transportation."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "The travel companion cannot comfortably manage an intercity transfer during this short trip."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "The travel companion should remain in the same accommodation with the user."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "entities.entity_2.constraints.accessibility",
+        "value": "The travel companion needs a low-walking itinerary."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "entities.entity_2.constraints.accessibility",
+        "value": "The travel companion needs a seated rest break between major attractions."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "exclude",
+        "date": "2022-03-13",
+        "requirement": "Skip all sightseeing, including Mardi Gras World.",
+        "source_turn": 3,
+        "quote": "skipping all sightseeing that day, including Mardi Gras World."
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Limit full sightseeing days to no more than two substantial stops; when dropping stops, drop The Cabildo and The Singing Oak first.",
+        "source_turn": 5,
+        "quote": "Limit full sightseeing days to two substantial stops, dropping The Cabildo and The Singing Oak first."
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "entities.entity_2.constraints.mobility",
+        "reason": "This field includes the travel companion’s mobility need, which cannot be audited from the candidate records."
+      },
+      {
+        "field": "entities.entity_2.constraints.accessibility",
+        "reason": "The companion’s walking and seated-break needs are accessibility or mobility needs that cannot be audited from the candidate records."
+      }
+    ],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The itinerary visits New Orleans as its only destination city."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The plan names Harlem Short Term Stay, which does not match an accommodation listing in the candidate records, so its room type cannot satisfy the Entire home/apt requirement."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "Day 5, March 13, has no attraction and is reserved for the drive to Charlotte."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "unknown",
+        "evidence": "Breakfasts are explicitly self-catered at the apartment, and lunch and dinner use named restaurants. The candidate records do not establish whether those restaurant meals are sit-down rather than fast food."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "Each full sightseeing day lists one attraction, within the two-stop limit. Neither The Cabildo nor The Singing Oak is scheduled."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Charlotte to New Orleans and back; both routes match the self-driving transportation records."
+      }
+    ],
+    "annotation_issues": [
+      "The gold budget is $1500, but the latest dialogue raises the budget to $2000; the gold value conflicts with the latest utterance.",
+      "The reference plan names Harlem Short Term Stay, but no accommodation candidate record has that name, preventing verification of its listing attributes."
+    ]
+  },
+  "out_of_scope_fields": [
+    "entities.entity_2.constraints.accessibility",
+    "entities.entity_2.constraints.mobility"
+  ]
+}

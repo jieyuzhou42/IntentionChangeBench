@@ -1,0 +1,88 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 0,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "violated",
+      "total": 1696.0,
+      "budget": 1500,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": false,
+      "minimum_nights": [],
+      "capacity": [
+        "day 1 Spectacular apartment in Astoria near everywhere: 2 travelers, maximum occupancy 1",
+        "day 2 Spectacular apartment in Astoria near everywhere: 2 travelers, maximum occupancy 1",
+        "day 3 Conveniently located private room in Brooklyn: 2 travelers, maximum occupancy 1",
+        "day 4 Conveniently located private room in Brooklyn: 2 travelers, maximum occupancy 1"
+      ]
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 27046,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 1500
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "visiting_city_number",
+        "value": 2
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": "private room"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "house_rule",
+        "value": "parties"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "transportation",
+        "value": "no flight"
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The itinerary visits Baton Rouge and New Orleans, two different cities in Louisiana."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The Baton Rouge and New Orleans accommodation records used in the plan both list their room type as Private room."
+      },
+      {
+        "gold_field": "house_rule",
+        "status": "satisfied",
+        "evidence": "Neither booked accommodation record prohibits parties; their listed rules are No visitors."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "satisfied",
+        "evidence": "All listed intercity transportation is self-driving; no flight is included."
+      }
+    ],
+    "annotation_issues": [
+      "The gold makes transportation = \"no flight\" a must-have, but the user stated only a preference: \"we'd prefer not to travel by flight.\"",
+      "The user explicitly specified a 5-day itinerary from March 9 through March 13, 2022, starting in Charlotte, for 2 people, visiting cities in Louisiana. These requirements are not represented in the gold constraints."
+    ]
+  },
+  "out_of_scope_fields": []
+}

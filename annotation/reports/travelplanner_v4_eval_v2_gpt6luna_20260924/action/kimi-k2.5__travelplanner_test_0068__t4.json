@@ -1,0 +1,192 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24115,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3948180: Panama City to Chicago, departs 10:13, arrives 12:17 ($212)",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "self-catering",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "FIO Cookhouse and Bar - Mexican/Fast Food/Cafe/Seafood (Aggregate Rating 4.0, $31)",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pantry d'or - Tea/BBQ/Fast Food/Cafe/Indian (Aggregate Rating 4.4, $53)",
+        "record_name": "Pantry d'or",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "UNAVAILABLE: No accommodation with rating ≥5.0 meets stay requirements (minimum nights constraint or rating constraint violated)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Gyan Vaishnav - Bakery/Desserts (Aggregate Rating 3.9, $14)",
+        "record_name": "Gyan Vaishnav",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Black Pearl - Cafe/Bakery (Aggregate Rating 4.1, $63)",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "FIO Cookhouse and Bar - Mexican/Fast Food/Cafe/Seafood (Aggregate Rating 4.0, $31)",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "UNAVAILABLE: No accommodation with rating ≥5.0 meets stay requirements (minimum nights constraint or rating constraint violated)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive return to Panama City (user-arranged, no flight available)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Starbucks - Tea/Bakery/BBQ/Cafe/Indian (Aggregate Rating 3.8, $46)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "packed food/self-catering during drive",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 12, 13, and 14, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Both March 12 and March 13 accommodation slots say “UNAVAILABLE”; no accommodation listing is booked.",
+        "note": "There are no booked listings whose combined capacity can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 has OriginCityName “Panama City.”",
+        "note": "The outbound trip starts in Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 has DestCityName “Chicago”; the first two itinerary days are in Chicago.",
+        "note": "The destination is Chicago."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the sightseeing stay in Chicago before the return to Panama City.",
+        "note": "Chicago is the sole destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-12.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's final day is 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3948180 is a Panama City–Chicago flight on 2022-03-12 departing at 10:13.",
+        "note": "It matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 14 transportation slot says “Self-drive return to Panama City (user-arranged, no flight available).”",
+        "note": "The plan specifies the requested self-drive return using the traveler's own arrangement."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary lists Millennium Park on March 12 and Navy Pier on March 13; March 14 has no attraction.",
+        "note": "Sightseeing is scheduled on March 12, although March 13 is the only sightseeing day available."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Both March 12 and March 13 accommodation slots say “UNAVAILABLE”; no nights are booked.",
+        "note": "The requested two nights, March 12 and 13, are not booked."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "No accommodation is booked. The available 5.0-rated listings have minimum stays of 3 and 5 nights, respectively.",
+        "note": "No booked accommodation satisfies the 5.0 rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "explicit disclosure of violated requirements: (1) accommodation_rating ≥5.0"
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "explicit disclosure of violated requirements: (2) accommodation_stay exactly March 12-13 (2 nights)"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

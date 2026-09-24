@@ -1,0 +1,93 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1973.0,
+      "budget": 2100,
+      "unpriced": [
+        "breakfast: pending quote: meal before departure or on the road",
+        "lunch: pending quote: meal before departure or on the road",
+        "lunch: pending quote: meal before departure or on the road",
+        "dinner: pending quote: meal before departure or on the road"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 28785,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "people_number",
+        "value": "2 travelers"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "room_type",
+        "value": "private room"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "accommodation_rating",
+        "value": "4+"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "budget",
+        "value": "$2,100 total"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "free_time",
+        "date": "2022-03-13",
+        "requirement": "Keep the day for driving and breaks.",
+        "source_turn": 1,
+        "quote": "Keep the 13th and 17th for driving and breaks."
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-17",
+        "requirement": "Keep the day for driving and breaks.",
+        "source_turn": 1,
+        "quote": "Keep the 13th and 17th for driving and breaks."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "people_number",
+        "status": "violated",
+        "evidence": "The Fayetteville listing has capacity for two, but the Wilmington accommodation is not a candidate record, so its capacity for the two travelers cannot satisfy the requirement."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The Fayetteville accommodation is a private room; the Wilmington accommodation name does not match a candidate listing, so its room type cannot satisfy the requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "The Fayetteville listing is rated 4, but the Wilmington accommodation does not match a candidate record, so the 4+ requirement is not met for the full stay."
+      }
+    ],
+    "annotation_issues": [
+      "The gold reference plan books “Luxury 3 bedroom apartment on the Upper East Side” while the itinerary city is Wilmington; that accommodation does not appear in the Wilmington candidate records, preventing verification of its attributes.",
+      "The user explicitly requested one shared place in each city, but the gold constraints list does not represent that one-listing-per-city requirement."
+    ]
+  },
+  "out_of_scope_fields": []
+}

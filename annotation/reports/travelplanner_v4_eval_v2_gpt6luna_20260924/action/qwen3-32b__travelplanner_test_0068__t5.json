@@ -1,0 +1,157 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0068",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22458,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F3948180 (10:13 Panama City → 12:17 Chicago)",
+        "record_name": "F3948180",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Included on the flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Black Pearl",
+        "record_name": "The Black Pearl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "New York (None available in Chicago with rating above 5.0, and no options with 5.0 rating matched the stay and occupancy constraints).",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bro's Kitchenette",
+        "record_name": "Bro's Kitchenette",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "FIO Cookhouse and Bar",
+        "record_name": "FIO Cookhouse and Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "None (return driving on 14th, overnight stay not necessary).",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Chicago (no return flight available)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is matched or booked for any night.",
+        "note": "There are no booked listings whose combined maximum occupancy can host the traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3948180 lists Panama City as the origin.",
+        "note": "The plan departs from Panama City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3948180 lists Chicago as the destination.",
+        "note": "The plan travels to Chicago."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination city is Chicago.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3948180 is dated 2022-03-12, and the first itinerary entry is for that date.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The third itinerary entry and self-driving return are on 2022-03-14.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3948180 is a Panama City-to-Chicago flight on 2022-03-12 with DepTime 10:13.",
+        "note": "The flight and departure time match the requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The 2022-03-14 transportation text is “Self-driving from Chicago (no return flight available)”.",
+        "note": "The plan specifies driving from Chicago to Panama City in the user's own car context."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Skydeck Chicago is listed on 2022-03-12, while sightseeing is limited to 2022-03-13; the 2022-03-14 entry lists self-driving.",
+        "note": "The return-drive day is reserved, but sightseeing is also scheduled on March 12."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The March 12 accommodation text does not match a candidate listing, and March 13 says “None”; March 14 has no accommodation.",
+        "note": "No three nights are booked from March 12."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The March 12 accommodation has no matching candidate listing; the itinerary says no options with a 5.0 rating matched the constraints.",
+        "note": "No booked accommodation is evidenced as having the required rating of 5."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "no options with 5.0 rating matched the stay and occupancy constraints"
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "One of the overnight stays was sacrificed as a solution to enable a better accommodation match while keeping the budget flexible."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

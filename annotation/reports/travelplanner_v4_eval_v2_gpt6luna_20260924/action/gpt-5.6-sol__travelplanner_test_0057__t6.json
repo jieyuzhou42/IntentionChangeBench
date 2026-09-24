@@ -1,0 +1,207 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23808,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164, departing Houston at 09:50 and arriving in Reno at 12:04",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast brought from Houston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch brought from Houston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Gopal's Restaurant & Caterer's — $56, French/Bakery/Pizza/Seafood",
+        "record_name": "Gopal's Restaurant & Caterer's",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Walk between the selected central Reno meal and attraction stops",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Queens Cakes — $58, Bakery/Desserts/Indian/BBQ",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Olive Bistro — $66, Tea/Cafe/Pizza/BBQ",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Gopal's Restaurant & Caterer's — $56, French/Bakery/Pizza/Seafood",
+        "record_name": "Gopal's Restaurant & Caterer's",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705, departing Reno at 12:58 and arriving in Houston at 18:31",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Packed breakfast",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed lunch for the flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed dinner after arrival in Houston",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 11, 12, and 13, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Reno accommodation listing has maximum occupancy 2; it is booked for both nights.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has OriginCityName Houston.",
+        "note": "The itinerary departs from Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has DestCityName Reno; the return flight departs Reno.",
+        "note": "Reno is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and overnight city is Reno.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-11.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-13.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3879164 flies Houston to Reno on 2022-03-11, departing at 09:50.",
+        "note": "It matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3875705 flies Reno to Houston on 2022-03-13, departing at 12:58.",
+        "note": "It matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 11 and March 12; its record has a two-night minimum.",
+        "note": "The plan books the requested two nights and no additional night."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Queens Cakes is rated 3.5, Olive Bistro 3.9, and Gopal's Restaurant & Caterer's 2.7.",
+        "note": "Each restaurant meal in the plan is below the requested 4.0 floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records for Gopal's, Queens Cakes, and Olive Bistro contain no Fast Food tag in Cuisines.",
+        "note": "No Reno restaurant meal is tagged Fast Food; packed meals are not restaurant meals."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 12 the listed restaurants are Queens Cakes, Olive Bistro, and Gopal's Restaurant & Caterer's.",
+        "note": "Breakfast, lunch, and dinner use three different restaurants."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records give Average Cost values of 58 for Queens Cakes, 66 for Olive Bistro, and 56 for Gopal's Restaurant & Caterer's.",
+        "note": "Each restaurant meal is under 70 per person; packed meals are not restaurant meals."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "The selected restaurants do not meet the preferred 4.0 minimum: their ratings are 3.5, 3.9, and 2.7"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1288.0,
+      "budget": 1300,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21424,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget constraint of $1,300"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 person"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Denver"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Oakland"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-26"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-28"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Flight from Denver to Oakland"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Flight on 2022-03-26"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "08:39 departure"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Flight from Oakland to Denver"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "Flight on 2022-03-28"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "11:49 landing"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "3 nights"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "accommodation_stay",
+        "value": "Stay beginning 2022-03-26"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "accommodation_stay",
+        "value": "Paying for one night after departure is acceptable"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "schedule",
+        "value": "Arrive back in Denver no later than 12:00 on 2022-03-28"
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "accommodation_rating",
+        "value": "5"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-26",
+        "requirement": "The outbound flight should be a morning flight from Denver to Oakland.",
+        "source_turn": 1,
+        "quote": "Put me on the morning one out on the 26th"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-28",
+        "requirement": "Return to Denver before noon.",
+        "source_turn": 1,
+        "quote": "the one that gets me home before noon on the 28th"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference itinerary has entries for 2022-03-26, 2022-03-27, and 2022-03-28."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2, sufficient for one traveler, and the plan prices travel and meals for one person."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight departs Denver."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in Oakland, and the accommodation and local itinerary are in Oakland."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Oakland is the sole destination city shown in the reference plan."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-26."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends with the return flight on 2022-03-28."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F4031463 is from Denver to Oakland on 2022-03-26 and departs at 08:39."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3958710 is from Oakland to Denver on 2022-03-28 and lands at 11:49."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The reference books the accommodation for three nights, with check-in 2022-03-26 and check-out 2022-03-29; the post-departure night is explicitly acceptable."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "The return flight lands in Denver at 11:49 on 2022-03-28, before noon."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked accommodation is listed as Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The booked accommodation has a review rating of 5.0."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,134 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 6,
+  "has_gold_plan": false,
+  "gold_plan_code": null,
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20336,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 1500
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "schedule",
+        "value": "Keep March 13 free of sightseeing"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dining_style",
+        "value": "Have simple self-catered breakfasts at the apartment"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "dining_style",
+        "value": "Have sit-down lunches and dinners on New Orleans sightseeing days"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "dining_style",
+        "value": "Allow packed food or quick-service stops during the long drives on March 9 and March 13"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "activity",
+        "value": "Schedule no more than two substantial attractions on each full sightseeing day"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "activity",
+        "value": "Treat The Cabildo and The Singing Oak as the first stops to drop"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "transportation",
+        "value": "Self-drive"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "The travel companion cannot comfortably manage an intercity transfer during this short trip"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "The travel companion should remain in the same accommodation with the user"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "entities.entity_2.constraints.accessibility",
+        "value": "The travel companion needs a low-walking itinerary"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "entities.entity_2.constraints.accessibility",
+        "value": "The travel companion needs a seated rest break between major attractions"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "free_time",
+        "date": "2022-03-13",
+        "requirement": "Skip all sightseeing that day, including Mardi Gras World.",
+        "source_turn": 3,
+        "quote": "checking out early and skipping all sightseeing that day, including Mardi Gras World."
+      },
+      {
+        "kind": "free_time",
+        "date": null,
+        "requirement": "Include a seated rest break between major attractions.",
+        "source_turn": 5,
+        "quote": "needs less walking and a seated break between major attractions"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Limit full sightseeing days to two substantial stops.",
+        "source_turn": 5,
+        "quote": "Limit full sightseeing days to two substantial stops"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Treat The Cabildo and The Singing Oak as the first attractions to drop when limiting stops.",
+        "source_turn": 5,
+        "quote": "dropping The Cabildo and The Singing Oak first."
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "entities.entity_2.constraints.mobility",
+        "reason": "The companion’s ability to manage intercity transfers is a traveler mobility need that the candidate records cannot audit."
+      },
+      {
+        "field": "entities.entity_2.constraints.accessibility",
+        "reason": "Low-walking feasibility and the companion’s mobility needs cannot be audited from the candidate records."
+      }
+    ],
+    "gold_plan_judgments": [],
+    "annotation_issues": [
+      "The gold budget is 1500, but the latest stated budget is 2000 (turn 2); the gold value conflicts with the dialogue."
+    ]
+  },
+  "out_of_scope_fields": [
+    "entities.entity_2.constraints.accessibility",
+    "entities.entity_2.constraints.mobility"
+  ]
+}

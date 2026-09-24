@@ -1,0 +1,183 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22745,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Departing 11:28 via F3996733",
+        "record_name": "F3996733",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Arrival",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Pizza Hut (Average Cost: $30)",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Doughlicious (Average Cost: $41)",
+        "record_name": "Doughlicious",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BEDSTUY BK - PAD (Entire home/apt)",
+        "record_name": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Local (drive)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Mama Loca (Average Cost: $27)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Village Restaurant (Average Cost: $35)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Jungle The Restaurant (Average Cost: $27)",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "BEDSTUY BK - PAD (Entire home/apt)",
+        "record_name": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Departing 13:51 via F3803478",
+        "record_name": "F3803478",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Enchanted Island Amusement Park (Free admission)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Adjusted budget from $1,700 to $2,000",
+        "effect": "The stated budget was raised to $2,000; no itinerary slot was changed."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary dates run from 2022-03-06 through 2022-03-08.",
+        "note": "These dates span the requested three-day trip."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BEDSTUY BK - PAD has maximum occupancy 10.",
+        "note": "The listing's capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "F3996733 is from Tulsa to Phoenix; F3803478 is from Phoenix to Tulsa.",
+        "note": "The outbound origin is Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "F3996733 is from Tulsa to Phoenix; the itinerary lists Phoenix as the arrival city.",
+        "note": "The destination is Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Phoenix as the sole destination city.",
+        "note": "Only one destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F3996733 is dated 2022-03-06.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight F3803478 is dated 2022-03-08.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "F3996733 is a flight departing Tulsa at 11:28 on 2022-03-06.",
+        "note": "The requirement is to self-drive using the traveler's own car, not fly."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "F3803478 is a flight departing Phoenix at 13:51 on 2022-03-08.",
+        "note": "The requirement is to self-drive using the traveler's own car, not fly."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix accommodation is listed on 2022-03-06 and 2022-03-07, with none on departure day 2022-03-08.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BEDSTUY BK - PAD has room type Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F3996733 and F3803478.",
+        "note": "Flying aligns with the stated preference when the cap allows it; driving was acceptable, not required."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The Phoenix accommodation record is named “BEDSTUY BK - PAD” and references Bed-Stuy, while its record city is Phoenix; the listing name and city appear geographically inconsistent."
+    ]
+  }
+}

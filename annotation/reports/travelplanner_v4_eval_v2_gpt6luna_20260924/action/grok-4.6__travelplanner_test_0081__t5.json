@@ -1,0 +1,178 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24298,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073, Tampa to Cleveland, 10:37-12:59, $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Green Leaf (Chinese, $73)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pind Balluchi (Chinese, $96)",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Nineties ($31)",
+        "record_name": "Nineties",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Me Kong Bowl ($19)",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Green Leaf (Chinese, $73)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043, Cleveland to Tampa, 07:19-09:36, $336",
+        "record_name": "F3905043",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-02 through 2022-03-04.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 4.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The planned flight matches the requested flight and times."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Rock & Roll Hall of Fame, Green Leaf lunch, and Pind Balluchi dinner.",
+        "note": "Day 1 is not reserved for arrival and rest, although Day 2 has sightseeing and Day 3 has an early airport flight."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "Day 2 lists The Cleveland Museum of Art and Cleveland Botanical Garden, but not the Cleveland Cultural Gardens; Day 1 lists Rock & Roll Hall of Fame.",
+        "note": "The requested Cultural Gardens are missing from Day 2, and Day 1 includes sightseeing."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Green Leaf, a restaurant record.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The booked listing is Richmond Hill 3 Bedroom apartment in Private home!",
+        "note": "It matches the requested accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "It matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "It meets the requested rating."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The planned flight is F3905043 (07:19–09:36); the requested flight F3623037 departs 08:40 and arrives 10:57.",
+        "note": "The itinerary uses a different flight, though its arrival time meets the separate by-10:00 requirement."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast is '-'.",
+        "note": "No restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 dinner and Day 2 meals are Pind Balluchi, Nineties, Me Kong Bowl, and Green Leaf; none lists Fast Food in its cuisines.",
+        "note": "The listed restaurant meals meet the requirement to avoid restaurants listing Fast Food."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists Rock & Roll Hall of Fame.",
+        "note": "Sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Green Leaf, a restaurant record.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Record F3905043 arrives in Tampa at 09:36.",
+        "note": "The planned arrival is before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "budget",
+        "quote": "Known cost: flights $662 + lodging $1,130 + meals $292 = $2,084, which exceeds the $1,800 must-have budget by $284."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

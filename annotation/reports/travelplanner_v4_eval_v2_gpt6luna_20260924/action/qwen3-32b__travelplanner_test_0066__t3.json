@@ -1,0 +1,154 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21921,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Driving to Jacksonville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Villa Gargano",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern high-end studio!",
+        "record_name": "Modern high-end studio!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Ashoka Restaurant",
+        "record_name": "Ashoka Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Tpot",
+        "record_name": "Tpot",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Driving back to Minneapolis",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "violated",
+        "evidence": "The itinerary runs from 2022-03-27 through 2022-03-30, covering four dated days.",
+        "note": "The requested trip is 3 days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Modern high-end studio! has maximum occupancy 3.",
+        "note": "The booked listing can host 1 traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is in Minneapolis and says \"Driving to Jacksonville.\"",
+        "note": "The itinerary starts from Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as the destination and has Jacksonville activities and lodging.",
+        "note": "The destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Jacksonville is the sole destination city in the itinerary.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "This matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "The itinerary's final day is 2022-03-30, with the return drive listed that day.",
+        "note": "The requested end date is 2022-03-29."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-27, the itinerary says \"Driving to Jacksonville\"; the dialogue specifies driving in the user's own car.",
+        "note": "The outbound drive matches the requested date, route, and mode."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary lists \"Driving back to Minneapolis\" on 2022-03-30.",
+        "note": "The requested return drive is on 2022-03-29."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan lists Jacksonville Arboretum & Botanical Gardens on 2022-03-29 and the return drive on 2022-03-30.",
+        "note": "Sightseeing is required only on 2022-03-28, with driving on 2022-03-27 and 2022-03-29."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "An accommodation is listed only on 2022-03-28; 2022-03-27 has no accommodation.",
+        "note": "Only one night is booked, rather than the requested nights of 2022-03-27 and 2022-03-28."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Modern high-end studio! is listed as \"Entire home/apt\".",
+        "note": "The booked room type matches the requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Modern high-end studio! has a review rate number of 3.0.",
+        "note": "The required minimum rating is 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

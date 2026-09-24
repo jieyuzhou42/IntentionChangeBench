@@ -1,0 +1,188 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 27766,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Moab",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Nathu's Sweets ($12)",
+        "record_name": "Nathu's Sweets",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Starve Stalkers ($31)",
+        "record_name": "Starve Stalkers",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fatty Bao ($93)",
+        "record_name": "The Fatty Bao - Asian Gastro Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away ($414/night)",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Sweet Sensations ($14)",
+        "record_name": "Sweet Sensations",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Al Yousuf ($32)",
+        "record_name": "Al Yousuf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tasty Fare ($79)",
+        "record_name": "Tasty Fare",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Nathu's Sweets ($12)",
+        "record_name": "Nathu's Sweets",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Rain Tree Grill ($94)",
+        "record_name": "Rain Tree Grill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Woods Spice ($69)",
+        "record_name": "Woods Spice",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving to Moab via Gunnison",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "SALT ($44)",
+        "record_name": "SALT",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "violated",
+        "evidence": "The plan lists Denver for the first four days, then Gunnison on 2022-03-23 with the attraction Gunnison Pioneer Museum.",
+        "note": "The requested one-city trip treats Gunnison as a road connection only; scheduling sightseeing there makes it an additional visited city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked Denver listing, Peaceful, beautiful home away, has room type \"Entire home/apt\".",
+        "note": "The listing matches the requested Denver room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Peaceful, beautiful home away has review rate number 1.",
+        "note": "The Denver listing is below the required rating of 4."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says \"Self-driving from Moab\" and \"Self-driving to Moab via Gunnison\"; the candidate reference records provide self-driving routes for these legs.",
+        "note": "The itinerary uses the requested own-car transportation."
+      },
+      {
+        "gold_field": "launch at Gunnison",
+        "action_status": "violated",
+        "evidence": "The Gunnison day lists self-driving to Moab and lunch at SALT, with Gunnison Pioneer Museum as its attraction; no launch is listed.",
+        "note": "Passing through Gunnison by car does not schedule a launch there."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Chose only 1-star available apartment meeting 3-night stay requirement, violating must_have 4+ rating."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

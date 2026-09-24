@@ -1,0 +1,156 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22871,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720, St. Louis to Oklahoma City, Dep 21:59 - Arr 23:42, $105",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio (Entire home/apt, Oklahoma City)",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Lake House Restaurant (rating 4.3)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lake House Restaurant (rating 4.3)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lake House Restaurant (rating 4.3)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio (Entire home/apt, Oklahoma City)",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607, Oklahoma City to St. Louis, Dep 06:27 - Arr 07:44, $201",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 17, 18, and 19, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio has maximum occupancy 4; the plan books it for both nights.",
+        "note": "The listing capacity covers one traveler, and the plan does not assume a different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists St. Louis as the origin.",
+        "note": "The plan starts in St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Oklahoma City as the destination; the accommodation and restaurant records are also in Oklahoma City.",
+        "note": "The itinerary visits the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary stays in Oklahoma City and shows no other destination city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight date are 2022-03-17.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day and return flight date are 2022-03-19.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F4025720, while the requirement is self-driving in an own car.",
+        "note": "A flight is not the required own-car drive."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3950607, while the requirement is self-driving in an own car.",
+        "note": "A flight is not the required own-car drive."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio is listed on March 17 and March 18; its minimum stay is 2 nights.",
+        "note": "The two requested nights are booked."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant has Aggregate Rating 4.3.",
+        "note": "Every restaurant meal in the plan meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flights, but the rationale calculates known costs of about $1,232 against the $1,100 cap.",
+        "note": "The preference is to fly when the cap allows it; the plan's stated cost exceeds the cap."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio is listed as Entire home/apt.",
+        "note": "The booked accommodation is an entire home/apartment, not a room in someone else's flat."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "No self-drive option exists in the grounded transportation data (only two flights, matching the earlier 'late out on 17th / early back on 19th' preference), so despite the user's later shift to driving, the only supported, priced route is the flight pair (outbound F4025720 $105, return F3950607 $201) — this is disclosed as an unmet requirement."
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "No self-drive option exists in the grounded transportation data (only two flights, matching the earlier 'late out on 17th / early back on 19th' preference), so despite the user's later shift to driving, the only supported, priced route is the flight pair (outbound F4025720 $105, return F3950607 $201) — this is disclosed as an unmet requirement."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

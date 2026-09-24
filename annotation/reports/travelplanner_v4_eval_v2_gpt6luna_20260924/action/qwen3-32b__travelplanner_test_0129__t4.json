@@ -1,0 +1,171 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 35981,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight from Sioux Falls to Phoenix",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BEDSTUY BK - PAD SHORT/ LONG TERM STAYS NO EVENTS",
+        "record_name": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "In accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mama Loca",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Village Restaurant",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BEDSTUY BK - PAD SHORT/ LONG TERM STAYS NO EVENTS",
+        "record_name": "BEDSTUY BK - PAD\nSHORT/ LONG TERM STAYS\nNO EVENTS",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight from Phoenix to Flagstaff",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "In accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Direct taxis or rideshares between the lodging, Museum of Northern Arizona, and Lowell Observatory",
+        "record_name": null,
+        "revised": true
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "In accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "38 Barracks",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Communiti",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "on March 19, drop Riordan Mansion and take direct taxis or rideshares between the lodging, Museum of Northern Arizona, and Lowell Observatory",
+        "effect": "Updated the March 19 transportation slot from “Taxi” to direct taxis or rideshares between the specified locations; Riordan Mansion was already absent from the itinerary."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has maximum occupancy 10 and the Flagstaff listing has maximum occupancy 8.",
+        "note": "Each booked listing can host all 3 travelers."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The Phoenix listing BEDSTUY BK - PAD SHORT/ LONG TERM STAYS NO EVENTS has review rate number 2; the Flagstaff listing Stylish apartment in the heart of New York has review rate number 3.",
+        "note": "The Phoenix accommodation is below the requested 3+ rating."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 travels Sioux Falls to Phoenix on March 16 and arrives at 19:26.",
+        "note": "The recorded arrival is before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 travels Phoenix to Flagstaff on March 18 and arrives at 09:47.",
+        "note": "The recorded arrival is before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends in Flagstaff on March 20 and lists no return journey.",
+        "note": "This matches the one-way visit requirement."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "March 17 lists Heard Museum and Desert Botanical Garden only; March 19 lists Museum of Northern Arizona and Lowell Observatory only. Hole in the Rock and Riordan Mansion are absent.",
+        "note": "The specified attractions are placed on the requested days and the exclusions are respected."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary lists two attractions on March 17 and two on March 19.",
+        "note": "Two attractions per day does not meet the stated pace of fewer than two attractions per day."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "Hole in the Rock is not listed in the itinerary.",
+        "note": "The exclusion is respected."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

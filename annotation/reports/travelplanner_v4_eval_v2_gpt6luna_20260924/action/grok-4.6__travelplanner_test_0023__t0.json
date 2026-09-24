@@ -1,0 +1,148 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19938,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "There is no flight from Myrtle Beach to Syracuse on 2022-03-23.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Silantro Fil-Mex",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Silantro Fil-Mex",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment!",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Silantro Fil-Mex",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mezzaluna",
+        "record_name": "Mezzaluna",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment!",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "There is no flight from Syracuse to Myrtle Beach on 2022-03-25.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Silantro Fil-Mex",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Taco Bell",
+        "record_name": "Taco Bell",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 23, March 24, and March 25, 2022.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has maximum occupancy 3; the rationale specifies 1 traveler.",
+        "note": "The booked listing can host the traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "violated",
+        "evidence": "The outbound transportation slot says, “There is no flight from Myrtle Beach to Syracuse on 2022-03-23.”",
+        "note": "The plan names Myrtle Beach as the origin but provides no outbound transportation."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "violated",
+        "evidence": "The outbound transportation slot says, “There is no flight from Myrtle Beach to Syracuse on 2022-03-23.”",
+        "note": "Syracuse is named as the destination, but the plan provides no way to travel there."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Syracuse as the destination and lists the activities and accommodation there.",
+        "note": "The plan has one visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-23.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-25.",
+        "note": "The plan ends on the requested date."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "org",
+        "quote": "No supported outbound or return transport exists in the search results (explicit no-flight results both ways); this must-have journey cannot be met and is disclosed as unmet rather than invented."
+      },
+      {
+        "gold_field": "dest",
+        "quote": "No supported outbound or return transport exists in the search results (explicit no-flight results both ways); this must-have journey cannot be met and is disclosed as unmet rather than invented."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

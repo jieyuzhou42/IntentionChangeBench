@@ -1,0 +1,212 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 27061,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, departs Kansas City 19:26, arrives Orlando 23:00, $250",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Kansas City before travel (self-catered)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "At home / own arrangement in Kansas City (self-catered)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Wai Yu Mun Ching, Orlando (Rating 3.6, $51/person) — late arrival, best available near budget",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Entire home/apt, $287/night, min 3 nights, review 3.0)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Wai Yu Mun Ching, Orlando (Rating 3.6, $51/person) — best available breakfast option",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Veg O Non, Orlando (Rating 3.1, $45/person)",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pure Bliss, Orlando (Rating 3.0, $84/person)",
+        "record_name": "Pure Bliss",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Entire home/apt, $287/night)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3629193, departs Orlando 17:43, arrives Kansas City 20:46, $299",
+        "record_name": "F3629193",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Veg O Non, Orlando (Rating 3.1, $45/person)",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Pure Bliss, Orlando (Rating 3.0, $84/person)",
+        "record_name": "Pure Bliss",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (billed night 3 per user's offer, $287)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1, Day 2, and Day 3.",
+        "note": "The plan has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! has maximum occupancy 2; it is booked for each listed accommodation night.",
+        "note": "The listing capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is from Kansas City to Orlando.",
+        "note": "The plan begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Day 1 arrives in Orlando, and the intervening day is in Orlando.",
+        "note": "Orlando is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Orlando between Kansas City outbound and return travel.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-07; the outbound flight record F3998497 is for 2022-03-07.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is dated 2022-03-09; the return flight record F3629193 is for 2022-03-09.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3998497 from Kansas City to Orlando; the record gives departure 19:26 and arrival 23:00.",
+        "note": "The requirement is to self-drive using one's own car, not fly."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3629193 from Orlando to Kansas City; the record gives departure 17:43 and arrival 20:46.",
+        "note": "The requirement is to self-drive using one's own car, not fly."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Accommodation is listed on all three itinerary days. BKLYN Brownstone- Glam Getaway! has a minimum stay of 3 nights, and Day 3 says the third night is billed.",
+        "note": "The three listed accommodation nights meet the requested stay; the requirement permits paying for a night after departure."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan uses flights on March 7 and March 9 rather than intercity driving, and lists The Wheel at ICON Park / Ripley's Believe It or Not! on March 9 before the flight.",
+        "note": "March 7 and March 9 are not reserved for driving, and sightseeing is listed on a day other than March 8."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan books flights F3998497 and F3629193, which are flight records for the requested city pairs.",
+        "note": "The preferred mode is flying, and the plan uses flights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! is recorded as Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "The selected restaurants' record ratings are Wai Yu Mun Ching 3.6, Veg O Non 3.1, and Pure Bliss 3.0.",
+        "note": "Every selected restaurant meal is below the required 4.0 rating."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The selected restaurants' recorded Cuisines are Tea, Pizza, Desserts; BBQ, Mexican, Pizza, Desserts; and BBQ, Bakery, Pizza, Desserts. None includes Fast Food.",
+        "note": "No selected Orlando restaurant meal carries a Fast Food tag in its record."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 8, breakfast is Wai Yu Mun Ching, lunch is Veg O Non, and dinner is Pure Bliss.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "the user requires restaurant rating ≥ 4.0 and no Fast Food tag. Only one restaurant meets 4.0 (Turquoise Villa), but it is tagged Fast Food and is therefore excluded. No other restaurant in the results reaches 4.0 without Fast Food."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31873,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, Charlotte to Baton Rouge, ~11h13m, 1,239 km, cost $61",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-catering / packed food (en route)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jimmy Jack's Rib Shack, Baton Rouge",
+        "record_name": "Jimmy Jack's Rib Shack",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely West Village 1 BR - Quiet and Comfortable, Baton Rouge",
+        "record_name": "Lovely West Village 1 BR - Quiet and Comfortable",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Fifth Street Bagelry",
+        "record_name": "Fifth Street Bagelry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Bluebird Diner",
+        "record_name": "Bluebird Diner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Zen Japanese Steakhouse and Sushi Bar",
+        "record_name": "Zen Japanese Steakhouse and Sushi Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely West Village 1 BR - Quiet and Comfortable, Baton Rouge",
+        "record_name": "Lovely West Village 1 BR - Quiet and Comfortable",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving, Baton Rouge to New Orleans, ~1h17m, 131 km, cost $6",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Fifth Street Bagelry",
+        "record_name": "Fifth Street Bagelry",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-catering / packed food (en route)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Gupha, New Orleans",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Harlem Deco, New Orleans",
+        "record_name": "Harlem Deco,",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Gupha",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Harlem Deco, New Orleans",
+        "record_name": "Harlem Deco,",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving, New Orleans to Charlotte, ~10h27m, 1,148 km, cost $57",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Gupha",
+        "record_name": "Gupha",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Self-catering / packed food (en route)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Baton Rouge and New Orleans.",
+        "note": "These are two different Louisiana cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Lovely West Village 1 BR - Quiet and Comfortable is listed as Entire home/apt; Harlem Deco, is listed as Private room.",
+        "note": "The Baton Rouge accommodation does not meet the private-room requirement."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Lovely West Village 1 BR - Quiet and Comfortable and Harlem Deco, both list 'No visitors'; neither lists 'No parties'.",
+        "note": "The listings do not prohibit parties."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "All listed travel legs are self-driving; the candidate transportation records match the Charlotte–Baton Rouge, Baton Rouge–New Orleans, and New Orleans–Charlotte routes.",
+        "note": "No flight is used."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "sacrificing the private-room preference for that city."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

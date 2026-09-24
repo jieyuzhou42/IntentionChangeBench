@@ -1,0 +1,160 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2812.0,
+      "budget": 3200,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": false,
+      "minimum_nights": [
+        "New York City!! Times Square Home!!!: 1 consecutive night(s) booked, minimum 3",
+        "Delight in Your Home Away from Home in NYC!: 1 consecutive night(s) booked, minimum 2"
+      ],
+      "capacity": [
+        "day 1 New York City!! Times Square Home!!!: 4 travelers, maximum occupancy 3"
+      ]
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20009,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 3200
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": 4
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "activity",
+        "value": "2 attractions"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dining_style",
+        "value": "one rating 4+"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "dining_style 2",
+        "value": "inexpensive"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "cuisine",
+        "value": " French and American"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "my mother has limited walking"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "my mother needs door-to-door transportation"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "my mother needs regular seated breaks"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Limit each day to two nearby attractions.",
+        "source_turn": 1,
+        "quote": "limit each day to two nearby attractions"
+      },
+      {
+        "kind": "free_time",
+        "date": null,
+        "requirement": "Include regular seated breaks.",
+        "source_turn": 1,
+        "quote": "needs door-to-door transportation and regular seated breaks"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Prioritize well-reviewed restaurants over extra sightseeing.",
+        "source_turn": 2,
+        "quote": "Let’s prioritize well-reviewed restaurants over French and American variety or extra sightseeing"
+      },
+      {
+        "kind": "include",
+        "date": null,
+        "requirement": "Plan one sit-down meal rated at least 4.0 each day.",
+        "source_turn": 2,
+        "quote": "with one sit-down meal rated at least 4.0 each day"
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "entities.entity_2.constraints.mobility",
+        "reason": "A traveler's accessibility or mobility need cannot be audited from the records: out of scope."
+      }
+    ],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan lists Day 1, Day 2, and Day 3."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "violated",
+        "evidence": "The Day 1 accommodation name does not match a candidate listing, so its capacity cannot satisfy the four-person requirement. The matched Day 2 listing has maximum occupancy 5."
+      },
+      {
+        "gold_field": "activity",
+        "status": "violated",
+        "evidence": "The reference plan lists one attraction on each day, not two attractions."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "satisfied",
+        "evidence": "Irish Democrat is listed for a meal on each day and has an Aggregate Rating of 4.4."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "status": "violated",
+        "evidence": "Several listed meal names, including Syall Kotian Da Dhaba, GoGourmet, and Ama Rabsel House, have no matching candidate record from which to verify inexpensive cost."
+      },
+      {
+        "gold_field": "cuisine",
+        "status": "violated",
+        "evidence": "The matched restaurant meals do not establish a French-and-American cuisine experience; Irish Democrat lists Tea, Cafe, Bakery, and Fast Food, while Bablu Chinese Food lists Pizza and BBQ. Other listed meals lack matching records."
+      }
+    ],
+    "annotation_issues": [
+      "The gold cuisine value retains French and American, although the latest user turn explicitly says to choose any cuisine over French and American variety.",
+      "The gold activity value says \"2 attractions,\" while the gold delta says the sightseeing limit was overridden to one major attraction per day.",
+      "The Day 1 reference-plan accommodation, \"New York City!! Times Square Home!!!\", has no exact match in the candidate accommodation records, preventing verification of its attributes and capacity."
+    ]
+  },
+  "out_of_scope_fields": [
+    "entities.entity_2.constraints.mobility"
+  ]
+}

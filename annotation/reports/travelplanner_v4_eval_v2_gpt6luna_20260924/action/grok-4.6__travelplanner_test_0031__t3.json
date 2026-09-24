@@ -1,0 +1,232 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 25035,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336, Belleville to Las Vegas, depart 12:29, arrive 14:04",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Cakes At Bhawanas",
+        "record_name": "Cakes At Bhawanas",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park!",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cakes At Bhawanas",
+        "record_name": "Cakes At Bhawanas",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park!",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Las Vegas toward Belleville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Self-driving, arriving Belleville",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 27, 28, 29, and 30, 2022.",
+        "note": "There are four itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3 on each of the two nights.",
+        "note": "The listing capacity covers two travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists OriginCityName Belleville.",
+        "note": "The plan starts from Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName Las Vegas.",
+        "note": "Las Vegas is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Las Vegas as its destination city and shows the return journey to Belleville.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is March 27, 2022, and the flight record's FlightDate is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is March 30, 2022, with self-driving and arrival in Belleville.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is listed from Belleville to Las Vegas on 2022-03-27.",
+        "note": "The flight record matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists self-driving from Las Vegas toward Belleville on March 29 and self-driving with arrival in Belleville on March 30.",
+        "note": "The plan specifies the requested self-drive return across both dates."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 27 and March 28, and none is listed on the departure/return days.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! is listed as Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The booked accommodation meets the 5.0 rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen has Aggregate Rating 4.4 and Cakes At Bhawanas has Aggregate Rating 3.5.",
+        "note": "Every restaurant meal listed uses a restaurant rated at least 3.0."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen's Cuisines do not include Fast Food; Cakes At Bhawanas' Cuisines do not include Fast Food.",
+        "note": "No listed restaurant meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 28, breakfast and lunch are both Ethos Vegan Kitchen; dinner is Cakes At Bhawanas.",
+        "note": "Only two different restaurants are listed across the three meals, not three."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attractions are listed as The Mob Museum in the morning and The Neon Museum Las Vegas after 16:00.",
+        "note": "Neither planned attraction falls within 14:00–16:00."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's house_rules include No smoking.",
+        "note": "The listing prohibits smoking as requested."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Cakes At Bhawanas' Cuisines include Indian.",
+        "note": "The March 28 dinner carries the required Indian tag."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Ethos Vegan Kitchen's Cuisines include Mediterranean.",
+        "note": "The March 28 lunch carries the required Mediterranean tag."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 28 attraction text lists The Mob Museum in the morning and The Neon Museum Las Vegas after 16:00.",
+        "note": "Both optional museums are included outside the 14:00–16:00 interval."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "satisfied",
+        "evidence": "The attractions are scheduled before 14:00 and after 16:00 on March 28.",
+        "note": "No sightseeing for the sister is planned during her unavailable interval."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": ">= 3.0 / no-Fast-Food meals are unavailable after leaving Vegas because no en-route restaurants are in the data"
+      },
+      {
+        "gold_field": "dining_style",
+        "quote": ">= 3.0 / no-Fast-Food meals are unavailable after leaving Vegas because no en-route restaurants are in the data"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

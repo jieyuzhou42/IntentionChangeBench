@@ -1,0 +1,125 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21453,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 from Belleville (12:29-14:04), $296",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Two real bedrooms near Central Park (Entire home/apt, $731, rating 3, max occupancy 5)",
+        "record_name": "Two real bedrooms near Central Park",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Two real bedrooms near Central Park (Entire home/apt, $731, rating 3, max occupancy 5)",
+        "record_name": "Two real bedrooms near Central Park",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive (personal vehicle)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "violated",
+        "evidence": "The itinerary contains March 27, March 28, and March 29 only.",
+        "note": "The required four-day plan is not represented in the itinerary."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5 on both accommodation nights.",
+        "note": "The listing's capacity covers two travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Belleville as the origin; the return is planned by personal vehicle.",
+        "note": "The plan originates in Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Las Vegas as the destination, and the first two itinerary days are in Las Vegas.",
+        "note": "The destination is Las Vegas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary names Las Vegas and then travel en route to Belleville.",
+        "note": "Only one destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and flight record date are 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "The final itinerary day is 2022-03-29; there is no March 30 itinerary day.",
+        "note": "The plan does not extend through the required end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is from Belleville to Las Vegas on 2022-03-27, departing 12:29 and arriving 14:04.",
+        "note": "The listed flight matches the required outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary lists “Drive (personal vehicle)” on 2022-03-29 only.",
+        "note": "The plan does not schedule the self-drive across both March 29 and March 30."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-27 and 2022-03-28.",
+        "note": "These are the two requested accommodation nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's record gives room type “Entire home/apt.”",
+        "note": "The listing matches the required room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The booked listing's record gives review rate number 3; the requirement is 5.",
+        "note": "The listing is below the required rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "The accommodation rating requirement of 5.0 was sacrificed"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "model": "nova-pro",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23738,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive to Philadelphia.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Brothers Dhaba",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive back to Ithaca.",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 1, March 2, and March 3, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2 on both nights.",
+        "note": "The combined nightly capacity hosts one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts in Ithaca and says to drive to Philadelphia.",
+        "note": "The origin is Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says to drive to Philadelphia and lists Philadelphia as the city on March 2 and March 3.",
+        "note": "The destination is Philadelphia."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Philadelphia is the only destination city listed.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-01.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-03.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 1 itinerary says “Drive to Philadelphia”; the dialogue specifies driving oneself in one's own car.",
+        "note": "The outbound mode, route, and date match."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 3 itinerary says “Drive back to Ithaca.”",
+        "note": "The return mode, route, and date match."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing appears on March 1 and March 2, with no accommodation listed on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Top floor of an amazing duplex is listed as “Private room.”",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house rules say “No parties.”",
+        "note": "The requested prohibition is present."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe has Aggregate Rating 3.6; Brothers Dhaba has Aggregate Rating 3.8.",
+        "note": "Both restaurant meals meet the 3.5 minimum."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe's Average Cost is 47 and Brothers Dhaba's is 52.",
+        "note": "Both restaurant meals cost less than 60 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe's Cuisines are “Tea, Pizza, Italian, BBQ, Cafe”; Brothers Dhaba's are “Cafe, Desserts, Seafood.” Neither includes Fast Food.",
+        "note": "No listed Philadelphia restaurant meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "March 2 lists Hong Kong Cafe for lunch and Brothers Dhaba for dinner; breakfast is empty.",
+        "note": "The day does not include three different restaurants across breakfast, lunch, and dinner."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe's Cuisines include Italian.",
+        "note": "There is an Italian-tagged meal on March 2."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "unknown",
+        "evidence": "The March 3 plan says “Drive back to Ithaca,” but gives no departure or arrival time; the transportation records only state that no flight is available.",
+        "note": "The plan does not provide a verifiable return time before 18:00."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 2 attraction list gives “Philadelphia Museum of Art, Liberty Bell” in that order.",
+        "note": "The requested attractions are listed in the requested order; the format does not provide clock times."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Hong Kong Cafe's Cuisines include Italian.",
+        "note": "The March 2 lunch carries an Italian tag."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Brothers Dhaba's Cuisines include Seafood.",
+        "note": "The March 2 dinner carries a Seafood tag."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The transportation records provide no driving duration or arrival-time information, so the March 3 return-before-18:00 requirement cannot be verified."
+    ]
+  }
+}

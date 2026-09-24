@@ -1,0 +1,171 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24611,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Charlotte to New Orleans (10h 28m, ~1149 km, $57)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "record_name": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "revised": true
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Shenanigan's Irish Pub",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "record_name": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Town Table Restaurant",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "New Sukh Sagar",
+        "record_name": "New Sukh Sagar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sage",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "record_name": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "revised": true
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "PKay",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Jimmy's Pancake House",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "The Fish House",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "record_name": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "revised": true
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Flight from New Orleans to Charlotte (not available per search results)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "I'll use the 'Gorgeous exposed-brick 2 BR Apt in LES!' (entire home/apt, $1187 for 2 nights)",
+        "effect": "Selected this listing for the New Orleans accommodation slots on March 9–12."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary bases the trip in New Orleans; the other city labels are en route.",
+        "note": "It visits one city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Gorgeous exposed-brick 2 BR Apt in LES! has room type Entire home/apt.",
+        "note": "The selected listing meets the preferred room type."
+      },
+      {
+        "gold_field": "required_cities",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation are in New Orleans.",
+        "note": "New Orleans is the only planned destination."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says self-driving from Charlotte to New Orleans on March 9; the record lists self-driving from Charlotte to New Orleans, 10 hours 28 minutes.",
+        "note": "The planned outbound mode, route, and date match."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary lists a flight from New Orleans to Charlotte, but the transportation record says, 'There is no flight from New Orleans to Charlotte on 2022-03-13.'",
+        "note": "The requested return flight is unavailable in the records and the plan does not provide a valid flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary schedules Mardi Gras World on March 13, while the activity requirement says not to schedule sightseeing that day, including Mardi Gras World.",
+        "note": "March 13 is not kept free of sightseeing for the airport transfer and flight home."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "return_transportation",
+        "quote": "search shows no flight available from New Orleans to Charlotte on March 13"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

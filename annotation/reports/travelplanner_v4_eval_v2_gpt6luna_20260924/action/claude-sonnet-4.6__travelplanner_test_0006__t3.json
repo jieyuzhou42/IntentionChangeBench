@@ -1,0 +1,185 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0006",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 3,
+  "prompt_chars": 22264,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3804883, Phoenix→Billings, departs 12:24, arrives 15:50, $359",
+        "record_name": "F3804883",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in Phoenix before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "At Phoenix airport / en route (self-arranged)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Hong Kong Express, Billings (BBQ, Mediterranean, Seafood; avg cost $43; rating 3.8)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "和缘浪漫民宿 (Private room, max 1 guest, $897/night)",
+        "record_name": "和缘浪漫民宿",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tsui Wong, Billings (Desserts, Seafood; avg cost $40; rating 3.8)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Elation, Billings (Fast Food, Bakery, Seafood; avg cost $87; rating 3.8)",
+        "record_name": "Elation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Hong Kong Express, Billings (BBQ, Mediterranean, Seafood; avg cost $43; rating 3.8)",
+        "record_name": "Hong Kong Express",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "和缘浪漫民宿 (Private room, max 1 guest, $897/night)",
+        "record_name": "和缘浪漫民宿",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3579622, Billings→Phoenix, departs 17:28, arrives 18:57, $290",
+        "record_name": "F3579622",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Tsui Wong, Billings (Desserts, Seafood; avg cost $40; rating 3.8)",
+        "record_name": "Tsui Wong",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Elation, Billings (Fast Food, Bakery, Seafood; avg cost $87; rating 3.8)",
+        "record_name": "Elation",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 18, March 19, and March 20, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "和缘浪漫民宿 has maximum occupancy 1 and is booked for each of the two nights.",
+        "note": "The booked capacity hosts one traveler on every night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 has OriginCityName Phoenix.",
+        "note": "The trip departs from Phoenix."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804883 has DestCityName Billings.",
+        "note": "The outbound destination is Billings."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Billings before returning to Phoenix.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F3804883 has FlightDate 2022-03-18.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F3579622 has FlightDate 2022-03-20.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3804883 travels Phoenix to Billings on 2022-03-18; record times are 12:24–15:50.",
+        "note": "The booked flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3579622 travels Billings to Phoenix on 2022-03-20; record times are 17:28–18:57.",
+        "note": "The booked flight matches the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "和缘浪漫民宿 is listed for March 18 and March 19; March 20 has no accommodation.",
+        "note": "The plan books the two requested nights, with none needed on departure day."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing 和缘浪漫民宿 has room type Private room.",
+        "note": "The requested Entire home/apt room type is not booked."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Hong Kong Express, Tsui Wong, and Elation each have Aggregate Rating 3.8 in the records.",
+        "note": "Every restaurant meal listed is below the required 4.0; self-arranged meals do not affect this judgment."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "the user requested an entire home/apt, but both entire home/apt options in Billings have minimum-night requirements (3 and 7 nights) that exceed the 2-night stay — this requirement cannot be met."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Restaurant rating ≥ 4.0 cannot be met: no Billings restaurant in the results scores 4.0 or above"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

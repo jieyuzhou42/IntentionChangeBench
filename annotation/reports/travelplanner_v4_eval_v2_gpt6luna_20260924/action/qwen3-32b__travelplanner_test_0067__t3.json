@@ -1,0 +1,154 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21946,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Departing Flight F3618600 at 13:06",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Arrival at 15:39",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Maharaja Restaurant (Rating: 3.6)",
+        "record_name": "Maharaja Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "The Wielingen",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Kabab Roll Cafe (Rating: 3.8)",
+        "record_name": "Kabab Roll Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Cafeast (Rating: 3.0)",
+        "record_name": "Cafeast",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "The Wielingen",
+        "record_name": "The Wielingen",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Departing Flight F3619128 at 16:10",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Angan Bakery & Cafe (Rating: 2.9, but accepted due to lack of better-rated options)",
+        "record_name": "Angan Bakery & Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 16, March 17, and March 18, 2022.",
+        "note": "The trip spans the requested three calendar days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen has maximum occupancy 2.",
+        "note": "The booked accommodation can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 departs Fort Lauderdale; flight F3619128 returns to Fort Lauderdale.",
+        "note": "The plan starts and returns to the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 arrives in Charlotte Amalie, and the itinerary lists Charlotte Amalie as the destination.",
+        "note": "The requested destination is included."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation city is Charlotte Amalie.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 has FlightDate 2022-03-16.",
+        "note": "The outbound trip begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 has FlightDate 2022-03-18.",
+        "note": "The return trip is on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3618600 departs Fort Lauderdale at 13:06 on 2022-03-16 and arrives in Charlotte Amalie.",
+        "note": "The booked outbound flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3619128 departs Charlotte Amalie at 16:10 on 2022-03-18 and arrives in Fort Lauderdale.",
+        "note": "The booked return flight matches the requested route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Wielingen is listed for the nights of 2022-03-16 and 2022-03-17.",
+        "note": "The plan books both requested nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Cafeast has Aggregate Rating 3.0 and Angan Bakery & Cafe has Aggregate Rating 2.9; both are below 3.5.",
+        "note": "These recorded restaurant meals fail the minimum rating requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "The 2022-03-18 breakfast choice sacrifices the 3.5 minimum rating due to fewer higher-rated options available"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

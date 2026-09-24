@@ -1,0 +1,113 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22818,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983 from Wilmington to New York, departing at 20:26, arriving at 22:05",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "record_name": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3641657 from New York to Wilmington, departing at 16:45, arriving at 18:28",
+        "record_name": "F3641657",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has dates 2022-03-12, 2022-03-13, and 2022-03-14.",
+        "note": "The plan covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The only booked listing, Modern Brooklyn oasis (PRIVATE ROOM), has maximum occupancy 1; the plan has no accommodation on 2022-03-12.",
+        "note": "The booked listing hosts one traveler on its listed night, but there is no lodging booked for every requested night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 departs Wilmington.",
+        "note": "The outbound flight originates in Wilmington."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 arrives in New York and flight F3641657 departs New York.",
+        "note": "The itinerary travels to and returns from New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination city is New York.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 has FlightDate 2022-03-12.",
+        "note": "The trip begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 has FlightDate 2022-03-14.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 goes from Wilmington to New York on 2022-03-12, departing at 20:26.",
+        "note": "The recorded flight matches the requested route, date, and late departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 goes from New York to Wilmington on 2022-03-14, departing at 16:45.",
+        "note": "The recorded flight matches the requested route, date, and late-afternoon departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-13; 2022-03-12 has '-'.",
+        "note": "Only one of the requested nights is booked."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Modern Brooklyn oasis (PRIVATE ROOM) has review rate number 5.",
+        "note": "The listing's rating meets the preferred rating of 4."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Modern Brooklyn oasis (PRIVATE ROOM) has room type Private room.",
+        "note": "The requested room type is Entire home/apt."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

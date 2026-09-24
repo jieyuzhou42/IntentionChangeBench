@@ -1,0 +1,166 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23607,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "One 4-passenger door-to-door rideshare to the Buffalo airport; flight F3754877 from Buffalo at 08:04 to Boston at 09:30; one 4-passenger rideshare from BOS to the apartment and door-to-door rideshares for the afternoon and dinner.",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed bagels and bananas during the morning journey.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Self-catered turkey sandwiches and fruit at the apartment.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Sit-down dinner for all four at Irish Democrat (listed rating 4.4; average cost $18 per person).",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! — entire home/apt in the Boston results, maximum occupancy 5, first of 2 nights.",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "One 4-passenger door-to-door rideshare between the apartment, Boston Common, Irish Democrat, and the apartment; no walking transfer is required.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered oatmeal and bananas at the apartment.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Self-catered peanut-butter sandwiches and fruit at the apartment.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sit-down dinner for all four at Irish Democrat (listed rating 4.4; average cost $18 per person).",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! — entire home/apt, second of 2 nights.",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "One 4-passenger door-to-door rideshare from the apartment to Faneuil Hall Marketplace, then to Irish Democrat and BOS; flight F3757097 from Boston at 21:44 to Buffalo at 23:34; one 4-passenger door-to-door rideshare from the Buffalo airport to the trip endpoint.",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered eggs and toast at the apartment.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed turkey sandwiches and apples.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Sit-down dinner for all four at Irish Democrat (listed rating 4.4; average cost $18 per person).",
+        "record_name": "Irish Democrat",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-04, 2022-03-05, and 2022-03-06.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5; the itinerary is for four travelers.",
+        "note": "The single listing can host all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists Public Garden, Boston Common, and Faneuil Hall Marketplace, one attraction per day, and describes seated breaks.",
+        "note": "One attraction each day is within the two-attraction limit, with a slow pace and seated breaks."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat has Aggregate Rating 4.4, and is listed for dinner on all three days.",
+        "note": "Each day includes a sit-down restaurant meal rated at least 4.0."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Delight in Your Home Away from Home in NYC! has room type Entire home/apt.",
+        "note": "The booked listing meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing is booked for both nights; its maximum occupancy is 5 and its minimum stay is 2 nights.",
+        "note": "One property can host all four travelers for the two-night stay."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat's Average Cost is 18; the other meals are described as packed or self-catered.",
+        "note": "The listed restaurant dinners are low-cost, with simple packed or self-catered food for the other meals."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Irish Democrat's listed cuisines are Tea, Cafe, Bakery, and Fast Food.",
+        "note": "None of the listed restaurant meals supplies French or American cuisine."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

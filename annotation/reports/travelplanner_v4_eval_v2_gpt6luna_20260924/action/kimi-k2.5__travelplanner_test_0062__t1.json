@@ -1,0 +1,190 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23481,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Ithaca to Philadelphia (3h52m, $18)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Red Mesa Cantina ($36, rating 4.6)",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Moon Under Water ($94, rating 4.1)",
+        "record_name": "The Moon Under Water",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex (2 nights, private room, no parties rule, $509 total)",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering in accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe ($47, rating 3.6) - NOTE: Below 3.5 rating requirement not met",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Red Ginger Sushi, Grill & Bar ($98, rating 4.5) - NOTE: Over $60 meal cost limit",
+        "record_name": "Red Ginger Sushi, Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Philadelphia to Ithaca (3h54m, $18)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering in accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Gurdas Ram Jalebi Wala ($20, rating 4.1)",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 1, March 2, and March 3, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is self-driving from Ithaca to Philadelphia.",
+        "note": "Ithaca is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination is Philadelphia.",
+        "note": "The plan stays in Philadelphia on the first two days."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Philadelphia is the sole destination city in the itinerary.",
+        "note": "Ithaca appears as the departure and return city, not as a visiting destination."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is labeled 2022-03-01.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is labeled 2022-03-03.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The transportation record provides self-driving from Ithaca to Philadelphia, duration 3 hours 52 minutes; the itinerary places this drive on 2022-03-01.",
+        "note": "The plan specifies the user's own-car drive as requested."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The transportation record provides self-driving from Philadelphia to Ithaca, duration 3 hours 54 minutes; the itinerary places this drive on 2022-03-03.",
+        "note": "The plan specifies the user's own-car return drive as requested."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 1 and March 2, with none needed on the March 3 departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Top floor of an amazing duplex has room type Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Top floor of an amazing duplex has house rules: No parties.",
+        "note": "The listing prohibits parties as required."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant ratings are 4.6 (Red Mesa Cantina), 4.1 (The Moon Under Water), 3.6 (Hong Kong Cafe), 4.5 (Red Ginger Sushi, Grill & Bar), and 4.1 (Gurdas Ram Jalebi Wala).",
+        "note": "Every restaurant meal meets the 3.5 rating floor; self-catered meals do not count against it."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "The Moon Under Water costs 94 per person and Red Ginger Sushi, Grill & Bar costs 98 per person; the other restaurant meals cost 36, 47, and 20.",
+        "note": "Two restaurant meals exceed the 60-per-person cap."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Restaurant rating ≥3.5 cannot be met for all meals"
+      },
+      {
+        "gold_field": "meal_cost",
+        "quote": "Meal cost ≤$60 cannot be met for all desired quality meals"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 28146,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Moab to Denver",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Harlem cozy nights",
+        "record_name": "Harlem cozy nights",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Denver to Gunnison",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Gunnison to Moab",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary assigns March 19-20 to Denver and March 21-22 to Gunnison.",
+        "note": "It visits the two requested cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Harlem cozy nights is Entire home/apt; Full-size loft bed in East Village is Private room.",
+        "note": "The preferred Entire home/apt room type is not met in Gunnison."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Harlem cozy nights has review rate number 4; Full-size loft bed in East Village has review rate number 4.",
+        "note": "Both booked listings meet the 4+ rating preference."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary specifies self-driving from Moab to Denver, Denver to Gunnison, and Gunnison to Moab; candidate reference text identifies self-driving for these routes.",
+        "note": "Self-driving is consistent with the requested own-car transportation."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary places Denver Zoo on March 19 and I.O.O.F. Park on March 21, while the activity requirements say to protect travel and rest time and not schedule main sightseeing on those dates.",
+        "note": "The city assignments cover two days each, but sightseeing is scheduled on protected travel/rest days."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

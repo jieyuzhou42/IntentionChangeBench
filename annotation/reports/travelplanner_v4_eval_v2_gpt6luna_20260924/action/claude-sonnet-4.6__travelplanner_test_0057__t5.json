@@ -1,0 +1,180 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23440,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164, depart Houston 09:50, arrive Reno 12:04, $688",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Before departure at Houston (self-catered / airport, not counted against Reno restaurant pool)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Queens Cakes (Bakery, Desserts, Indian, BBQ; rating 3.5; avg cost $58) — Fast Food excluded; rating 3.5 falls short of 4.0 preference; best available non-Fast-Food option",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Olive Bistro (Tea, Cafe, Pizza, BBQ; rating 3.9; avg cost $66) — no Fast Food tag; rating 3.9 below 4.0 preference",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse (Entire home/apt, min 2 nights, review 5.0, $361/night)",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Queens Cakes (Bakery, Desserts, Indian, BBQ; rating 3.5; avg cost $58) — different from lunch and dinner",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mustake Multicuisine Restaurant (Tea, Bakery, Pizza, Mediterranean; rating 3.7; avg cost $91) — no Fast Food tag; different from breakfast and dinner",
+        "record_name": "Mustake Multicuisine Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Olive Bistro (Tea, Cafe, Pizza, BBQ; rating 3.9; avg cost $66) — no Fast Food tag; different from breakfast and lunch; Olive Bistro repeats from Day 1 but user's variety constraint applies only within Day 2 meals",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse (night 2 of 2, $361)",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705, depart Reno 12:58, arrive Houston 18:31, $446",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Mustake Multicuisine Restaurant (Tea, Bakery, Pizza, Mediterranean; rating 3.7; avg cost $91) — no Fast Food tag",
+        "record_name": "Mustake Multicuisine Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 11, 12, and 13, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Reno listing, A bright, beautiful treehouse, has maximum occupancy 2.",
+        "note": "Its capacity covers the one traveler for both booked nights."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has OriginCityName Houston.",
+        "note": "The outbound trip starts in Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has DestCityName Reno; the return flight originates in Reno.",
+        "note": "Reno is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Reno between the Houston outbound and return flights.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has FlightDate 2022-03-11.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3875705 has FlightDate 2022-03-13.",
+        "note": "The return is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3879164 is Houston to Reno on 2022-03-11, departing 09:50.",
+        "note": "The booked outbound flight matches the requested route, date, and departure."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3875705 is Reno to Houston on 2022-03-13, departing 12:58.",
+        "note": "The booked return flight matches the requested route, date, and departure."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "A bright, beautiful treehouse is listed on March 11 and March 12, and its minimum stay is 2 nights.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Queens Cakes is rated 3.5, Olive Bistro 3.9, and Mustake Multicuisine Restaurant 3.7 in the restaurant records.",
+        "note": "Every restaurant meal in the plan is below the preferred rating of 4."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Reno restaurant records show Queens Cakes (Bakery, Desserts, Indian, BBQ), Olive Bistro (Tea, Cafe, Pizza, BBQ), and Mustake Multicuisine Restaurant (Tea, Bakery, Pizza, Mediterranean); none has a Fast Food tag.",
+        "note": "No listed Reno restaurant meal carries the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 12, breakfast is Queens Cakes, lunch is Mustake Multicuisine Restaurant, and dinner is Olive Bistro.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "the rating floor (4.0) is sacrificed"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

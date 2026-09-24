@@ -1,0 +1,213 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23701,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4046779, Moline 06:56 to Dallas 09:08, $178",
+        "record_name": "F4046779",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings (rating 4.4, average cost $17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "1918 Bistro & Grill (rating 4.4, average cost $90)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Cafe Gatherings (rating 4.4, average cost $17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "*Fresh Budget Room, 2-night stay, $262 per night",
+        "record_name": "*Fresh Budget Room",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local Dallas transportation; cost not provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings (rating 4.4, average cost $17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Yanki Sizzlers (rating 4.1, average cost $96)",
+        "record_name": "Yanki Sizzlers",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "1918 Bistro & Grill (rating 4.4, average cost $90)",
+        "record_name": "1918 Bistro & Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "*Fresh Budget Room, second night",
+        "record_name": "*Fresh Budget Room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4047063, Dallas 18:48 to Moline 20:40, $272",
+        "record_name": "F4047063",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings (rating 4.4, average cost $17)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Yanki Sizzlers (rating 4.1, average cost $96)",
+        "record_name": "Yanki Sizzlers",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Cafe Gatherings (rating 4.4, average cost $17) before the evening flight",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 25, 26, and 27, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "*Fresh Budget Room has maximum occupancy 1; it is booked for both nights. The dialogue specifies a single individual.",
+        "note": "The booked accommodation can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F4046779 lists OriginCityName Moline.",
+        "note": "The trip starts in Moline."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F4046779 lists DestCityName Dallas.",
+        "note": "The destination is Dallas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Dallas as the destination and includes no other visit city.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F4046779 has FlightDate 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record F4047063 has FlightDate 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4046779 is Moline to Dallas on 2022-03-25, departing 06:56 and arriving 09:08.",
+        "note": "The recorded flight is early and on the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4047063 is Dallas to Moline on 2022-03-27, departing 18:48 and arriving 20:40.",
+        "note": "The recorded flight is in the evening and on the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books *Fresh Budget Room on March 25 and March 26, with no accommodation needed on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "*Fresh Budget Room is listed as a Private room.",
+        "note": "The preferred Entire home/apt room type is not met."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "*Fresh Budget Room has review rate number 4.",
+        "note": "The booked Dallas listing meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Cafe Gatherings is rated 4.4, 1918 Bistro & Grill 4.4, and Yanki Sizzlers 4.1 in the candidate records.",
+        "note": "Every restaurant meal in the itinerary meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The listed cuisines are Cafe Gatherings: Bakery, Indian, Desserts; 1918 Bistro & Grill: Tea, Pizza, BBQ, Seafood; Yanki Sizzlers: Cafe, French, Tea, Mediterranean.",
+        "note": "None of the planned restaurant meals carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 26, breakfast is Cafe Gatherings, lunch is Yanki Sizzlers, and dinner is 1918 Bistro & Grill.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "it is a private room rather than an entire home, so the no-sharing requirement is unmet."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

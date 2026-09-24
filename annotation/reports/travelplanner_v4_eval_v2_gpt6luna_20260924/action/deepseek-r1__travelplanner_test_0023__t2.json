@@ -1,0 +1,204 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21838,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Myrtle Beach (12h16m)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered (road trip)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Nice Room (Private room)",
+        "record_name": "Nice Room",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Raj Restaurant (Indian, $61)",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tucanos ($36)",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Nice Room (Private room)",
+        "record_name": "Nice Room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving return (12h27m)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 23, 24, and 25.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Nice Room has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is from Myrtle Beach.",
+        "note": "The itinerary starts from the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The first two itinerary days are in Syracuse; the outbound drive is from Myrtle Beach to Syracuse.",
+        "note": "The destination is Syracuse."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Syracuse is the only overnight and sightseeing city in the itinerary.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is March 23, 2022.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is March 25, 2022.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate record lists self-driving from Myrtle Beach to Syracuse, duration 12 hours 16 minutes; the itinerary places that drive on March 23.",
+        "note": "The outbound leg matches the requested mode, route, and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate record lists self-driving from Syracuse to Myrtle Beach, duration 12 hours 27 minutes; the itinerary places the return drive on March 25.",
+        "note": "The return leg matches the requested mode, route, and date."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary drives to Syracuse on March 23, lists Rosamond Gifford Zoo on March 24, and drives back on March 25.",
+        "note": "Sightseeing is confined to the only free day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Nice Room is booked on March 23 and March 24; its minimum stay is 2 nights.",
+        "note": "The itinerary books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Nice Room's recorded room type is Private room.",
+        "note": "The required type is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant has Aggregate Rating 3.1 and Tucanos has Aggregate Rating 4.",
+        "note": "Both recorded restaurant meals meet the 3.0 minimum; self-catered meals are not restaurant evidence."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant's Average Cost is 61 and Tucanos's is 36.",
+        "note": "Both restaurant meals are under 70 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant's Cuisines are French, Bakery, Indian, BBQ; Tucanos's are Pizza, BBQ, Desserts.",
+        "note": "Neither recorded restaurant meal has a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 24, breakfast is self-catered, lunch is Raj Restaurant, and dinner is Tucanos.",
+        "note": "Only two restaurant meals are listed, not three different restaurants across all three meals."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant's recorded Cuisines include Indian.",
+        "note": "An Indian-tagged meal is listed on March 24."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Nice Room's house_rules state No smoking.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "Rosamond Gifford Zoo is listed as the attraction on March 24 and appears in the Syracuse attraction records.",
+        "note": "The optional zoo visit is included on the requested day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

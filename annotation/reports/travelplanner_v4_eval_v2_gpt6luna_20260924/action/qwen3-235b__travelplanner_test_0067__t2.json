@@ -1,0 +1,168 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23686,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3618600 from Fort Lauderdale (13:06) to Charlotte Amalie (15:39), $291",
+        "record_name": "F3618600",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "No restaurant in Charlotte Amalie meets 4.0 rating requirement; no valid option selected",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "[301] 5 min WALK to Times Square",
+        "record_name": "[301] 5 min WALK to Times Square",
+        "revised": true
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "No restaurant in Charlotte Amalie meets 4.0 rating requirement; no valid option selected",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "No restaurant in Charlotte Amalie meets 4.0 rating requirement; no valid option selected",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "No restaurant in Charlotte Amalie meets 4.0 rating requirement; no valid option selected",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "[301] 5 min WALK to Times Square",
+        "record_name": "[301] 5 min WALK to Times Square",
+        "revised": true
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3619128 from Charlotte Amalie (16:10) to Fort Lauderdale (18:55), $263",
+        "record_name": "F3619128",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "No restaurant in Charlotte Amalie meets 4.0 rating requirement; no valid option selected",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "No restaurant in Charlotte Amalie meets 4.0 rating requirement; no valid option selected",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "accommodation is tentatively set to [301] 5 min WALK to Times Square for 2 nights ($1,578)",
+        "effect": "Selects [301] 5 min WALK to Times Square for the accommodation slots on March 16 and March 17."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 16, 17, and 18, 2022.",
+        "note": "The plan has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "[301] 5 min WALK to Times Square has a maximum occupancy of 2.",
+        "note": "The booked listing can host the 1 traveler on both nights."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Fort Lauderdale as the origin city.",
+        "note": "The trip starts from Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Charlotte Amalie as the destination city.",
+        "note": "The itinerary's destination is Charlotte Amalie."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Charlotte Amalie as the destination on all three days.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3618600 has FlightDate 2022-03-16.",
+        "note": "The plan begins on March 16, 2022."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3619128 has FlightDate 2022-03-18.",
+        "note": "The plan ends on March 18, 2022."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3618600 departs Fort Lauderdale at 13:06 on 2022-03-16 and arrives in Charlotte Amalie at 15:39.",
+        "note": "It matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3619128 departs Charlotte Amalie at 16:10 on 2022-03-18 and arrives in Fort Lauderdale at 18:55.",
+        "note": "It matches the required route, date, and departure time."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The final plan books [301] 5 min WALK to Times Square on March 16 and March 17; its minimum stay is 1 night.",
+        "note": "The two booked accommodation nights match the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "No restaurant is selected for any meal slot. The highest restaurant Aggregate Rating in the records is 3.8.",
+        "note": "The requirement excludes places rated under 4.0; the plan selects no restaurant rated below that threshold."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Final plan sacrifices restaurant_rating (unmet)"
+      }
+    ],
+    "annotation_issues": [
+      "The accommodation records are labeled as being in Charlotte Amalie, but several listing names—including '[301] 5 min WALK to Times Square'—suggest locations elsewhere, making their actual location unclear."
+    ]
+  }
+}

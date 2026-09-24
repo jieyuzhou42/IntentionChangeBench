@@ -1,0 +1,192 @@
+{
+  "model": "grok-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 29949,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Moab to Denver, 5 hours 23 mins, 570 km, $28",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "The Urban Socialite, Denver",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fatty Bao - Asian Gastro Bar, Denver",
+        "record_name": "The Fatty Bao - Asian Gastro Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Al Yousuf, Denver",
+        "record_name": "Al Yousuf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Woods Spice, Denver",
+        "record_name": "Woods Spice",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Tasty Fare, Denver",
+        "record_name": "Tasty Fare",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Denver to Gunnison, 3 hours 39 mins, 323 km, $16",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "The Urban Socialite, Denver",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Mocha, Gunnison",
+        "record_name": "Mocha",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "SALT, Gunnison",
+        "record_name": "SALT",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Mocha, Gunnison",
+        "record_name": "Mocha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Happy Joe's Pizza & Ice Cream, Gunnison",
+        "record_name": "Happy Joe's Pizza & Ice Cream",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Cyber Hub Social, Gunnison",
+        "record_name": "Cyber Hub Social",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Gunnison to Moab, 4 hours 1 min, 380 km, $19",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Tughlaq, Gunnison",
+        "record_name": "Tughlaq",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Denver on March 19–20 and Gunnison on March 21–22.",
+        "note": "The itinerary includes two cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Denver's Peaceful, beautiful home away is Entire home/apt; Gunnison's Full-size loft bed in East Village is Private room.",
+        "note": "The booked accommodations are not Entire home/apt in both cities."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Peaceful, beautiful home away has review rate number 1; Full-size loft bed in East Village has review rate number 4.",
+        "note": "Denver's booked listing is below the 4+ rating requirement."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary specifies self-driving from Moab to Denver, Denver to Gunnison, and Gunnison to Moab; candidate reference text confirms self-driving for these routes.",
+        "note": "The listed transportation uses the traveler's own car."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Denver is the current city on March 19–20 and Gunnison on March 21–22, with the drive between cities on March 21.",
+        "note": "The plan assigns two days to each city."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "sacrificed the Gunnison apartment-type requirement by booking Full-size loft bed in East Village"
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "No supported option meets apartments rated 4+ for two nights in both cities"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

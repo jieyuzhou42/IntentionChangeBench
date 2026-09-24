@@ -1,0 +1,119 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 4792.0,
+      "budget": 5000,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 29478,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "$5,000 total"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "people_number",
+        "value": "3 travelers"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": "Private room"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "accommodation_rating",
+        "value": "3+"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "outbound_transportation",
+        "value": "Fly from Sioux Falls to Phoenix on March 16, 2022"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "outbound_transportation",
+        "value": "Arrive in Phoenix by 21:00 on March 16, 2022"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "intercity_transportation",
+        "value": "Fly from Phoenix to Flagstaff on March 18, 2022"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "intercity_transportation",
+        "value": "Arrive in Flagstaff by 12:00 on March 18, 2022"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "return_transportation",
+        "value": "The one-way visit ends in Flagstaff on March 20, 2022"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "No return journey belongs to this itinerary"
+      }
+    ],
+    "activity_requirements": [],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked Flagstaff listing has maximum occupancy 8 and the Phoenix listing has maximum occupancy 3; neither listing falls short of three travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "Both booked listings are recorded as Entire home/apt, not Private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The Flagstaff listing is rated 3 and the Phoenix listing is rated 5."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "F4045477 flies Sioux Falls to Phoenix on March 16 and arrives at 19:26, before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "status": "satisfied",
+        "evidence": "F3804854 flies Phoenix to Flagstaff on March 18 and arrives at 09:47, before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "violated",
+        "evidence": "Although Day 5 has no transportation listed, its current_city is Phoenix / Sioux Falls, implying a return to Sioux Falls despite the one-way itinerary ending in Flagstaff."
+      }
+    ],
+    "annotation_issues": [
+      "The reference plan's accommodation locations do not match the dialogue's requested sequence: the March 16–17 nights are assigned to a Flagstaff listing, while the March 18–19 nights are assigned to a Phoenix listing.",
+      "The latest user turn requests one place in each city that can hold all three travelers, and the dialogue specifies the same flights for the three travelers; the gold constraints record the traveler count but omit these listing-capacity and flight-party requirements.",
+      "The candidate accommodation records contain no listing in either city that simultaneously satisfies the private-room, 3+ rating, and capacity-for-three requirements."
+    ]
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,140 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "violated",
+      "total": 2172.0,
+      "budget": 2000,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21834,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 2000
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "required_cities",
+        "value": "Visit New Orleans."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "outbound_transportation",
+        "value": "Self-drive together from Charlotte to New Orleans on March 9, 2022."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "return_transportation",
+        "value": "Fly together from New Orleans to Charlotte on March 13, 2022."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "schedule",
+        "value": "Keep March 13, 2022 free of sightseeing, including Mardi Gras World."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "schedule",
+        "value": "Reserve March 13, 2022 for airport transfer and the flight home."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "The other person traveling with me cannot comfortably manage an intercity transfer during this short trip."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "The other person traveling with me should remain in the same accommodation with me."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Plan a 5-day trip from March 9 through March 13, 2022.",
+        "source_turn": 0,
+        "quote": "a 5-day travel itinerary ... from March 9th to March 13th, 2022"
+      },
+      {
+        "kind": "exclude",
+        "date": "2022-03-13",
+        "requirement": "Do not schedule sightseeing on March 13, including Mardi Gras World; reserve the day for the airport transfer and flight home.",
+        "source_turn": 2,
+        "quote": "reserve that final day for the airport instead of sightseeing, including Mardi Gras World"
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "entities.entity_2.constraints.mobility",
+        "reason": "This is a traveler's mobility need and concerns managing an intercity transfer; it is out of scope for the candidate-record audit."
+      }
+    ],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The reference plan is based in New Orleans after the Charlotte-to-New Orleans leg and lists no second destination city."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing, Cozy in Cobble Hill, is recorded as Entire home/apt."
+      },
+      {
+        "gold_field": "required_cities",
+        "status": "satisfied",
+        "evidence": "The plan visits and stays in New Orleans."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "violated",
+        "evidence": "The March 9 transportation slot is F3672402, not a self-drive. The candidate transportation records provide a Charlotte-to-New Orleans self-driving option, but the plan does not use it."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "violated",
+        "evidence": "March 13 has an empty transportation slot, so the plan does not include a flight from New Orleans to Charlotte."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "violated",
+        "evidence": "March 13 has no sightseeing, consistent with that part of the requirement, but the plan also leaves transportation blank and does not reserve the day for the airport transfer and flight home."
+      }
+    ],
+    "annotation_issues": [
+      "The gold_delta_this_turn budget says the new value is 5000, but the dialogue and gold_constraints specify a revised budget of 2000.",
+      "The candidate transportation results contain no New Orleans-to-Charlotte flight on March 13, 2022; the only result states that there is no flight on that date."
+    ]
+  },
+  "out_of_scope_fields": [
+    "entities.entity_2.constraints.mobility"
+  ]
+}

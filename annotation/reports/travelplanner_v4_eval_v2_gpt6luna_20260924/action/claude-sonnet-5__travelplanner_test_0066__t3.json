@@ -1,0 +1,182 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22711,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive (no flight available for this route/date)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed road meal (self-catering en route)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Villa Gargano, Jacksonville",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Huge Loft - Heart of Williamsburg (Entire home/apt, 2-night min, $518/night)",
+        "record_name": "Huge Loft - Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Goose Feathers Cafe and Bakery",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pirates' House Restaurant",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Oh! Fudge",
+        "record_name": "Oh! Fudge",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Huge Loft - Heart of Williamsburg (Entire home/apt)",
+        "record_name": "Huge Loft - Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive (no flight available for this route/date)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "At accommodation area (Goose Feathers Cafe and Bakery)",
+        "record_name": "Goose Feathers Cafe and Bakery",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed road meal (self-catering en route)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-27, 2022-03-28, and 2022-03-29.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Huge Loft - Heart of Williamsburg has a maximum occupancy of 4.",
+        "note": "The booked listing can host the one traveler; the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is listed as self-drive, and the plan describes the route as Minneapolis to Jacksonville.",
+        "note": "The itinerary starts from Minneapolis as requested."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as the destination and current city on Day 2.",
+        "note": "The plan visits the requested destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Jacksonville as its destination and lists no other destination city.",
+        "note": "One visiting city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-29.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is “Self-drive (no flight available for this route/date)”; the itinerary identifies the route as Minneapolis to Jacksonville.",
+        "note": "This matches the requested own-car drive on 2022-03-27."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 transportation is “Self-drive (no flight available for this route/date)”; the itinerary identifies the route as Jacksonville to Minneapolis.",
+        "note": "This matches the requested own-car drive on 2022-03-29."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The attractions, Jacksonville Zoo and Gardens and Southbank Riverwalk, are listed only on 2022-03-28; transportation is listed on 2022-03-27 and 2022-03-29.",
+        "note": "Sightseeing is limited to the requested day, with the other two days reserved for driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Huge Loft - Heart of Williamsburg is listed for 2022-03-27 and 2022-03-28, and its minimum stay is 2 nights.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing record gives Huge Loft - Heart of Williamsburg a room type of “Entire home/apt.”",
+        "note": "The booked listing meets the entire-home requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The listing record gives Huge Loft - Heart of Williamsburg a review rate number of 3.0.",
+        "note": "The booked stay is below the required rating of 4."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "it does not meet the ≥4.0 rating requirement"
+      }
+    ],
+    "annotation_issues": [
+      "Transportation candidate records search 2022-03-25 and 2022-03-31, not the itinerary dates 2022-03-27 and 2022-03-29, so flight availability on the planned dates cannot be verified from those records."
+    ]
+  }
+}

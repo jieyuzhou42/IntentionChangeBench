@@ -1,0 +1,181 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 3,
+  "prompt_chars": 32749,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 (Sioux Falls 18:40 → Phoenix 19:26) - $410",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Restaurant in Phoenix (budget ~$30-40)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1 BR in Carroll Gardens Townhouse, Private room, $397/night, rating 4, Phoenix",
+        "record_name": "1 BR in Carroll Gardens Townhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Restaurant in Phoenix (budget ~$20-30)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Restaurant in Phoenix (budget ~$20-30)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Restaurant in Phoenix (budget ~$30-40)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1 BR in Carroll Gardens Townhouse, Private room, $397/night, rating 4, Phoenix",
+        "record_name": "1 BR in Carroll Gardens Townhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 (Phoenix 08:49 → Flagstaff 09:47) - arrives by noon - $42",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Restaurant in Flagstaff (budget ~$20-30)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Restaurant in Flagstaff (budget ~$30-40)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Air conditioned Excellent Private Room for 1, Private room, $185/night, rating 4, Flagstaff",
+        "record_name": "Air conditioned Excellent Private Room for 1",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Restaurant in Flagstaff (budget ~$20-30)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Restaurant in Flagstaff (budget ~$20-30)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Restaurant in Flagstaff (budget ~$30-40)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Air conditioned Excellent Private Room for 1, Private room, $185/night, rating 4, Flagstaff",
+        "record_name": "Air conditioned Excellent Private Room for 1",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-drive Flagstaff to Sioux Falls (19h 57m, 2,086 km, ~$104 gas)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Restaurant in Flagstaff (budget ~$20-30)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels from Phoenix to Flagstaff on March 18.",
+        "note": "The listed city visits follow Phoenix, then Flagstaff."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Phoenix accommodation is listed on March 16 and 17; Flagstaff accommodation is listed on March 18 and 19.",
+        "note": "The plan books the requested two nights in each city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked records list room type as Private room.",
+        "note": "The Phoenix and Flagstaff listings meet the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Both booked accommodation records have review rate number 4.",
+        "note": "Each city's listing meets the 3+ rating floor."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F4045477 is dated 2022-03-16, from Sioux Falls to Phoenix, and the record gives arrival time 19:26.",
+        "note": "It arrives before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3804854 is dated 2022-03-18, from Phoenix to Flagstaff, and the record gives arrival time 09:47.",
+        "note": "It arrives before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 20 itinerary lists “Self-drive Flagstaff to Sioux Falls.”",
+        "note": "The plan includes a return journey despite the one-way itinerary requirement."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

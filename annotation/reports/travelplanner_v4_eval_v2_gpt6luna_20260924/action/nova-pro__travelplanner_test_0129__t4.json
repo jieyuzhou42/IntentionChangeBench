@@ -1,0 +1,187 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 36390,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 from Sioux Falls to Phoenix, departing at 18:40 and arriving at 19:26.",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut in Phoenix",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! in Phoenix",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Spooky Sky in Phoenix",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Mama Loca in Phoenix",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Village Restaurant in Phoenix",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1,100 sq. ft. apt. Penthouse with private deck! in Phoenix",
+        "record_name": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 from Phoenix to Flagstaff, departing at 08:49 and arriving at 09:47.",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Spooky Sky in Phoenix",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Communiti in Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York in Flagstaff",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Communiti in Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "38 Barracks in Flagstaff",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Sushi Thai Restaurant in Flagstaff",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York in Flagstaff",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Flagstaff to Sioux Falls, duration: 19 hours 57 mins, distance: 2,086 km, cost: 104.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Communiti in Flagstaff",
+        "record_name": "Communiti",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing maximum occupancy 3; Flagstaff listing maximum occupancy 8.",
+        "note": "The booked lodging can host all 3 travelers on each city stay."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Phoenix listing review rate number 5; Flagstaff listing review rate number 3.",
+        "note": "Both booked listings meet the 3+ rating threshold."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4045477 flies Sioux Falls to Phoenix on March 16, departing 18:40 and arriving 19:26.",
+        "note": "The flight arrives before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3804854 flies Phoenix to Flagstaff on March 18, departing 08:49 and arriving 09:47.",
+        "note": "The flight arrives before 12:00 and preserves the transfer day."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "Day 5 lists: “Self-driving from Flagstaff to Sioux Falls”.",
+        "note": "The itinerary includes a return journey instead of ending in Flagstaff."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The March 17 and March 19 attractions match the requested pairs, with no Hole in the Rock or Riordan Mansion listed. But March 19 transportation is “-”, with no direct taxi or rideshare listed.",
+        "note": "The specified attractions and exclusions are followed, but the required direct local transport between lodging and the Flagstaff stops is not included."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan lists two attractions on March 17 and two on March 19.",
+        "note": "Both sightseeing days reach two attractions, which does not meet the stated threshold of fewer than two per day."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "Hole in the Rock is not listed in the itinerary.",
+        "note": "The exclusion is respected."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

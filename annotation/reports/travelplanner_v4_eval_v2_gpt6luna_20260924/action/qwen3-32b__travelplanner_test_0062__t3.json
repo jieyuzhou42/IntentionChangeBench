@@ -1,0 +1,207 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23946,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive to Philadelphia",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Brooklyn Room in Hip Neighborhood - Close to Train",
+        "record_name": "Brooklyn Room in Hip Neighborhood - Close to Train",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Marukame Udon",
+        "record_name": "Marukame Udon",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Moon Under Water",
+        "record_name": "The Moon Under Water",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Brothers Dhaba",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Brooklyn Room in Hip Neighborhood - Close to Train",
+        "record_name": "Brooklyn Room in Hip Neighborhood - Close to Train",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive back to Ithaca",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Pind Balluchi",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 1st, March 2nd, and March 3rd, 2022.",
+        "note": "The trip covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 1 on each of the two nights.",
+        "note": "The nightly capacity covers one traveler and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says “Drive to Philadelphia” and “Drive back to Ithaca.”",
+        "note": "Ithaca is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says “Drive to Philadelphia” and lists Philadelphia as the current city on March 2.",
+        "note": "Philadelphia is the stated destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Philadelphia as the destination and lists no other visited city.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is March 1st, 2022.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is March 3rd, 2022.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 1 transportation slot says “Drive to Philadelphia”; the user specified driving themself in their own car.",
+        "note": "The plan uses the requested self-driving transportation."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 3 transportation slot says “Drive back to Ithaca”; the user specified driving themself in their own car.",
+        "note": "The plan uses the requested self-driving transportation."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 1 and March 2, with none required on the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Brooklyn Room in Hip Neighborhood - Close to Train is listed as “Private room.”",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing’s house rules include “No parties.”",
+        "note": "The listing prohibits parties as requested."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant ratings are Marukame Udon 4.9, The Moon Under Water 4.1, Brothers Dhaba 3.8, and Pind Balluchi 3.7.",
+        "note": "Every restaurant meal is at least 3.5."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "Average Costs per person are Marukame Udon 100, The Moon Under Water 94, Brothers Dhaba 52, and Pind Balluchi 44.",
+        "note": "Marukame Udon and The Moon Under Water exceed the $60 cap."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Marukame Udon, The Moon Under Water, and Pind Balluchi all have a “Fast Food” tag in Cuisines.",
+        "note": "Philadelphia restaurant meals may not carry a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 2 lists Marukame Udon for breakfast, The Moon Under Water for lunch, and Brothers Dhaba for dinner.",
+        "note": "The three meals use three different restaurants, despite the rationale’s contrary claim."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "The Moon Under Water’s Cuisines include Italian.",
+        "note": "An Italian-tagged meal is listed on March 2."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "unknown",
+        "evidence": "The March 3 slot says “Drive back to Ithaca,” but no driving or arrival time is given in the plan or candidate records.",
+        "note": "The arrival deadline cannot be verified from the available timing information."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 2 attraction list is “Philadelphia Museum of Art, Liberty Bell.”",
+        "note": "Both requested attractions are listed in the required order; attractions carry no clock times in this format."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "The Moon Under Water’s Cuisines include Italian.",
+        "note": "The March 2 lunch is Italian-tagged."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "satisfied",
+        "evidence": "Brothers Dhaba’s Cuisines include Seafood.",
+        "note": "The March 2 dinner is Seafood-tagged."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_variety",
+        "quote": "One minor constraint not satisfied is 'never the same place three times on the second day', but only two unique restaurants and activities are possible due to availability and timing constraints."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

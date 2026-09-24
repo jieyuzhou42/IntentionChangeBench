@@ -1,0 +1,218 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 29524,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving to Denver",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fatty Bao - Asian Gastro Bar",
+        "record_name": "The Fatty Bao - Asian Gastro Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "included in accommodation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tasty Fare",
+        "record_name": "Tasty Fare",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Rain Tree Grill",
+        "record_name": "Rain Tree Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Quaint & Charming 2BR + Futon",
+        "record_name": "Quaint & Charming 2BR + Futon",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "The Fatty Bao - Asian Gastro Bar",
+        "record_name": "The Fatty Bao - Asian Gastro Bar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Tasty Fare",
+        "record_name": "Tasty Fare",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "self-driving to Gunnison",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "self-driving from Denver",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "SALT",
+        "record_name": "SALT",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Happy Joe's Pizza & Ice Cream",
+        "record_name": "Happy Joe's Pizza & Ice Cream",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "SALT",
+        "record_name": "SALT",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "Paradise Inn",
+        "record_name": "Paradise Inn",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 6,
+        "slot": "transportation",
+        "text": "self-driving to Moab",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 6,
+        "slot": "breakfast",
+        "text": "self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 6,
+        "slot": "lunch",
+        "text": "Mocha",
+        "record_name": "Mocha",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes Denver and Gunnison.",
+        "note": "It visits the requested two Colorado cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Quaint & Charming 2BR + Futon is listed as Private room; Full-size loft bed in East Village is also listed as Private room.",
+        "note": "Neither booked listing is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Quaint & Charming 2BR + Futon has review rate number 1; Full-size loft bed in East Village has review rate number 4.",
+        "note": "The Denver listing is below the requested 4+ rating."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The transportation slots specify self-driving to Denver, from Denver to Gunnison, and to Moab; candidate reference text provides self-driving routes for these legs.",
+        "note": "The plan uses the traveler's own car rather than booking flights."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary schedules Molly Brown House Museum and Gunnison Pioneer Museum on March 21, while the activity requirements say to protect travel and rest time and not schedule main sightseeing that day.",
+        "note": "The plan schedules sightseeing on a protected travel/rest day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

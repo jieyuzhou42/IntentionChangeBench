@@ -1,0 +1,242 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0050",
+  "turn_id": 6,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1930.0,
+      "budget": 2000,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20743,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 2000
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Tulsa"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Phoenix"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": 1
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-06"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-08"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-driving Tulsa to Phoenix on 2022-03-06"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Use own car for outbound travel"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "return_transportation",
+        "value": "Self-driving Phoenix to Tulsa on 2022-03-08"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Use own car for return travel"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "accommodation_stay",
+        "value": "The nights are 2022-03-06 and 2022-03-07"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "transportation",
+        "value": "Prefer flying when the cap allows it"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "transportation",
+        "value": "Driving is acceptable to protect the room type"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "restaurant_rating",
+        "value": 3.5
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "dining_style",
+        "value": "No Phoenix meal may carry a Fast Food tag in Cuisines"
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "dining_variety",
+        "value": "Three different restaurants across breakfast, lunch and dinner on 2022-03-07"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-06",
+        "requirement": "Schedule the outbound trip for midday on 2022-03-06.",
+        "source_turn": 1,
+        "quote": "The midday one out on the 6th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-08",
+        "requirement": "Schedule the return trip for the afternoon of 2022-03-08.",
+        "source_turn": 1,
+        "quote": "the afternoon one back on the 8th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-07",
+        "requirement": "Eat at three different places across breakfast, lunch and dinner.",
+        "source_turn": 6,
+        "quote": "I really don't want to eat in the same place three times on the 7th."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The plan covers March 6, 7 and 8, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked unit has maximum occupancy 8, enough for one traveler; the plan books one unit."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound travel is listed from Tulsa."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound travel is listed to Phoenix."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Phoenix is the single destination city shown in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-06."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-08."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Tulsa to Phoenix in an own car on 2022-03-06."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Phoenix to Tulsa in a car on 2022-03-08."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The listing is booked from check-in 2022-03-06 to check-out 2022-03-08, covering the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing is an Entire home/apt."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "satisfied",
+        "evidence": "The plan drives, which the constraint allows as acceptable to protect the room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The Phoenix restaurants listed for March 7 have ratings of 4.4, 3.7 and 3.7, all at least 3.5."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "satisfied",
+        "evidence": "The three listed Phoenix restaurants on March 7 have no Fast Food tag in their Cuisines."
+      },
+      {
+        "gold_field": "dining_variety",
+        "status": "satisfied",
+        "evidence": "Breakfast, lunch and dinner on March 7 list Pizza Hut, Jungle The Restaurant and Village Restaurant, respectively."
+      }
+    ],
+    "annotation_issues": [
+      "The gold restaurant_rating value is 3.5, but the latest user instruction says to keep food at 4.0 and above.",
+      "The gold makes self-driving in an own car a must-have for both legs, while the dialogue says driving is acceptable if it helps secure the apartment; it does not explicitly require driving."
+    ]
+  },
+  "out_of_scope_fields": []
+}

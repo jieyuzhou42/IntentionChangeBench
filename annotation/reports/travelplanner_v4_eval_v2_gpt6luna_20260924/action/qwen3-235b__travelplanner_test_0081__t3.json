@@ -1,0 +1,103 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 13242,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "flight from Tampa to Cleveland (afternoon, non-early departure preferred)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chinese food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "5-star hotel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "return flight to Tampa",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The candidate_records pool is empty; the plan names only a generic “5-star hotel,” with no listing or maximum occupancy.",
+        "note": "No recorded accommodation establishes capacity for the one traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The requested flight is F3915073 on March 2, departing 10:37 and arriving 12:59. The plan places an unspecified Tampa-to-Cleveland flight on March 3, and there are no candidate flight records.",
+        "note": "The planned outbound flight does not match the requested flight or date."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The requested listing is “Richmond Hill 3 Bedroom apartment in Private home!” The plan says only “5-star hotel”; no candidate accommodation records are available.",
+        "note": "The requested accommodation is not booked or matched."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "No candidate accommodation record provides a room type for the generic “5-star hotel.”",
+        "note": "The requested Entire home/apt room type is not established."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "No candidate accommodation record provides a rating for the generic “5-star hotel.”",
+        "note": "The requested rating of 5 is not established by a listing record."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "March 2 lists the attraction as “-”.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "March 2 lists lunch as “-”.",
+        "note": "No restaurant lunch is planned on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "The user’s preference for a non-early, comfortable flight departure is noted but cannot be fulfilled without flight options."
+      }
+    ],
+    "annotation_issues": [
+      "The candidate_records pool is empty, preventing matching or verification of flights, accommodations, and restaurant meals."
+    ]
+  }
+}

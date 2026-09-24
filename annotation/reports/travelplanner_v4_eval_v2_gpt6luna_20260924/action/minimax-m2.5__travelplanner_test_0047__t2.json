@@ -1,0 +1,154 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0047",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23300,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3793409 departing Gulfport 06:58, arriving Charlotte 09:48",
+        "record_name": "F3793409",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-05, 2022-03-06, and 2022-03-07.",
+        "note": "Three itinerary days are present."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "No accommodation is booked on any night.",
+        "note": "There are no booked listings whose combined capacity can host the traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The listed flight departs Gulfport.",
+        "note": "The itinerary begins from the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The listed flight arrives in Charlotte; all itinerary days list Charlotte as the current city.",
+        "note": "Charlotte is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Charlotte as the current city on all three days.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-05.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-07.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3793409 departs Gulfport at 06:58 on 2022-03-05 and arrives in Charlotte at 09:48.",
+        "note": "Matches the requested early outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The 2022-03-07 transportation slot is '-'.",
+        "note": "No return flight is included."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is '-' on 2022-03-05 and 2022-03-06.",
+        "note": "Neither of the two requested nights is booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked.",
+        "note": "No booked listing can satisfy the Entire home/apt requirement."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked.",
+        "note": "No booked listing can be verified to prohibit smoking."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "No restaurant meals are planned.",
+        "note": "There are no restaurant meals below the 3.0 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "No restaurant meals are planned.",
+        "note": "There are no restaurant meals exceeding the per-person cost cap."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "No restaurant meals are planned.",
+        "note": "No planned meal has a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "Breakfast, lunch, and dinner on 2022-03-06 are all '-'.",
+        "note": "The plan does not include three different restaurants that day."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "No meal is planned on 2022-03-06.",
+        "note": "There is no Mediterranean-tagged meal."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "No activities are planned on 2022-03-06.",
+        "note": "The 15:00–17:00 period is free of planned activities."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The attraction slot on 2022-03-06 is '-'.",
+        "note": "Discovery Place Science is not included."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "unavailable due to 3-night minimum"
+      },
+      {
+        "gold_field": "room_type",
+        "quote": "no available Charlotte property fits this limit while meeting room_type and house_rule must-haves"
+      },
+      {
+        "gold_field": "house_rule",
+        "quote": "no available Charlotte property fits this limit while meeting room_type and house_rule must-haves"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

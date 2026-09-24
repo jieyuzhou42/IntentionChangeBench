@@ -1,0 +1,139 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 3,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1973.0,
+      "budget": 2100,
+      "unpriced": [
+        "breakfast: pending quote: meal before departure or on the road",
+        "lunch: pending quote: meal before departure or on the road",
+        "lunch: pending quote: meal before departure or on the road",
+        "dinner: pending quote: meal before departure or on the road"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 29540,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "people_number",
+        "value": "2 travelers"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "room_type",
+        "value": "Wilmington preferred room type: Private room"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "room_type",
+        "value": "Wilmington allowed room types: Private room or Entire home/apt"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "room_type",
+        "value": "Fayetteville room type: Private room"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "accommodation_rating",
+        "value": "4+"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "budget",
+        "value": "$2,100"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-13",
+        "requirement": "Wilmington is on the itinerary.",
+        "source_turn": 1,
+        "quote": "Wilmington March 13-14"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-14",
+        "requirement": "Wilmington is on the itinerary.",
+        "source_turn": 1,
+        "quote": "Wilmington March 13-14"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-15",
+        "requirement": "Fayetteville is on the itinerary.",
+        "source_turn": 1,
+        "quote": "Fayetteville March 15-16"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-16",
+        "requirement": "Fayetteville is on the itinerary.",
+        "source_turn": 1,
+        "quote": "Fayetteville March 15-16"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-17",
+        "requirement": "Return home.",
+        "source_turn": 1,
+        "quote": "home on the 17th"
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-13",
+        "requirement": "Reserve the day for driving and breaks.",
+        "source_turn": 1,
+        "quote": "Keep the 13th and 17th for driving and breaks."
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-17",
+        "requirement": "Reserve the day for driving and breaks.",
+        "source_turn": 1,
+        "quote": "Keep the 13th and 17th for driving and breaks."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "people_number",
+        "status": "violated",
+        "evidence": "The Wilmington accommodation is not an exact match to a candidate listing, so its capacity cannot establish that it hosts 2 travelers."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The Wilmington plan names an accommodation with no exact candidate-record match, so its room type cannot be verified against the allowed types. The Fayetteville listing matches a candidate record whose room type is Private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "The Wilmington accommodation has no exact candidate-record match, so it cannot establish a 4+ rating. The matched Fayetteville listing has a rating of 4."
+      }
+    ],
+    "annotation_issues": [
+      "The gold constraints omit the user's explicit city/date itinerary (Wilmington March 13–14, Fayetteville March 15–16, home March 17) and the request to reserve March 13 and 17 for driving and breaks.",
+      "The gold constraints omit the user's explicit request to travel by their own car.",
+      "The Wilmington accommodation named in the gold reference plan, “Luxury 3 bedroom apartment on the Upper East Side,” has no exact candidate-record match, preventing its capacity, room type, and rating from being established."
+    ]
+  },
+  "out_of_scope_fields": []
+}

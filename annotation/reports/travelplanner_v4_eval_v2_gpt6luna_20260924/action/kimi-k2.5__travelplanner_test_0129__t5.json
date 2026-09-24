@@ -1,0 +1,226 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 36719,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477 Sioux Falls to Phoenix (18:40-19:26) for 3 travelers",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Spooky Sky ($15)",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Mama Loca ($27)",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Village Restaurant ($35)",
+        "record_name": "Village Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Pizza Hut ($30) - Chinese cuisine requirement met",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "6 Guests! Close to JFK-Manhattan",
+        "record_name": "6 Guests! Close to JFK-Manhattan(30 min \"A\" train)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854 Phoenix to Flagstaff (08:49-09:47) for 3 travelers",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Quick meal before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti ($16)",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Bar Code - Leisure Inn ($41)",
+        "record_name": "Bar Code - Leisure Inn",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Direct taxis/rideshares between lodging, Museum of Northern Arizona, and Lowell Observatory",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Frontier ($47)",
+        "record_name": "Frontier",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Packed or light meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "38 Barracks ($35) - Chinese cuisine requirement met",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Stylish apartment in the heart of New York",
+        "record_name": "Stylish apartment in the heart of New York",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "- (trip ends in Flagstaff)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "In-apartment or nearby",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has maximum occupancy 8 and the Flagstaff listing has maximum occupancy 8; each is booked for both nights in its city.",
+        "note": "Each listing can host all 3 travelers."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 5; the Flagstaff listing has review rate number 3.",
+        "note": "Both city listings meet the 3+ rating floor."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4045477 flies Sioux Falls to Phoenix on 2022-03-16, departing 18:40 and arriving 19:26.",
+        "note": "It arrives before the 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804854 flies Phoenix to Flagstaff on 2022-03-18, departing 08:49 and arriving 09:47.",
+        "note": "It arrives before the 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends in Flagstaff on March 20 and lists no return journey.",
+        "note": "No return transportation is planned."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "March 17 lists Heard Museum and Desert Botanical Garden only; March 19 lists Museum of Northern Arizona and Lowell Observatory, with Riordan Mansion excluded.",
+        "note": "The requested attractions are included and the specified exclusions are observed."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary lists two attractions on March 17 and two on March 19.",
+        "note": "The field requires fewer than two attractions per day."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut in Phoenix and 38 Barracks in Flagstaff both have Chinese in their record cuisine labels.",
+        "note": "At least one planned restaurant meal has the requested cuisine."
+      },
+      {
+        "gold_field": "cuisine_coverage",
+        "action_status": "satisfied",
+        "evidence": "Pizza Hut is in Phoenix and has Chinese in its cuisine labels; 38 Barracks is in Flagstaff and has Chinese in its cuisine labels.",
+        "note": "Both cities have a planned meal with a Chinese cuisine label."
+      },
+      {
+        "gold_field": "dining_budget",
+        "action_status": "satisfied",
+        "evidence": "Recorded restaurant meals cost $15 (Spooky Sky), $27 (Mama Loca), $35 (Village Restaurant), $30 (Pizza Hut), $16 (Communiti), $41 (Bar Code - Leisure Inn), $47 (Frontier), and $35 (38 Barracks) per person.",
+        "note": "Every planned restaurant meal matched to a record is listed below $50 per person; packed and in-apartment meals are not restaurant meals."
+      },
+      {
+        "gold_field": "activity 2",
+        "action_status": "satisfied",
+        "evidence": "Hole in the Rock is not listed in the itinerary.",
+        "note": "The requested exclusion is observed."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

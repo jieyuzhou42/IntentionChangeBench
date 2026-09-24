@@ -1,0 +1,161 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 15182,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight from Tampa (TPA) to Cleveland (CLE) — selecting a mid-morning or afternoon departure (approx. 10:00–12:00) to honour the comfortable departure preference. Estimated round-trip airfare for 1 passenger: ~$300–$400. Note: no fixed_search_results were provided; fares are estimated.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catering / grab-and-go at Tampa airport before boarding",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "In-flight or light snack at Cleveland airport on arrival",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Chinese dinner at a local Cleveland Chinese restaurant (e.g., Li Wah Restaurant, Cleveland Chinatown) — estimated $25–$35",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "5-star hotel in Cleveland — Hilton Cleveland Downtown (estimated ~$200–$250/night). Night 1 billed.",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local taxi / rideshare for city attractions — estimated $20–$30/day",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Breakfast at hotel (Hilton Cleveland Downtown in-house dining) — estimated $20",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Chinese lunch at Sun Luck Garden or comparable Cleveland Chinese restaurant — estimated $20",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chinese dinner at Pearl of the Orient or comparable Cleveland Chinese restaurant — estimated $30–$40",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Hilton Cleveland Downtown — Night 2 billed (~$200–$250)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare to CLE airport (~$30); afternoon/evening return flight to Tampa (TPA) — included in round-trip fare estimate above",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Breakfast at hotel before checkout — estimated $20",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Chinese lunch near hotel or airport area — estimated $20",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Day 1, Day 2, and Day 3, dated March 2–4, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The rationale says \"1 traveller,\" but the listed Hilton Cleveland Downtown accommodations have no matching candidate record or recorded maximum occupancy.",
+        "note": "The plan is for one traveler, but the accommodation's capacity cannot be established from the records."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The outbound slot describes an approximate 10:00–12:00 departure and gives no flight number or exact arrival time; the candidate-record pool is empty.",
+        "note": "The requested F3915073 departure at 10:37 and arrival at 12:59 are not established by the plan or records."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The requested listing is \"Richmond Hill 3 Bedroom apartment in Private home!\"; the itinerary instead names Hilton Cleveland Downtown.",
+        "note": "The plan names a different accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Hilton Cleveland Downtown has no matching candidate record from which to verify a room type.",
+        "note": "The required Entire home/apt room type is not established."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The itinerary calls Hilton Cleveland Downtown a \"5-star hotel,\" but there is no matching candidate record to verify its rating.",
+        "note": "The rating must be established from candidate records, not the agent's description."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists \"Brief evening walk along the Cuyahoga River waterfront / Flats area after settling in.\"",
+        "note": "The day includes sightseeing despite the no-sightseeing requirement."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is described as \"In-flight or light snack at Cleveland airport on arrival.\"",
+        "note": "No planned restaurant lunch is listed."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The candidate-record pool is empty, so no listed flight, restaurant, or accommodation can be matched to a record or audited for its attributes."
+    ]
+  }
+}

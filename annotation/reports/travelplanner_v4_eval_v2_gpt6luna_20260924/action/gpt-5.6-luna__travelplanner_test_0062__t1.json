@@ -1,0 +1,195 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23299,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Ithaca to Philadelphia; 3 hours 52 minutes, 369 km, listed cost $18",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Hong Kong Cafe — listed average cost $47, rating 3.6",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Gurdas Ram Jalebi Wala — listed average cost $20, rating 4.1",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Cantina — listed average cost $36, rating 4.6",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern Luxury Apartment in Heart of Williamsburg — entire home/apt, 2-night minimum, no parties, listed price $567",
+        "record_name": "Modern Luxury Apartment in Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Pind Balluchi — listed average cost $44, rating 3.7",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe — listed average cost $47, rating 3.6",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Red Mesa Cantina — listed average cost $36, rating 4.6",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Luxury Apartment in Heart of Williamsburg — second and final booked night",
+        "record_name": "Modern Luxury Apartment in Heart of Williamsburg",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Philadelphia to Ithaca; 3 hours 54 minutes, 369 km, listed cost $18",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala — listed average cost $20, rating 4.1",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Red Mesa Cantina — listed average cost $36, rating 4.6",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Hong Kong Cafe — listed average cost $47, rating 3.6",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-01 through 2022-03-03, three days.",
+        "note": "The plan has three dated itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler, and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is self-driving from Ithaca to Philadelphia.",
+        "note": "The origin matches Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's current city is Philadelphia on all three days; outbound transportation goes to Philadelphia.",
+        "note": "The destination matches Philadelphia."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "All itinerary days list Philadelphia as the current city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-01.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-03.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record gives self-driving from Ithaca to Philadelphia, duration 3 hours 52 minutes, distance 369 km, cost 18; the plan places it on 2022-03-01.",
+        "note": "The outbound leg matches the requested self-drive."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The candidate transportation record gives self-driving from Philadelphia to Ithaca, duration 3 hours 54 minutes, distance 369 km, cost 18; the plan places it on 2022-03-03.",
+        "note": "The return leg matches the requested self-drive."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The apartment is listed on 2022-03-01 and 2022-03-02, and not on the departure day. Its minimum nights is 2.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Modern Luxury Apartment in Heart of Williamsburg is listed as Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules are 'No parties'.",
+        "note": "The booked listing prohibits parties as requested."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant meals have Aggregate Ratings of 3.6 (Hong Kong Cafe), 4.1 (Gurdas Ram Jalebi Wala), 4.6 (Red Mesa Cantina), and 3.7 (Pind Balluchi).",
+        "note": "Every restaurant meal meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The restaurants' Average Cost per person values are $47, $20, $36, and $44.",
+        "note": "Every restaurant meal is under the $60 cap."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

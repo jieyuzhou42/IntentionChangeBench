@@ -1,0 +1,163 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22323,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877: Buffalo to Boston (08:04-09:30)",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Red Mesa Restaurant (Indian, 4.5 rating)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Club Cubana (Mediterranean, 4.4 rating)",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home/apt, $872, accommodates 5)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare (local transport planned)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Irish Democrat (Tea/Cafe, $18/person)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Apni Rasoi (American/Mediterranean, high-rated meal)",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Total Food Court (inexpensive and varied options)",
+        "record_name": "Total Food Court",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3757097: Boston to Buffalo (21:44-23:34)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Bablu Chinese Food (BBQ/Pizza, low-cost)",
+        "record_name": "Bablu Chinese Food",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Foody Goody (Tea/Indian, affordable)",
+        "record_name": "Foody Goody",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary contains March 4, March 5, and March 6, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5 and is listed for both accommodation nights.",
+        "note": "Its capacity accommodates all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "One attraction is listed on each day, within the two-attraction daily limit, but no seated breaks are explicitly planned.",
+        "note": "The attraction limit is met, but the activity requirements also call for regular seated breaks."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's record gives its room type as Entire home/apt.",
+        "note": "This matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "Both booked nights use Delight in Your Home Away from Home in NYC!, whose record lists maximum occupancy 5.",
+        "note": "One property has capacity for all four travelers."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "On March 6, Bablu Chinese Food and Foody Goody each have Aggregate Rating 0; dinner is empty.",
+        "note": "That day has no restaurant meal with a rating of at least 4.0."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "violated",
+        "evidence": "The records list Average Costs of 65 for Red Mesa Restaurant, 65 for Club Cubana, and 77 for Total Food Court.",
+        "note": "The requested inexpensive food otherwise is not maintained across the meals; several restaurant meals are priced above $50 per person."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Apni Rasoi's record includes American cuisine, but none of the selected restaurant records lists French cuisine.",
+        "note": "The plan includes American but not both requested cuisines."
+      },
+      {
+        "gold_field": "entities.entity_3.constraints.dining_style",
+        "action_status": "violated",
+        "evidence": "The restaurant records provide cuisine, average cost, and aggregate rating, but do not establish a confirmed vegetarian entree at a shared sit-down restaurant on each day.",
+        "note": "The plan does not confirm the required vegetarian entree for the sister each day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "cuisine",
+        "quote": "French/American cuisine preference was omitted due to higher-rated and more affordable meal alternatives."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 2,
+  "prompt_chars": 13105,
+  "judge": {
+    "final_plan": [],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-02, 2022-03-03, and 2022-03-04.",
+        "note": "It covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "No accommodation is booked on any night.",
+        "note": "There are no booked listings whose combined capacity can host the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "Day 1 transportation is '-'; the candidate records are empty.",
+        "note": "The requested outbound flight is not included."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "Accommodation is '-' on all three itinerary days; the candidate records are empty.",
+        "note": "The requested listing is not booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked, and no candidate records are available.",
+        "note": "There is no booked listing with a verifiable room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked, and no candidate records are available.",
+        "note": "There is no booked listing with a verifiable rating of 5."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 attraction slot is '-'.",
+        "note": "No sightseeing is planned."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 lunch slot is '-'.",
+        "note": "No restaurant lunch is planned."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "there are no grounded transportation, accommodation, or dining options to select from, so no concrete outbound/return flight"
+      },
+      {
+        "gold_field": "accommodation",
+        "quote": "there are no grounded transportation, accommodation, or dining options to select from"
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "no concrete outbound/return flight, 5-star Cleveland hotel, or Chinese restaurant can be committed to"
+      },
+      {
+        "gold_field": "days",
+        "quote": "3-day Cleveland stay remains unmet in this response"
+      }
+    ],
+    "annotation_issues": [
+      "The candidate_records object is empty, so no transportation, accommodation, or restaurant choices can be matched to records."
+    ]
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0067",
+  "turn_id": 6,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1829.0,
+      "budget": 2000,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20400,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "The trip budget is capped at $2,000."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The trip is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "The trip is for 1 traveler."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "The trip starts in Fort Lauderdale."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "The destination is Charlotte Amalie."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-16."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-18."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Take a flight from Fort Lauderdale to Charlotte Amalie on 2022-03-16."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "The outbound flight departs at 13:06."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "return_transportation",
+        "value": "Take a flight from Charlotte Amalie to Fort Lauderdale on 2022-03-18."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "The return flight departs at 16:10."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights: 2022-03-16 and 2022-03-17."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant meals must have a rating of at least 3.5."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_rating",
+        "value": "The accommodation rating should be at least 4.5."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "room_type",
+        "value": "The accommodation must be an Entire home/apt."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": null,
+        "requirement": "Plan the trip for the dates 2022-03-16 through 2022-03-18.",
+        "source_turn": 0,
+        "quote": "The travel dates are from March 16th to March 18th, 2022."
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-16",
+        "requirement": "Keep the available outbound flight.",
+        "source_turn": 1,
+        "quote": "Those are the only flights there are, so keep them."
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-18",
+        "requirement": "Keep the available return flight.",
+        "source_turn": 1,
+        "quote": "Those are the only flights there are, so keep them."
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Use only the two nights between the travel dates.",
+        "source_turn": 1,
+        "quote": "Just the two nights in between."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan has itinerary entries for 2022-03-16, 2022-03-17, and 2022-03-18."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan is priced for 1 traveler; the booked accommodation has maximum occupancy 4."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Fort Lauderdale."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight goes to Charlotte Amalie, where the plan stays overnight."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The plan visits Charlotte Amalie as its one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The outbound flight and first accommodation night are on 2022-03-16."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return flight is on 2022-03-18."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3618600 is from Fort Lauderdale to Charlotte Amalie on 2022-03-16 and departs at 13:06, matching the candidate record."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3619128 is from Charlotte Amalie to Fort Lauderdale on 2022-03-18 and departs at 16:10, matching the candidate record."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for the nights of 2022-03-16 and 2022-03-17, with checkout on 2022-03-18."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The listed restaurant meals are at Maharaja Restaurant, rated 3.6, above the 3.5 minimum."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "Brooklyn Home By The Pier is rated 4.0 in the candidate record, below 4.5."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "Brooklyn Home By The Pier is listed as Entire home/apt."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

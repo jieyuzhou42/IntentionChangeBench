@@ -1,0 +1,170 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0040",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23676,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4046779, departs Moline 06:56, arrives Dallas 09:08, $178",
+        "record_name": "F4046779",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Grab-and-go at Moline airport before 06:56 departure (self-catered / airport snack, ~$10)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Cafe Gatherings, Dallas – Bakery, Indian, Desserts; avg cost $17",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Coconuts Fish Cafe, Dallas – Cafe, BBQ, Mediterranean; avg cost $38",
+        "record_name": "Coconuts Fish Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1BR, elevator, kitchen, doorman! – Entire home/apt, $475/night, No parties rule",
+        "record_name": "1BR, elevator, kitchen, doorman!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cafe Gatherings, Dallas – avg cost $17 (rated 4.4, bakery/desserts)",
+        "record_name": "Cafe Gatherings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Drifters Cafe, Dallas – Tea, French, Mexican, Seafood; avg cost $21",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "L'Opera, Dallas – French, BBQ, Seafood; avg cost $77",
+        "record_name": "L'Opera",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1BR, elevator, kitchen, doorman! – Entire home/apt, $475/night",
+        "record_name": "1BR, elevator, kitchen, doorman!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4047063, departs Dallas 18:48, arrives Moline 20:40, $272",
+        "record_name": "F4047063",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Drifters Cafe, Dallas – avg cost $21",
+        "record_name": "Drifters Cafe",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Delhicacy, Dallas – Desserts, Mexican, Chinese, Seafood; avg cost $67",
+        "record_name": "Delhicacy",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers Day 1 – 2022-03-25 through Day 3 – 2022-03-27.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Dallas listing has maximum occupancy 3; the dialogue specifies a single individual.",
+        "note": "The listing can host one traveler, and the plan assumes no different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F4046779 is from Moline to Dallas.",
+        "note": "The trip originates in Moline."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight F4046779 is from Moline to Dallas, and the accommodation is in Dallas.",
+        "note": "Dallas is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Dallas and returns to Moline.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts on 2022-03-25; flight F4046779 is dated 2022-03-25.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-27; flight F4047063 is dated 2022-03-27.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4046779 flies Moline to Dallas on 2022-03-25, departing at 06:56.",
+        "note": "The recorded flight is early and on the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F4047063 flies Dallas to Moline on 2022-03-27, departing at 18:48.",
+        "note": "The recorded flight is in the evening and on the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Dallas accommodation is listed on 2022-03-25 and 2022-03-26, with none required on the departure day.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, 1BR, elevator, kitchen, doorman!, has room type Entire home/apt.",
+        "note": "The listing is an entire home/apartment."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

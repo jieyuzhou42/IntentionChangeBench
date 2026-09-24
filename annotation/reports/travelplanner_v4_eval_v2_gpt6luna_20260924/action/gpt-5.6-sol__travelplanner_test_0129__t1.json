@@ -1,0 +1,209 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 33203,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477, departing Sioux Falls at 18:40 and arriving Phoenix at 19:26; $410",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast (unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed lunch (unpriced)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Spooky Sky, Phoenix; average cost $15",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "1 BR in Carroll Gardens Townhouse, Phoenix — private room, rating 4, night 1 of 2; $397 per night",
+        "record_name": "1 BR in Carroll Gardens Townhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Amritsari Naan Hut; average cost $21",
+        "record_name": "Amritsari Naan Hut",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Jungle The Restaurant; average cost $27",
+        "record_name": "Jungle The Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mama Loca; average cost $27",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1 BR in Carroll Gardens Townhouse, Phoenix — private room, rating 4, night 2 of 2; $397 per night",
+        "record_name": "1 BR in Carroll Gardens Townhouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854, departing Phoenix at 08:49 and arriving Flagstaff at 09:47; $42",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Spooky Sky, Phoenix; average cost $15",
+        "record_name": "Spooky Sky",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Communiti, Flagstaff; average cost $16",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "38 Barracks, Flagstaff; average cost $35",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Large Bedroom in 2 Bed Apartment Brighton Beach, Flagstaff — private room, rating 3, night 1 of 2; $959 per night",
+        "record_name": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Communiti; average cost $16",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Bar Code - Leisure Inn; average cost $41",
+        "record_name": "Bar Code - Leisure Inn",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Frontier; average cost $47",
+        "record_name": "Frontier",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Large Bedroom in 2 Bed Apartment Brighton Beach, Flagstaff — private room, rating 3, night 2 of 2; $959 per night",
+        "record_name": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Communiti; average cost $16",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "38 Barracks; average cost $35",
+        "record_name": "38 Barracks",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "dinner",
+        "text": "Sushi Thai Restaurant; average cost $49",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary goes from Sioux Falls to Phoenix on March 16, then Phoenix to Flagstaff on March 18, and ends in Flagstaff.",
+        "note": "The visited cities are Phoenix followed by Flagstaff."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Phoenix accommodation is listed for March 16 and 17; Flagstaff accommodation is listed for March 18 and 19. No accommodation is listed on March 20.",
+        "note": "The booked nights match the requested dates and two-night stay in each city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings have room type \"Private room\" in the candidate records.",
+        "note": "The Phoenix and Flagstaff accommodations meet the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 4; the Flagstaff listing has review rate number 3.",
+        "note": "Both listings are rated at least 3."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4045477 flies Sioux Falls to Phoenix on 2022-03-16, departing at 18:40 and arriving at 19:26.",
+        "note": "It arrives before the 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804854 flies Phoenix to Flagstaff on 2022-03-18, departing at 08:49 and arriving at 09:47.",
+        "note": "It arrives before the 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends in Flagstaff on March 20 and lists no return journey.",
+        "note": "This is a one-way visit ending in Flagstaff."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

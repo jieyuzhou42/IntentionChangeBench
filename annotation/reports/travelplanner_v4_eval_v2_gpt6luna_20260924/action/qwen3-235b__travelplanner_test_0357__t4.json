@@ -1,0 +1,177 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22710,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 from Buffalo to Boston, departs 08:04, arrives 09:30",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed breakfast on flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat (rated 4.4, average cost $18)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Apni Rasoi (rated 0, but cost-effective; sit-down not meeting rating requirement due to lack of alternatives)",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home/apt, 5-person occupancy, $872/night)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare to attractions",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Local cafe or self-catered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Red Mesa Restaurant (rated 4.5, $65 avg cost)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Special No.1 Biryani Corner (low-cost, $13, self-catered style)",
+        "record_name": "Special No.1 Biryani Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (same as night 1)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare to airport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Club Cubana (rated 4.4, $65 avg cost)",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed or quick meal near airport",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "N/A (flight arrives Buffalo after dinner time)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-04, 2022-03-05, and 2022-03-06.",
+        "note": "It spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5 and is used for both accommodation nights.",
+        "note": "Its capacity covers all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lists Boston Common and Public Garden; Day 2 lists New England Aquarium and Faneuil Hall Marketplace; Day 3 lists View Boston.",
+        "note": "The itinerary lists no more than two attractions on any day, meeting the baseline daily limit."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The record for Delight in Your Home Away from Home in NYC! lists room type Entire home/apt.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing, with maximum occupancy 5, is booked on both nights.",
+        "note": "One property can host all four travelers for the stay."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat is rated 4.4, Red Mesa Restaurant 4.5, and Club Cubana 4.4.",
+        "note": "There is a restaurant meal rated at least 4.0 on each day."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "The meals described as inexpensive otherwise are Apni Rasoi ($28 average cost) and Special No.1 Biryani Corner ($13); the other meal slots are packed, self-catered, or the selected daily restaurant meal.",
+        "note": "The inexpensive meals outside the daily higher-rated restaurant meal are below $50 per person."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Among the selected restaurant records, Apni Rasoi lists American cuisine; none lists French cuisine.",
+        "note": "The selected restaurant meals do not provide both French and American cuisine."
+      },
+      {
+        "gold_field": "entities.entity_3.constraints.dining_style",
+        "action_status": "unknown",
+        "evidence": "Restaurant records provide aggregate ratings, average costs, and cuisine tags, but no menu or vegetarian-entree information.",
+        "note": "The records cannot confirm whether each shared sit-down restaurant has a vegetarian entree."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_style 2",
+        "quote": "Dining average per person exceeds $50 due to Red Mesa and Club Cubana; trade-off made to preserve meal quality priority."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

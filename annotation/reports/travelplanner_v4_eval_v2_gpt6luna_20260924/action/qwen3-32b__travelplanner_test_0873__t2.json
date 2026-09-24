@@ -1,0 +1,182 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24752,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive together to New Orleans (10h28m duration, 1,149 km)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed or on the road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Packed or on the road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Packed or on the road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Room breakfast (included in accommodation)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Fish House (Desserts, Tea, BBQ, Bakery, Mediterranean)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Shenanigan's Irish Pub (Tea, Chinese, Bakery, Desserts)",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "record_name": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Room breakfast (included in accommodation)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Town Table Restaurant (Tea, Cafe, Indian, American)",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Jimmy's Pancake House (Pizza, Indian, Desserts)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "record_name": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Room breakfast (included in accommodation)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "PKay (Tea, Bakery, Fast Food)",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Uttarakhand Fast Food (Chinese, Bakery, Desserts, Seafood)",
+        "record_name": "Uttarakhand Fast Food",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "record_name": "Gorgeous exposed-brick 2 BR Apt in LES!",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Flight to Charlotte",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Room breakfast or packed",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies New Orleans as the destination on days 2–5; day 1 is the drive from Charlotte to New Orleans.",
+        "note": "The trip is based in one destination city, New Orleans."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Gorgeous exposed-brick 2 BR Apt in LES!, has room type Entire home/apt.",
+        "note": "The listing's recorded room type matches the requirement."
+      },
+      {
+        "gold_field": "required_cities",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination is New Orleans, and the accommodation record is listed in New Orleans.",
+        "note": "New Orleans is included as the sole destination city."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says “Drive together to New Orleans (10h28m duration, 1,149 km)”; the transportation record lists self-driving from Charlotte to New Orleans, duration 10 hours 28 mins.",
+        "note": "The recorded route and drive match the requested outbound travel on March 9."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary says “Flight to Charlotte,” but the transportation record says “There is no flight from New Orleans to Charlotte on 2022-03-13.”",
+        "note": "No candidate flight exists to support the requested return flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "March 13 lists attraction “-” and transportation “Flight to Charlotte”; Mardi Gras World is scheduled on March 10, not March 13.",
+        "note": "The itinerary keeps March 13 free of sightseeing and designates it for the flight home."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

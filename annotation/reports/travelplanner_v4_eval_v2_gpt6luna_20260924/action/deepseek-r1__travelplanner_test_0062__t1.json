@@ -1,0 +1,193 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22571,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Ithaca (3h52m, $18)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala ($20, 4.1★)",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Red Mesa Cantina ($36, 4.6★)",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Hong Kong Cafe ($47, 3.6★)",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "PRIVATE BEDROOM and BATHROOM crown heights Aprtmnt ($1047 total)",
+        "record_name": "PRIVATE BEDROOM and BATHROOM crown heights Aprtmnt",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Brothers Dhaba ($52, 3.8★)",
+        "record_name": "Brothers Dhaba",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pind Balluchi ($44, 3.7★)",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Red Mesa Cantina ($36, 4.6★)",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "PRIVATE BEDROOM and BATHROOM crown heights Aprtmnt",
+        "record_name": "PRIVATE BEDROOM and BATHROOM crown heights Aprtmnt",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving return (3h54m, $18)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gurdas Ram Jalebi Wala ($20, 4.1★)",
+        "record_name": "Gurdas Ram Jalebi Wala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Hong Kong Cafe ($47, 3.6★)",
+        "record_name": "Hong Kong Cafe",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 1, March 2, and March 3, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2; the plan is for one person.",
+        "note": "The listing can host the traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is self-driving from Ithaca.",
+        "note": "The listed origin matches Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is in Philadelphia and the drive is from Ithaca to Philadelphia.",
+        "note": "The destination matches Philadelphia."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Philadelphia on March 1 and March 2, then Ithaca on the return day.",
+        "note": "Philadelphia is the single destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is March 1, 2022.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is March 3, 2022.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says \"Self-driving from Ithaca\"; the transportation record gives self-driving from Ithaca to Philadelphia, duration 3 hours 52 minutes.",
+        "note": "The requested outbound drive is listed on March 1."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan says \"Self-driving return\"; the transportation record gives self-driving from Philadelphia to Ithaca, duration 3 hours 54 minutes.",
+        "note": "The requested return drive is listed on March 3."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 1 and March 2; March 3 has no accommodation.",
+        "note": "The plan books the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing's record gives room type \"Private room\".",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "violated",
+        "evidence": "The listing's house rules are \"No smoking & No pets\".",
+        "note": "The listing does not prohibit parties as required."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records give ratings of 4.1 (Gurdas Ram Jalebi Wala), 4.6 (Red Mesa Cantina), 3.6 (Hong Kong Cafe), 3.8 (Brothers Dhaba), and 3.7 (Pind Balluchi).",
+        "note": "Every restaurant meal in the plan meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records give average costs per person from $20 to $52 for the listed meals.",
+        "note": "Every restaurant meal is under the $60 per-person cap."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "house_rule",
+        "quote": "Compromised on 'No parties' house rule (no compliant lodging available)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

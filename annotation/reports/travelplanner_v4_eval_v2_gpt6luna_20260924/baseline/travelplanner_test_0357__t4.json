@@ -1,0 +1,202 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 3840.0,
+      "budget": 4000,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20704,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is 4000."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The itinerary is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "There are 4 travelers."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "activity",
+        "value": "2 attractions."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "room_type",
+        "value": "Entire home/apt."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "accommodation",
+        "value": "Use one property."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "accommodation",
+        "value": "The property must have capacity for all four travelers."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant rating at least 4."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "dining_style 2",
+        "value": "Inexpensive."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "cuisine",
+        "value": "French cuisine."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "cuisine",
+        "value": "American cuisine."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "My mother has limited walking."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "My mother needs door-to-door transportation."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "My mother needs regular seated breaks."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "entities.entity_3.constraints.dining_style",
+        "value": "My sister requires vegetarian meals only."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "entities.entity_3.constraints.dining_style",
+        "value": "The shared sit-down restaurant meal each day must have a confirmed vegetarian entree for my sister."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-04",
+        "requirement": "Limit the day to two nearby attractions.",
+        "source_turn": 1,
+        "quote": "limit each day to two nearby attractions"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-05",
+        "requirement": "Limit the day to two nearby attractions.",
+        "source_turn": 1,
+        "quote": "limit each day to two nearby attractions"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-06",
+        "requirement": "Limit the day to two nearby attractions.",
+        "source_turn": 1,
+        "quote": "limit each day to two nearby attractions"
+      },
+      {
+        "kind": "free_time",
+        "date": null,
+        "requirement": "Include regular seated breaks.",
+        "source_turn": 1,
+        "quote": "needs door-to-door transportation and regular seated breaks"
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "entities.entity_2.constraints.mobility",
+        "reason": "The traveler's mobility needs and the feasibility of door-to-door movement cannot be audited from the candidate records."
+      }
+    ],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan contains Day 1 through Day 3 for March 4–6, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5, which accommodates 4 travelers; the plan does not assume another party size."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "The plan lists one attraction on each day, within the stated limit of two nearby attractions per day."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing, “Delight in Your Home Away from Home in NYC!”, is an Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation",
+        "status": "satisfied",
+        "evidence": "The same listing is booked for both nights and has maximum occupancy 5, enough for all four travelers."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "violated",
+        "evidence": "Day 1's listed meal venues do not match candidate restaurant records, so the plan does not establish a restaurant rated at least 4 that day."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "status": "violated",
+        "evidence": "The plan's listed meal venues other than Irish Democrat do not match candidate restaurant records, so their costs cannot establish the inexpensive-meals requirement."
+      },
+      {
+        "gold_field": "cuisine",
+        "status": "violated",
+        "evidence": "The listed meal venues do not establish both French and American cuisine; most do not match candidate restaurant records, and Irish Democrat's recorded cuisines include neither."
+      },
+      {
+        "gold_field": "entities.entity_3.constraints.dining_style",
+        "status": "violated",
+        "evidence": "The plan does not establish a confirmed vegetarian entree at the shared sit-down meal each day; Day 1's listed meal venues are absent from the candidate restaurant records."
+      }
+    ],
+    "annotation_issues": [
+      "The gold cuisine constraint (“French and American”) was withdrawn in turn 2, when the user said to choose any cuisine over French and American variety.",
+      "The gold activity value “2 attractions” may overstate the user's turn 1 requirement, which was a limit of two nearby attractions per day, not a requirement to schedule exactly two.",
+      "The gold entity constraint for a vegetarian sister is not stated in the dialogue; the user never identifies a sister or requests vegetarian meals.",
+      "Turn 4 explicitly adds a meal average-cost limit of under $50 per person, but no corresponding field appears in gold_constraints.",
+      "gold_delta_this_turn relaxes restaurant_rating from 4 to 3.5, but the turn 4 utterance only adds the meal cost limit and does not change the rating requirement; gold_constraints retains 4."
+    ]
+  },
+  "out_of_scope_fields": [
+    "entities.entity_2.constraints.mobility"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 1,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 3064.0,
+      "budget": 3200,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": false,
+      "minimum_nights": [
+        "New York City!! Times Square Home!!!: 1 consecutive night(s) booked, minimum 3",
+        "Delight in Your Home Away from Home in NYC!: 1 consecutive night(s) booked, minimum 2"
+      ],
+      "capacity": [
+        "day 1 New York City!! Times Square Home!!!: 4 travelers, maximum occupancy 3"
+      ]
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19462,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "3200"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "4 travelers"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "cuisine",
+        "value": "Experience American cuisine"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "cuisine",
+        "value": "Experience French cuisine"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "activity",
+        "value": "2 attractions"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "My mother has limited walking"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "My mother needs door-to-door transportation"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "entities.entity_2.constraints.mobility",
+        "value": "My mother needs regular seated breaks"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Limit sightseeing to no more than two geographically clustered attractions per day.",
+        "source_turn": 1,
+        "quote": "limit each day to two nearby attractions"
+      },
+      {
+        "kind": "include",
+        "date": null,
+        "requirement": "Include regular seated breaks.",
+        "source_turn": 1,
+        "quote": "needs door-to-door transportation and regular seated breaks"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Replan at a slower pace.",
+        "source_turn": 1,
+        "quote": "replan at a slower pace"
+      }
+    ],
+    "out_of_scope": [
+      {
+        "field": "entities.entity_2.constraints.mobility",
+        "reason": "A traveler's accessibility or mobility need cannot be audited from the records."
+      }
+    ],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan lists Day 1 through Day 3 for March 4–6, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "violated",
+        "evidence": "The Day 1 accommodation, “New York City!! Times Square Home!!!”, is absent from the candidate records, so its capacity cannot support the four-traveler requirement."
+      },
+      {
+        "gold_field": "cuisine",
+        "status": "violated",
+        "evidence": "Apni Rasoi is a recorded planned meal and lists American cuisine, but none of the planned restaurant meals matched to the records lists French cuisine."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "The plan lists two attractions on Day 1, two on Day 2, and one on Day 3; it does not exceed the stated daily limit of two."
+      }
+    ],
+    "annotation_issues": [
+      "The gold budget is 3200, matching the latest user utterance, but gold_delta_this_turn records a new budget of 4200."
+    ]
+  },
+  "out_of_scope_fields": [
+    "entities.entity_2.constraints.mobility"
+  ]
+}

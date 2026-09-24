@@ -1,0 +1,152 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 4,
+  "prompt_chars": 22612,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "flight F3754877, 08:04 Buffalo to Boston, arriving 09:30",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "simple, inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "simple, inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "simple, inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "simple, inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Irish Democrat",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "flight F3757097, 21:44 Boston to Buffalo, arriving 23:34",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "simple, inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "simple, inexpensive food",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 4, March 5, and March 6, 2022.",
+        "note": "It has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5 and is used for both nights.",
+        "note": "The single listing can host all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "Two attractions are listed each day, but no seated breaks are included in the itinerary.",
+        "note": "The daily attraction limit is met; the baseline also calls for regular seated breaks, which are not planned."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Red Mesa Restaurant is rated 4.5 and Irish Democrat is rated 4.4; March 6 has dinner listed as '-'.",
+        "note": "There is no record-backed restaurant meal rated at least 4.0 on the third day."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Delight in Your Home Away from Home in NYC! is listed as Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing is booked on March 4 and 5; its maximum occupancy is 5.",
+        "note": "One property is used for both nights and can host four travelers."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat has an Average Cost of 18; the other listed restaurant meal is the day's rated meal, while the remaining meal slots have no matching restaurant record.",
+        "note": "The record-backed additional restaurant meal is inexpensive; unrecorded generic food slots do not establish restaurant prices."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Red Mesa Restaurant lists Desserts, Tea, Fast Food, Indian, Seafood; Irish Democrat lists Tea, Cafe, Bakery, Fast Food.",
+        "note": "Neither selected restaurant offers French or American cuisine in its candidate-record cuisine attributes."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

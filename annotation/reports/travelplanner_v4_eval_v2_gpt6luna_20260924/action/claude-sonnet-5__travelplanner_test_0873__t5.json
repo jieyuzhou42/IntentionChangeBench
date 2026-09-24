@@ -1,0 +1,182 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 26119,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving, Charlotte to New Orleans (~10h28m, $57 total car cost)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jimmy's Pancake House, New Orleans (sit-down, ~$50/person)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill (Entire home/apt, $205/night, New Orleans)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Simple self-catered breakfast at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Shenanigan's Irish Pub (sit-down, ~$43/person) — seated break between attractions",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sage (sit-down, ~$87/person)",
+        "record_name": "Sage",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill (Entire home/apt)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Simple self-catered breakfast at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Town Table Restaurant (sit-down, ~$100/person) — seated break between attractions",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "The Fish House (sit-down, ~$20/person)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill (Entire home/apt)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Simple self-catered breakfast at apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "PKay (sit-down, ~$22/person) — seated break between attractions",
+        "record_name": "PKay",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "New Sukh Sagar (sit-down, ~$31/person)",
+        "record_name": "New Sukh Sagar",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill (Entire home/apt)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving, New Orleans to Charlotte (~10h27m, $57 total car cost), early checkout",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Simple self-catered breakfast at apartment (before checkout)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "lunch",
+        "text": "Momo-Cha, New Orleans (sit-down, ~$80/person, eaten before departure)",
+        "record_name": "Momo-Cha",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits New Orleans; Charlotte is the origin and return destination.",
+        "note": "There is one visited city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Cozy in Cobble Hill record lists room type as Entire home/apt.",
+        "note": "The booked accommodation matches the requested room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Day 5 lists no attraction, and the activity requirements say to skip all sightseeing on 2022-03-13.",
+        "note": "The departure day is free of sightseeing."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "PKay's record lists its cuisines as “Tea, Bakery, Fast Food”; it is scheduled for lunch on Day 4.",
+        "note": "The requested lunches and dinners should use sit-down restaurants rather than fast-food options, but a scheduled restaurant meal is identified as Fast Food in the record."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "Days 2, 3, and 4 each list two attractions. The Cabildo and The Singing Oak are absent; Day 5 lists no attractions.",
+        "note": "Each full sightseeing day stays within the two-stop limit, the named stops to drop are omitted, and there is no sightseeing on March 13."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The transportation records list self-driving from Charlotte to New Orleans and from New Orleans to Charlotte.",
+        "note": "Both intercity legs use self-drive transportation."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

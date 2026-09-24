@@ -1,0 +1,170 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24902,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, Kansas City to Orlando, Dep 19:26 - Arr 23:00, $250 (used as best available concrete option; no ground/driving route exists in the available search data)",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Orlando, $287/night, 3-night minimum booking accepted to secure a stay-eligible listing)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Veg O Non, Orlando ($45)",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Wai Yu Mun Ching, Orlando ($51)",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Turquoise Villa, Orlando ($55)",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "BKLYN Brownstone- Glam Getaway! (Orlando)",
+        "record_name": "BKLYN Brownstone- Glam Getaway!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3629193, Orlando to Kansas City, Dep 17:43 - Arr 20:46, $299 (evening departure preserves the March 8 free day)",
+        "record_name": "F3629193",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Crust N Cakes, Orlando ($61)",
+        "record_name": "Crust N Cakes",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Fuji Japanese Steakhouse, Orlando ($75)",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-07, 2022-03-08, and 2022-03-09.",
+        "note": "It spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "BKLYN Brownstone- Glam Getaway! has maximum occupancy 2.",
+        "note": "The listing capacity covers one traveler on each booked night, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is listed from Kansas City to Orlando.",
+        "note": "Kansas City is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as the destination and stay city.",
+        "note": "Orlando is the stated destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as its only visiting city.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary date is 2022-03-07.",
+        "note": "This matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary date is 2022-03-09.",
+        "note": "This matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3998497, Kansas City to Orlando; its record lists departure 19:26 and arrival 23:00.",
+        "note": "The plan flies rather than self-driving in the user's own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The itinerary books flight F3629193, Orlando to Kansas City; its record lists departure 17:43 and arrival 20:46.",
+        "note": "The plan flies rather than self-driving in the user's own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists accommodation on 2022-03-07 and 2022-03-08, and none on the departure date 2022-03-09.",
+        "note": "Those are the two requested overnight stays."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The itinerary uses flights on 2022-03-07 and 2022-03-09 rather than the requested full-day intercity drives; sightseeing is listed only on 2022-03-08.",
+        "note": "Sightseeing is confined to the 8th, but the 7th and 9th are not reserved for intercity driving."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights, and the outbound flight record lists a price of $250.",
+        "note": "The preferred mode is flying; the action uses flights rather than driving."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "even though it does not literally use a car"
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "even though it does not literally use a car"
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "quote": "this sacrifices exact night-matching"
+      }
+    ],
+    "annotation_issues": [
+      "The transportation candidate records contain flights but no own-car or driving-route records."
+    ]
+  }
+}

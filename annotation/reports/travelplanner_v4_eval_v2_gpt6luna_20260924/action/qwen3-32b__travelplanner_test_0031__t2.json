@@ -1,0 +1,205 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23491,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F3578336",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Chili's Grill & Bar",
+        "record_name": "Chili's Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Costa Coffee",
+        "record_name": "Costa Coffee",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Barbeque Nation",
+        "record_name": "Barbeque Nation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park!",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Portneuf Valley Brewing",
+        "record_name": "Portneuf Valley Brewing",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Big Brewsky",
+        "record_name": "Big Brewsky",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Chili's Grill & Bar",
+        "record_name": "Chili's Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park!",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Driving back to Belleville",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-27 through 2022-03-30, four days.",
+        "note": "The plan covers four itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Las Vegas listing has maximum occupancy 3 on both nights.",
+        "note": "The nightly listing capacity covers two travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has OriginCityName Belleville; the return text says 'Driving back to Belleville'.",
+        "note": "The plan starts from Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 arrives in Las Vegas, and the intervening itinerary days list Las Vegas as the current city.",
+        "note": "Las Vegas is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Las Vegas as its only destination city.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has FlightDate 2022-03-27.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary includes 2022-03-30 and lists the drive back on that day.",
+        "note": "The plan ends on 2022-03-30."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 is from Belleville to Las Vegas on 2022-03-27; the record lists departure 12:29 and arrival 14:04.",
+        "note": "The outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan lists '-' for transportation on 2022-03-29 and 'Driving back to Belleville' only on 2022-03-30.",
+        "note": "It does not plan the self-drive across both 2022-03-29 and 2022-03-30."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed on 2022-03-28 and 2022-03-29, while the requested nights are 2022-03-27 and 2022-03-28.",
+        "note": "The booked accommodation days do not match the two requested nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "The listing meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has review rate number 5.",
+        "note": "The rating meets the 5.0 minimum."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Costa Coffee has Aggregate Rating 0; the other planned restaurant records have ratings of at least 3.",
+        "note": "The Costa Coffee meal falls below the 3.0 minimum."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Chili's Grill & Bar, Portneuf Valley Brewing, Big Brewsky, and Barbeque Nation each include Fast Food in Cuisines.",
+        "note": "The plan includes Las Vegas meals tagged Fast Food."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On 2022-03-28 the plan lists Ethos Vegan Kitchen for breakfast, Costa Coffee for lunch, and Barbeque Nation for dinner.",
+        "note": "All three meals are at different restaurants."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan lists The Mob Museum as an attraction on 2022-03-28 and does not mark 14:00–16:00 as free.",
+        "note": "A planned activity is listed that day, and the plan does not reserve the requested interval."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's house_rules include 'No smoking'.",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "violated",
+        "evidence": "The plan lists The Mob Museum as an attraction on 2022-03-28 and does not mark 14:00–16:00 as free.",
+        "note": "The plan does not keep the sister's unavailable interval free of planned activities."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

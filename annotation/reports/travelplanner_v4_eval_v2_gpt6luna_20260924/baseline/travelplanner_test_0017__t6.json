@@ -1,0 +1,195 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0017",
+  "turn_id": 6,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2475.0,
+      "budget": 2500,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20205,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is 2500"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "Trip lasts 3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "Trip is for 1 person"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Trip starts in Lihue"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Trip ends in San Francisco"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "Trip starts on 2022-03-27"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "Trip ends on 2022-03-29"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Take flight F3880511 from Lihue to San Francisco on 2022-03-27, landing at 21:32"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Take flight F3870709 from San Francisco to Lihue on 2022-03-29, departing at 09:10"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights, 2022-03-27 and 2022-03-28"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "room_type",
+        "value": "Room type is Entire home/apt"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant rating is 3.4"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "dining_variety",
+        "value": "Use three different restaurants for breakfast, lunch, and dinner on 2022-03-28"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "exclude",
+        "date": "2022-03-28",
+        "requirement": "Do not use the same place for all three meals on 2022-03-28.",
+        "source_turn": 5,
+        "quote": "Not the same place three times on the 28th, though."
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-28",
+        "requirement": "Have food at three different places on 2022-03-28.",
+        "source_turn": 6,
+        "quote": "I really want the variety in my food in three different places."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan has itinerary entries for 2022-03-27, 2022-03-28, and 2022-03-29."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan specifies one traveler and one accommodation unit with maximum occupancy 2."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Lihue."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The outbound flight arrives in San Francisco and the return flight departs from San Francisco."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The trip visits San Francisco as its destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight are dated 2022-03-27."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The final itinerary day and return flight are dated 2022-03-29."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan uses F3880511 from Lihue to San Francisco on 2022-03-27, arriving at 21:32; the candidate record confirms these details."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan uses F3870709 from San Francisco to Lihue on 2022-03-29, departing at 09:10; the candidate record confirms these details."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The plan states check-in on 2022-03-27 and check-out on 2022-03-29, booking two nights."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing's candidate record gives its room type as Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The three restaurants used on 2022-03-28 have candidate-record ratings of 3.6, 3.7, and 3.7, all at least 3.4."
+      },
+      {
+        "gold_field": "dining_variety",
+        "status": "satisfied",
+        "evidence": "Breakfast, lunch, and dinner on 2022-03-28 are assigned to Coffee & Chai Co., Tokyo Sushi, and Ustad Moinuddin Kebab, respectively."
+      }
+    ],
+    "annotation_issues": [
+      "The gold restaurant_rating value of 3.4 conflicts with the user's unwithdrawn turn 4 request to keep food at 3.7 or above; turn 6 asks for variety and does not revise that rating request.",
+      "The reference plan describes its San Francisco accommodation as being in Woodlawn NYC, while the candidate record labels the listing's city San Francisco; the location description is inconsistent."
+    ]
+  },
+  "out_of_scope_fields": []
+}

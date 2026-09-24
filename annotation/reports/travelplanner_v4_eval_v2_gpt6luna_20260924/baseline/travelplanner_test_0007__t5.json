@@ -1,0 +1,197 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 5,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1006.0,
+      "budget": 1100,
+      "unpriced": [
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin",
+        "breakfast: unknown — travel-day meal on the road; venue and cost pendin",
+        "lunch: unknown — travel-day meal on the road; venue and cost pendin",
+        "dinner: unknown — travel-day meal on the road; venue and cost pendin"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20189,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "1100"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "St. Louis"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Oklahoma City"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-17"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-19"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-driving St. Louis to Oklahoma City on 2022-03-17; own car"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-driving Oklahoma City to St. Louis on 2022-03-19; own car"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "2 nights 2022-03-17 and 2022-03-18"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "restaurant_rating",
+        "value": "4"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "transportation",
+        "value": "Prefer flying when the cap allows it"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "transportation",
+        "value": "Driving is acceptable to protect the restaurant rating floor"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-17",
+        "requirement": "Use a late outbound flight from St. Louis.",
+        "source_turn": 1,
+        "quote": "the late one out on the 17th"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-19",
+        "requirement": "Use an early return flight to St. Louis.",
+        "source_turn": 1,
+        "quote": "the early one back on the 19th"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The plan has itinerary entries for March 17, 18, and 19, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked unit has maximum occupancy 4, enough for one traveler; the plan is for one unit and does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound drive starts in St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The plan travels to Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The plan visits Oklahoma City as its one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The plan starts on 2022-03-17."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return is on 2022-03-19."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving in an own car from St. Louis to Oklahoma City on 2022-03-17."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving in an own car from Oklahoma City to St. Louis on 2022-03-19."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked from check-in on March 17 to check-out on March 19, covering the nights of March 17 and 18."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "unknown",
+        "evidence": "The listed Lake House Restaurant meals rate 4.3, but the travel-day meal venues are marked UNKNOWN, so their ratings cannot be verified."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "satisfied",
+        "evidence": "The plan drives, which is acceptable under the constraint. The two listed flights cost $306 total; with the $812 accommodation alone, flying would exceed the $1,100 cap."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio is listed as Entire home/apt."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

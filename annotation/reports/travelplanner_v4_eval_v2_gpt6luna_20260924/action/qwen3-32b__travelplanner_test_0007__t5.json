@@ -1,0 +1,161 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22379,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Fly to Oklahoma City with Flight F4025720 (21:59 - 23:42)",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Buffet 101 (4.0 rating, $74)",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Spacious and clean 1 bedroom - Brooklyn, Entire home/apt",
+        "record_name": "Spacious and clean 1 bedroom - Brooklyn",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Café Delhi Heights (4.0 rating, $74)",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cappuccino Blast (4.0 rating, $84)",
+        "record_name": "Cappuccino Blast",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Lake House Restaurant (4.3 rating, $38)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Spacious and clean 1 bedroom - Brooklyn, Entire home/apt",
+        "record_name": "Spacious and clean 1 bedroom - Brooklyn",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Fly back to St. Louis with Flight F3950607 (06:27 - 07:44)",
+        "record_name": "F3950607",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Shakahari Restaurant (3.6 rating, $81)",
+        "record_name": "Shakahari Restaurant",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 17, March 18, and March 19, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 3.",
+        "note": "Its capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 records St. Louis as the origin city.",
+        "note": "The itinerary departs from St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 records Oklahoma City as the destination city; the itinerary's current city is Oklahoma City on March 18 and 19.",
+        "note": "The plan goes to Oklahoma City."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Oklahoma City as its destination.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-17.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-19.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses Flight F4025720 from St. Louis to Oklahoma City; its record lists departure at 21:59 on 2022-03-17. The requirement is self-driving in an own car.",
+        "note": "The outbound leg is a flight, not self-driving."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses Flight F3950607 from Oklahoma City to St. Louis; its record lists departure at 06:27 on 2022-03-19. The requirement is self-driving in an own car.",
+        "note": "The return leg is a flight, not self-driving."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-17 and 2022-03-18, with none listed on the March 19 departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Shakahari Restaurant has Aggregate Rating 3.6; the other restaurant meals have ratings of 4.0, 4.0, 4.0, and 4.3.",
+        "note": "The March 19 breakfast is below the required 4.0 floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary selects flights F4025720 and F3950607. Their records show fares of 105 and 201, respectively.",
+        "note": "The plan chooses flying, consistent with the stated preference when the cap allows it."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Spacious and clean 1 bedroom - Brooklyn, has room type Entire home/apt.",
+        "note": "The listing is an entire home/apartment, not a room in someone's flat."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

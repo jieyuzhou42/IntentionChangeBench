@@ -1,0 +1,181 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23309,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164, departs Houston 09:50, arrives Reno 12:04, $688",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At Houston airport before departure (self-catered / airport food prior to flight)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Kanha Sweets, Reno — Italian, Bakery, Cafe, American; Avg cost $28; Rating 4.1",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Leme Light, Reno — Cafe, Mexican; Avg cost $55; Rating 4.2",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse, Reno — Entire home/apt, $361/night, rating 5.0, house rule: No visitors, min 2 nights",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Kanha Sweets, Reno — Bakery, Cafe; Avg cost $28; Rating 4.1",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Leme Light, Reno — Cafe, Mexican; Avg cost $55; Rating 4.2",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Kanha Sweets, Reno — Italian, Bakery, American; Avg cost $28; Rating 4.1",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse, Reno — Entire home/apt, $361/night, rating 5.0",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705, departs Reno 12:58, arrives Houston 18:31, $446",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Leme Light, Reno — Cafe, Mexican; Avg cost $55; Rating 4.2",
+        "record_name": "Leme Light",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Kanha Sweets, Reno (light pre-flight meal before 12:58 departure); Avg cost $28; Rating 4.1",
+        "record_name": "Kanha Sweets",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers Day 1 (2022-03-11), Day 2 (2022-03-12), and Day 3 (2022-03-13).",
+        "note": "It includes three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Reno listing has maximum occupancy 2.",
+        "note": "The listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has OriginCityName Houston.",
+        "note": "The outbound trip starts in Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 has DestCityName Reno.",
+        "note": "The outbound trip goes to Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation are in Reno.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is labeled 2022-03-11.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is labeled 2022-03-13.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3879164 is dated 2022-03-11, from Houston to Reno, and departs at 09:50.",
+        "note": "The plan keeps the required outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3875705 is dated 2022-03-13, from Reno to Houston, and departs at 12:58.",
+        "note": "The plan keeps the required return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on 2022-03-11 and 2022-03-12; the departure day has no accommodation.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Leme Light has Aggregate Rating 4.2 and Kanha Sweets has Aggregate Rating 4.1. The airport breakfast is self-catered.",
+        "note": "Every restaurant meal in the plan meets the 4.0 rating floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "The records list Fast Food in the Cuisines for both Leme Light and Kanha Sweets.",
+        "note": "All restaurant meals use restaurants tagged Fast Food."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_style",
+        "quote": "Both restaurants rated ≥4.0 (Leme Light 4.2, Kanha Sweets 4.1) include 'Fast Food' in their cuisine tags, so the 'no Fast Food' requirement cannot be met simultaneously with the ≥4.0 rating requirement. Rating ≥4.0 is protected as the higher-priority must_have; the Fast Food exclusion is sacrificed."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

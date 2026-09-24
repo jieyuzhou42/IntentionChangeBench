@@ -1,0 +1,195 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22121,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving, 12h 16m, $64",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Nice Room (Private room, No smoking, $282 for 2 nights)",
+        "record_name": "Nice Room",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "self-driving within city",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Silantro Fil-Mex (rating 4.9, cost ~$29)",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos (rating 4.0, cost ~$36)",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Raj Restaurant (Indian, rating 3.1, cost ~$61)",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Nice Room (continuing)",
+        "record_name": "Nice Room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving, 12h 27m, $64",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists three days.",
+        "note": "It covers the requested three-day trip."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Nice Room has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is self-driving; the candidate record gives the route from Myrtle Beach to Syracuse.",
+        "note": "The itinerary starts from Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Syracuse on Day 2; the transportation record gives Myrtle Beach to Syracuse.",
+        "note": "Syracuse is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Syracuse as the destination city.",
+        "note": "It plans one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Dialogue specifies March 23, 2022, and Day 1 is the outbound driving day.",
+        "note": "The itinerary begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Dialogue specifies March 25, 2022, and Day 3 is the return driving day.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The record lists self-driving from Myrtle Beach to Syracuse, duration 12 hours 16 minutes, cost 64; the itinerary places it on Day 1.",
+        "note": "Matches the requested outbound route and own-car mode."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The record lists self-driving from Syracuse to Myrtle Beach, duration 12 hours 27 minutes, cost 64; the itinerary places it on Day 3.",
+        "note": "Matches the requested return route and own-car mode."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has intercity driving on Days 1 and 3, and lists the zoo visit and meals in Syracuse on Day 2.",
+        "note": "Sightseeing is placed on the only available day, March 24."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Nice Room is listed on Day 1 and as continuing on Day 2; the itinerary's dates are March 23–25, 2022.",
+        "note": "The two booked nights correspond to March 23 and 24."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Nice Room's candidate record lists its room type as Private room.",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Silantro Fil-Mex is rated 4.9, Tucanos 4.0, and Raj Restaurant 3.1.",
+        "note": "All restaurant meals meet the rating floor of 3."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Candidate-record average costs per person are 29 for Silantro Fil-Mex, 36 for Tucanos, and 61 for Raj Restaurant.",
+        "note": "Each is under 70 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Silantro Fil-Mex's Cuisines field includes Fast Food.",
+        "note": "The requirement prohibits any Syracuse meal with a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "Breakfast is Silantro Fil-Mex, lunch is Tucanos, and dinner is Raj Restaurant.",
+        "note": "The three meals on March 24 use three different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant's Cuisines field includes Indian.",
+        "note": "An Indian-tagged meal is included on March 24."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Nice Room's house_rules field says No smoking.",
+        "note": "The listing prohibits smoking as required."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "Rosamond Gifford Zoo is listed as the Day 2 attraction, and it appears in the attraction records for Syracuse.",
+        "note": "The optional zoo visit is included on March 24."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Did not meet 'nothing under 3.0 where I eat' strictly for Nice Room (rating 3 equals threshold not exceeds)"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

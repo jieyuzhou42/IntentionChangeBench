@@ -1,0 +1,172 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23623,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (Buffalo->Boston, 08:04-09:30, $136/person) then accessible rideshare to accommodation",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed simple breakfast before departure (self-catered, low cost)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat (Cafe/Bakery, rating 4.4, $18/person) - sit-down qualifying meal",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Bablu Chinese Food (simple, inexpensive, $14/person)",
+        "record_name": "Bablu Chinese Food",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (Entire home/apt, Boston, max occupancy 5, min nights 2, $872/night)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Accessible rideshare for all local transfers, group kept together",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Simple in-apartment breakfast (self-catered)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Irish Democrat (rating 4.4, $18/person) - sit-down qualifying meal",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Bablu Chinese Food (simple, inexpensive, $14/person)",
+        "record_name": "Bablu Chinese Food",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (same property, night 2)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Accessible rideshare to attractions/airport; Flight F3757097 (Boston->Buffalo, 21:44-23:34, $169/person)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Simple in-apartment breakfast (self-catered)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Irish Democrat (rating 4.4, $18/person) - sit-down qualifying meal",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Bablu Chinese Food (quick, inexpensive, $14/person, before airport)",
+        "record_name": "Bablu Chinese Food",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5 on each of the two nights; the plan is for the four travelers.",
+        "note": "The listing capacity accommodates all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists two attractions on each day: Boston Common and Public Garden; Faneuil Hall Marketplace and New England Aquarium; Museum of Science and Bunker Hill Monument.",
+        "note": "Each day meets the two-attraction limit."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing record for Delight in Your Home Away from Home in NYC! gives room type 'Entire home/apt'.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The same listing, Delight in Your Home Away from Home in NYC!, is booked for both nights and has maximum occupancy 5.",
+        "note": "One property can host all four travelers."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat has Aggregate Rating 4.4 and is listed as the sit-down qualifying meal each day.",
+        "note": "Each day includes a restaurant meal rated at least 4.0."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records give Irish Democrat an Average Cost of 18 and Bablu Chinese Food an Average Cost of 14.",
+        "note": "The restaurant meals are presented as inexpensive, and both recorded average costs are low."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "Irish Democrat's recorded cuisines are Tea, Cafe, Bakery, Fast Food; Bablu Chinese Food's are Pizza, BBQ. Neither record lists French or American.",
+        "note": "The recorded restaurant meals do not provide either requested cuisine."
+      },
+      {
+        "gold_field": "entities.entity_3.constraints.dining_style",
+        "action_status": "unknown",
+        "evidence": "The Irish Democrat record provides cuisines, average cost, and rating, but no menu or vegetarian-entree information.",
+        "note": "The records cannot confirm a vegetarian entree at the shared sit-down restaurant on any day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

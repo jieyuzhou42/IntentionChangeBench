@@ -1,0 +1,207 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 6,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1333.0,
+      "budget": 1400,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 20103,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is 1400."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The trip is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "The trip is for 1 person."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Depart from Denver."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Travel to Oakland."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-26."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-28."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Take a flight from Denver to Oakland on 2022-03-26 departing at 08:39."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Take a flight from Oakland to Denver on 2022-03-28 landing at 11:49."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "accommodation_stay",
+        "value": "Stay 3 nights."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "accommodation_stay",
+        "value": "The 3-night stay starts on 2022-03-26."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "accommodation_stay",
+        "value": "Paying for one night after departure is acceptable."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "schedule",
+        "value": "Arrive back in Denver no later than 12:00 on 2022-03-28."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "room_type",
+        "value": "The accommodation is Entire home/apt."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "accommodation_rating",
+        "value": "The accommodation rating is 5."
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "restaurant_rating",
+        "value": "Restaurant rating is 4 or above."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-28",
+        "requirement": "Arrive home before noon.",
+        "source_turn": 1,
+        "quote": "the one that gets me home before noon on the 28th."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference itinerary covers March 26, 27, and 28, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The plan is for one person; the booked unit has maximum occupancy 2."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The reference itinerary departs from Denver."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The reference itinerary travels to Oakland."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "The itinerary visits Oakland as its destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The outbound flight and accommodation check-in are dated 2022-03-26."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The return itinerary is dated 2022-03-28."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F4031463 is in the candidate records for Denver to Oakland on 2022-03-26, departing at 08:39, and is listed in the plan."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "violated",
+        "evidence": "The plan names flight F3958710 for March 28, but that flight is absent from the candidate records; the return query instead reports no flight on March 29."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The plan books the accommodation from check-in March 26 to check-out March 29, a three-night stay that includes the night after the March 28 departure."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "violated",
+        "evidence": "The plan states an 11:49 arrival, but the return flight is absent from the candidate records, which are required to verify flight times."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked Historic Far Rockaway Beach Bungalow is listed as Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The booked listing has a review rate number of 5.0 in the candidate records."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "satisfied",
+        "evidence": "The listed restaurant meals use Cho Gao - Crowne Plaza Abu Dhabi, whose candidate-record rating is 4.4."
+      }
+    ],
+    "annotation_issues": [
+      "The candidate transportation records have no March 28 Oakland-to-Denver flight; the only return query is for March 29 and reports no flight. The reference plan nevertheless names F3958710 for March 28."
+    ]
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,176 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0037",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23320,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3500974, depart Atlanta 09:37, arrive Bozeman 11:50, $345",
+        "record_name": "F3500974",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home/airport before departure (self-catered)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Saravana Bhavan, Bozeman (rating 4.3, avg $38)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub & Brewery, Bozeman (rating 4.9, avg $72)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely 3 bedroom Townhouse in BK Historic District, Bozeman (rating 5.0, $350/night × 3 nights = $1,050 billed to meet 3-night minimum)",
+        "record_name": "Lovely 3 bedroom Townhouse in BK Historic District",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Jiquitaia, Bozeman (rating 4.1, avg $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Saravana Bhavan, Bozeman (rating 4.3, avg $38)",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "McGuire's Irish Pub & Brewery, Bozeman (rating 4.9, avg $72)",
+        "record_name": "McGuire's Irish Pub & Brewery",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely 3 bedroom Townhouse in BK Historic District, Bozeman (night 2 of 3)",
+        "record_name": "Lovely 3 bedroom Townhouse in BK Historic District",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3500979, depart Bozeman 13:08, arrive Atlanta 18:37, $803",
+        "record_name": "F3500979",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Jiquitaia, Bozeman (rating 4.1, avg $36)",
+        "record_name": "Jiquitaia",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Saravana Bhavan, Bozeman (rating 4.3, avg $38) — before 13:08 departure",
+        "record_name": "Saravana Bhavan",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days dated 2022-03-25, 2022-03-26, and 2022-03-27.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3; the plan does not assume another party size.",
+        "note": "The listing can host the one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has OriginCityName Atlanta.",
+        "note": "The itinerary starts in Atlanta."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3500974 has DestCityName Bozeman; the return flight departs Bozeman.",
+        "note": "The itinerary reaches Bozeman."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Bozeman between the Atlanta departure and return.",
+        "note": "It includes one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record F3500974 has FlightDate 2022-03-25.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record F3500979 has FlightDate 2022-03-27.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500974 is dated 2022-03-25 and flies Atlanta to Bozeman, departing 09:37 and arriving 11:50.",
+        "note": "The listed outbound flight matches the required route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3500979 is dated 2022-03-27 and flies Bozeman to Atlanta, departing 13:08 and arriving 18:37.",
+        "note": "The listed return flight matches the required route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary explicitly books the townhouse for 3 nights at $350/night, beginning 2022-03-25; it says the third billed night covers the minimum stay.",
+        "note": "The third billed night after departure is acceptable under the requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Lovely 3 bedroom Townhouse in BK Historic District, has review rate number 5.",
+        "note": "Its recorded rating meets the floor of 4."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Recorded restaurant meals are Jiquitaia (4.1), Saravana Bhavan (4.3), and McGuire's Irish Pub & Brewery (4.9).",
+        "note": "Each restaurant meal meets the 4.0 rating floor; the self-catered breakfast is not a restaurant meal."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

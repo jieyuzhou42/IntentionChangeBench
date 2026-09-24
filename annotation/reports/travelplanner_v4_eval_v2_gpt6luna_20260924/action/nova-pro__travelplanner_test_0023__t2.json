@@ -1,0 +1,176 @@
+{
+  "model": "nova-pro",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21832,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive to Syracuse",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Tucanos",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Silantro Fil-Mex",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Raj Restaurant",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Nice Room",
+        "record_name": "Nice Room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive to Myrtle Beach",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 23, 24, and 25.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Nice Room has maximum occupancy 2.",
+        "note": "The booked listing can host one traveler, and the plan assumes no larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Drive to Syracuse”; the transportation record lists self-driving from Myrtle Beach to Syracuse.",
+        "note": "The trip begins in Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary places the traveler in Syracuse on March 24; the driving record is from Myrtle Beach to Syracuse.",
+        "note": "Syracuse is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Syracuse as the destination city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts on March 23, 2022.",
+        "note": "This matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on March 25, 2022.",
+        "note": "This matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Drive to Syracuse”; the record lists self-driving from Myrtle Beach to Syracuse on the requested route.",
+        "note": "The outbound leg is by own-car self-driving as requested."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “Drive to Myrtle Beach”; the record lists self-driving from Syracuse to Myrtle Beach.",
+        "note": "The return leg is by own-car self-driving as requested."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan drives on March 23 and March 25, and places the zoo visit and meals on March 24.",
+        "note": "Sightseeing is confined to the only available day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists Nice Room only on March 24; March 23 and March 25 have no accommodation.",
+        "note": "Only one night is booked, rather than the requested nights of March 23 and 24."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Nice Room is listed as “Private room.”",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Tucanos has rating 4, Silantro Fil-Mex 4.9, and Raj Restaurant 3.1.",
+        "note": "All restaurant meals meet the 3.0 minimum."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "Average costs per person are Tucanos 36, Silantro Fil-Mex 29, and Raj Restaurant 61.",
+        "note": "Each meal is under $70 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Silantro Fil-Mex has “Fast Food” in its Cuisines field.",
+        "note": "A Syracuse meal carries a prohibited Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "Breakfast is Tucanos, lunch is Silantro Fil-Mex, and dinner is Raj Restaurant.",
+        "note": "The three meals on March 24 are at three different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant has “Indian” in its Cuisines field.",
+        "note": "At least one meal is Indian-tagged."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Nice Room lists the house rule “No smoking.”",
+        "note": "The listing prohibits smoking."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 24 attraction is Rosamond Gifford Zoo, which appears in the Syracuse attraction records.",
+        "note": "The optional zoo visit is included on the requested day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

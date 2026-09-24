@@ -1,0 +1,162 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24595,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497 from Kansas City departing 19:26, arriving 23:00",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Veg O Non",
+        "record_name": "Veg O Non",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Room in Upper East Side! ($885, 1 night, max 2 guests)",
+        "record_name": "Room in Upper East Side!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Wai Yu Mun Ching",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Turquoise Villa",
+        "record_name": "Turquoise Villa",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Fuji Japanese Steakhouse",
+        "record_name": "Fuji Japanese Steakhouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Room in Upper East Side! ($885, 1 night, max 2 guests)",
+        "record_name": "Room in Upper East Side!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856 from Orlando departing 22:44, arriving 00:33",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Crust N Cakes",
+        "record_name": "Crust N Cakes",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "The Tandoori Times",
+        "record_name": "The Tandoori Times",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "violated",
+        "evidence": "The itinerary has entries for March 7–9, but return flight F4019856 arrives at 00:33 after departing at 22:44 on March 9, so arrival is March 10.",
+        "note": "The actual trip spans into a fourth calendar date."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Room in Upper East Side! has maximum occupancy 2 and is booked for both nights.",
+        "note": "Its capacity covers one traveler on each night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 has OriginCityName Kansas City.",
+        "note": "The outbound trip starts in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 has DestCityName Orlando.",
+        "note": "The outbound trip goes to Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and activity are in Orlando; the return flight departs Orlando.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3998497 has FlightDate 2022-03-07.",
+        "note": "The itinerary begins on March 7, 2022."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "violated",
+        "evidence": "Flight F4019856 departs Orlando at 22:44 on March 9 and arrives at 00:33, after midnight.",
+        "note": "The return reaches Kansas City on March 10, not March 9."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3998497; its record is a flight from Kansas City to Orlando.",
+        "note": "The must-have is self-driving in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F4019856; its record is a flight from Orlando to Kansas City.",
+        "note": "The must-have is self-driving in an own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Room in Upper East Side! is listed on March 7 and March 8; its record has minimum nights 1.",
+        "note": "The two itinerary nights match the requested dates, March 7 and 8."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The March 7 and March 9 transportation slots are flights, not drives. Universal Orlando Resort is listed on March 8, with no sightseeing listed on the other days.",
+        "note": "Sightseeing is confined to March 8, but the required full-day intercity drives on March 7 and 9 are not planned."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F3998497 and F4019856.",
+        "note": "The preference favors flying when possible, and the plan selects flights."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

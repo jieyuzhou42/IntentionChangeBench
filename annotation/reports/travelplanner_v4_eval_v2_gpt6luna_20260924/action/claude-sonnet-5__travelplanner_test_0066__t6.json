@@ -1,0 +1,181 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23658,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive (car), Minneapolis -> Jacksonville (no flights available per search results)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Tpot (rating 3.2, no Fast Food)",
+        "record_name": "Tpot",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC Sanctuary, Skyline Views & Rooftop (Entire home/apt, rating 5.0)",
+        "record_name": "NYC Sanctuary, Skyline Views & Rooftop",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Villa Gargano (rating 3.7, no Fast Food)",
+        "record_name": "Villa Gargano",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pirates' House Restaurant (rating 3.8, no Fast Food)",
+        "record_name": "Pirates' House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Sanjha Chulha (rating 3.3, no Fast Food)",
+        "record_name": "Sanjha Chulha",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC Sanctuary, Skyline Views & Rooftop (Entire home/apt, rating 5.0)",
+        "record_name": "NYC Sanctuary, Skyline Views & Rooftop",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive (car), Jacksonville -> Minneapolis (no flights available per search results)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Midnight Cravings Beyond Control (rating 3.3, no Fast Food)",
+        "record_name": "Midnight Cravings Beyond Control",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 27, 28, and 29, 2022.",
+        "note": "Three itinerary days are listed."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 6 on both accommodation nights.",
+        "note": "Capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is listed as Minneapolis -> Jacksonville.",
+        "note": "The trip begins in Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation is listed as Minneapolis -> Jacksonville.",
+        "note": "The itinerary's destination is Jacksonville."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Jacksonville as its destination and visiting city.",
+        "note": "Only one destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-29.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 says “Self-drive (car), Minneapolis -> Jacksonville”; the user specified driving out on the 27th.",
+        "note": "The plan uses the requested own-car outbound drive."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says “Self-drive (car), Jacksonville -> Minneapolis”; the user specified driving back on the 29th.",
+        "note": "The plan uses the requested own-car return drive."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary drives on March 27 and 29, and lists Jacksonville Zoo and Gardens and Southbank Riverwalk only on March 28.",
+        "note": "Sightseeing is confined to the specified date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The accommodation is listed on March 27 and March 28, with none on the March 29 departure day.",
+        "note": "The itinerary includes the two requested nights; the listing's three-night minimum is a separate gate."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The candidate record for NYC Sanctuary, Skyline Views & Rooftop lists room type “Entire home/apt.”",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The candidate record gives NYC Sanctuary, Skyline Views & Rooftop a review rate number of 5.0.",
+        "note": "The rating meets the 3.5 minimum."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The selected restaurants have Aggregate Ratings of 3.2 (Tpot), 3.7 (Villa Gargano), 3.8 (Pirates' House Restaurant), 3.3 (Sanjha Chulha), and 3.3 (Midnight Cravings Beyond Control).",
+        "note": "Every restaurant meal in the plan meets the 3.0 minimum."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Cuisines records for all selected restaurants contain no “Fast Food” tag.",
+        "note": "No planned Jacksonville restaurant meal has the prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 28 lists Villa Gargano for breakfast, Pirates' House Restaurant for lunch, and Sanjha Chulha for dinner.",
+        "note": "The three meals use three different restaurants."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The transportation candidate searches are dated 2022-03-25 and 2022-03-31, not the requested travel dates; they do not verify flight availability on March 27 or March 29."
+    ]
+  }
+}

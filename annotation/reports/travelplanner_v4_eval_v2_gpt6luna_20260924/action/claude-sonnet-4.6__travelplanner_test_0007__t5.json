@@ -1,0 +1,203 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23869,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4025720, departs St. Louis 21:59, arrives Oklahoma City 23:42 ($105)",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "At home in St. Louis before travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "At home / self-arranged in St. Louis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Lake House Restaurant, Oklahoma City – Cafe/American/Mediterranean/BBQ, avg $38, rating 4.3 (early dinner before flight or on arrival if open late; alternatively packed/airport meal en route)",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio – Entire home/apt, $406/night, min 2 nights, max occupancy 4, no smoking/no parties (Night 1 of 2)",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local travel (taxi/rideshare)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Lake House Restaurant – Cafe/American/Mediterranean/BBQ, avg $38, rating 4.3",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cafe Delhi Heights – Chinese/Pizza/Cafe/Seafood, avg $74, rating 4.0",
+        "record_name": "Cafe Delhi Heights",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Cappuccino Blast – Cafe/Bakery/American/Seafood, avg $84, rating 4.0",
+        "record_name": "Cappuccino Blast",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio – Entire home/apt, $406/night (Night 2 of 2)",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3950607, departs Oklahoma City 06:27, arrives St. Louis 07:44 ($201); depart accommodation by ~04:30",
+        "record_name": "F3950607",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Airport/self-catered snack before early departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Back in St. Louis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers Day 1 – 2022-03-17 through Day 3 – 2022-03-19.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio has maximum occupancy 4; the dialogue requests one person.",
+        "note": "The booked listing can host the one traveler, and the plan does not assume a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 begins in St. Louis, and the outbound flight record lists OriginCityName as St. Louis.",
+        "note": "The stated origin matches."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists DestCityName as Oklahoma City.",
+        "note": "The stated destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Oklahoma City before returning to St. Louis.",
+        "note": "There is one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-17, matching the outbound flight record's FlightDate.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 and the return flight record are dated 2022-03-19.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F4025720 from St. Louis to Oklahoma City; its record shows departure at 21:59 on 2022-03-17.",
+        "note": "The gold requirement specifies self-driving in one's own car, not a flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3950607 from Oklahoma City to St. Louis; its record shows departure at 06:27 on 2022-03-19.",
+        "note": "The gold requirement specifies self-driving in one's own car, not a flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books Chelsea/Union Square cozy studio for Night 1 of 2 on Day 1 (2022-03-17) and Night 2 of 2 on Day 2 (2022-03-18). The record's minimum stay is 2 nights.",
+        "note": "Both requested nights are booked."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records give Lake House Restaurant a rating of 4.3, Cafe Delhi Heights 4.0, and Cappuccino Blast 4.0.",
+        "note": "Every restaurant meal named in the plan meets the 4.0 floor; self-catered and at-home slots do not count against it."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses outbound flight F4025720 at 21:59 and return flight F3950607 at 06:27; these are the flights recorded for the requested routes and dates.",
+        "note": "The conditional preference favors flying when feasible, and the plan flies."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Chelsea/Union Square cozy studio record lists room type as Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment, not a room in someone's flat."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,38 @@
+You compare ONE agent's predicted intent at one turn with the frozen gold
+atoms. You do not see any itinerary.
+
+1. Split every predicted item into atoms with the same rule as the gold atoms:
+   one requirement per atom, keeping dates, cities, travelers, negations and
+   limits; never add information the item does not state. Give each atom the
+   index of the predicted item it came from.
+2. Match predicted atoms to gold atoms one-to-one: each gold atom and each
+   predicted atom is used at most once. If two predicted atoms express the same
+   gold atom, match the better one and leave the other unmatched. A renamed but
+   clearly equivalent field may match.
+3. value_match is true only if the atom's value is semantically correct for the
+   gold atom's current value: Day 2 does not satisfy Day 1, a budget ceiling is
+   not an exact spending target, an exclusion is not an inclusion.
+4. change_vs_previous compares each atom with the agent's own previous-turn
+   prediction: unchanged if a previous item expresses the same requirement with
+   the same value (renaming or rephrasing is not a change), changed if it
+   expresses the same requirement with a different value, new if absent before.
+   At the first turn every atom is new.
+
+Return exactly one JSON object:
+{
+  "pred_atoms": [
+    {
+      "source_index": 0,
+      "field": "...",
+      "value": "one requirement",
+      "gold_atom_id": "g1 or null",
+      "value_match": true,
+      "change_vs_previous": "new | changed | unchanged"
+    }
+  ]
+}
+
+Every predicted item index must yield at least one atom.
+
+PAYLOAD:
+{"turn_id": 0, "dialogue_so_far": [{"turn": 0, "user": "I'd like a solo trip from Moab to two Colorado cities, March 19-23, 2022, on $3,100."}], "gold_atoms": [{"atom_id": "g1", "field": "budget", "value": 3100}, {"atom_id": "g2", "field": "visiting_city_number", "value": 2}], "predicted_items": [{"index": 0, "field": "people_number", "value": 1}, {"index": 1, "field": "schedule", "value": "2022-03-19 to 2022-03-23"}, {"index": 2, "field": "days", "value": 5}, {"index": 3, "field": "city_sequence", "value": "Moab -> two Colorado cities -> Moab"}, {"index": 4, "field": "visiting_city_number", "value": 2}, {"index": 5, "field": "required_cities", "value": "Colorado"}, {"index": 6, "field": "budget", "value": 3100}], "previous_turn_predicted_items": null}

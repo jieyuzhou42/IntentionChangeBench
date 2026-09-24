@@ -1,0 +1,134 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 1,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": null,
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 34195,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "city_sequence",
+        "value": "Visit Wilmington, then Fayetteville."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "accommodation_stay",
+        "value": "Stay in Wilmington on 2022-03-13 and 2022-03-14."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "accommodation_stay",
+        "value": "Stay in Fayetteville on 2022-03-15 and 2022-03-16."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "room_type",
+        "value": "Book a private room."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "accommodation_rating",
+        "value": "Accommodation rating must be 4+."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "night_policy",
+        "value": "Book only the specified occupied nights; no unused paid nights or overlapping stays."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "transportation",
+        "value": "Use own car."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "schedule",
+        "value": "March 13 and 17 are driving/rest days without sightseeing."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "schedule",
+        "value": "Allow transfer time on March 15."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "free_time",
+        "date": "2022-03-13",
+        "requirement": "Keep the day for driving and breaks, without sightseeing.",
+        "source_turn": 1,
+        "quote": "Keep the 13th and 17th for driving and breaks."
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-17",
+        "requirement": "Keep the day for driving and breaks, without sightseeing.",
+        "source_turn": 1,
+        "quote": "Keep the 13th and 17th for driving and breaks."
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-15",
+        "requirement": "Allow time to transfer by car from Wilmington to Fayetteville.",
+        "source_turn": 1,
+        "quote": "I'll take my own car: Wilmington March 13-14, Fayetteville March 15-16"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "status": "satisfied",
+        "evidence": "The itinerary travels from Wilmington to Fayetteville in that order."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The plan lists Wilmington accommodation on March 13-14 and Fayetteville accommodation on March 15-16."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "violated",
+        "evidence": "The Wilmington lodging named in the plan is absent from the candidate records, so its room type cannot satisfy the requirement. The Fayetteville listing is a private room."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "violated",
+        "evidence": "The Wilmington lodging named in the plan is absent from the candidate records, so its rating cannot satisfy the requirement. The Fayetteville listing has review rate number 4."
+      },
+      {
+        "gold_field": "night_policy",
+        "status": "satisfied",
+        "evidence": "The plan books lodging on March 13-14 in Wilmington and March 15-16 in Fayetteville, with no listed overlapping or additional accommodation nights."
+      },
+      {
+        "gold_field": "transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving for the Providence-to-Wilmington, Wilmington-to-Fayetteville, and Fayetteville-to-Providence routes."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "March 13 and 17 have no listed attractions, and the March 15 itinerary includes the self-driving transfer from Wilmington to Fayetteville."
+      }
+    ],
+    "annotation_issues": [
+      "The Wilmington accommodation named in the reference plan, \"BEAUTIFUL&BRIGHT 1 bd (E. Village),\" is absent from the Wilmington candidate records.",
+      "The user said they were traveling solo, and the gold delta adds an accommodation_capacity requirement, but accommodation_capacity is absent from gold_constraints."
+    ]
+  },
+  "out_of_scope_fields": []
+}

@@ -1,0 +1,188 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 4,
+  "prompt_chars": 22379,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving, from Myrtle Beach to Syracuse, duration: 12 hours 16 mins, distance: 1,280 km, cost: 64",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment!",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Mezzaluna",
+        "record_name": "Mezzaluna",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Raj Restaurant",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Darjeeling Kanchanjanga Momos",
+        "record_name": "Darjeeling Kanchanjanga Momos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment!",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving, from Syracuse to Myrtle Beach, duration: 12 hours 27 mins, distance: 1,283 km, cost: 64",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 23, 24, and 25, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has maximum occupancy 3.",
+        "note": "The booked listing can host one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation text starts from Myrtle Beach.",
+        "note": "The listed origin matches."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation text goes to Syracuse.",
+        "note": "The listed destination matches."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Syracuse as the destination/current city and Myrtle Beach for departure and return.",
+        "note": "Syracuse is the one visiting city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is 2022-03-23.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 3 is 2022-03-25.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate transportation record: self-driving, from Myrtle Beach to Syracuse, duration: 12 hours 16 mins, distance: 1,280 km, cost: 64.",
+        "note": "The plan lists this self-driving route on March 23."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Candidate transportation record: self-driving, from Syracuse to Myrtle Beach, duration: 12 hours 27 mins, distance: 1,283 km, cost: 64.",
+        "note": "The plan lists this self-driving route on March 25."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan lists intercity driving on March 23 and March 25, and the Rosamond Gifford Zoo and meals on March 24.",
+        "note": "Sightseeing is placed only on the available day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! is listed for March 23 and March 24; the departure day has no accommodation.",
+        "note": "The two booked nights match the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has room type Entire home/apt.",
+        "note": "The listing matches the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Darjeeling Kanchanjanga Momos has Aggregate Rating 2.9; the required floor is 3.",
+        "note": "The dinner restaurant falls below the required rating."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "Darjeeling Kanchanjanga Momos has Average Cost 100; the limit is 70 per person.",
+        "note": "The dinner restaurant exceeds the cost limit."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Mezzaluna's Cuisines include Fast Food.",
+        "note": "The breakfast restaurant carries a prohibited tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "March 24 lists Mezzaluna for breakfast, Raj Restaurant for lunch, and Darjeeling Kanchanjanga Momos for dinner.",
+        "note": "All three meals use different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant's Cuisines include Indian; Mezzaluna and Darjeeling Kanchanjanga Momos also have Indian tags.",
+        "note": "At least one March 24 meal is Indian-tagged."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has house_rules: No pets & No smoking.",
+        "note": "The listing prohibits smoking as requested."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "Rosamond Gifford Zoo is listed on March 24 and appears in the Syracuse attraction records.",
+        "note": "The optional zoo visit is included on the available sightseeing day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "One Indian cuisine option was successfully included; however, no Indian restaurant had a full 3.0+ rating as a requirement in all meal cost constraints, which slightly conflicts with dining preferences."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

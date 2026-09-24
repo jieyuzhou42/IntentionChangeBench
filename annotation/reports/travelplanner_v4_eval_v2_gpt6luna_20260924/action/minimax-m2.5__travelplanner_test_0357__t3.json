@@ -1,0 +1,166 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22518,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (Buffalo→Boston, 08:04-09:30) + rideshare",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Irish Democrat (4.4★, $18 avg)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Simple/quick meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant (4.5★, $65 avg)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Williamsburg large 2 Bedroom / 2 Bathroom (entire home, $539/night, max 5 guests)",
+        "record_name": "Williamsburg large 2 Bedroom / 2 Bathroom",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Irish Democrat (4.4★, $18 avg)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Simple/quick meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant (4.5★, $65 avg)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Williamsburg large 2 Bedroom / 2 Bathroom (entire home, $539/night, max 5 guests)",
+        "record_name": "Williamsburg large 2 Bedroom / 2 Bathroom",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare + Flight F3757097 (Boston→Buffalo, 21:44-23:34)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Irish Democrat (4.4★, $18 avg)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Simple/quick meal",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Club Cubana (4.4★, $65 avg)",
+        "record_name": "Club Cubana",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The booked listing's maximum occupancy is 3, although the itinerary text claims max 5 guests.",
+        "note": "The record capacity is below four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "There are two attractions listed on each date, but the March 5 pair is Museum of Fine Arts, Boston and Faneuil Hall Marketplace, and the March 6 pair is Boston Tea Party Ships & Museum and View Boston. The activity requirements also call for nearby attractions and regular seated breaks; no breaks are listed.",
+        "note": "The daily attraction count is two, but the plan does not meet all of the activity requirements."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Red Mesa Restaurant has Aggregate Rating 4.5 on March 4 and 5; Club Cubana has Aggregate Rating 4.4 on March 6.",
+        "note": "Each day includes a restaurant meal rated at least 4.0."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Williamsburg large 2 Bedroom / 2 Bathroom record lists room type Entire home/apt.",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The same listing is used on both accommodation days, but its recorded maximum occupancy is 3.",
+        "note": "It is one property, but it cannot host all four travelers according to the record."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "violated",
+        "evidence": "The lunches are described only as “Simple/quick meal” and have no matching restaurant record or recorded cost.",
+        "note": "The plan supplies no record-based evidence that these meals are inexpensive."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The recorded restaurant cuisines include Tea, Cafe, Bakery, Fast Food, Indian, Seafood, Desserts, BBQ, and Mediterranean; none of the selected restaurants is recorded as French or American.",
+        "note": "The selected restaurant meals do not provide the requested French and American cuisines."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

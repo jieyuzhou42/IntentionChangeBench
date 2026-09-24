@@ -1,0 +1,181 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23305,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 from Buffalo to Boston (Dep 08:04, Arr 09:30) $136/person = $544 total; then rideshare to accommodation",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "simple inexpensive food in Buffalo before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat (rating 4.4, $18/person = $72 total) - high-rated sit-down meal",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "simple inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! (entire home/apt, max occupancy 5, 2+ nights required, $872/night × 2 nights = $1744)",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "rideshare for door-to-door transportation",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "simple inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Red Mesa Restaurant (rating 4.5, $65/person = $260 total) - high-rated sit-down meal",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "simple inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC!",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "rideshare to airport; Flight F3757097 from Boston to Buffalo (Dep 21:44, Arr 23:34) $169/person = $676 total",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "simple inexpensive food",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Club Cubana (rating 4.4, $65/person = $260 total) - high-rated sit-down meal",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "simple inexpensive food or airport food",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-04, 2022-03-05, and 2022-03-06.",
+        "note": "It includes three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Delight in Your Home Away from Home in NYC!, has maximum occupancy 5.",
+        "note": "The same listing is booked for both nights and can host all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The listed attractions are Public Garden and Boston Common on March 4, Faneuil Hall Marketplace and Boston Tea Party Ships & Museum on March 5, and New England Aquarium on March 6.",
+        "note": "Each day has no more than two attractions; the two-attraction pairs are nearby."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's room type is Entire home/apt.",
+        "note": "The booked accommodation matches the preferred room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "Both nights use Delight in Your Home Away from Home in NYC!, with maximum occupancy 5.",
+        "note": "One property is booked and its capacity fits all four travelers."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat has Aggregate Rating 4.4, Red Mesa Restaurant 4.5, and Club Cubana 4.4.",
+        "note": "Each day includes a listed restaurant meal rated at least 4.0."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "The three restaurant meals have Average Costs of $18, $65, and $65 per person; their average is $49.33.",
+        "note": "The restaurant-meal average is below $50 per person. The other meal slots are unspecified simple food or airport food."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The selected restaurants list cuisines of Tea, Cafe, Bakery, Fast Food; Desserts, Tea, Fast Food, Indian, Seafood; and Desserts, BBQ, Fast Food, Cafe, Indian, Mediterranean.",
+        "note": "The selected restaurant meals do not provide either the requested French or American cuisine."
+      },
+      {
+        "gold_field": "entities.entity_3.constraints.dining_style",
+        "action_status": "violated",
+        "evidence": "The restaurant records provide cuisines and ratings but do not confirm a vegetarian entree at any of the selected restaurants.",
+        "note": "The plan does not establish a confirmed vegetarian entree at the shared sit-down restaurant on each day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_style 2",
+        "quote": "Sacrificed: budget constraint, dining budget per person average, and cuisine preferences"
+      },
+      {
+        "gold_field": "cuisine",
+        "quote": "Sacrificed: budget constraint, dining budget per person average, and cuisine preferences"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23330,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Myrtle Beach to Syracuse (12h 16m, ~1,280 km, $64)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Packed/self-catering from start",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Quick stop en route (self-catering/packed)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Raj Restaurant - Indian cuisine, rating 3.1, $61/person (meets Indian preference, under $70, not fast food)",
+        "record_name": "Raj Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment! (entire home/apt, no smoking, 2 nights minimum met, rating 2.0 but only entire place with no smoking under budget; $201 total, 2 nights effective)",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "None (local exploration)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering in apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos - Pizza/BBQ/Desserts, rating 4.0, $36/person (under $70, not fast food)",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Silantro Fil-Mex - Chinese/BBQ/Mediterranean, rating 4.9, $29/person (under $70, not fast food, different from prior meals)",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment! (second night)",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Syracuse to Myrtle Beach (12h 27m, ~1,283 km, $64)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catering in apartment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed/self-catering en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Packed/self-catering or stop en route",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has March 23, March 24, and March 25.",
+        "note": "It covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has maximum occupancy 3; it is booked for both nights.",
+        "note": "The listing capacity covers one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 transportation is from Myrtle Beach to Syracuse.",
+        "note": "The itinerary starts from Myrtle Beach."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels to Syracuse and lists Syracuse as the city on March 24.",
+        "note": "The destination is Syracuse."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and sightseeing city is Syracuse.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is March 23, 2022.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is March 25, 2022.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The record gives self-driving from Myrtle Beach to Syracuse, duration 12 hours 16 minutes, distance 1,280 km, cost 64; the plan uses that route on March 23.",
+        "note": "The outbound mode, route, and date match."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The record gives self-driving from Syracuse to Myrtle Beach, duration 12 hours 27 minutes, distance 1,283 km, cost 64; the plan uses that route on March 25.",
+        "note": "The return mode, route, and date match."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The itinerary labels March 23 and March 25 as travel days, with no attraction on either; the zoo is listed on March 24.",
+        "note": "Sightseeing is placed on the only available day."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! is listed on March 23 and March 24; March 25 is the departure day.",
+        "note": "Two nights are booked on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Raj Restaurant has Aggregate Rating 3.1, Tucanos 4, and Silantro Fil-Mex 4.9.",
+        "note": "Every restaurant meal in the plan meets the 3.0 floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records list average costs per person of 61 for Raj Restaurant, 36 for Tucanos, and 29 for Silantro Fil-Mex.",
+        "note": "Each recorded restaurant meal is under $70 per person."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Silantro Fil-Mex has Cuisines listed as \"Chinese, BBQ, Mediterranean, Fast Food\" and is planned for Syracuse dinner on March 24.",
+        "note": "A Syracuse meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On March 24, breakfast is self-catering; only lunch at Tucanos and dinner at Silantro Fil-Mex are restaurant meals.",
+        "note": "The plan does not provide three different restaurants across all three meals."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The only Indian-tagged restaurant meal, Raj Restaurant, is on March 23. March 24 lists self-catered breakfast, Tucanos, and Silantro Fil-Mex; neither restaurant is Indian-tagged.",
+        "note": "There is no Indian-tagged meal on March 24."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has house_rules \"No pets & No smoking\".",
+        "note": "The listing prohibits smoking as required."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists Rosamond Gifford Zoo on March 24, and that attraction appears in the candidate records.",
+        "note": "The optional zoo visit is included on the sightseeing day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

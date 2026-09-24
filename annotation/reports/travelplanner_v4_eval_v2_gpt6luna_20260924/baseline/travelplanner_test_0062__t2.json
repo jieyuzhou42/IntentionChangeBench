@@ -1,0 +1,264 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 2,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 1289.0,
+      "budget": 1600,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21160,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "1600"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Ithaca"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Philadelphia"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "1"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "2022-03-01"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "2022-03-03"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-driving Ithaca to Philadelphia on 2022-03-01"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "Use own car for the outbound trip"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "return_transportation",
+        "value": "Self-driving Philadelphia to Ithaca on 2022-03-03"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "Use own car for the return trip"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights, 2022-03-01 and 2022-03-02"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "house_rule",
+        "value": "No parties"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "restaurant_rating",
+        "value": "3.5"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "meal_cost",
+        "value": "60"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "dining_style",
+        "value": "No Philadelphia meal may carry a Fast Food tag in Cuisines"
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "dining_variety",
+        "value": "Three different restaurants across breakfast, lunch and dinner on 2022-03-02"
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "cuisine",
+        "value": "At least one Italian-tagged meal on 2022-03-02"
+      },
+      {
+        "atom_id": "g21",
+        "source_field": "schedule",
+        "value": "Arrive back in Ithaca no later than 18:00 on 2022-03-03"
+      },
+      {
+        "atom_id": "g22",
+        "source_field": "activity",
+        "value": "Optional Liberty Bell visit on 2022-03-02"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-02",
+        "requirement": "Include an optional visit to the Liberty Bell.",
+        "source_turn": 2,
+        "quote": "The Liberty Bell that day would be nice if it fits."
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-03",
+        "requirement": "Be back in Ithaca before 18:00.",
+        "source_turn": 2,
+        "quote": "I need to be back in Ithaca before 18:00 on the 3rd."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference itinerary covers March 1–3, 2022, three days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 3, sufficient for one traveler; the plan specifies one unit."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The itinerary starts in Ithaca."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The destination and overnight city are Philadelphia."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Philadelphia is the one destination city in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The itinerary begins on 2022-03-01."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-03."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The March 1 transportation slot says own-car outbound, self-driving from Ithaca to Philadelphia."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The March 3 slot says return by car, self-driving from Philadelphia to Ithaca."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The listing is booked for check-in March 1 and check-out March 3, covering the nights of March 1 and 2."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The booked listing is an Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "status": "satisfied",
+        "evidence": "The booked listing's rules say No parties."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "unknown",
+        "evidence": "The three listed March 2 restaurants rate at least 3.5, but the travel-day meals have no venue or rating specified."
+      },
+      {
+        "gold_field": "meal_cost",
+        "status": "unknown",
+        "evidence": "The three listed March 2 meals cost $20, $47 and $52 per person; travel-day meal costs are pending."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "unknown",
+        "evidence": "None of the listed March 2 restaurants has a Fast Food cuisine tag, but the travel-day meal venues are unknown."
+      },
+      {
+        "gold_field": "dining_variety",
+        "status": "satisfied",
+        "evidence": "Breakfast, lunch and dinner on March 2 are at three different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "status": "satisfied",
+        "evidence": "Hong Kong Cafe, listed for March 2 lunch, has an Italian cuisine tag."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "unknown",
+        "evidence": "The return drive is listed as 3 hours 54 minutes, but no departure or arrival time is given to establish arrival before 18:00."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "The March 2 attraction slot lists the optional Liberty Bell visit."
+      }
+    ],
+    "annotation_issues": [
+      "The transportation candidate records contain no return self-driving record for Philadelphia to Ithaca on 2022-03-03; the reference plan states a drive duration, but the candidate data cannot independently corroborate it."
+    ]
+  },
+  "out_of_scope_fields": []
+}

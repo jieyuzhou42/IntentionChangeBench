@@ -1,0 +1,200 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0041",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 26001,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3583571: San Francisco → Kahului, depart 10:26, arrive 13:18, $677",
+        "record_name": "F3583571",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Breakfast in San Francisco before departure (self-catered/airport)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "BrewBakes – Desserts, Tea, Mexican, Bakery, Cafe; Avg cost $44, rating 4.0",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Vikings – Desserts, Pizza, Italian, BBQ, Bakery; Avg cost $74, rating 4.2",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to staten island ferry – Entire home/apt, rating 4, $365/night; Night 1",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "BrewBakes – Desserts, Tea, Mexican, Bakery, Cafe; Avg cost $44, rating 4.0",
+        "record_name": "BrewBakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Fat Belly – Bakery, BBQ, Cafe, American, Seafood; Avg cost $54, rating 4.1",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Vikings – Desserts, Pizza, Italian, BBQ, Bakery; Avg cost $74, rating 4.2",
+        "record_name": "Vikings",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "NYC cozy apartment close to staten island ferry – Entire home/apt, rating 4, $365/night; Night 2",
+        "record_name": "NYC cozy apartment close to staten island ferry",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3872974: Kahului → San Francisco, depart 09:40, arrive 17:45, $517",
+        "record_name": "F3872974",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Fat Belly – Bakery, BBQ, Cafe, American, Seafood; Avg cost $54, rating 4.1 (early, before departure)",
+        "record_name": "Fat Belly",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-catered / airport meal en route",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Back in San Francisco (out of trip scope)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-25, 2022-03-26, and 2022-03-27.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 3.",
+        "note": "The listing can host the one traveler requested, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 departs San Francisco; return flight F3872974 arrives in San Francisco.",
+        "note": "The plan begins and returns to the requested origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3583571 travels to Kahului, and the itinerary's first two days are in Kahului.",
+        "note": "Kahului is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination stay is in Kahului before returning to San Francisco.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Outbound flight F3583571 has FlightDate 2022-03-25.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Return flight F3872974 has FlightDate 2022-03-27.",
+        "note": "The trip ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3583571 is San Francisco to Kahului on 2022-03-25, departing 10:26 and arriving 13:18.",
+        "note": "The listed flight matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3872974 is Kahului to San Francisco on 2022-03-27, departing 09:40 and arriving 17:45.",
+        "note": "The return flight arrives before the 21:00 deadline."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The itinerary books the Kahului accommodation for Night 1 on 2022-03-25 and Night 2 on 2022-03-26; departure day has no accommodation.",
+        "note": "The two booked nights match the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The accommodation record lists room type Entire home/apt.",
+        "note": "The booked listing matches the preferred room type."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "Flight F3872974 arrives in San Francisco at 17:45 on 2022-03-27.",
+        "note": "Arrival is before 21:00."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The booked listing, NYC cozy apartment close to staten island ferry, has review rate number 4.",
+        "note": "The preferred rating is 5."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "BrewBakes is rated 4; Fat Belly 4.1; and Vikings 4.2 in the restaurant records.",
+        "note": "Every restaurant meal listed from the records meets the 4.0 rating floor; self-catered and out-of-scope meals are not evidence against it."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "The only unmet requirement is accommodation_rating 5.0"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24180,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F3558527: Tampa to Cleveland, departs 17:33, arrives 20:06",
+        "record_name": "F3558527",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Green Leaf ($73, Chinese, rating 3.0) - late dinner after arrival",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC. So Spacious! (5-star rating, $918 total, 3-night minimum, 1 guest max)",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Green Leaf ($73, Chinese available)",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Makhan Fish and Chicken Corner ($25, Chinese available, rating 3.4)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare gem of an apartment in NYC. So Spacious!",
+        "record_name": "Rare gem of an apartment in NYC.  So Spacious!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "F3905043: Cleveland to Tampa, departs 07:19, arrives 09:36",
+        "record_name": "F3905043",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 2, March 3, and March 4, 2022.",
+        "note": "The plan spans three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing has maximum occupancy 1 on both accommodation nights.",
+        "note": "The listing capacity covers the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The requested flight is F3915073, departing 10:37; the plan uses F3558527, departing 17:33.",
+        "note": "The planned outbound flight does not match the requested flight."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan places Cleveland Museum of Art sightseeing on Day 3, while the recorded return flight departs Cleveland at 07:19.",
+        "note": "Day 3 includes sightseeing rather than being reserved for checkout and the airport transfer."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "Day 2 lists Rock & Roll Hall of Fame, not Cleveland Cultural Gardens; Day 3 lists Cleveland Museum of Art.",
+        "note": "The requested Day 2 priority sightseeing is missing, and Day 3 sightseeing was not dropped."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Lunch is '-' on both Day 1 and Day 3.",
+        "note": "No restaurant lunch is planned on either requested day."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The planned listing is Rare gem of an apartment in NYC.  So Spacious!; the requested listing is Richmond Hill 3 Bedroom apartment in Private home!.",
+        "note": "The booked accommodation does not match the requested listing."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Rare gem of an apartment in NYC.  So Spacious! is listed as a Private room.",
+        "note": "The requested room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The booked listing meets the requested rating."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The requested flight is F3623037, departing 08:40 and arriving 10:57; the plan uses F3905043, departing 07:19 and arriving 09:36.",
+        "note": "The planned return flight does not match the requested flight."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "satisfied",
+        "evidence": "Day 3 breakfast is '-'.",
+        "note": "No restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Makhan Fish and Chicken Corner lists cuisines including Fast Food.",
+        "note": "It is planned for a Day 2 meal despite the requirement to avoid restaurants listing Fast Food."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "Day 1 attraction is '-'.",
+        "note": "No sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is '-'.",
+        "note": "No restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Flight F3905043 arrives in Tampa at 09:36.",
+        "note": "The recorded arrival is before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "dining_style",
+        "quote": "Unmet: 'avoid fast food' (restaurants may still contain fast-food elements in cuisine list)"
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "'not early morning' (sacrificed for arrival deadline)"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

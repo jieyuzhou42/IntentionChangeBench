@@ -1,0 +1,184 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0049",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25869,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3998497, departs 19:26, arrives 23:00, price $250",
+        "record_name": "F3998497",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit or walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catered or packed breakfast",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Self-catered or packed lunch",
+        "record_name": null,
+        "revised": true
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Wai Yu Mun Ching, Tea & Pizza, $51, rating 3.6, no Fast Food",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA, Entire home/apt, $188",
+        "record_name": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F4019856, departs 22:44, arrives 00:33, price $282",
+        "record_name": "F4019856",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Self-catered or packed breakfast",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Shivani Catering Services, Indian, $75, rating 3.1, no Fast Food",
+        "record_name": "Shivani Catering Services",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "Final meals: lunch at Turquoise Villa omitted due to Fast Food tag; lunch defaulted to self-catered or packed to uphold 'no Fast Food' as higher priority.",
+        "effect": "Replaced the March 8 lunch at Turquoise Villa with a self-catered or packed lunch."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-07 through 2022-03-09.",
+        "note": "The plan spans three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "The listing can host one traveler, and the plan assumes no larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Kansas City as OriginCityName.",
+        "note": "The plan begins in Kansas City."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record lists Orlando as DestCityName.",
+        "note": "The plan travels to Orlando."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Orlando as the destination and visiting city.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record has FlightDate 2022-03-07.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record has FlightDate 2022-03-09.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F3998497; its record is Kansas City to Orlando, departing 19:26 and arriving 23:00.",
+        "note": "The requirement specifies self-driving in an own car."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books flight F4019856; its record is Orlando to Kansas City, departing 22:44 and arriving 00:33.",
+        "note": "The requirement specifies self-driving in an own car."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The itinerary lists accommodation only on 2022-03-08; the other itinerary days show '-'.",
+        "note": "Only one night is booked, rather than three nights from 2022-03-07."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan has flights on 2022-03-07 and 2022-03-09, with no sightseeing listed on those dates.",
+        "note": "Sightseeing is kept to March 8, but the travel days are not reserved for intercity driving as required."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F3998497 and F4019856; their recorded prices are $250 and $282.",
+        "note": "The preferred mode is flying, and the plan chooses flights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Rare Find: SUNNY, LARGE DUPLEX Chelsea 2BR 2BA is listed as Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Wai Yu Mun Ching has Aggregate Rating 3.6 and Shivani Catering Services has Aggregate Rating 3.1.",
+        "note": "Both restaurant meals in the final plan meet the preferred rating of 3; self-catered meals do not count."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "Wai Yu Mun Ching has Cuisines 'Tea, Pizza, Desserts'; Shivani Catering Services has Cuisines 'Tea, Cafe, Indian, Seafood'.",
+        "note": "Neither restaurant meal in the final plan carries a Fast Food tag, and the March 8 lunch is self-catered or packed."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "violated",
+        "evidence": "On 2022-03-08, breakfast and lunch are self-catered or packed, and only dinner is at Wai Yu Mun Ching.",
+        "note": "The plan does not provide three different restaurants across breakfast, lunch, and dinner."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

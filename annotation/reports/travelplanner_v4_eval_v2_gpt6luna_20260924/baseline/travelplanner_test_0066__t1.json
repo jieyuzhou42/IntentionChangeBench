@@ -1,0 +1,189 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0066",
+  "turn_id": 1,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 607.0,
+      "budget": 1800,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21030,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is $1,800."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The trip is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "Depart from Minneapolis."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "Travel to Jacksonville."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-27."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-29."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "Self-drive in an own car from Minneapolis to Jacksonville on 2022-03-27."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "return_transportation",
+        "value": "Self-drive in an own car from Jacksonville to Minneapolis on 2022-03-29."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "schedule",
+        "value": "Reserve 2022-03-27 for intercity driving."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "schedule",
+        "value": "Reserve 2022-03-29 for intercity driving."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "schedule",
+        "value": "Sightseeing only on 2022-03-28."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "accommodation_stay",
+        "value": "Stay 2 nights, 2022-03-27 and 2022-03-28."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-27",
+        "requirement": "Intercity driving from Minneapolis to Jacksonville; reserve the day for driving rather than sightseeing.",
+        "source_turn": 1,
+        "quote": "I'm driving out on the 27th ... That's the best part of a day at the wheel each end"
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-28",
+        "requirement": "This is the only day available for activities.",
+        "source_turn": 1,
+        "quote": "the 28th is the only day I've really got"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-29",
+        "requirement": "Intercity driving from Jacksonville to Minneapolis; reserve the day for driving rather than sightseeing.",
+        "source_turn": 1,
+        "quote": "back on the 29th. That's the best part of a day at the wheel each end"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-27 through 2022-03-29, three days."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 2, which accommodates 1 traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound itinerary starts in Minneapolis."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The itinerary travels to Jacksonville and shows Jacksonville on the intervening day."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Jacksonville is the single destination city visited; Minneapolis is the origin and return city."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-27."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-29."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving in an own car from Minneapolis to Jacksonville on 2022-03-27; the transportation record gives that route."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies self-driving from Jacksonville to Minneapolis on 2022-03-29; the transportation record gives that route."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "The plan schedules intercity driving on March 27 and March 29, with no sightseeing on those days. It lists no attraction on March 28, which does not conflict with sightseeing being limited to that date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in 2022-03-27 and check-out 2022-03-29, covering the nights of March 27 and March 28."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

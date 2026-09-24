@@ -1,0 +1,172 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22072,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Charleston to St. Louis",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Wai Yu Mun Ching (Chinese cuisine, 89 USD, rating 3.5)",
+        "record_name": "Wai Yu Mun Ching",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Starbucks (Cafe/fast food, 92 USD, rating 4.1)",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Latitude - Radisson Blu (American, 18 USD, rating 3.9)",
+        "record_name": "The Latitude - Radisson Blu",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "1800sf Urban Goddess Brooklyn Loft (Entire home/apt, rating 2.0, 898 USD)",
+        "record_name": "1800sf Urban Goddess Brooklyn Loft",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from St. Louis to Charleston",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Tingling Pepper (Cafe, 26 USD, rating 3.4)",
+        "record_name": "Tingling Pepper",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "El Super Burrito (BBQ, 43 USD, rating 4.1)",
+        "record_name": "El Super Burrito",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-16 through 2022-03-18, three calendar days.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 4.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The first day's current_city is Charleston and transportation begins from Charleston.",
+        "note": "The plan starts in the requested origin city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The plan lists St. Louis as the destination of the March 16 drive and as the current city on March 17 and 18.",
+        "note": "St. Louis is the trip destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists St. Louis as its only destination city.",
+        "note": "Charleston is the origin; the plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-16.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-18.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 16 transportation slot says \"Self-driving from Charleston to St. Louis\"; the user specified self-driving in their own car.",
+        "note": "The plan specifies the requested outbound self-drive."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The March 18 transportation slot says \"Self-driving from St. Louis to Charleston\"; the user specified self-driving in their own car.",
+        "note": "The plan specifies the requested return self-drive."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Wai Yu Mun Ching has Aggregate Rating 3.5 and Tingling Pepper has Aggregate Rating 3.4. The March 17 dinner, The Latitude - Radisson Blu, has Aggregate Rating 3.9.",
+        "note": "The March 17 dinner is within its 3.9 allowance, but the March 17 breakfast and March 18 breakfast fall below the 4.0 floor."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The Latitude - Radisson Blu has Cuisines \"Pizza, French, BBQ, American, Seafood\".",
+        "note": "The March 17 dinner's record does not include a Fast Food tag."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "1800sf Urban Goddess Brooklyn Loft has room type \"Entire home/apt\".",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "1800sf Urban Goddess Brooklyn Loft has review rate number 2.",
+        "note": "The listing's rating is below the requested rating of 4."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on 2022-03-17; 2022-03-16 has no accommodation. The listing's minimum nights is 2.",
+        "note": "Only one night is actually booked, rather than the requested nights of March 16 and 17."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Despite the user's must-have rating requirement (>=4.0) for accommodations, the only option available for privacy (Entire home/apt) was rated 2.0"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 30526,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Drive to Wilmington (11h 59m, 1,247 km, $62)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Private Bedroom in Williamsburg!",
+        "record_name": "Private Bedroom in Williamsburg!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive to Fayetteville (1h 43m, 149 km, $7)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Private BRoom,Bathroom & backyard",
+        "record_name": "Private BRoom ,Bathroom & backyard",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Drive to Providence (11h 10m, 1,163 km, $58)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has maximum occupancy 2, and the Fayetteville listing has maximum occupancy 2.",
+        "note": "Each booked listing can host both travelers; the rationale also describes the plan as being for two people."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked accommodation records list room type as Private room.",
+        "note": "Both city stays meet the preferred room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Private Bedroom in Williamsburg! is rated 5; Private BRoom ,Bathroom & backyard is rated 1.",
+        "note": "The Fayetteville accommodation falls below the requested 4+ rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 31442,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "self-driving from Charlotte (11h 13m, $61)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jimmy Jack's Rib Shack (BBQ, $12/person)",
+        "record_name": "Jimmy Jack's Rib Shack",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Lovely West Village 1 BR - Quiet and Comfortable ($260, Baton Rouge, private room, max occupancy 2)",
+        "record_name": "Lovely West Village 1 BR - Quiet and Comfortable",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Fifth Street Bagelry ($10/person)",
+        "record_name": "Fifth Street Bagelry",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Taste of India ($28/person)",
+        "record_name": "Taste of India",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Jimmy Jack's Rib Shack ($12/person)",
+        "record_name": "Jimmy Jack's Rib Shack",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lovely West Village 1 BR - Quiet and Comfortable ($260, Baton Rouge, private room, max occupancy 2)",
+        "record_name": "Lovely West Village 1 BR - Quiet and Comfortable",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "self-driving from Baton Rouge to New Orleans (1h 17m, $6)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House ($50 for two)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "The Fish House ($20/person)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Shenanigan's Irish Pub ($43 for two)",
+        "record_name": "Shenanigan's Irish Pub",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill ($205, New Orleans, private room, max occupancy 2)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Jimmy's Pancake House ($50 for two)",
+        "record_name": "Jimmy's Pancake House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Town Table Restaurant ($100 for two)",
+        "record_name": "Town Table Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "The Fish House ($20/person)",
+        "record_name": "The Fish House",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Cozy in Cobble Hill ($205, New Orleans, private room, max occupancy 2)",
+        "record_name": "Cozy in Cobble Hill",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "self-driving from New Orleans to Charlotte (10h 27m, $57)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Baton Rouge and New Orleans, two different cities in Louisiana.",
+        "note": "It includes the requested two Louisiana cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The record for Lovely West Village 1 BR - Quiet and Comfortable lists room type 'Entire home/apt'; Cozy in Cobble Hill also lists 'Entire home/apt'.",
+        "note": "Neither booked listing is a private room."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "Lovely West Village 1 BR - Quiet and Comfortable lists 'No visitors'; Cozy in Cobble Hill lists 'No visitors & No smoking'. Neither record lists 'No parties'.",
+        "note": "The records do not prohibit parties."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "All listed transportation is self-driving; no flight is listed.",
+        "note": "The itinerary avoids air travel."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "house_rule",
+        "quote": "This represents an unavoidable compromise on the house_rule requirement due to no available options explicitly allowing parties in the fixed search results."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

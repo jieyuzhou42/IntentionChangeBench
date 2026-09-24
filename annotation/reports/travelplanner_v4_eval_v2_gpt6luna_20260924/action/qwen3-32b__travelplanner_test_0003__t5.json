@@ -1,0 +1,163 @@
+{
+  "model": "qwen3-32b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0003",
+  "turn_id": 5,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 21800,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Self-driving",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "El Super Burrito",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Latitude - Radisson Blu",
+        "record_name": "The Latitude - Radisson Blu",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Starbucks",
+        "record_name": "Starbucks",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Lux 2Bed/2.5Bath Central Park Views",
+        "record_name": "Lux 2Bed/2.5Bath Central Park Views",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "El Super Burrito",
+        "record_name": "El Super Burrito",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "M Crême",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has days 1 through 3.",
+        "note": "It covers the requested three-day span."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked St. Louis listing has maximum occupancy 7.",
+        "note": "Its capacity covers one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lists Charleston as the current city.",
+        "note": "The itinerary starts in Charleston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Days 2 and 3 list St. Louis as the current city.",
+        "note": "The itinerary leads to St. Louis."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits St. Louis after starting in Charleston.",
+        "note": "It lists one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The three-day itinerary begins on the requested March 16 start date.",
+        "note": "The itinerary spans March 16–18, 2022."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The three-day itinerary ends on the requested March 18 date.",
+        "note": "The itinerary spans March 16–18, 2022."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 1 in Charleston lists transportation as “Self-driving”; day 2 is in St. Louis.",
+        "note": "The itinerary indicates self-driving from the origin to the destination on the outbound travel date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 in St. Louis lists transportation as “Self-driving.”",
+        "note": "The itinerary indicates self-driving on the return travel date."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "The Latitude - Radisson Blu has Aggregate Rating 3.9; M Crême does not exactly match a candidate name (the candidate is “M Cr砺me,” rated 0).",
+        "note": "At least one restaurant meal is below the required 4.0 rating, and the unmatched dinner name cannot establish compliance."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Lux 2Bed/2.5Bath Central Park Views is listed as “Entire home/apt.”",
+        "note": "The booked listing is an entire home/apartment."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Lux 2Bed/2.5Bath Central Park Views has review rate number 5.",
+        "note": "The listing meets the preferred rating floor of 4."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on day 2; day 1 and day 3 have “-”.",
+        "note": "Only one night is booked, rather than the required nights of March 16 and 17."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The dinner name “M Crême” does not exactly match the candidate record name “M Cr砺me,” so that meal cannot be reliably mapped to a restaurant record."
+    ]
+  }
+}

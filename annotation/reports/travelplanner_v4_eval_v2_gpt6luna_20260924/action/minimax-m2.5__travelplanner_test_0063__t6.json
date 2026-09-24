@@ -1,0 +1,189 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0063",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22187,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4031463 (08:39-10:13) - Morning departure",
+        "record_name": "F4031463",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Cho Gao - Crowne Plaza Abu Dhabi (Rating: 4.4, Cost: $52)",
+        "record_name": "Cho Gao - Crowne Plaza Abu Dhabi",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Jammu And Kashmir House (Rating: 2.9, Cost: $100)",
+        "record_name": "Jammu And Kashmir House",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Home away from home - $203/night (Entire home, Rating: 4.0)",
+        "record_name": "Home away from home",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bikanervala (Rating: 3.5, Cost: $39)",
+        "record_name": "Bikanervala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Malais By Anands (Rating: 3.7, Cost: $37)",
+        "record_name": "Malais By Anands",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Chinese Food (Rating: 3.1, Cost: $64)",
+        "record_name": "Chinese Food",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Home away from home - $203/night (Entire home, Rating: 4.0)",
+        "record_name": "Home away from home",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "No direct flight March 28 - Ground transport to nearest airport required (No return flight data available)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Best Biryani Centre (Rating: 0.0, Cost: $43)",
+        "record_name": "Best Biryani Centre",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers March 26, 27, and 28, 2022.",
+        "note": "The plan has three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Oakland listing, Home away from home, has maximum occupancy 2 on both nights.",
+        "note": "The same listing can host the requested one traveler each night."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound record F4031463 lists Denver as OriginCityName.",
+        "note": "The trip departs from Denver."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound record F4031463 lists Oakland as DestCityName.",
+        "note": "The itinerary's destination is Oakland."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oakland as the destination and stay city.",
+        "note": "It visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight are dated 2022-03-26.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The final itinerary day is 2022-03-28.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4031463 is a Denver-to-Oakland flight on 2022-03-26 departing at 08:39.",
+        "note": "It matches the requested outbound route, date, and departure time."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The day 3 transportation slot says, \"No direct flight March 28\" and has no matching flight record; the supplied transportation results contain no Oakland-to-Denver flight for that date.",
+        "note": "The requested return flight landing at 11:49 is not in the final plan."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "Accommodation is listed only on March 26 and March 27; March 28 has no accommodation.",
+        "note": "Only two nights are booked, not the requested three nights from March 26."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan has no return flight on March 28 and lists only ground transport to a nearest airport.",
+        "note": "The plan does not establish arrival in Denver by noon."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Home away from home is listed in the records as room type Entire home/apt.",
+        "note": "The booked listing meets the room-type requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Home away from home's record review rate number is 4.0.",
+        "note": "The listing is below the required rating of 5."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Restaurant records give Jammu And Kashmir House 2.9, Bikanervala 3.5, Malais By Anands 3.7, Chinese Food 3.1, and Best Biryani Centre 0.0; only Cho Gao - Crowne Plaza Abu Dhabi meets the 4.0 threshold, at 4.4.",
+        "note": "Several restaurant meals in the plan are below the required rating."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Unmet: 5.0 accommodation rating (only 4.0 available for entire home)"
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "Unmet: 4.0 restaurant rating (best available is 4.4 at Cho Gao but others below)"
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "no direct return flight March 28"
+      }
+    ],
+    "annotation_issues": [
+      "No Oakland-to-Denver candidate flight record is supplied for 2022-03-28; the supplied return-direction result is for 2022-03-29 and reports no flight."
+    ]
+  }
+}

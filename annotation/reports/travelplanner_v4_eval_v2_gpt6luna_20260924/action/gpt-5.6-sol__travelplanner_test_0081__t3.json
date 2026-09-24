@@ -1,0 +1,177 @@
+{
+  "model": "gpt-5.6-sol",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 14231,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Unavailable: no supported Tampa-to-Cleveland option was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Unavailable: no supported meal option was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Unavailable: no supported Chinese restaurant was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Unavailable: no supported Chinese restaurant was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Unavailable: no supported 5-rated Cleveland hotel was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Unavailable: no supported local transportation option was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Unavailable: no supported meal option was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Unavailable: no supported Chinese restaurant was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Unavailable: no supported Chinese restaurant was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Unavailable: no supported 5-rated Cleveland hotel was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Unavailable: no supported Cleveland-to-Tampa option was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Unavailable: no supported meal option was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Unavailable: no supported Chinese restaurant was provided",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Unavailable: no supported Chinese restaurant was provided",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for 2022-03-02, 2022-03-03, and 2022-03-04.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "No accommodation listings are booked on either overnight date.",
+        "note": "The booked listings do not provide capacity for the single traveler."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "Day 1 transportation is listed as unavailable, and the candidate record pool is empty.",
+        "note": "The requested outbound flight is not in the plan or supported by a candidate record."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The plan lists no accommodation on either overnight date; the candidate record pool is empty.",
+        "note": "The requested Richmond Hill 3 Bedroom apartment in Private home! is not booked."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked, and there are no candidate records.",
+        "note": "No booked listing can meet the requested Entire home/apt room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "No accommodation listing is booked, and there are no candidate records.",
+        "note": "No booked listing can meet the preferred rating of 5."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "The Day 1 attraction slot is '-'.",
+        "note": "No sightseeing is planned for Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is listed as 'Unavailable: no supported Chinese restaurant was provided'.",
+        "note": "No restaurant lunch is planned."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "the requested transportation ... cannot be satisfied"
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "5-rated accommodation"
+      }
+    ],
+    "annotation_issues": [
+      "The candidate_records pool is empty, preventing record-based verification of flights, accommodations, meals, and attractions."
+    ]
+  }
+}

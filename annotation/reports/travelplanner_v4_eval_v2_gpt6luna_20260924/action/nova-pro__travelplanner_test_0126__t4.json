@@ -1,0 +1,73 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 30532,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving to Wilmington",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Prime East Village location w/backyard garden!",
+        "record_name": "Prime East Village location w/backyard garden!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving to Fayetteville",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Private BRoom,Bathroom & backyard",
+        "record_name": "Private BRoom ,Bathroom & backyard",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving to Providence",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The Wilmington listing has maximum occupancy 7; the Fayetteville listing has maximum occupancy 2.",
+        "note": "Each booked listing can host both travelers, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Wilmington: 'Prime East Village location w/backyard garden!' is Entire home/apt. Fayetteville: 'Private BRoom ,Bathroom & backyard' is Private room.",
+        "note": "The Fayetteville accommodation is not the required Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Wilmington listing review rate number: 5; Fayetteville listing review rate number: 1.",
+        "note": "The Fayetteville listing is below the optional 4+ rating threshold."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

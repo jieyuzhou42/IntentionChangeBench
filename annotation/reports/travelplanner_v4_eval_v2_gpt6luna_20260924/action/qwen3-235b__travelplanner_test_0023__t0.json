@@ -1,0 +1,123 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0023",
+  "turn_id": 0,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19681,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Ground transportation required but not available in results; flight not offered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Taco Bell",
+        "record_name": "Taco Bell",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment!",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Tucanos",
+        "record_name": "Tucanos",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mezzaluna",
+        "record_name": "Mezzaluna",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Sunny 2 bedroom apartment!",
+        "record_name": "Sunny 2 bedroom apartment!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Return ground transportation required but not available in results; flight not offered",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Silantro Fil-Mex",
+        "record_name": "Silantro Fil-Mex",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary contains March 23, March 24, and March 25, 2022.",
+        "note": "Three itinerary days match the requested duration."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Sunny 2 bedroom apartment! has maximum occupancy 3 and is booked for both nights.",
+        "note": "The booked lodging can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "violated",
+        "evidence": "Day 1 says ground transportation is required but unavailable and a flight is not offered; the transportation records say there is no flight from Myrtle Beach to Syracuse on 2022-03-23.",
+        "note": "No outbound transportation from the requested origin is included."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Each itinerary day lists Syracuse as the current city.",
+        "note": "The planned destination is Syracuse."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "Each itinerary day lists Syracuse as the current city.",
+        "note": "The itinerary plans one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary day is 2022-03-23.",
+        "note": "The start date matches the request."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The last itinerary day is 2022-03-25.",
+        "note": "The end date matches the request."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "org",
+        "quote": "No flights are available in either direction per search results. Ground transportation options are not provided."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

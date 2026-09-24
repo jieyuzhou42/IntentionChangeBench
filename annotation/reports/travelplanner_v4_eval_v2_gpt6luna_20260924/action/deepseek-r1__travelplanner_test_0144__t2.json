@@ -1,0 +1,192 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 29039,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-drive from Moab (5h23m)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Tasty Fare ($79)",
+        "record_name": "Tasty Fare",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Al Yousuf ($32)",
+        "record_name": "Al Yousuf",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away ($414/2 nights)",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local exploration",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Nathu's Sweets ($12)",
+        "record_name": "Nathu's Sweets",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Rain Tree Grill ($94)",
+        "record_name": "Rain Tree Grill",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "The Urban Socialite ($34)",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive from Denver (3h39m)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "SALT ($44)",
+        "record_name": "SALT",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Cyber Hub Social ($95)",
+        "record_name": "Cyber Hub Social",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Full-size loft bed ($104/night)",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Local exploration",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Mocha ($30)",
+        "record_name": "Mocha",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Happy Joe's Pizza ($74)",
+        "record_name": "Happy Joe's Pizza & Ice Cream",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Game of Legends ($65)",
+        "record_name": "Game of Legends - Sports Bar, Grill, & Lounge",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Full-size loft bed",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-drive from Gunnison (4h01m)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Denver on March 19–20 and Gunnison on March 21–22.",
+        "note": "The trip visits two cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Denver's booked listing, Peaceful, beautiful home away, is Entire home/apt; Gunnison's Full-size loft bed in East Village is Private room.",
+        "note": "The preferred Entire home/apt room type is not met in Gunnison."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Peaceful, beautiful home away has a review rate number of 1; Full-size loft bed in East Village has a review rate number of 4.",
+        "note": "The 4+ rating requirement is not met in Denver."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary specifies self-driving from Moab to Denver, Denver to Gunnison, and Gunnison to Moab.",
+        "note": "The listed intercity transportation uses the requested own car."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan assigns Denver Zoo to March 19 and Black Canyon of the Gunnison to March 21; the activity requirements mark both dates as free time and say not to schedule main sightseeing. Denver and Gunnison are each listed for two days.",
+        "note": "Although the city-day counts match, main sightseeing is scheduled on protected travel/rest days."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Violates 4+ accommodation requirement: Denver's only 2-night option has 1-star rating."
+      },
+      {
+        "gold_field": "room_type",
+        "quote": "Gunnison's 4-star option is a private room, not full apartment."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

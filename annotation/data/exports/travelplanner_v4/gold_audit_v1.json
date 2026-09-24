@@ -1,0 +1,47 @@
+{
+  "version": "travelplanner-v4-gold-audit-v1",
+  "policy": "Original gold stays unchanged. Entries with status 'applied' are applied to every model identically by src/eval/travelplanner_eval_v2.py; 'recorded' entries are known issues awaiting a team decision.",
+  "entries": [
+    {
+      "id": "audit-001",
+      "instance_id": "travelplanner_test_0357",
+      "turns": [
+        2,
+        3,
+        4
+      ],
+      "field": "cuisine",
+      "status": "recorded",
+      "issue": "gold_delta cuisine op=relax with new=null (user: 'choose any cuisine'), but gold_current_intention keeps cuisine ' French and American' in the medium tier.",
+      "proposed_fix": "remove cuisine from gold_current_intention at turns 2-4",
+      "reason": "U2 'choose any cuisine' and gold_delta new=null"
+    },
+    {
+      "id": "audit-002",
+      "instance_id": "travelplanner_test_0873",
+      "turns": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "field": "required_cities",
+      "status": "recorded",
+      "issue": "required_cities ['New Orleans'] disappears from gold at t3 with no gold_delta entry.",
+      "proposed_fix": "restore required_cities ['New Orleans'] or add a remove delta at turn 3",
+      "reason": "no utterance withdraws the requirement"
+    },
+    {
+      "id": "audit-003",
+      "instance_id": "travelplanner_test_0081",
+      "turns": [
+        3
+      ],
+      "field": null,
+      "status": "recorded",
+      "issue": "no env_feedback search results; agents saw an empty candidate pool.",
+      "proposed_fix": "re-export env_feedback search results for turn 3 or exclude the turn",
+      "reason": "agents had no candidates to choose from"
+    }
+  ]
+}

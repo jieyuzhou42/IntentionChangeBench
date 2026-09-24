@@ -1,0 +1,161 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0025",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23886,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4050983: Wilmington 20:26 → New York 22:05 ($113)",
+        "record_name": "F4050983",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Modern Brooklyn oasis (PRIVATE ROOM) - $403/night, rating 5.0, 1 night minimum",
+        "record_name": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Modern Brooklyn oasis (PRIVATE ROOM) - $403/night, rating 5.0 (2nd night)",
+        "record_name": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill (rating 4.4, ~$30)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Lord of the Drinks Forum (rating 4.2, ~$71)",
+        "record_name": "Lord of the Drinks Forum",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "QD's Restaurant (rating 4.1, ~$93)",
+        "record_name": "QD's Restaurant",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Modern Brooklyn oasis (PRIVATE ROOM) - $403/night, rating 5.0",
+        "record_name": "Modern Brooklyn oasis (PRIVATE ROOM)",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Flight F3641657: New York 16:45 → Wilmington 18:28 ($182)",
+        "record_name": "F3641657",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Seasons 52 Fresh Grill (rating 4.4, ~$30)",
+        "record_name": "Seasons 52 Fresh Grill",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary dates run from 2022-03-12 through 2022-03-14.",
+        "note": "Those dates span three calendar days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing, Modern Brooklyn oasis (PRIVATE ROOM), has maximum occupancy 1.",
+        "note": "The trip is for one individual, and the listing can host one traveler."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 departs Wilmington.",
+        "note": "The outbound flight begins in the requested city."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 arrives in New York; the itinerary lists New York as the current city.",
+        "note": "The destination is New York."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists New York as the destination/current city and has no other destination city.",
+        "note": "The plan visits one city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F4050983 is dated 2022-03-12, and the first itinerary entry is 2022-03-12.",
+        "note": "The trip starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3641657 is dated 2022-03-14.",
+        "note": "The return flight is on the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4050983 flies from Wilmington to New York on 2022-03-12, departing at 20:26.",
+        "note": "It is a late flight on the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3641657 flies from New York to Wilmington on 2022-03-14, departing at 16:45.",
+        "note": "It is a late-afternoon flight on the requested route and date."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "violated",
+        "evidence": "The plan lists accommodation for day 1, day 2 (explicitly marked “2nd night”), and day 3.",
+        "note": "The plan books three accommodation nights rather than the requested two nights on 2022-03-12 and 2022-03-13."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The candidate record for Modern Brooklyn oasis (PRIVATE ROOM) has review rate number 5.",
+        "note": "The listing meets the preferred rating floor of 4."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The candidate record for Modern Brooklyn oasis (PRIVATE ROOM) lists room type “Private room.”",
+        "note": "The required room type is Entire home/apt."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "The restaurant records give Seasons 52 Fresh Grill 4.4, Lord of the Drinks Forum 4.2, and QD's Restaurant 4.1.",
+        "note": "Every restaurant meal in the plan is rated at least 4.0."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

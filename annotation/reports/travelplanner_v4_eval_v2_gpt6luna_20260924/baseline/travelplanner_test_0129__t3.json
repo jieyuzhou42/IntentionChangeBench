@@ -1,0 +1,203 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 3,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 4453.0,
+      "budget": 5000,
+      "unpriced": [
+        "breakfast: pending quote: meal before departing sioux falls",
+        "lunch: pending quote: meal before departing sioux falls"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 30987,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": 5000
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "people_number",
+        "value": 3
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "accommodation_rating",
+        "value": "3+"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "outbound_transportation",
+        "value": "Fly from Sioux Falls to Phoenix on March 16, 2022."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "outbound_transportation",
+        "value": "Arrive in Phoenix by 21:00 on March 16, 2022."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "intercity_transportation",
+        "value": "Fly from Phoenix to Flagstaff on March 18, 2022."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "intercity_transportation",
+        "value": "Arrive in Flagstaff by 12:00 on March 18, 2022."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "return_transportation",
+        "value": "The one-way visit ends in Flagstaff on March 20, 2022."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "return_transportation",
+        "value": "No return journey belongs to this itinerary."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "activity",
+        "value": "Visit the Heard Museum."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "activity",
+        "value": "Visit the Desert Botanical Garden."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "activity 2",
+        "value": "Do not visit Hole in the Rock."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "schedule",
+        "value": "Keep the pace relaxed: fewer than 2 attractions per day."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": "2022-03-17",
+        "requirement": "Prioritize a visit to the Heard Museum in Phoenix.",
+        "source_turn": 3,
+        "quote": "prioritize the Heard Museum"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-17",
+        "requirement": "Prioritize a visit to the Desert Botanical Garden in Phoenix.",
+        "source_turn": 3,
+        "quote": "and Desert Botanical Garden"
+      },
+      {
+        "kind": "exclude",
+        "date": null,
+        "requirement": "Do not visit Hole in the Rock.",
+        "source_turn": 3,
+        "quote": "drop Hole in the Rock"
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-16",
+        "requirement": "Keep the day mainly for arrival.",
+        "source_turn": 3,
+        "quote": "Keep March 16 mainly for arrival"
+      },
+      {
+        "kind": "free_time",
+        "date": "2022-03-17",
+        "requirement": "Leave enough time for transit and sit-down meals.",
+        "source_turn": 3,
+        "quote": "so there's enough time for transit and sit-down meals"
+      },
+      {
+        "kind": "limit",
+        "date": null,
+        "requirement": "Favor a relaxed pace at preferred attractions over adding extra stops.",
+        "source_turn": 3,
+        "quote": "A relaxed pace at preferred attractions matters more than squeezing in extra stops"
+      },
+      {
+        "kind": "limit",
+        "date": "2022-03-18",
+        "requirement": "Protect the transfer to Flagstaff.",
+        "source_turn": 3,
+        "quote": "protect the March 18 transfer to Flagstaff"
+      },
+      {
+        "kind": "order",
+        "date": "2022-03-20",
+        "requirement": "End the one-way visit in Flagstaff; do not include a journey home.",
+        "source_turn": 3,
+        "quote": "the one-way visit still ends in Flagstaff on March 20"
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The Phoenix listing has maximum occupancy 3 and the Flagstaff listing has maximum occupancy 8, so each booked listing can host three travelers."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The Phoenix listing is rated 5 and the Flagstaff listing is rated 3."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F4045477 travels from Sioux Falls to Phoenix on March 16 and arrives at 19:26, before 21:00."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "status": "satisfied",
+        "evidence": "Flight F3804854 travels from Phoenix to Flagstaff on March 18 and arrives at 09:47, before 12:00."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The itinerary ends in Flagstaff on March 20 and includes no return journey."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "The plan lists both the Heard Museum and Desert Botanical Garden on March 17 in Phoenix."
+      },
+      {
+        "gold_field": "activity 2",
+        "status": "satisfied",
+        "evidence": "Hole in the Rock is not listed in the plan."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "violated",
+        "evidence": "The plan lists two attractions on March 17 and two on March 19; both exceed the requirement of fewer than two attractions per day."
+      }
+    ],
+    "annotation_issues": [
+      "The dialogue states that the travelers want private rooms and two nights in each city (turn 1), but the gold constraints omit room type and accommodation stay duration.",
+      "The explicit March 17 requirement to prioritize both the Heard Museum and Desert Botanical Garden calls for two attractions that day, conflicting with the gold schedule limit of fewer than two attractions per day."
+    ]
+  },
+  "out_of_scope_fields": []
+}

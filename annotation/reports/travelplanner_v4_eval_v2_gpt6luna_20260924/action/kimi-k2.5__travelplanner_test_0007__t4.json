@@ -1,0 +1,156 @@
+{
+  "model": "kimi-k2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0007",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22403,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "F4025720: St. Louis to Oklahoma City, departs 21:59, arrives 23:42, $105",
+        "record_name": "F4025720",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio (Entire home/apt), $406 total for 2 nights",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Self-catering from nearby store",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Lake House Restaurant (Rating 4.3), American/Mediterranean/BBQ, $38",
+        "record_name": "Lake House Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Buffet 101 (Rating 4.0), American/Seafood, $74",
+        "record_name": "Buffet 101",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Chelsea/Union Square cozy studio (Entire home/apt)",
+        "record_name": "Chelsea/Union Square cozy studio",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "F3950607: Oklahoma City to St. Louis, departs 06:27, arrives 07:44, $201",
+        "record_name": "F3950607",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-17 through 2022-03-19, with three listed days.",
+        "note": "The plan spans 3 days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio has maximum occupancy 4.",
+        "note": "The listing can host the one traveler; the plan does not assume another party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 departs St. Louis; the return flight F3950607 arrives in St. Louis.",
+        "note": "The itinerary originates from St. Louis."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F4025720 is from St. Louis to Oklahoma City; the itinerary lists Oklahoma City on day 2.",
+        "note": "Oklahoma City is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Oklahoma City as the trip destination and stay city.",
+        "note": "One destination city is visited."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary starts on 2022-03-17, and flight F4025720 is dated 2022-03-17.",
+        "note": "The start date matches."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary ends on 2022-03-19, and flight F3950607 is dated 2022-03-19.",
+        "note": "The end date matches."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F4025720 from St. Louis to Oklahoma City, not self-driving in an own car.",
+        "note": "The must-have outbound transportation requirement is not met."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses flight F3950607 from Oklahoma City to St. Louis, not self-driving in an own car.",
+        "note": "The must-have return transportation requirement is not met."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Chelsea/Union Square cozy studio is booked on 2022-03-17 and 2022-03-18; its minimum nights is 2.",
+        "note": "The plan books both required nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Lake House Restaurant has Aggregate Rating 4.3 and Buffet 101 has Aggregate Rating 4.",
+        "note": "Both restaurant meals meet the 4.0 rating floor; the self-catered breakfast does not count against it."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan uses flights F4025720 and F3950607; the dialogue says driving is acceptable to protect the restaurant rating floor.",
+        "note": "Flying is preferred when the cap allows it, and this plan flies."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Chelsea/Union Square cozy studio record lists room type Entire home/apt.",
+        "note": "The booked accommodation is an entire home/apartment, not a room in someone's flat."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "outbound_transportation",
+        "quote": "Selected flights meet preferred late outbound (21:59) and early return (06:27) requirements - user abandoned driving preference when flights available."
+      },
+      {
+        "gold_field": "return_transportation",
+        "quote": "Selected flights meet preferred late outbound (21:59) and early return (06:27) requirements - user abandoned driving preference when flights available."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

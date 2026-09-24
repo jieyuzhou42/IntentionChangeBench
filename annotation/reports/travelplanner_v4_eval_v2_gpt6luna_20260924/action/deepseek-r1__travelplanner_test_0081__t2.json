@@ -1,0 +1,145 @@
+{
+  "model": "deepseek-r1",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22334,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3558527 (TPA→CLE) @17:33-20:06",
+        "record_name": "F3558527",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Nineties ($31)",
+        "record_name": "Nineties",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "record_name": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bikanerwala ($10)",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Big Chicken ($27)",
+        "record_name": "Big Chicken",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Me Kong Bowl ($19)",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "record_name": "Comfy bed in Cozy Home - GRAND ARMY PLAZA",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247 (CLE→TPA) @21:20-23:34",
+        "record_name": "F3559247",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Bikanerwala ($10)",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Makhan Fish ($25)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers 2022-03-02, 2022-03-03, and 2022-03-04.",
+        "note": "The plan spans the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing has maximum occupancy 1 and is used for both nights.",
+        "note": "Its capacity accommodates one traveler, and the plan assumes no other party size."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "violated",
+        "evidence": "The plan books F3558527, departing Tampa at 17:33 and arriving Cleveland at 20:06. The requested F3915073 departs at 10:37 and arrives at 12:59.",
+        "note": "The booked flight is not the specified flight."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The plan books Comfy bed in Cozy Home - GRAND ARMY PLAZA; the requested listing is Richmond Hill 3 Bedroom apartment in Private home!.",
+        "note": "The booked listing does not match the requested accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Comfy bed in Cozy Home - GRAND ARMY PLAZA is listed as a Private room; the requested room type is Entire home/apt.",
+        "note": "The booked listing has a different room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Comfy bed in Cozy Home - GRAND ARMY PLAZA has review rate number 5.",
+        "note": "The booked accommodation meets the requested rating of 5."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lists attraction as '-'.",
+        "note": "No sightseeing is planned for Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lunch is listed as '-'.",
+        "note": "No restaurant lunch is planned for Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

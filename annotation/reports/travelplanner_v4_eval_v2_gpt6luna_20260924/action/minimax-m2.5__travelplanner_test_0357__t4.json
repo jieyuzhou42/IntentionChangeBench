@@ -1,0 +1,174 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22528,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 (08:04-09:30, $136/person) + rideshare",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Simple/inexpensive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat ($18/person, rating 4.4)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Restaurant ($65/person, rating 4.5)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Entire home/apt (none available for 3 nights within budget with 4-person occupancy - using Williamsburg large 2 Bedroom / 2 Bathroom at $539/night for 2 nights only, violates 3-night stay requirement)",
+        "record_name": "Williamsburg large 2 Bedroom / 2 Bathroom",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Simple/inexpensive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Club Cubana ($65/person, rating 4.4)",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Simple/inexpensive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Same as above (night 2)",
+        "record_name": "Williamsburg large 2 Bedroom / 2 Bathroom",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3757097 (21:44-23:34, $169/person) + rideshare",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Simple/inexpensive",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Simple/inexpensive",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists 2022-03-04, 2022-03-05, and 2022-03-06.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "Williamsburg large 2 Bedroom / 2 Bathroom has maximum occupancy 3.",
+        "note": "The booked listing cannot host all four travelers."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "Day 1 lists Public Garden and Boston Common; Day 2 lists Museum of Fine Arts and Fenway Park; Day 3 lists no attractions.",
+        "note": "Each day stays within the two-attraction limit, and the paired attractions on Days 1 and 2 are nearby."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The Williamsburg listing's room type is Entire home/apt.",
+        "note": "The booked listing matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "violated",
+        "evidence": "The plan uses one listing, Williamsburg large 2 Bedroom / 2 Bathroom, whose maximum occupancy is 3.",
+        "note": "It is one property, but it does not have capacity for all four travelers."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Irish Democrat is rated 4.4, Red Mesa Restaurant 4.5, and Club Cubana 4.4.",
+        "note": "There is a restaurant meal rated at least 4.0 on each day."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "violated",
+        "evidence": "Red Mesa Restaurant and Club Cubana each have an Average Cost of 65 per person; Irish Democrat is 18 per person.",
+        "note": "Two restaurant meals are priced at $65 per person, inconsistent with the inexpensive dining requirement."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "violated",
+        "evidence": "The planned restaurants' recorded cuisines are Tea, Cafe, Bakery, Fast Food (Irish Democrat); Desserts, Tea, Fast Food, Indian, Seafood (Red Mesa Restaurant); and Desserts, BBQ, Fast Food, Cafe, Indian, Mediterranean (Club Cubana).",
+        "note": "The planned restaurant meals do not provide both French and American cuisine."
+      },
+      {
+        "gold_field": "entities.entity_3.constraints.dining_style",
+        "action_status": "unknown",
+        "evidence": "The restaurant records provide aggregate ratings and cuisine lists but no entree or vegetarian-menu information.",
+        "note": "The records do not establish whether a vegetarian entree is available at the shared sit-down restaurant each day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "people_number",
+        "quote": "the Williamsburg property (max occupancy 3) violates 4-person requirement"
+      },
+      {
+        "gold_field": "accommodation",
+        "quote": "Unmet requirements: accommodation property does not actually fit 4 people (max occupancy 3)"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

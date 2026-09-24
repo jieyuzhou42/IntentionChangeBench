@@ -1,0 +1,139 @@
+{
+  "model": "nova-pro",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 1,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 32217,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F4045477, Sioux Falls to Phoenix, 18:40–19:26",
+        "record_name": "F4045477",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Pizza Hut",
+        "record_name": "Pizza Hut",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Hudson Yard - Bright Double Double Room",
+        "record_name": "Hudson Yard - Bright Double Double  Room",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Mama Loca",
+        "record_name": "Mama Loca",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Hudson Yard - Bright Double Double Room",
+        "record_name": "Hudson Yard - Bright Double Double  Room",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3804854, Phoenix to Flagstaff, 08:49–09:47",
+        "record_name": "F3804854",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Communiti",
+        "record_name": "Communiti",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "record_name": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Sushi Thai Restaurant",
+        "record_name": "Sushi Thai Restaurant",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "record_name": "Large Bedroom in 2 Bed Apartment Brighton Beach",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Flagstaff to Sioux Falls (19 hours 57 mins, 2,086 km, cost 104)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "city_sequence",
+        "action_status": "satisfied",
+        "evidence": "The itinerary travels from Sioux Falls to Phoenix, then Phoenix to Flagstaff.",
+        "note": "The requested Arizona cities are visited in the requested order."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "Phoenix accommodation is listed on March 16 and 17; Flagstaff accommodation is listed on March 18 and 19.",
+        "note": "The plan books the requested two nights in each city."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Both booked listings have room type Private room.",
+        "note": "The Phoenix and Flagstaff accommodations meet the private-room requirement."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The Phoenix listing has review rate number 5; the Flagstaff listing has review rate number 3.",
+        "note": "Both city listings are rated at least 3."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F4045477 flies Sioux Falls to Phoenix on March 16, departing 18:40 and arriving 19:26.",
+        "note": "It arrives before the requested 21:00 deadline."
+      },
+      {
+        "gold_field": "intercity_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3804854 flies Phoenix to Flagstaff on March 18, departing 08:49 and arriving 09:47.",
+        "note": "It arrives before the requested 12:00 deadline."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The March 20 transportation slot specifies self-driving from Flagstaff to Sioux Falls.",
+        "note": "The itinerary includes a return journey, despite the requirement that no return journey belong to this one-way itinerary."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

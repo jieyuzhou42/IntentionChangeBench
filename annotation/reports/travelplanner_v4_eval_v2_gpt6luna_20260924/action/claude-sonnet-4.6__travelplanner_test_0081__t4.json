@@ -1,0 +1,209 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 4,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 3,
+  "prompt_chars": 25060,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073, departs Tampa 10:37, arrives Cleveland 12:59, $326",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered at home before departure (flight departs mid-morning)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Makhan Fish and Chicken Corner, Cleveland — Chinese cuisine, avg cost $25",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Green Leaf, Cleveland — Chinese cuisine, avg cost $73",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — rating 5, $565/night",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit/walking",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Makhan Fish and Chicken Corner, Cleveland — avg cost $25",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Pind Balluchi, Cleveland — Chinese cuisine, avg cost $96",
+        "record_name": "Pind Balluchi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Green Leaf, Cleveland — Chinese cuisine, avg cost $73",
+        "record_name": "Green Leaf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — rating 5, $565/night",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3905043, departs Cleveland 07:19, arrives Tampa 09:36 (arrives by 10:00 ✓), $336",
+        "record_name": "F3905043",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Makhan Fish and Chicken Corner, Cleveland — avg cost $25 (early, or grab-and-go near hotel before 07:19 departure)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "-",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing has maximum occupancy 4.",
+        "note": "Its capacity covers one traveler, and the plan does not assume another party size."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The listed outbound flight matches the requested flight and comfortable departure."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "Day 1 lists the Rock & Roll Hall of Fame after arrival; Day 2 lists the Cleveland Museum of Art and Cleveland Botanical Garden; Day 3 flight F3905043 departs at 07:19.",
+        "note": "Day 2 sightseeing and an early Day 3 airport departure are planned, but Day 1 includes sightseeing rather than being kept for arrival and rest."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The Day 2 attractions are The Cleveland Museum of Art and Cleveland Botanical Garden; the Cleveland Cultural Gardens are not listed. Day 1 lists the Rock & Roll Hall of Fame, while Day 3 lists no attraction.",
+        "note": "The Cultural Gardens are missing from Day 2, and sightseeing is planned on Day 1."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Makhan Fish and Chicken Corner, a restaurant in the candidate records. Day 3 lunch is '-'.",
+        "note": "A restaurant lunch is planned on Day 1 despite the requirement for no restaurant lunch on Days 1 or 3."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The accommodation slot names Richmond Hill 3 Bedroom apartment in Private home!, matching the candidate listing.",
+        "note": "The requested accommodation is booked on both Cleveland nights."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "This matches the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing's review rate number is 5.",
+        "note": "The booked accommodation meets the requested rating."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "violated",
+        "evidence": "The plan uses F3905043, which departs Cleveland at 07:19 and arrives Tampa at 09:36. The requested F3623037 departs at 08:40 and arrives at 10:57.",
+        "note": "The plan uses a different return flight from the one specified."
+      },
+      {
+        "gold_field": "breakfast",
+        "action_status": "violated",
+        "evidence": "Day 3 breakfast lists Makhan Fish and Chicken Corner, a restaurant in the candidate records.",
+        "note": "A restaurant breakfast is planned on Day 3."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "Day 1 lists the Rock & Roll Hall of Fame as an afternoon attraction.",
+        "note": "The plan includes sightseeing on Day 1."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Makhan Fish and Chicken Corner, a restaurant in the candidate records.",
+        "note": "A restaurant lunch is planned on Day 1."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "action_status": "satisfied",
+        "evidence": "Record F3905043 arrives in Tampa at 09:36 on 2022-03-04.",
+        "note": "The recorded arrival is before 10:00."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": []
+  }
+}

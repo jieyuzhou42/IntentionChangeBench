@@ -1,0 +1,249 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 25599,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336, departs Belleville 12:29, arrives Las Vegas 14:04; $296/person × 2 = $592",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Before departure in Belleville (self-catered/pre-flight, not billed here)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Ethos Vegan Kitchen — Desserts, Bakery, Cafe, Mediterranean, Seafood; Rating 4.4; $42/person × 2 = $84 (post-arrival, ~15:00)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Behrouz Biryani — Pizza, Italian, BBQ, Bakery, Seafood; Rating 3.4; $97/person × 2 = $194",
+        "record_name": "Behrouz Biryani",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! — Entire home/apt, No children under 10 & No smoking, Rating 5.0, max occupancy 3, $108/night",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cakes At Bhawanas — Desserts, Tea, American, Bakery, Indian, Seafood; Rating 3.5; $87/person × 2 = $174",
+        "record_name": "Cakes At Bhawanas",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Cakes & Muffins — Cafe, Mexican, Bakery; Rating 3.3; $99/person × 2 = $198 (morning/early afternoon, before sister's 14:00 commitment)",
+        "record_name": "Cakes & Muffins",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Barbeque Nation — Desserts, Tea, Italian, American, Seafood; Rating 4.0; $88/person × 2 = $176 (after 16:00 when sister is free)",
+        "record_name": "Barbeque Nation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Cozy Studio Apt-One block away from Prospect Park! (Night 2 — same booking, $108)",
+        "record_name": "Cozy Studio Apt-One block away from Prospect Park!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-drive departure from Las Vegas toward Belleville; drive splits across March 29–30",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen — Rating 4.4; $42/person × 2 = $84 (early, before hitting the road)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Self-catered packed lunch on the road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Self-catered or roadside stop (unpriced; no Las Vegas restaurant data for en-route cities)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Overnight roadside stop/motel en route (not in Las Vegas search results; unpriced — budget headroom of $182 available)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Continue self-drive back to Belleville; arrival home",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Self-catered on the road",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Self-catered on the road",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary covers Day 1 through Day 4, March 27–30, 2022.",
+        "note": "Four itinerary days are planned."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "violated",
+        "evidence": "The Las Vegas listing has maximum occupancy 3; the planned March 29 roadside motel has no matching candidate record or occupancy attribute.",
+        "note": "Although the Las Vegas booking can host two travelers, the planned overnight lodging on March 29 has no record establishing capacity for both."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has OriginCityName Belleville.",
+        "note": "The itinerary departs from Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has DestCityName Las Vegas.",
+        "note": "The outbound destination is Las Vegas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary identifies Las Vegas as its destination and does not plan a visit to another named city.",
+        "note": "One destination city is planned."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Day 1 is dated 2022-03-27; flight F3578336 is also dated 2022-03-27.",
+        "note": "The plan starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "Day 4 is dated 2022-03-30 and says the drive continues back to Belleville with arrival home.",
+        "note": "The plan ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3578336 is a flight from Belleville to Las Vegas on 2022-03-27, departing 12:29 and arriving 14:04.",
+        "note": "The outbound flight matches the requested route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "Day 3 says the traveler will self-drive from Las Vegas toward Belleville across March 29–30; Day 4 says to continue the self-drive back to Belleville.",
+        "note": "The plan follows the requested self-driving return; the dialogue establishes that the user will drive."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The Las Vegas listing is booked on Day 1 (March 27) and Day 2 (March 28), one night each.",
+        "note": "The requested two Las Vegas nights are listed; the departure day has no Las Vegas accommodation."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! is recorded as Entire home/apt.",
+        "note": "The booked Las Vegas accommodation has the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "Cozy Studio Apt-One block away from Prospect Park! has review rate number 5.",
+        "note": "The Las Vegas listing meets the rating requirement."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant meals from the records include Ethos Vegan Kitchen (4.4), Behrouz Biryani (3.4), Cakes At Bhawanas (3.5), Cakes & Muffins (3.3), and Barbeque Nation (4.0).",
+        "note": "Every planned restaurant meal meets the 3.0 rating floor; self-catered slots do not count."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Barbeque Nation's recorded Cuisines include Fast Food.",
+        "note": "The Day 2 dinner restaurant carries a prohibited Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 28, breakfast is Cakes At Bhawanas, lunch is Cakes & Muffins, and dinner is Barbeque Nation.",
+        "note": "The three meals use three different restaurants."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The March 28 activities are listed in the morning from 09:00–13:30 and again from 16:30 onward; the sister's commitment is listed from 14:00–16:00 with no group activity scheduled.",
+        "note": "No planned activity overlaps the unavailable interval."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The booked listing's house_rules include No smoking.",
+        "note": "The accommodation prohibits smoking as requested."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan places sightseeing in the morning and after 16:00, and explicitly leaves 14:00–16:00 without a group activity.",
+        "note": "No sightseeing is scheduled for the sister during her stated unavailability."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "No candidate accommodation record covers the planned March 29 roadside motel, so its occupancy cannot be verified."
+    ]
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0062",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23599,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Ithaca to Philadelphia (3h 52mins, 369km, $18)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Red Mesa Cantina (American, Fast Food - $36, rating 4.6)",
+        "record_name": "Red Mesa Cantina",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex (Private room, No parties, $509 total for 2 nights)",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "The Moon Under Water (Pizza, Italian, Mediterranean - $94, rating 4.1)",
+        "record_name": "The Moon Under Water",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Red Ginger Sushi, Grill & Bar (Indian, Cafe - $98, rating 4.5)",
+        "record_name": "Red Ginger Sushi, Grill & Bar",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Marukame Udon (Chinese, Italian, Pizza - $100, rating 4.9)",
+        "record_name": "Marukame Udon",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Top floor of an amazing duplex (Private room, No parties, $509 total for 2 nights)",
+        "record_name": "Top floor of an amazing duplex",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "transportation",
+        "text": "Self-driving from Philadelphia to Ithaca (3h 52mins, 369km, $18) - depart by 14:08 to arrive before 18:00",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary dates run from 2022-03-01 through 2022-03-03.",
+        "note": "The trip spans three calendar days, though the itinerary contains an extra entry repeating 2022-03-02."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume a larger party."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation says it is from Ithaca to Philadelphia.",
+        "note": "Ithaca is the stated origin."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "The outbound transportation says it is from Ithaca to Philadelphia; the overnight listing is in Philadelphia.",
+        "note": "Philadelphia is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary's destination and accommodation city are Philadelphia.",
+        "note": "The plan visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The first itinerary entry is dated 2022-03-01.",
+        "note": "Matches the requested start date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return transportation entry is dated 2022-03-03.",
+        "note": "Matches the requested end date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says “Self-driving from Ithaca to Philadelphia”; the candidate transportation record confirms self-driving from Ithaca to Philadelphia.",
+        "note": "Matches the requested mode, route, date, and use of the traveler's own car as stated in the dialogue."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says “Self-driving from Philadelphia to Ithaca” on 2022-03-03; the dialogue says the traveler is driving back.",
+        "note": "The plan specifies the requested return mode and route."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The same listing is booked on 2022-03-01 and 2022-03-02, and none is needed on the departure date.",
+        "note": "Two nights are listed on the requested dates."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "The booked listing's room type is “Private room.”",
+        "note": "The requirement is Entire home/apt."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house_rules are “No parties.”",
+        "note": "The listing prohibits parties as required."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant ratings are 4.6 (Red Mesa Cantina), 4.1 (The Moon Under Water), 4.5 (Red Ginger Sushi, Grill & Bar), and 4.9 (Marukame Udon).",
+        "note": "Each restaurant meal in the plan meets the 3.5 rating floor."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "violated",
+        "evidence": "Record Average Costs per person are $94 for The Moon Under Water, $98 for Red Ginger Sushi, Grill & Bar, and $100 for Marukame Udon.",
+        "note": "These restaurant meals exceed the $60 per-person cap."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Red Mesa Cantina, The Moon Under Water, Red Ginger Sushi, Grill & Bar, and Marukame Udon all have “Fast Food” in their record Cuisines.",
+        "note": "The plan includes Philadelphia meals carrying a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "The March 2 meals are at The Moon Under Water, Red Ginger Sushi, Grill & Bar, and Marukame Udon.",
+        "note": "Breakfast, lunch, and dinner are at three different restaurants."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "The Moon Under Water is tagged Italian in its record Cuisines.",
+        "note": "At least one March 2 meal is Italian-tagged."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The return entry says to depart by 14:08 and arrive before 18:00; the itinerary gives a 3h 52min drive duration.",
+        "note": "The plan sets a departure deadline intended to meet the gold requirement of arriving no later than 18:00."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The March 2 attraction is listed as “Liberty Bell”; a Liberty Bell attraction record is present.",
+        "note": "The optional visit is included on the requested day."
+      }
+    ],
+    "unmet_constraint_disclosures": [],
+    "annotation_issues": [
+      "The itinerary has four entries, including a duplicate 2022-03-02 entry with empty slots, despite the three-day March 1–3 trip.",
+      "Candidate transportation records include the outbound self-driving route but no return self-driving route or return duration; the return leg and its timing are stated in the plan but cannot be independently matched to a return-route record."
+    ]
+  }
+}

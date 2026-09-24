@@ -1,0 +1,257 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 4,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "violated",
+      "total": 1873.0,
+      "budget": 1800,
+      "unpriced": [],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22637,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "1800"
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "3 days"
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "1 traveler"
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "outbound_transportation",
+        "value": "Flight F3915073"
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "outbound_transportation",
+        "value": "From Tampa to Cleveland on 2022-03-02"
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "outbound_transportation",
+        "value": "Departing 10:37"
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "outbound_transportation",
+        "value": "Arriving 12:59"
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "schedule",
+        "value": "Keep Day 1 for arrival and rest"
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "schedule",
+        "value": "Use Day 2 for sightseeing"
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "schedule",
+        "value": "Reserve early Day 3 for checkout and the airport transfer"
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "activity",
+        "value": "Keep the Cleveland Cultural Gardens on Day 2"
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "activity",
+        "value": "Keep other priority sightseeing on Day 2"
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "activity",
+        "value": "Drop Edgewater Park"
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "activity",
+        "value": "Drop the Cleveland Script Sign"
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "activity",
+        "value": "Drop all Day 3 sightseeing"
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "lunch",
+        "value": "No planned restaurant lunch on Day 1"
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "lunch",
+        "value": "No planned restaurant lunch on Day 3"
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "accommodation",
+        "value": "Richmond Hill 3 Bedroom apartment in Private home!"
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "atom_id": "g20",
+        "source_field": "accommodation_rating",
+        "value": "5"
+      },
+      {
+        "atom_id": "g21",
+        "source_field": "return_transportation",
+        "value": "Flight F3623037"
+      },
+      {
+        "atom_id": "g22",
+        "source_field": "return_transportation",
+        "value": "From Cleveland to Tampa on 2022-03-04"
+      },
+      {
+        "atom_id": "g23",
+        "source_field": "return_transportation",
+        "value": "Departing 08:40"
+      },
+      {
+        "atom_id": "g24",
+        "source_field": "return_transportation",
+        "value": "Arriving 10:57"
+      },
+      {
+        "atom_id": "g25",
+        "source_field": "breakfast",
+        "value": "No planned restaurant breakfast on Day 3"
+      },
+      {
+        "atom_id": "g26",
+        "source_field": "day_1",
+        "value": "No sightseeing on Day 1"
+      },
+      {
+        "atom_id": "g27",
+        "source_field": "day_1_lunch",
+        "value": "No planned restaurant lunch on Day 1"
+      },
+      {
+        "atom_id": "g28",
+        "source_field": "arrive Tampa by 10:00",
+        "value": "true"
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "limit",
+        "date": "2022-03-02",
+        "requirement": "Avoid an overly early outbound flight; prioritize a comfortable departure over maximizing first-day activities and meals.",
+        "source_turn": 1,
+        "quote": "I don't want the flight to be so early. Comfortable departure matters more to me than maximizing first-day activities and meals."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan covers Day 1, Day 2, and Day 3, March 2–4, 2022."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 4, enough for 1 traveler; the plan does not assume another party size."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan specifies F3915073 from Tampa to Cleveland at 10:37–12:59 on March 2, matching the candidate record and constraint."
+      },
+      {
+        "gold_field": "schedule",
+        "status": "satisfied",
+        "evidence": "Day 1 has arrival and transfer with no sightseeing; Day 2 has sightseeing; Day 3 has an early airport-bound flight and no sightseeing."
+      },
+      {
+        "gold_field": "activity",
+        "status": "satisfied",
+        "evidence": "Day 2 includes the Cleveland Cultural Gardens and other sights. Edgewater Park and the Cleveland Script Sign are absent, as is all Day 3 sightseeing."
+      },
+      {
+        "gold_field": "lunch",
+        "status": "satisfied",
+        "evidence": "Day 1 and Day 3 lunch slots are empty."
+      },
+      {
+        "gold_field": "accommodation",
+        "status": "satisfied",
+        "evidence": "The plan books Richmond Hill 3 Bedroom apartment in Private home! on both accommodation nights, matching the candidate listing."
+      },
+      {
+        "gold_field": "room_type",
+        "status": "satisfied",
+        "evidence": "The candidate listing's room type is Entire home/apt."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "status": "satisfied",
+        "evidence": "The candidate listing has review rate number 5."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "violated",
+        "evidence": "The plan names F3905043, not the required F3623037. The candidate record shows F3905043 departs at 07:19 and arrives at 09:36."
+      },
+      {
+        "gold_field": "breakfast",
+        "status": "satisfied",
+        "evidence": "The Day 3 breakfast slot is empty."
+      },
+      {
+        "gold_field": "day_1",
+        "status": "satisfied",
+        "evidence": "The Day 1 attraction slot is empty."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "status": "satisfied",
+        "evidence": "The Day 1 lunch slot is empty."
+      },
+      {
+        "gold_field": "arrive Tampa by 10:00",
+        "status": "satisfied",
+        "evidence": "The plan's return flight is candidate-record flight F3905043, which arrives in Tampa at 09:36 on March 4."
+      }
+    ],
+    "annotation_issues": [
+      "The gold constraints require return flight F3623037, which arrives at 10:57, while the must-have requires arrival in Tampa by 10:00. These requirements conflict; the reference plan instead uses F3905043, which arrives at 09:36.",
+      "The gold_delta_this_turn relaxes budget from 1800 to 2000, but the gold_constraints budget value remains 1800.",
+      "The user explicitly requested Chinese food in turn 3, but no cuisine requirement appears in the gold constraints."
+    ]
+  },
+  "out_of_scope_fields": []
+}

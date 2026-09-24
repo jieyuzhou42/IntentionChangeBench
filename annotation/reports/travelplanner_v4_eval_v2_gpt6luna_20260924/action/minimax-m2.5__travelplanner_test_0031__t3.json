@@ -1,0 +1,214 @@
+{
+  "model": "minimax-m2.5",
+  "shard": "shard2",
+  "instance_id": "travelplanner_test_0031",
+  "turn_id": 3,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24280,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3578336 from Belleville, depart 12:29, arrive 14:04, $296",
+        "record_name": "F3578336",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Cakes At Bhawanas (Indian, rating 3.5, $87)",
+        "record_name": "Cakes At Bhawanas",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Two real bedrooms near Central Park (Entire home/apt, review 3, $731 total for 2 nights, house rules: No smoking & No parties & No pets)",
+        "record_name": "Two real bedrooms near Central Park",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Ethos Vegan Kitchen (Mediterranean, rating 4.4, $42)",
+        "record_name": "Ethos Vegan Kitchen",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Portneuf Valley Brewing (Mediterranean, rating 3.7, $58)",
+        "record_name": "Portneuf Valley Brewing",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Barbeque Nation (Indian, rating 4, $88)",
+        "record_name": "Barbeque Nation",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "attraction",
+        "text": "The Mob Museum (300 Stewart Ave) and The Neon Museum Las Vegas (770 Las Vegas Blvd N) - scheduled around sister's 14:00-16:00 commitment",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Two real bedrooms near Central Park (same as above)",
+        "record_name": "Two real bedrooms near Central Park",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Drive back over March 29-30",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The plan starts on 2022-03-27 and says the drive back is over March 29-30.",
+        "note": "The itinerary spans March 27 through March 30, four calendar days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing has maximum occupancy 5.",
+        "note": "It can host both travelers."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 lists OriginCityName Belleville.",
+        "note": "The itinerary departs from Belleville."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 lists DestCityName Las Vegas; the accommodation record also lists city Las Vegas.",
+        "note": "The plan is for Las Vegas."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The flight destination and accommodation city are Las Vegas; the return is a drive to Belleville.",
+        "note": "One destination city is listed."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "Flight F3578336 has FlightDate 2022-03-27.",
+        "note": "The plan begins on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The itinerary says, \"Drive back over March 29-30.\"",
+        "note": "The return spans the requested end date, 2022-03-30."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3578336 is from Belleville to Las Vegas on 2022-03-27, departing 12:29 and arriving 14:04.",
+        "note": "The recorded flight matches the requested outbound route and date."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "The plan states, \"Drive back over March 29-30,\" and the dialogue says, \"I'll drive back over the 29th and 30th.\"",
+        "note": "The plan specifies a self-driven return over the requested dates; the dialogue supports the user's own-car return."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "The listing is booked on 2022-03-27 and 2022-03-28, with no accommodation on the departure day.",
+        "note": "Those are the two requested nights; the listing minimum is 1 night."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing's room type is Entire home/apt.",
+        "note": "It meets the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "The listing's review rate number is 3; the requested rating is 5.",
+        "note": "The booked apartment does not meet the rating floor."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "satisfied",
+        "evidence": "Restaurant record ratings are 3.5 for Cakes At Bhawanas, 4.4 for Ethos Vegan Kitchen, 3.7 for Portneuf Valley Brewing, and 4 for Barbeque Nation.",
+        "note": "Every restaurant meal listed has a rating of at least 3.0."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Portneuf Valley Brewing and Barbeque Nation both include Fast Food in their Cuisines records.",
+        "note": "The plan includes Las Vegas meals at restaurants tagged Fast Food."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "The March 28 breakfast, lunch, and dinner are Ethos Vegan Kitchen, Portneuf Valley Brewing, and Barbeque Nation.",
+        "note": "All three meals are at different restaurants."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "satisfied",
+        "evidence": "The attraction text says the museums are \"scheduled around sister's 14:00-16:00 commitment.\"",
+        "note": "The plan places the activities around the unavailable interval and does not schedule an activity during it."
+      },
+      {
+        "gold_field": "house_rule",
+        "action_status": "satisfied",
+        "evidence": "The listing's house rules include No smoking.",
+        "note": "The listing prohibits smoking as requested."
+      },
+      {
+        "gold_field": "dinner",
+        "action_status": "violated",
+        "evidence": "Barbeque Nation's recorded Cuisines are Desserts, Tea, Italian, Fast Food, American, Seafood; Indian is not listed.",
+        "note": "The March 28 dinner does not carry an Indian tag in the record."
+      },
+      {
+        "gold_field": "lunch",
+        "action_status": "satisfied",
+        "evidence": "Portneuf Valley Brewing's recorded Cuisines include Mediterranean.",
+        "note": "The March 28 lunch carries the required tag."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "satisfied",
+        "evidence": "The plan lists The Mob Museum and The Neon Museum Las Vegas on March 28 and says they are scheduled around the 14:00-16:00 commitment.",
+        "note": "Both requested activities are included on the requested day and planned around the unavailable interval."
+      },
+      {
+        "gold_field": "entities.entity_2.constraints.schedule",
+        "action_status": "satisfied",
+        "evidence": "The plan says the museums are scheduled around the sister's 14:00-16:00 commitment.",
+        "note": "No sightseeing for the second traveler is planned during that interval."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Could not achieve 5.0 rating - the only 5.0 options were a private room (1 person max) or did not meet whole apartment requirement; selected highest-rated whole apt at 3.0."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

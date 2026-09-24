@@ -1,0 +1,169 @@
+{
+  "model": "claude-sonnet-4.6",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 24685,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3915073: Tampa → Cleveland, departs 10:37, arrives 12:59, $326 (1 passenger)",
+        "record_name": "F3915073",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catering / at home in Tampa before departure",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Me Kong Bowl, Cleveland (Cafe, BBQ, Seafood; avg cost $19/person) — after arrival",
+        "record_name": "Me Kong Bowl",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Nineties, Cleveland (Cafe, Pizza, Desserts; avg cost $31/person)",
+        "record_name": "Nineties",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — $565/night, rating 5, Entire home/apt, No visitors rule, Cleveland",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Local transit / taxi within Cleveland",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Bikanerwala, Cleveland (Tea, Bakery, BBQ, Fast Food; avg cost $10/person)",
+        "record_name": "Bikanerwala",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Big Chicken, Cleveland (Cafe, Pizza, Bakery, Italian; avg cost $27/person)",
+        "record_name": "Big Chicken",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Me Kong Bowl, Cleveland (Cafe, BBQ, Seafood; avg cost $19/person)",
+        "record_name": "Me Kong Bowl",
+        "revised": true
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Richmond Hill 3 Bedroom apartment in Private home! — $565/night, rating 5",
+        "record_name": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3559247: Cleveland → Tampa, departs 21:20, arrives 23:34, $198 (1 passenger)",
+        "record_name": "F3559247",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Makhan Fish and Chicken Corner, Cleveland (Pizza, French, Fast Food, Chinese, Seafood; avg cost $25/person)",
+        "record_name": "Makhan Fish and Chicken Corner",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Keventers, Cleveland (Pizza, American, Desserts, Fast Food; avg cost $54/person)",
+        "record_name": "Keventers",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [
+      {
+        "quote": "the dinner on Day 2 should be swapped to a cheaper option: replacing Master Bakers ($80) with Me Kong Bowl ($19)",
+        "effect": "Replaced Day 2 dinner, Master Bakers, with Me Kong Bowl."
+      }
+    ],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 2, March 3, and March 4, 2022.",
+        "note": "The plan covers the requested three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked Cleveland listing has maximum occupancy 4; both flights specify 1 passenger.",
+        "note": "The accommodation can host the single traveler, and the plan assumes one passenger."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "Record F3915073 is Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59.",
+        "note": "The listed flight matches the requested outbound flight and its times; its departure is not overly early."
+      },
+      {
+        "gold_field": "accommodation",
+        "action_status": "satisfied",
+        "evidence": "The booked listing is named Richmond Hill 3 Bedroom apartment in Private home!",
+        "note": "The accommodation matches the requested listing."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "satisfied",
+        "evidence": "The listing record gives room type Entire home/apt.",
+        "note": "The booked listing has the requested room type."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "satisfied",
+        "evidence": "The listing record gives review rate number 5.",
+        "note": "The booked listing meets the rating-5 requirement."
+      },
+      {
+        "gold_field": "day_1",
+        "action_status": "violated",
+        "evidence": "The Day 1 itinerary includes Rock & Roll Hall of Fame.",
+        "note": "Day 1 includes sightseeing despite the preferred requirement of no sightseeing."
+      },
+      {
+        "gold_field": "day_1_lunch",
+        "action_status": "violated",
+        "evidence": "Day 1 lunch is Me Kong Bowl, a restaurant listed in the Cleveland restaurant records.",
+        "note": "The plan includes a restaurant lunch on Day 1."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "budget",
+        "quote": "the $1,800 budget is marginally tight"
+      }
+    ],
+    "annotation_issues": []
+  }
+}

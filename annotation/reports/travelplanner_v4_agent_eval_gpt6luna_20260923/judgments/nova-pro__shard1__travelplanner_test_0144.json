@@ -1,0 +1,507 @@
+{
+  "pass_a": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $3,100 budget is captured, but the itinerary provides no verifiable total cost."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies two cities, and the itinerary visits Denver and Gunnison."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Denver and Gunnison (the user did not specify these cities)",
+        "outbound_transportation: Moab to Denver on 2022-03-19",
+        "intercity_transportation: Denver to Gunnison and Gunnison to Moab on specified dates"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "Both gold constraints are recognized; the return transportation is incomplete, but no gold constraint requires a completed return route."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The budget is captured, but no verifiable trip total is given."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction requires both Denver and Gunnison; the itinerary also stays overnight in Gunnison despite the one-city request."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction requests an apartment, and the rationale identifies the selected Denver accommodation as an apartment."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The Denver rating threshold is captured, but no rating evidence for the selected accommodation is provided."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary uses self-driving for the intercity travel."
+        },
+        {
+          "gold_field": "launch at Gunnison",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary departs Gunnison for Moab on March 23."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Gunnison as a destination, although the user only says to pass through it on the way home",
+        "accommodation_stay: Gunnison on 2022-03-23"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "The prediction captures the stated preferences, but the plan adds an overnight Gunnison stay and does not substantiate the accommodation rating."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The budget is captured, but the itinerary gives no verifiable total cost."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction names Denver and Gunnison, and the itinerary visits both."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "unknown",
+          "note": "The prediction does not specify apartments, and the selected accommodation descriptions do not establish their room type."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The 4+ threshold is captured, but no ratings for the selected accommodations are supplied."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary specifies self-driving between cities and back to Moab."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary allocates two days to Denver and two to Gunnison."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.75,
+      "no_match_appropriate": false,
+      "summary": "The plan follows the city schedule and driving request, but evidence does not establish apartment type or ratings."
+    }
+  },
+  "pass_b": {
+    "0": {
+      "turn_id": 0,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": "visiting_city_number",
+          "value_match": true
+        },
+        {
+          "index": 1,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 3,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    },
+    "1": {
+      "turn_id": 1,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": "visiting_city_number",
+          "value_match": false
+        },
+        {
+          "index": 1,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": "room_type",
+          "value_match": true
+        },
+        {
+          "index": 4,
+          "gold_field": null,
+          "value_match": false
+        },
+        {
+          "index": 5,
+          "gold_field": "launch at Gunnison",
+          "value_match": true
+        }
+      ]
+    },
+    "2": {
+      "turn_id": 2,
+      "items": [
+        {
+          "index": 0,
+          "gold_field": "visiting_city_number",
+          "value_match": true
+        },
+        {
+          "index": 1,
+          "gold_field": "schedule",
+          "value_match": true
+        },
+        {
+          "index": 2,
+          "gold_field": "accommodation_rating",
+          "value_match": true
+        },
+        {
+          "index": 3,
+          "gold_field": "budget",
+          "value_match": true
+        },
+        {
+          "index": 4,
+          "gold_field": "transportation",
+          "value_match": true
+        },
+        {
+          "index": 5,
+          "gold_field": null,
+          "value_match": false
+        }
+      ]
+    }
+  },
+  "pass_a_grounded": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "unknown",
+          "note": "The $3,100 ceiling is predicted correctly, but the itinerary has no arranged return transportation or complete trip cost."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction names two cities, and the itinerary visits Denver and Gunnison."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Denver and Gunnison (the user specified two Colorado cities but did not name them)",
+        "outbound_transportation: Moab to Denver on 2022-03-19",
+        "intercity_transportation: Denver to Gunnison on 2022-03-21 and Gunnison to Moab on 2022-03-23"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "Both gold constraints are recognized at the correct tier, but the return leg is unresolved and budget compliance cannot be confirmed."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The $3,100 budget is predicted and the selected items' listed costs are within it."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction requires Denver and Gunnison, while the user wants Denver only; the itinerary also stays in Gunnison before the requested homeward pass-through."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted apartment preference matches the Denver entire-home/apartment selection."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction captures the 4+ rating requirement, and the Denver accommodation is rated 4."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving matches using the user's own car, and the itinerary specifies self-driving."
+        },
+        {
+          "gold_field": "launch at Gunnison",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The itinerary drives from Gunnison toward Moab on March 23."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "required_cities: Denver and Gunnison as destinations",
+        "accommodation_stay: Gunnison on 2022-03-23"
+      ],
+      "priority_order_score": 0.8333,
+      "no_match_appropriate": false,
+      "summary": "Most intentions are captured, but the itinerary adds a Gunnison stay despite the user's Denver-only preference."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The $3,100 ceiling is predicted and the listed selected costs are within it."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The two-city sequence matches Denver and Gunnison in the itinerary."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "No room type is predicted, and the selected Gunnison accommodation is a private room rather than an entire home/apartment."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction captures 4+, and both selected accommodations have rating 4."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving is predicted and used for the intercity legs."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction specifies two days per city, matching the March 19–20 and March 21–22 itinerary."
+        }
+      ],
+      "predicted_extra_constraints": [],
+      "priority_order_score": 0.75,
+      "no_match_appropriate": false,
+      "summary": "The itinerary matches the city schedule and transport, but Gunnison's selected lodging violates the required apartment type; the rating tier is predicted too high."
+    }
+  },
+  "pass_a_pool": {
+    "0": {
+      "turn_id": 0,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The $3,100 ceiling is recognized, and the itinerary states it is within budget."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted Denver and Gunnison destinations represent two cities, and both appear in the itinerary."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "days: 5",
+        "outbound_transportation: Moab to Denver on 2022-03-19",
+        "intercity_transportation: Denver to Gunnison and Gunnison to Moab on specified dates"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "Both gold constraints are correctly understood and the plan meets them, though the return leg is incomplete."
+    },
+    "1": {
+      "turn_id": 1,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The $3,100 budget is retained, and the plan states it fits within budget."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction requires Denver and Gunnison; the itinerary also stays and schedules activities in Gunnison, rather than visiting only Denver."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The apartment preference corresponds to entire home/apartment, and Harlem cozy nights is listed as that type."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The 4+ rating requirement is captured and Harlem cozy nights has rating 4."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving represents using the user's own car, and the itinerary uses self-driving."
+        },
+        {
+          "gold_field": "launch at Gunnison",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The prediction includes launching at Gunnison, and the return trip to Moab departs from Gunnison."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "accommodation_stay: Denver 2022-03-19 to 2022-03-22 and Gunnison 2022-03-23"
+      ],
+      "priority_order_score": 1.0,
+      "no_match_appropriate": false,
+      "summary": "The accommodation, car, budget, and Gunnison departure preferences are captured, but the plan visits and stays in Gunnison despite the one-city request."
+    },
+    "2": {
+      "turn_id": 2,
+      "constraint_judgments": [
+        {
+          "gold_field": "budget",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The $3,100 ceiling is retained, and the itinerary states it respects the budget."
+        },
+        {
+          "gold_field": "visiting_city_number",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Denver and Gunnison are the two planned cities."
+        },
+        {
+          "gold_field": "room_type",
+          "recognized": false,
+          "value_match": false,
+          "action_status": "violated",
+          "note": "The prediction does not specify entire home/apartment, and the Gunnison lodging is a private room."
+        },
+        {
+          "gold_field": "accommodation_rating",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "The predicted rating threshold is 4, and both selected accommodations have rating 4."
+        },
+        {
+          "gold_field": "transportation",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Self-driving matches the own-car requirement and is used for the route."
+        },
+        {
+          "gold_field": "schedule",
+          "recognized": true,
+          "value_match": true,
+          "action_status": "satisfied",
+          "note": "Two nights are scheduled in Denver and two in Gunnison."
+        }
+      ],
+      "predicted_extra_constraints": [
+        "launch at Gunnison: true"
+      ],
+      "priority_order_score": 0.75,
+      "no_match_appropriate": false,
+      "summary": "The itinerary meets the city count, schedule, transportation, budget, and rating requirements, but Gunnison lodging is not an entire apartment."
+    }
+  }
+}

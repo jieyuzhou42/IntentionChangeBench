@@ -1,0 +1,193 @@
+{
+  "model": "gpt-5.6-luna",
+  "shard": "shard3",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 6,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 23625,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3879164: Houston 09:50 to Reno 12:04, $688",
+        "record_name": "F3879164",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Gopal's Restaurant & Caterer's — average cost $56",
+        "record_name": "Gopal's Restaurant & Caterer's",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Gopal's Restaurant & Caterer's — average cost $56",
+        "record_name": "Gopal's Restaurant & Caterer's",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Gopal's Restaurant & Caterer's — average cost $56",
+        "record_name": "Gopal's Restaurant & Caterer's",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse — entire home/apt, $361 per night",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Olive Bistro — average cost $66",
+        "record_name": "Olive Bistro",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Queens Cakes — average cost $58",
+        "record_name": "Queens Cakes",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Gopal's Restaurant & Caterer's — average cost $56",
+        "record_name": "Gopal's Restaurant & Caterer's",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "A bright, beautiful treehouse — entire home/apt, $361 per night",
+        "record_name": "A bright, beautiful treehouse",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Flight F3875705: Reno 12:58 to Houston 18:31, $446",
+        "record_name": "F3875705",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Gopal's Restaurant & Caterer's — average cost $56",
+        "record_name": "Gopal's Restaurant & Caterer's",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Queens Cakes — average cost $58",
+        "record_name": "Queens Cakes",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary has entries for March 11, 12, and 13, 2022.",
+        "note": "It covers three itinerary days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked accommodation has maximum occupancy 2.",
+        "note": "Its capacity covers one traveler, and the plan does not assume a different party size."
+      },
+      {
+        "gold_field": "org",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 departs Houston; flight F3875705 returns to Houston.",
+        "note": "The trip originates in Houston."
+      },
+      {
+        "gold_field": "dest",
+        "action_status": "satisfied",
+        "evidence": "Flight F3879164 arrives in Reno; flight F3875705 departs Reno.",
+        "note": "Reno is the destination."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists Reno as the current city for all three days.",
+        "note": "The itinerary visits one destination city."
+      },
+      {
+        "gold_field": "start_date",
+        "action_status": "satisfied",
+        "evidence": "The outbound flight record is dated 2022-03-11.",
+        "note": "The itinerary starts on the requested date."
+      },
+      {
+        "gold_field": "end_date",
+        "action_status": "satisfied",
+        "evidence": "The return flight record is dated 2022-03-13.",
+        "note": "The itinerary ends on the requested date."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3879164 is Houston to Reno on 2022-03-11 with DepTime 09:50.",
+        "note": "The listed flight matches the requested outbound flight."
+      },
+      {
+        "gold_field": "return_transportation",
+        "action_status": "satisfied",
+        "evidence": "F3875705 is Reno to Houston on 2022-03-13 with DepTime 12:58.",
+        "note": "The listed flight matches the requested return flight."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "action_status": "satisfied",
+        "evidence": "A bright, beautiful treehouse is booked on March 11 and March 12; its minimum stay is 2 nights.",
+        "note": "The plan books the requested two nights."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "action_status": "violated",
+        "evidence": "Gopal's Restaurant & Caterer's is rated 2.7, Olive Bistro 3.9, and Queens Cakes 3.5.",
+        "note": "Restaurant meals in the plan include ratings below 4.0."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "satisfied",
+        "evidence": "The planned restaurants' cuisine records are: Gopal's (French, Bakery, Pizza, Seafood), Olive Bistro (Tea, Cafe, Pizza, BBQ), and Queens Cakes (Bakery, Desserts, Indian, BBQ). None includes Fast Food.",
+        "note": "No planned Reno restaurant meal carries a Fast Food tag."
+      },
+      {
+        "gold_field": "dining_variety",
+        "action_status": "satisfied",
+        "evidence": "On March 12, breakfast is Olive Bistro, lunch is Queens Cakes, and dinner is Gopal's Restaurant & Caterer's.",
+        "note": "The three meals are at three different restaurants."
+      },
+      {
+        "gold_field": "meal_cost",
+        "action_status": "satisfied",
+        "evidence": "The records list average costs of $56 for Gopal's, $66 for Olive Bistro, and $58 for Queens Cakes.",
+        "note": "Every planned restaurant meal is under $70 per person."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "restaurant_rating",
+        "quote": "No available restaurant satisfies both the 4.0 minimum rating and the Fast Food exclusion, so the rating requirement is sacrificed."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

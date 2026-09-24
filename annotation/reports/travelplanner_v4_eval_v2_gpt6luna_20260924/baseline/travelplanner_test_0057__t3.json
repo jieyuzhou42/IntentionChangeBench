@@ -1,0 +1,219 @@
+{
+  "stage": "baseline",
+  "instance_id": "travelplanner_test_0057",
+  "turn_id": 3,
+  "has_gold_plan": true,
+  "gold_plan_code": {
+    "budget": {
+      "status": "satisfied",
+      "total": 2024.0,
+      "budget": 2200,
+      "unpriced": [
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending",
+        "breakfast: unknown: travel-day meal on the road; venue and cost pending",
+        "lunch: unknown: travel-day meal on the road; venue and cost pending",
+        "dinner: unknown: travel-day meal on the road; venue and cost pending"
+      ],
+      "coverage_gaps": []
+    },
+    "hotel": {
+      "valid": true,
+      "minimum_nights": [],
+      "capacity": []
+    }
+  },
+  "audit_applied": [],
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 19253,
+  "judge": {
+    "gold_atoms": [
+      {
+        "atom_id": "g1",
+        "source_field": "budget",
+        "value": "Budget is $2,200."
+      },
+      {
+        "atom_id": "g2",
+        "source_field": "days",
+        "value": "The itinerary is 3 days."
+      },
+      {
+        "atom_id": "g3",
+        "source_field": "people_number",
+        "value": "The trip is for 1 person."
+      },
+      {
+        "atom_id": "g4",
+        "source_field": "org",
+        "value": "The trip originates in Houston."
+      },
+      {
+        "atom_id": "g5",
+        "source_field": "dest",
+        "value": "The destination is Reno."
+      },
+      {
+        "atom_id": "g6",
+        "source_field": "visiting_city_number",
+        "value": "Visit 1 city."
+      },
+      {
+        "atom_id": "g7",
+        "source_field": "start_date",
+        "value": "The trip starts on 2022-03-11."
+      },
+      {
+        "atom_id": "g8",
+        "source_field": "end_date",
+        "value": "The trip ends on 2022-03-13."
+      },
+      {
+        "atom_id": "g9",
+        "source_field": "outbound_transportation",
+        "value": "The outbound flight is from Houston to Reno."
+      },
+      {
+        "atom_id": "g10",
+        "source_field": "outbound_transportation",
+        "value": "The outbound flight is on 2022-03-11."
+      },
+      {
+        "atom_id": "g11",
+        "source_field": "outbound_transportation",
+        "value": "The outbound flight departs at 09:50."
+      },
+      {
+        "atom_id": "g12",
+        "source_field": "return_transportation",
+        "value": "The return flight is from Reno to Houston."
+      },
+      {
+        "atom_id": "g13",
+        "source_field": "return_transportation",
+        "value": "The return flight is on 2022-03-13."
+      },
+      {
+        "atom_id": "g14",
+        "source_field": "return_transportation",
+        "value": "The return flight departs at 12:58."
+      },
+      {
+        "atom_id": "g15",
+        "source_field": "accommodation_stay",
+        "value": "The stay is 2 nights."
+      },
+      {
+        "atom_id": "g16",
+        "source_field": "accommodation_stay",
+        "value": "One night is 2022-03-11."
+      },
+      {
+        "atom_id": "g17",
+        "source_field": "accommodation_stay",
+        "value": "One night is 2022-03-12."
+      },
+      {
+        "atom_id": "g18",
+        "source_field": "restaurant_rating",
+        "value": "Reno meals must have a restaurant rating of at least 4."
+      },
+      {
+        "atom_id": "g19",
+        "source_field": "dining_style",
+        "value": "No Reno meal may have a Fast Food tag in Cuisines."
+      }
+    ],
+    "activity_requirements": [
+      {
+        "kind": "include",
+        "date": null,
+        "requirement": "Create a 3-day travel itinerary from Houston to Reno covering 2022-03-11 through 2022-03-13.",
+        "source_turn": 0,
+        "quote": "a 3-day travel itinerary ... departing from Houston and heading to Reno from March 11th to March 13th, 2022"
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-11",
+        "requirement": "Keep the 09:50 outbound flight from Houston to Reno.",
+        "source_turn": 1,
+        "quote": "Those are the only flights either way, so keep them."
+      },
+      {
+        "kind": "include",
+        "date": "2022-03-13",
+        "requirement": "Keep the 12:58 return flight from Reno to Houston.",
+        "source_turn": 1,
+        "quote": "Those are the only flights either way, so keep them."
+      }
+    ],
+    "out_of_scope": [],
+    "gold_plan_judgments": [
+      {
+        "gold_field": "days",
+        "status": "satisfied",
+        "evidence": "The reference plan has itinerary entries for 2022-03-11, 2022-03-12, and 2022-03-13."
+      },
+      {
+        "gold_field": "people_number",
+        "status": "satisfied",
+        "evidence": "The flights are priced for one person, and the booked accommodation has maximum occupancy 2; the plan assumes one traveler."
+      },
+      {
+        "gold_field": "org",
+        "status": "satisfied",
+        "evidence": "The outbound flight is from Houston."
+      },
+      {
+        "gold_field": "dest",
+        "status": "satisfied",
+        "evidence": "The trip travels to Reno, with a return from Reno."
+      },
+      {
+        "gold_field": "visiting_city_number",
+        "status": "satisfied",
+        "evidence": "Reno is the only destination city shown in the itinerary."
+      },
+      {
+        "gold_field": "start_date",
+        "status": "satisfied",
+        "evidence": "The first itinerary day and outbound flight are dated 2022-03-11."
+      },
+      {
+        "gold_field": "end_date",
+        "status": "satisfied",
+        "evidence": "The final itinerary day and return flight are dated 2022-03-13."
+      },
+      {
+        "gold_field": "outbound_transportation",
+        "status": "satisfied",
+        "evidence": "The plan names flight F3879164 from Houston to Reno on 2022-03-11, departing at 09:50."
+      },
+      {
+        "gold_field": "return_transportation",
+        "status": "satisfied",
+        "evidence": "The plan names flight F3875705 from Reno to Houston on 2022-03-13, departing at 12:58."
+      },
+      {
+        "gold_field": "accommodation_stay",
+        "status": "satisfied",
+        "evidence": "The accommodation is booked for check-in 2022-03-11 and check-out 2022-03-13, covering the nights of March 11 and 12."
+      },
+      {
+        "gold_field": "restaurant_rating",
+        "status": "violated",
+        "evidence": "Gopal's Restaurant & Caterer's is listed for all three meals on 2022-03-12 and has an Aggregate Rating of 2.7, below 4."
+      },
+      {
+        "gold_field": "dining_style",
+        "status": "unknown",
+        "evidence": "Gopal's Restaurant & Caterer's has no Fast Food tag, but the travel-day Reno meal venues are unspecified, so their cuisine tags cannot be checked."
+      }
+    ],
+    "annotation_issues": []
+  },
+  "out_of_scope_fields": []
+}

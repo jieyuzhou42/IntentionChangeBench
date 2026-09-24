@@ -1,0 +1,185 @@
+{
+  "model": "claude-sonnet-5",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 30226,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Self-driving from Moab to Denver (cost 28)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "The Fatty Bao - Asian Gastro Bar",
+        "record_name": "The Fatty Bao - Asian Gastro Bar",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away (Entire home/apt, Denver)",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Woods Spice",
+        "record_name": "Woods Spice",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "The Urban Socialite",
+        "record_name": "The Urban Socialite",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Al Yousuf",
+        "record_name": "Al Yousuf",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Peaceful, beautiful home away (Entire home/apt, Denver)",
+        "record_name": "Peaceful, beautiful home away ",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Self-driving from Denver to Gunnison (cost 16)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Nathu's Sweets",
+        "record_name": "Nathu's Sweets",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "SALT",
+        "record_name": "SALT",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "Mocha",
+        "record_name": "Mocha",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village (Private room, Gunnison)",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "breakfast",
+        "text": "Shree Bikaner Misthan Bhandar",
+        "record_name": "Shree Bikaner Misthan Bhandar",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "lunch",
+        "text": "Happy Joe's Pizza & Ice Cream",
+        "record_name": "Happy Joe's Pizza & Ice Cream",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "dinner",
+        "text": "Paradise Inn",
+        "record_name": "Paradise Inn",
+        "revised": false
+      },
+      {
+        "day": 4,
+        "slot": "accommodation",
+        "text": "Full-size loft bed in East Village (Private room, Gunnison)",
+        "record_name": "Full-size loft bed in East Village",
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "transportation",
+        "text": "Self-driving from Gunnison to Moab (cost 19)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 5,
+        "slot": "breakfast",
+        "text": "Tughlaq",
+        "record_name": "Tughlaq",
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "visiting_city_number",
+        "action_status": "satisfied",
+        "evidence": "The itinerary visits Denver on 2022-03-19 and 2022-03-20, and Gunnison on 2022-03-21 and 2022-03-22.",
+        "note": "It includes the two requested cities."
+      },
+      {
+        "gold_field": "room_type",
+        "action_status": "violated",
+        "evidence": "Denver lodging, Peaceful, beautiful home away, is Entire home/apt; Gunnison lodging, Full-size loft bed in East Village, is Private room.",
+        "note": "The requested apartment type is not met for the Gunnison stay."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "action_status": "violated",
+        "evidence": "Peaceful, beautiful home away has review rate number 1; Full-size loft bed in East Village has review rate number 4.",
+        "note": "The Denver accommodation is below the 4+ rating floor."
+      },
+      {
+        "gold_field": "transportation",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists self-driving from Moab to Denver, Denver to Gunnison, and Gunnison to Moab; the user specified taking their own car.",
+        "note": "All listed travel legs use self-driving."
+      },
+      {
+        "gold_field": "schedule",
+        "action_status": "violated",
+        "evidence": "The plan assigns two days to Denver and two days to Gunnison, but schedules Gunnison Pioneer Museum on 2022-03-21, when the activity requirements say to protect travel and rest time and not schedule main sightseeing.",
+        "note": "The city-day allocation is met, but the planned sightseeing conflicts with the required free/travel day."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "room_type",
+        "quote": "Gunnison uses 'Full-size loft bed in East Village' (rating 4, min-nights 1, but room type is Private room, not an apartment — the apartment-type requirement is sacrificed here to preserve the 4+ rating, since the only entire-home/apt in Gunnison requires a 4-night minimum)."
+      },
+      {
+        "gold_field": "accommodation_rating",
+        "quote": "Denver uses 'Peaceful, beautiful home away' (Entire home/apt, min-nights 2, but rating 1 — the rating requirement is sacrificed here since no min≤2 apartment reaches rating 4+)."
+      }
+    ],
+    "annotation_issues": []
+  }
+}

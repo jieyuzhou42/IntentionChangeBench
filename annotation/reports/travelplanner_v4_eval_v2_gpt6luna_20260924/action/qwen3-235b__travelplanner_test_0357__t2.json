@@ -1,0 +1,161 @@
+{
+  "model": "qwen3-235b",
+  "shard": "shard1",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 2,
+  "stage": "action",
+  "judge_model": "openai/gpt-6-luna",
+  "rules_version": "travelplanner-rules-v2.1",
+  "attempts": 1,
+  "prompt_chars": 22072,
+  "judge": {
+    "final_plan": [
+      {
+        "day": 1,
+        "slot": "transportation",
+        "text": "Flight F3754877 from Buffalo to Boston ($136 × 4 = $544), rideshare to hotel",
+        "record_name": "F3754877",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "breakfast",
+        "text": "Self-catered on flight",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "lunch",
+        "text": "Irish Democrat (rated 4.4, Tea/Cafe, $18 avg)",
+        "record_name": "Irish Democrat",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "dinner",
+        "text": "Club Cubana (rated 4.4, Indian/Mediterranean BBQ, $65 avg)",
+        "record_name": "Club Cubana",
+        "revised": false
+      },
+      {
+        "day": 1,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! - not in Boston; no valid accommodation found",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "transportation",
+        "text": "Rideshare for local travel",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "breakfast",
+        "text": "Cafe pickup (e.g., Bakery Fast Food, low-cost)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "lunch",
+        "text": "Red Mesa Restaurant (rated 4.5, Indian/Seafood, $65 avg)",
+        "record_name": "Red Mesa Restaurant",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "dinner",
+        "text": "Apni Rasoi (simple American/Fast Food, $28 avg)",
+        "record_name": "Apni Rasoi",
+        "revised": false
+      },
+      {
+        "day": 2,
+        "slot": "accommodation",
+        "text": "Delight in Your Home Away from Home in NYC! - not in Boston; no valid accommodation found",
+        "record_name": "Delight in Your Home Away from Home in NYC!",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "transportation",
+        "text": "Rideshare to airport, Flight F3757097 to Buffalo ($169 × 4 = $676)",
+        "record_name": "F3757097",
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "breakfast",
+        "text": "Simple cafe or bakery item (e.g., $10 budget)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "lunch",
+        "text": "Packed food or fast food (simple, low-cost)",
+        "record_name": null,
+        "revised": false
+      },
+      {
+        "day": 3,
+        "slot": "dinner",
+        "text": "On flight or after return to Buffalo (no city dining)",
+        "record_name": null,
+        "revised": false
+      }
+    ],
+    "applied_revisions": [],
+    "constraint_judgments": [
+      {
+        "gold_field": "days",
+        "action_status": "satisfied",
+        "evidence": "The itinerary lists March 4, March 5, and March 6, 2022.",
+        "note": "The plan covers three days."
+      },
+      {
+        "gold_field": "people_number",
+        "action_status": "satisfied",
+        "evidence": "The booked listing record, Delight in Your Home Away from Home in NYC!, has maximum occupancy 5.",
+        "note": "The same listing is booked for both nights and can host 4 travelers; the record supports the capacity, despite the rationale's contrary claim."
+      },
+      {
+        "gold_field": "activity",
+        "action_status": "violated",
+        "evidence": "The plan lists one attraction on each day, within the two-attraction daily limit, but does not schedule regular seated breaks.",
+        "note": "The attraction limit is respected, but the baseline activity requirements also call for regular seated breaks, which are absent from the plan."
+      },
+      {
+        "gold_field": "dining_style",
+        "action_status": "violated",
+        "evidence": "Irish Democrat is rated 4.4, Club Cubana 4.4, and Red Mesa Restaurant 4.5; March 6 lists packed/fast food for lunch and no city dining for dinner.",
+        "note": "No restaurant meal rated at least 4.0 is planned for the third day, so the daily requirement is not met."
+      },
+      {
+        "gold_field": "dining_style 2",
+        "action_status": "satisfied",
+        "evidence": "The non-featured restaurant meals can be Irish Democrat at Average Cost 18 and Apni Rasoi at Average Cost 28; March 6 specifies simple, low-cost packed or fast food.",
+        "note": "The plan provides lower-cost simple food alongside the higher-rated restaurant meals."
+      },
+      {
+        "gold_field": "cuisine",
+        "action_status": "satisfied",
+        "evidence": "The latest user instruction says to prioritize well-reviewed restaurants over French and American variety and to choose any cuisine.",
+        "note": "The earlier cuisine preference was explicitly superseded by the latest instruction."
+      }
+    ],
+    "unmet_constraint_disclosures": [
+      {
+        "gold_field": "people_number",
+        "quote": "Unmet: accommodation location, group capacity, and minimum stay."
+      }
+    ],
+    "annotation_issues": [
+      "Accommodation candidate records queried for Boston have names referring to NYC locations, and the itinerary itself calls the selected listing not in Boston, while the candidate record's city field says Boston. This creates conflicting location evidence."
+    ]
+  }
+}
