@@ -1,0 +1,154 @@
+You audit ONE turn of ONE agent's travel plan against a frozen baseline. You do
+not see the agent's intent prediction; judge only the plan.
+
+1. Final plan. Start from the itinerary as written. Apply only explicit final
+   revisions stated in the action (for example "replace X with Y", "switch the
+   Day 2 hotel to Z"); record each in `applied_revisions` with its quote. Judge
+   the revised plan as one whole: anything that conflicts with the final
+   revision is judged on the final version. Mark every final_plan slot a
+   revision changed with "revised": true.
+2. Record mapping. For every non-empty transportation, meal and accommodation
+   slot of the final plan, give `record_name`: the exact restaurant or listing
+   name, or the flight number, from the candidate records; null when nothing
+   matches. Code pre-matched names are supplied; keep them unless a revision
+   changes the slot or the pre-match is clearly wrong. A slot may name several
+   listings (a group split across rooms); join their exact names with " + ".
+3. Facts come from the candidate records. Take prices, ratings, room types,
+   house rules, minimum nights, maximum occupancy, cuisines and flight times
+   from the records, never from the agent's wording or rationale. An entity
+   absent from the records cannot satisfy a constraint that depends on its
+   attributes: that constraint is violated, not unknown.
+4. Gold is the requirement. Judge each in-scope gold constraint's current value
+   and scope as written. Use the dialogue and the baseline's activity
+   requirements only to interpret scope (which day, city, traveler, meal); do
+   not drop, add or relax requirements on your own reading. Per-city values
+   such as {"Denver": 4} apply only to that city.
+5. Activities. Judge activity, day and schedule constraints against the
+   baseline's activity requirements. Attractions and meals carry no clock times
+   in this format: judge day placement and listed order, never answer unknown
+   only because times are absent. Flight times are verifiable from the records.
+6. people_number. Satisfied when the listings booked for every night together
+   host that many travelers (sum of maximum occupancy) and nothing in the plan
+   assumes another party size; violated when capacity falls short or the plan
+   is built for another party size. Never unknown merely because the plan does
+   not restate the head count.
+7. Hotels. Judge room type, rating and house-rule constraints on the booked
+   listing's own attributes, per city. Judge stay constraints (such as
+   accommodation_stay) by the nights actually booked, one night per itinerary
+   day with accommodation (the departure day needs none), against the requested
+   dates, whatever the text claims. Minimum nights and maximum occupancy are a
+   separate gate enforced by code; they do not change the verdict of any other
+   constraint.
+8. House rules. house_rules lists prohibitions. A requirement to allow an
+   activity (parties, pets, smoking, visitors, children under 10) is violated
+   only if the listing says "No <activity>". A requirement phrased "No <X>"
+   needs the listing to prohibit X.
+9. Meals. Meal-level constraints (restaurant rating, meal cost, cuisine,
+   dining style, variety) apply to restaurant meals taken from the records,
+   using Average Cost per person and Aggregate Rating. Self-catered, packed or
+   empty slots are not evidence for or against them, unless the constraint
+   itself requires a restaurant meal in that slot.
+10. Budget is priced by code; do not judge it.
+11. unknown is a last resort: only when the records genuinely lack the
+    attribute that decides the constraint.
+12. Disclosures. In `unmet_constraint_disclosures`, list every gold field that
+    the action explicitly tells the user is not met (naming the requirement or
+    its value), with the quote. Vague trade-off language does not count.
+    Disclosure never changes action_status.
+13. Annotation issues. Report data problems that prevent a fair audit, such as
+    an empty candidate pool.
+
+WORKED EXAMPLES (excerpts from other trips; apply the reasoning, not the facts):
+- Lesson: Itineraries rarely restate the head count; judge people_number from the booked listings' capacity.
+  Constraint: people_number = 1 (must_have)
+  Evidence: Only listing: Upper East Side Space and Access!! (maximum occupancy 2). Nothing in the plan assumes another party size.
+  Correct: {"gold_field": "people_number", "action_status": "satisfied"}
+- Lesson: A night whose listing cannot host every traveler violates people_number.
+  Constraint: people_number = 2 (must_have)
+  Evidence: Wilmington: Brooklyn Bedroom - Warm & Cozy Near Subway (1), maximum occupancy 1, for 2 travelers.
+  Correct: {"gold_field": "people_number", "action_status": "violated"}
+- Lesson: A group may be split across several listings on the same night; add their capacities.
+  Constraint: people_number = 4 (must_have)
+  Evidence: Each night: 'Travelers 1-3: Sunlight + Space on Eastern Parkway (occupancy 3); Traveler 4: Luxury apartment in New York City'. Combined capacity covers 4.
+  Correct: {"gold_field": "people_number", "action_status": "satisfied"}
+- Lesson: Self-catered or empty meal slots are not evidence against a restaurant-rating floor.
+  Constraint: restaurant_rating = 4 (must_have)
+  Evidence: Every restaurant meal is Cho Gao (Aggregate Rating 4.4); remaining slots are 'Self-catering at accommodation' or '-'.
+  Correct: {"gold_field": "restaurant_rating", "action_status": "satisfied"}
+- Lesson: Per-meal cost caps apply to restaurant meals from the records; self-catered slots do not count.
+  Constraint: meal_cost = 70 (must_have)
+  Evidence: Restaurant meals: Tucanos $36, Tucanos $36, Raj Restaurant $61 (Average Cost per person). Other slots are packed / self-catering.
+  Correct: {"gold_field": "meal_cost", "action_status": "satisfied"}
+- Lesson: Read the constraint's scope from the dialogue: here the rating floor covers one sit-down meal per day.
+  Constraint: restaurant_rating = 4 (must_have)
+  Evidence: U2: 'one sit-down meal rated at least 4.0 each day and simple, inexpensive food otherwise'. Daily lunch Irish Democrat (4.4); dinners Bablu Chinese Food (rating 0.0) as the inexpensive meal.
+  Correct: {"gold_field": "restaurant_rating", "action_status": "satisfied"}
+- Lesson: house_rules lists prohibitions: parties are allowed unless the listing says 'No parties'.
+  Constraint: house_rule = "parties" (must_have)
+  Evidence: Both listings' house_rules: 'No visitors'. Neither says 'No parties'.
+  Correct: {"gold_field": "house_rule", "action_status": "satisfied"}
+- Lesson: Take house rules from the record, not the agent's claim; a 'No smoking' requirement needs the listing to prohibit smoking.
+  Constraint: house_rule = "No smoking" (must_have)
+  Evidence: Listing 'Steps away from the Heart of the Theater District!' house_rules: 'No children under 10' (no smoking ban). Rationale claims it 'meets ... a no-smoking policy'.
+  Correct: {"gold_field": "house_rule", "action_status": "violated"}
+- Lesson: Judge only this turn's itinerary; never borrow a listing chosen in another turn.
+  Constraint: room_type = "Entire home/apt" (must_have)
+  Evidence: Turn 2 books Huge Loft - Heart of Williamsburg (Entire home/apt). The 'Private Bedroom in Greenpoint' the judge cited appears only in turn 1.
+  Correct: {"gold_field": "room_type", "action_status": "satisfied"}
+- Lesson: Judge only this turn's itinerary; never borrow a listing chosen in another turn.
+  Constraint: room_type = "Entire home/apt" (must_have)
+  Evidence: Turn 2 books Perfect Luxury Studio in DUMBO (Entire home/apt). The private room the judge cited is turn 1's 'Room in Down town Brooklyn Parkslop'.
+  Correct: {"gold_field": "room_type", "action_status": "satisfied"}
+- Lesson: Count the nights actually booked, whatever the text claims: one listed night fails a two-night stay requirement.
+  Constraint: accommodation_stay = "2 nights 2022-03-27 and 2022-03-28" (must_have)
+  Evidence: Accommodation only on 2022-03-28 (Mar 27 is '-'); listing minimum nights 2.
+  Correct: {"gold_field": "accommodation_stay", "action_status": "violated"}
+- Lesson: The format has no clock times; the requested day and listed order are the evidence for an order requirement.
+  Constraint: activity = "Optional Erie Canal Museum in the morning and Rosamond Gifford Zoo later on 2022-03-24" (optional)
+  Evidence: 2022-03-24 attractions: 'Erie Canal Museum, Rosamond Gifford Zoo' (requested day, requested order).
+  Correct: {"gold_field": "activity", "action_status": "satisfied"}
+- Lesson: An entity absent from the records cannot satisfy an attribute constraint; also report an empty candidate pool as an annotation issue.
+  Constraint: accommodation_rating = 5 (preferred)
+  Evidence: Gold turn 3 has no env_feedback search results, so the agent saw an empty pool (rationale: 'No fixed_search_results were supplied') and invented 'Hilton Cleveland Downtown'.
+  Correct: {"gold_field": "accommodation_rating", "action_status": "violated"}
+
+Return exactly one JSON object:
+{
+  "final_plan": [
+    {
+      "day": 1,
+      "slot": "transportation | breakfast | lunch | dinner | accommodation",
+      "text": "final slot text",
+      "record_name": "exact record name(s) or flight number, or null",
+      "revised": false
+    }
+  ],
+  "applied_revisions": [
+    {
+      "quote": "...",
+      "effect": "..."
+    }
+  ],
+  "constraint_judgments": [
+    {
+      "gold_field": "exact gold field",
+      "action_status": "satisfied | violated | unknown",
+      "evidence": "record fact or quote",
+      "note": "brief reason"
+    }
+  ],
+  "unmet_constraint_disclosures": [
+    {
+      "gold_field": "exact gold field",
+      "quote": "..."
+    }
+  ],
+  "annotation_issues": [
+    "..."
+  ]
+}
+
+Judge every field listed in fields_to_judge exactly once.
+
+PAYLOAD:
+{"turn_id": 1, "dialogue_so_far": [{"turn": 0, "user": "I'd like a solo trip from Moab to two Colorado cities, March 19-23, 2022, on $3,100."}, {"turn": 1, "user": "I'd rather just do Denver for now: an apartment rated 4+, just March 19-22. I'll take my own car, passing through Gunnison on the way home on the 23rd. launch there."}], "fields_to_judge": [{"field": "visiting_city_number", "value": 1, "tier": "must_have"}, {"field": "room_type", "value": {"Denver": "Entire home/apt"}, "tier": "must_have"}, {"field": "accommodation_rating", "value": {"Denver": 4}, "tier": "must_have"}, {"field": "transportation", "value": "Own car ", "tier": "must_have"}, {"field": "launch at Gunnison", "value": true, "tier": "must_have"}], "activity_requirements": [{"kind": "include", "date": "2022-03-23", "requirement": "Pass through Gunnison on the way home.", "source_turn": 1, "quote": "passing through Gunnison on the way home on the 23rd"}, {"kind": "exclude", "date": "2022-03-23", "requirement": "Do not schedule sightseeing in Gunnison; it is only a road connection that day.", "source_turn": 1, "quote": "Gunnison is only a road connection that day, with no overnight or sightseeing visit."}], "agent_action": {"itinerary": [{"day": "2022-03-19", "current_city": "Moab to Denver", "transportation": "Self-driving, Moab to Denver, ~5h23m, cost $28", "breakfast": "-", "lunch": "-", "dinner": "The Urban Socialite (Denver, Cafe/Indian/Desserts/Italian, $34)", "attraction": "-", "accommodation": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast, Denver (Entire home/apt, min 3 nights, rating 2, $390/night)"}, {"day": "2022-03-20", "current_city": "Denver", "transportation": "-", "breakfast": "Nathu's Sweets ($12)", "lunch": "Woods Spice ($69)", "dinner": "Al Yousuf ($32)", "attraction": "Denver Art Museum", "accommodation": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast, Denver"}, {"day": "2022-03-21", "current_city": "Denver", "transportation": "-", "breakfast": "Sweet Sensations ($14)", "lunch": "Starve Stalkers ($31)", "dinner": "Nukkadwala ($31)", "attraction": "Denver Zoo", "accommodation": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast, Denver"}, {"day": "2022-03-22", "current_city": "Denver to Gunnison", "transportation": "Self-driving, Denver to Gunnison, ~3h39m, cost $16", "breakfast": "Yakooz (Denver, $52)", "lunch": "Packed food (self-catering, en route)", "dinner": "Mocha (Gunnison, Tea/Cafe/Pizza/BBQ, $30)", "attraction": "I.O.O.F. Park (Gunnison)", "accommodation": "Full-size loft bed in East Village, Gunnison (Private room, min 1 night, rating 4, $104/night)"}, {"day": "2022-03-23", "current_city": "Gunnison to Moab", "transportation": "Self-driving, Gunnison to Moab, ~4h1m, cost $19", "breakfast": "Shree Meenakshi Dosai (Gunnison, $12)", "lunch": "Packed food (self-catering, en route)", "dinner": "-", "attraction": "-", "accommodation": "-"}], "rationale": "The plan honors the solo traveler's route (Moab→Denver→Gunnison→Moab, all self-driving) and the exact Denver stay window (3/19–3/22). No Denver 'Entire home/apt' option both meets the 4+ rating and the required 3-night stay: the only rating-4 apartment (Harlem cozy nights) requires a 4-night minimum, which would force extending the Denver stay beyond 3/22 and disrupt the requested Gunnison departure on 3/23. To preserve the explicit date/schedule requirement and 'own car' routing (both stated firmly and tied to the trip structure), the apartment rating requirement is sacrificed: the Denver lodging chosen (Luxury Studio Suite, rating 2) satisfies room type and the 3-night stay instead. Gunnison lodging (Full-size loft bed, rating 4) incidentally meets a 4+ rating. All transportation is self-driving per the user's stated preference, and Gunnison is used as the through-point on 3/23 before returning to Moab, consistent with 'launch there.' Total estimated cost (~$1674) is well within the $3100 budget."}, "code_matches": [{"day": 1, "slot": "transportation", "record_name": null}, {"day": 1, "slot": "dinner", "record_name": "The Urban Socialite"}, {"day": 1, "slot": "accommodation", "record_name": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast"}, {"day": 2, "slot": "breakfast", "record_name": "Nathu's Sweets"}, {"day": 2, "slot": "lunch", "record_name": "Woods Spice"}, {"day": 2, "slot": "dinner", "record_name": "Al Yousuf"}, {"day": 2, "slot": "accommodation", "record_name": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast"}, {"day": 3, "slot": "breakfast", "record_name": "Sweet Sensations"}, {"day": 3, "slot": "lunch", "record_name": "Starve Stalkers"}, {"day": 3, "slot": "dinner", "record_name": "Nukkadwala"}, {"day": 3, "slot": "accommodation", "record_name": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast"}, {"day": 4, "slot": "transportation", "record_name": null}, {"day": 4, "slot": "breakfast", "record_name": "Yakooz"}, {"day": 4, "slot": "lunch", "record_name": null}, {"day": 4, "slot": "dinner", "record_name": "Mocha"}, {"day": 4, "slot": "accommodation", "record_name": "Full-size loft bed in East Village"}, {"day": 5, "slot": "transportation", "record_name": null}, {"day": 5, "slot": "breakfast", "record_name": "Shree Meenakshi Dosai"}, {"day": 5, "slot": "lunch", "record_name": null}], "candidate_records": {"attractions": [{"query": "Attractions in Denver", "status": "results", "message": null, "items": [{"Name": "Denver Zoo", "Latitude": 39.74959609999999, "Longitude": -104.9508519, "Address": "2300 Steele St, Denver, CO 80205, USA", "Phone": "(720) 337-1400", "Website": "https://denverzoo.org/", "City": "Denver"}, {"Name": "Denver Botanic Gardens", "Latitude": 39.7320964, "Longitude": -104.9612839, "Address": "1007 York St, Denver, CO 80206, USA", "Phone": "(720) 865-3500", "Website": "https://www.botanicgardens.org/", "City": "Denver"}, {"Name": "Denver Art Museum", "Latitude": 39.73718780000001, "Longitude": -104.9893451, "Address": "100 W 14th Ave Pkwy, Denver, CO 80204, USA", "Phone": "(720) 865-5000", "Website": "https://denverartmuseum.org/", "City": "Denver"}, {"Name": "Denver Museum of Nature & Science", "Latitude": 39.74752609999999, "Longitude": -104.9428078, "Address": "2001 Colorado Blvd, Denver, CO 80205, USA", "Phone": "(303) 370-6000", "Website": "https://www.dmns.org/", "City": "Denver"}, {"Name": "Molly Brown House Museum", "Latitude": 39.7374933, "Longitude": -104.9807338, "Address": "1340 Pennsylvania St, Denver, CO 80203, USA", "Phone": "(303) 832-4092", "Website": "https://mollybrown.org/", "City": "Denver"}, {"Name": "Big Blue Bear", "Latitude": 39.7436238, "Longitude": -104.9952912, "Address": "750-776 14th St, Denver, CO 80202, USA", "Phone": "Unknown", "Website": "http://bluebearstudios.com/", "City": "Denver"}, {"Name": "Elitch Gardens", "Latitude": 39.750183, "Longitude": -105.0101417, "Address": "2000 Elitch Cir, Denver, CO 80204, USA", "Phone": "(303) 595-4386", "Website": "https://www.elitchgardens.com/", "City": "Denver"}, {"Name": "Clyfford Still Museum", "Latitude": 39.7363194, "Longitude": -104.9897917, "Address": "1250 Bannock St, Denver, CO 80204, USA", "Phone": "(720) 354-4880", "Website": "https://clyffordstillmuseum.org/", "City": "Denver"}, {"Name": "History Colorado Center", "Latitude": 39.73583740000001, "Longitude": -104.9871305, "Address": "1200 Broadway, Denver, CO 80203, USA", "Phone": "(303) 447-8679", "Website": "https://www.historycolorado.org/history-colorado-center?utm_source=GoogleBusinessListing", "City": "Denver"}, {"Name": "Historic Elitch Carousel Dome", "Latitude": 39.76859109999999, "Longitude": -105.0446649, "Address": "3775 Tennyson St, Denver, CO 80212, USA", "Phone": "Unknown", "Website": "Unknown", "City": "Denver"}, {"Name": "Beyond Light Show", "Latitude": 39.7091597, "Longitude": -104.9822776, "Address": "400 S Logan St, Denver, CO 80209, USA", "Phone": "Unknown", "Website": "http://www.beyondlightshow.com/", "City": "Denver"}, {"Name": "Colorado State Capitol", "Latitude": 39.73932509999999, "Longitude": -104.9848069, "Address": "200 E Colfax Ave, Denver, CO 80203, USA", "Phone": "(303) 866-2604", "Website": "https://www.colorado.gov/pacific/capitol", "City": "Denver"}]}, {"query": "Attractions in Gunnison", "status": "results", "message": null, "items": [{"Name": "I.O.O.F. Park", "Latitude": 38.5456696, "Longitude": -106.9265976, "Address": "124 E Virginia Ave, Gunnison, CO 81230, USA", "Phone": "(970) 641-8060", "Website": "Unknown", "City": "Gunnison"}, {"Name": "Jorgensen Park", "Latitude": 38.5424494, "Longitude": -106.9203665, "Address": "Gunnison, CO 81230, USA", "Phone": "(970) 641-8061", "Website": "https://www.gunnisonco.gov/jorgensen_park/index.php", "City": "Gunnison"}, {"Name": "Gunnison Pioneer Museum", "Latitude": 38.5439478, "Longitude": -106.9176763, "Address": "803 E Tomichi Ave, Gunnison, CO 81230, USA", "Phone": "(970) 641-4530", "Website": "http://www.gunnisonpioneermuseum.com/", "City": "Gunnison"}, {"Name": "Gunnison Valley Observatory", "Latitude": 38.50965559999999, "Longitude": -106.9402298, "Address": "2804 Co Rd 38, Gunnison, CO 81230, USA", "Phone": "(970) 642-1111", "Website": "http://gunnisonvalleyobservatory.com/", "City": "Gunnison"}, {"Name": "Hartman Rocks", "Latitude": 38.50053990000001, "Longitude": -106.9501448, "Address": "Gunnison, CO 81230, USA", "Phone": "(970) 642-4940", "Website": "https://www.blm.gov/mountainbike/colorado/hartmanrocks.html", "City": "Gunnison"}, {"Name": "Black Canyon of the Gunnison National Park", "Latitude": 38.5753936, "Longitude": -107.7415961, "Address": "Colorado, USA", "Phone": "(970) 641-2337", "Website": "http://www.nps.gov/blca/index.htm", "City": "Gunnison"}, {"Name": "West Tomichi River Park", "Latitude": 38.54597649999999, "Longitude": -106.9505876, "Address": "113 Emerald Ln, Gunnison, CO 81230, USA", "Phone": "Unknown", "Website": "Unknown", "City": "Gunnison"}, {"Name": "Gunnison State Wildlife Area", "Latitude": 38.504863, "Longitude": -107.0318913, "Address": "Co Rd 726, Gunnison, CO 81230, USA", "Phone": "Unknown", "Website": "https://www.google.com/url?sa=t&source=web&rct=j&url=https://cpw.state.co.us/learn/Maps/GunnisonSWA_geo.pdf&ved=2ahUKEwi4sd7MmrrlAhVDPq0KHSbDDVAQFjAAegQIBhAC&usg=AOvVaw1mc-ZP_ixOLootqVBJzbBK&cshid=1572104029582", "City": "Gunnison"}]}], "accommodations": [{"query": "Accommodations in Denver", "status": "results", "message": null, "items": [{"NAME": "Harlem cozy nights", "price": 457, "room type": "Entire home/apt", "house_rules": "No visitors", "minimum nights": 4, "maximum occupancy": 3, "review rate number": 4, "city": "Denver"}, {"NAME": "Studio Style Basement in Shared Apartment", "price": 498, "room type": "Private room", "house_rules": "No parties & No visitors", "minimum nights": 20, "maximum occupancy": 1, "review rate number": 5, "city": "Denver"}, {"NAME": "Bright room in Williamsburg loft", "price": 636, "room type": "Private room", "house_rules": "No pets & No smoking & No visitors", "minimum nights": 14, "maximum occupancy": 2, "review rate number": 4, "city": "Denver"}, {"NAME": "Room in Spacious Williamsburg Loft", "price": 934, "room type": "Private room", "house_rules": "No parties", "minimum nights": 21, "maximum occupancy": 2, "review rate number": 4, "city": "Denver"}, {"NAME": "GORGEOUS Newly-Renovated 2-BR Flat", "price": 731, "room type": "Entire home/apt", "house_rules": "No parties", "minimum nights": 30, "maximum occupancy": 6, "review rate number": 5, "city": "Denver"}, {"NAME": "Quaint & Charming 2BR + Futon", "price": 897, "room type": "Private room", "house_rules": "No children under 10", "minimum nights": 1, "maximum occupancy": 1, "review rate number": 1, "city": "Denver"}, {"NAME": "Peaceful, beautiful home away ", "price": 414, "room type": "Entire home/apt", "house_rules": "No smoking & No visitors & No parties", "minimum nights": 2, "maximum occupancy": 4, "review rate number": 1, "city": "Denver"}, {"NAME": "Big Sunny Bushwick Apartment", "price": 714, "room type": "Entire home/apt", "house_rules": "No pets & No visitors", "minimum nights": 4, "maximum occupancy": 3, "review rate number": 2, "city": "Denver"}, {"NAME": "*NO GUEST SERVICE FEE* Luxury Studio Suite w/ Free Continental Breakfast", "price": 390, "room type": "Entire home/apt", "house_rules": "No smoking & No visitors & No parties", "minimum nights": 3, "maximum occupancy": 2, "review rate number": 2, "city": "Denver"}]}, {"query": "Accommodations in Gunnison", "status": "results", "message": null, "items": [{"NAME": "Full-size loft bed in East Village", "price": 104, "room type": "Private room", "house_rules": "No visitors & No pets & No parties", "minimum nights": 1, "maximum occupancy": 1, "review rate number": 4, "city": "Gunnison"}, {"NAME": "Clean and convenient 2BR apartment", "price": 405, "room type": "Private room", "house_rules": "No visitors & No children under 10", "minimum nights": 7, "maximum occupancy": 2, "review rate number": 3, "city": "Gunnison"}, {"NAME": "Spacious Bed and Bathroom in Brooklyn", "price": 406, "room type": "Private room", "house_rules": "No visitors & No smoking", "minimum nights": 1, "maximum occupancy": 1, "review rate number": 2, "city": "Gunnison"}, {"NAME": "SoHo LOFT #2  Broadway Av. - Amazing Location!", "price": 762, "room type": "Entire home/apt", "house_rules": "No parties & No smoking & No pets", "minimum nights": 4, "maximum occupancy": 4, "review rate number": 3, "city": "Gunnison"}]}], "restaurants": [{"query": "Restaurants in Denver", "status": "results", "message": null, "items": [{"Name": "The Fatty Bao - Asian Gastro Bar", "Average Cost": 93, "Cuisines": "Bakery, BBQ, Cafe, Indian, Seafood", "Aggregate Rating": 4.7, "City": "Denver"}, {"Name": "The Urban Socialite", "Average Cost": 34, "Cuisines": "Cafe, Indian, Desserts, Italian", "Aggregate Rating": 3.8, "City": "Denver"}, {"Name": "Tasty Fare", "Average Cost": 79, "Cuisines": "French, BBQ, Fast Food", "Aggregate Rating": 3.4, "City": "Denver"}, {"Name": "Nukkadwala", "Average Cost": 31, "Cuisines": "Desserts, Tea, French, BBQ, Seafood", "Aggregate Rating": 0, "City": "Denver"}, {"Name": "Woods Spice", "Average Cost": 69, "Cuisines": "Tea, Cafe, Mexican, Desserts", "Aggregate Rating": 3.2, "City": "Denver"}, {"Name": "Al Yousuf", "Average Cost": 32, "Cuisines": "Desserts, Tea, Pizza, French, American", "Aggregate Rating": 3.7, "City": "Denver"}, {"Name": "Sweet Sensations", "Average Cost": 14, "Cuisines": "Tea, Pizza, BBQ, Italian", "Aggregate Rating": 0, "City": "Denver"}, {"Name": "Starve Stalkers", "Average Cost": 31, "Cuisines": "Fast Food, Indian, BBQ, Seafood", "Aggregate Rating": 0, "City": "Denver"}, {"Name": "Rain Tree Grill", "Average Cost": 94, "Cuisines": "Tea, Mexican, BBQ, Italian", "Aggregate Rating": 3.2, "City": "Denver"}, {"Name": "Yakooz", "Average Cost": 52, "Cuisines": "Pizza, Bakery, Fast Food, Cafe, American", "Aggregate Rating": 3.1, "City": "Denver"}, {"Name": "Nathu's Sweets", "Average Cost": 12, "Cuisines": "Tea, Bakery, BBQ, Fast Food", "Aggregate Rating": 2.1, "City": "Denver"}, {"Name": "Chawla's宊", "Average Cost": 72, "Cuisines": "Desserts, Tea, Pizza, Italian, Fast Food, Indian", "Aggregate Rating": 2.7, "City": "Denver"}]}, {"query": "Restaurants in Gunnison", "status": "results", "message": null, "items": [{"Name": "Happy Joe's Pizza & Ice Cream", "Average Cost": 74, "Cuisines": "Desserts, Italian, Bakery, Indian, Seafood", "Aggregate Rating": 3.5, "City": "Gunnison"}, {"Name": "SALT", "Average Cost": 44, "Cuisines": "Tea, Chinese, BBQ", "Aggregate Rating": 4.3, "City": "Gunnison"}, {"Name": "Mocha", "Average Cost": 30, "Cuisines": "Tea, Cafe, Pizza, BBQ", "Aggregate Rating": 4, "City": "Gunnison"}, {"Name": "Paradise Inn", "Average Cost": 99, "Cuisines": "BBQ, Bakery, Desserts", "Aggregate Rating": 2.7, "City": "Gunnison"}, {"Name": "Tughlaq", "Average Cost": 18, "Cuisines": "French, Pizza, Fast Food", "Aggregate Rating": 3.5, "City": "Gunnison"}, {"Name": "Cyber Hub Social", "Average Cost": 95, "Cuisines": "Tea, Fast Food", "Aggregate Rating": 4.3, "City": "Gunnison"}, {"Name": "Shree Bikaner Misthan Bhandar", "Average Cost": 15, "Cuisines": "Tea, Pizza, Seafood", "Aggregate Rating": 3.1, "City": "Gunnison"}, {"Name": "Sasuraal", "Average Cost": 61, "Cuisines": "Cafe, BBQ, Desserts", "Aggregate Rating": 3.3, "City": "Gunnison"}, {"Name": "Game of Legends - Sports Bar, Grill, & Lounge", "Average Cost": 65, "Cuisines": "Tea, Pizza, Desserts", "Aggregate Rating": 3.5, "City": "Gunnison"}, {"Name": "Green Chick Chop", "Average Cost": 71, "Cuisines": "Pizza, Desserts, Fast Food", "Aggregate Rating": 3.3, "City": "Gunnison"}, {"Name": "Shree Meenakshi Dosai", "Average Cost": 12, "Cuisines": "Tea, Pizza, Italian", "Aggregate Rating": 2.9, "City": "Gunnison"}, {"Name": "Meenas", "Average Cost": 88, "Cuisines": "Tea, Bakery, Indian, Fast Food", "Aggregate Rating": 2.9, "City": "Gunnison"}]}], "transportation": [{"query": "Flight from Moab to Denver on 2022-03-19", "status": "results", "message": null, "items": [{"Flight Number": "F3811327", "Price": 100, "DepTime": "18:16", "ArrTime": "19:28", "ActualElapsedTime": "1 hours 12 minutes", "FlightDate": "2022-03-19", "OriginCityName": "Moab", "DestCityName": "Denver", "Distance": 283}]}, {"query": "Self-driving from Moab to Denver", "status": "reference_text", "message": "self-driving, from Moab to Denver, duration: 5 hours 23 mins, distance: 570 km, cost: 28", "items": []}, {"query": "Taxi from Moab to Denver", "status": "reference_text", "message": "taxi, from Moab to Denver, duration: 5 hours 23 mins, distance: 570 km, cost: 570", "items": []}, {"query": "Flight from Denver to Gunnison on 2022-03-21", "status": "results", "message": null, "items": [{"Flight Number": "F3827189", "Price": 61, "DepTime": "13:26", "ArrTime": "14:17", "ActualElapsedTime": "0 hours 51 minutes", "FlightDate": "2022-03-21", "OriginCityName": "Denver", "DestCityName": "Gunnison", "Distance": 152}, {"Flight Number": "F3827701", "Price": 49, "DepTime": "19:01", "ArrTime": "20:19", "ActualElapsedTime": "1 hours 18 minutes", "FlightDate": "2022-03-21", "OriginCityName": "Denver", "DestCityName": "Gunnison", "Distance": 152}]}, {"query": "Self-driving from Denver to Gunnison", "status": "reference_text", "message": "self-driving, from Denver to Gunnison, duration: 3 hours 39 mins, distance: 323 km, cost: 16", "items": []}, {"query": "Taxi from Denver to Gunnison", "status": "reference_text", "message": "taxi, from Denver to Gunnison, duration: 3 hours 39 mins, distance: 323 km, cost: 323", "items": []}, {"query": "Flight from Gunnison to Moab on 2022-03-23", "status": "reference_text", "message": "There is no flight from Gunnison to Moab on 2022-03-23.", "items": []}, {"query": "Self-driving from Gunnison to Moab", "status": "reference_text", "message": "self-driving, from Gunnison to Moab, duration: 4 hours 1 min, distance: 380 km, cost: 19", "items": []}, {"query": "Taxi from Gunnison to Moab", "status": "reference_text", "message": "taxi, from Gunnison to Moab, duration: 4 hours 1 min, distance: 380 km, cost: 380", "items": []}]}}

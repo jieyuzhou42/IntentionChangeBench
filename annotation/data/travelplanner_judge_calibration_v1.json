@@ -1,0 +1,400 @@
+{
+  "status": "DRAFT v1 - labels written by Claude from the reference database and dialogue on 2026-09-24; needs human review. Used both as few-shot source (leave-instance-out) and as calibration set.",
+  "source_run": "annotation/reports/travelplanner_v4_agent_eval_gpt6luna_20260923 (judge openai/gpt-6-luna, v1 = main build_judge_prompt)",
+  "expected_status_values": "action cases: satisfied | violated | unknown (+ unmet_disclosed); baseline cases: out_of_scope",
+  "cases": [
+    {
+      "id": "cal-01",
+      "category": "people_number judged from capacity",
+      "source": {
+        "model": "qwen3-235b",
+        "instance_id": "travelplanner_test_0007",
+        "turn_id": 0
+      },
+      "field": "people_number",
+      "gold_value": 1,
+      "tier": "must_have",
+      "evidence": "Only listing: Upper East Side Space and Access!! (maximum occupancy 2). Nothing in the plan assumes another party size.",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "unknown",
+        "grounded": "satisfied"
+      },
+      "why_hard": "Itineraries never restate the head count; v1 judge answered unknown on 21.8% of people_number constraints and flipped between runs on 16.9%.",
+      "stage": "action",
+      "lesson": "Itineraries rarely restate the head count; judge people_number from the booked listings' capacity.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-02",
+      "category": "people_number / capacity violated",
+      "source": {
+        "model": "deepseek-r1",
+        "instance_id": "travelplanner_test_0126",
+        "turn_id": 3
+      },
+      "field": "people_number",
+      "gold_value": 2,
+      "tier": "must_have",
+      "evidence": "Wilmington: Brooklyn Bedroom - Warm & Cozy Near Subway (1), maximum occupancy 1, for 2 travelers.",
+      "expected": {
+        "action_status": "violated",
+        "unmet_disclosed": false
+      },
+      "v1": {
+        "pool": "violated",
+        "grounded": "violated"
+      },
+      "why_hard": "Counterpart to cal-01; the same listing is also booked for 1 night against a 2-night minimum (hotel gate).",
+      "stage": "action",
+      "lesson": "A night whose listing cannot host every traveler violates people_number.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-03",
+      "category": "group split across listings",
+      "source": {
+        "model": "gpt-5.6-sol",
+        "instance_id": "travelplanner_test_0357",
+        "turn_id": 0
+      },
+      "field": "people_number",
+      "gold_value": 4,
+      "tier": "must_have",
+      "evidence": "Each night: 'Travelers 1-3: Sunlight + Space on Eastern Parkway (occupancy 3); Traveler 4: Luxury apartment in New York City'. Combined capacity covers 4.",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "satisfied",
+        "grounded": "satisfied"
+      },
+      "why_hard": "A per-listing capacity check wrongly fails this; capacity must sum all listings booked for the night.",
+      "stage": "action",
+      "lesson": "A group may be split across several listings on the same night; add their capacities.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-04",
+      "category": "restaurant rating with self-catered meals",
+      "source": {
+        "model": "claude-sonnet-5",
+        "instance_id": "travelplanner_test_0063",
+        "turn_id": 5
+      },
+      "field": "restaurant_rating",
+      "gold_value": 4,
+      "tier": "must_have",
+      "evidence": "Every restaurant meal is Cho Gao (Aggregate Rating 4.4); remaining slots are 'Self-catering at accommodation' or '-'.",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "unknown",
+        "grounded": "satisfied"
+      },
+      "why_hard": "Self-catered slots are not restaurants and are not evidence against a rating floor. Whether omitting a gold-priced meal is a budget coverage failure is a separate, code-checked rule.",
+      "stage": "action",
+      "lesson": "Self-catered or empty meal slots are not evidence against a restaurant-rating floor.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-05",
+      "category": "meal cost cap with self-catered meals",
+      "source": {
+        "model": "claude-sonnet-4.6",
+        "instance_id": "travelplanner_test_0023",
+        "turn_id": 3
+      },
+      "field": "meal_cost",
+      "gold_value": 70,
+      "tier": "must_have",
+      "evidence": "Restaurant meals: Tucanos $36, Tucanos $36, Raj Restaurant $61 (Average Cost per person). Other slots are packed / self-catering.",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "satisfied",
+        "grounded": "unknown"
+      },
+      "why_hard": "Same pattern as cal-04 for per-meal cost caps.",
+      "stage": "action",
+      "lesson": "Per-meal cost caps apply to restaurant meals from the records; self-catered slots do not count.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-06",
+      "category": "constraint scope read from dialogue",
+      "source": {
+        "model": "claude-sonnet-5",
+        "instance_id": "travelplanner_test_0357",
+        "turn_id": 4
+      },
+      "field": "restaurant_rating",
+      "gold_value": 4,
+      "tier": "must_have",
+      "evidence": "Criteria (from U2 'one sit-down meal rated at least 4.0 each day and simple, inexpensive food otherwise'): each day needs one restaurant meal rated >= 4.0. Daily lunch Irish Democrat (4.4); dinners Bablu Chinese Food (rating 0.0) as the inexpensive meal.",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "satisfied",
+        "grounded": "satisfied"
+      },
+      "why_hard": "A literal 'every restaurant >= 4' check fails it; the dialogue limits the floor to one sit-down meal per day.",
+      "stage": "action",
+      "lesson": "Follow the scope in the criteria: here the rating floor covers one sit-down meal per day, as the user asked.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-07",
+      "category": "house rule convention (allowed unless prohibited)",
+      "source": {
+        "model": "claude-sonnet-5",
+        "instance_id": "travelplanner_test_0873",
+        "turn_id": 0
+      },
+      "field": "house_rule",
+      "gold_value": "parties",
+      "tier": "must_have",
+      "evidence": "Both listings' house_rules: 'No visitors'. Neither says 'No parties'.",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "violated",
+        "grounded": "unknown"
+      },
+      "why_hard": "Needs the TravelPlanner convention (house_rules lists prohibitions). Open question for the team: should 'No visitors' count against a party requirement?",
+      "stage": "action",
+      "lesson": "house_rules lists prohibitions: parties are allowed unless the listing says 'No parties'.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-08",
+      "category": "house rule 'No X' + agent's false claim",
+      "source": {
+        "model": "nova-pro",
+        "instance_id": "travelplanner_test_0031",
+        "turn_id": 2
+      },
+      "field": "house_rule",
+      "gold_value": "No smoking",
+      "tier": "must_have",
+      "evidence": "Listing 'Steps away from the Heart of the Theater District!' house_rules: 'No children under 10' (no smoking ban). Rationale claims it 'meets ... a no-smoking policy'.",
+      "expected": {
+        "action_status": "violated",
+        "unmet_disclosed": false
+      },
+      "v1": {
+        "pool": "unknown",
+        "grounded": "unknown"
+      },
+      "why_hard": "Facts must come from the record, not the agent's claim; a 'No X' requirement needs the listing to prohibit X.",
+      "stage": "action",
+      "lesson": "Take house rules from the record, not the agent's claim; a 'No smoking' requirement needs the listing to prohibit smoking.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-09",
+      "category": "cross-turn contamination",
+      "source": {
+        "model": "claude-sonnet-4.6",
+        "instance_id": "travelplanner_test_0066",
+        "turn_id": 2
+      },
+      "field": "room_type",
+      "gold_value": "Entire home/apt",
+      "tier": "must_have",
+      "evidence": "Turn 2 books Huge Loft - Heart of Williamsburg (Entire home/apt). The 'Private Bedroom in Greenpoint' the judge cited appears only in turn 1.",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "violated (cited turn 1's listing)",
+        "grounded": "satisfied"
+      },
+      "why_hard": "main's judge sees all turns of an instance in one call and borrowed another turn's listing.",
+      "stage": "action",
+      "lesson": "Judge only this turn's itinerary; never borrow a listing chosen in another turn.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-10",
+      "category": "cross-turn contamination",
+      "source": {
+        "model": "qwen3-235b",
+        "instance_id": "travelplanner_test_0017",
+        "turn_id": 2
+      },
+      "field": "room_type",
+      "gold_value": "Entire home/apt",
+      "tier": "must_have",
+      "evidence": "Turn 2 books Perfect Luxury Studio in DUMBO (Entire home/apt). The private room the judge cited is turn 1's 'Room in Down town Brooklyn Parkslop'.",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "violated (cited turn 1's listing)",
+        "grounded": "satisfied"
+      },
+      "why_hard": "Same as cal-09.",
+      "stage": "action",
+      "lesson": "Judge only this turn's itinerary; never borrow a listing chosen in another turn.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-11",
+      "category": "stay dates + minimum nights",
+      "source": {
+        "model": "qwen3-235b",
+        "instance_id": "travelplanner_test_0017",
+        "turn_id": 2
+      },
+      "field": "accommodation_stay",
+      "gold_value": "2 nights 2022-03-27 and 2022-03-28",
+      "tier": "must_have",
+      "evidence": "Accommodation only on 2022-03-28 (Mar 27 is '-'); listing minimum nights 2.",
+      "expected": {
+        "action_status": "violated",
+        "unmet_disclosed": false
+      },
+      "v1": {
+        "pool": "satisfied",
+        "grounded": "violated"
+      },
+      "why_hard": "The agent writes 'min 2 nights' in text but books one night; also fails the hotel gate.",
+      "stage": "action",
+      "lesson": "Count the nights actually booked, whatever the text claims: one listed night fails a two-night stay requirement.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-12",
+      "category": "Must violated with explicit disclosure",
+      "source": {
+        "model": "claude-sonnet-5",
+        "instance_id": "travelplanner_test_0144",
+        "turn_id": 1
+      },
+      "field": "accommodation_rating",
+      "gold_value": {
+        "Denver": 4
+      },
+      "tier": "must_have",
+      "evidence": "Denver listing rated 2. Rationale: 'the apartment rating requirement is sacrificed: the Denver lodging chosen (Luxury Studio Suite, rating 2)'.",
+      "expected": {
+        "action_status": "violated",
+        "unmet_disclosed": true,
+        "disclosure_quote": "the apartment rating requirement is sacrificed"
+      },
+      "v1": {
+        "pool": "violated",
+        "grounded": "violated"
+      },
+      "why_hard": "Disclosure is explicit but does not make the constraint pass.",
+      "stage": "action",
+      "lesson": "An explicit statement that a requirement is sacrificed is a disclosure, but the constraint is still violated.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-13",
+      "category": "excluded: intra-city transit feasibility",
+      "source": {
+        "model": "grok-4.6",
+        "instance_id": "travelplanner_test_0081",
+        "turn_id": 5
+      },
+      "field": "local_transportation",
+      "gold_value": "Use walking and public transit for Day 2 sightseeing rather than renting a car.",
+      "tier": "optional",
+      "evidence": "Day 2 transportation '-', no rental car; nothing in the records can confirm walking/transit feasibility.",
+      "expected": {
+        "out_of_scope": true
+      },
+      "v1": {
+        "pool": "unknown",
+        "grounded": "unknown"
+      },
+      "why_hard": "Should be excluded from scoring, not counted as unknown (a failure under strict success).",
+      "stage": "baseline",
+      "lesson": "Feasibility of getting around within a city cannot be audited from the records: out of scope.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-14",
+      "category": "excluded: accessibility",
+      "source": {
+        "model": "grok-4.6",
+        "instance_id": "travelplanner_test_0873",
+        "turn_id": 5
+      },
+      "field": "entities.entity_2.constraints.accessibility",
+      "gold_value": "Needs a low-walking itinerary with a seated rest break between major attractions",
+      "tier": "entity",
+      "evidence": "Plan limits stops and mentions a seated break; walking demand cannot be established from the records.",
+      "expected": {
+        "out_of_scope": true
+      },
+      "v1": {
+        "pool": "unknown",
+        "grounded": "unknown"
+      },
+      "why_hard": "All 11 models got unknown here in both runs; unassessable accessibility is out of audit scope.",
+      "stage": "baseline",
+      "lesson": "A traveler's accessibility or mobility need cannot be audited from the records: out of scope.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-15",
+      "category": "activity order without clock times",
+      "source": {
+        "model": "nova-pro",
+        "instance_id": "travelplanner_test_0023",
+        "turn_id": 3
+      },
+      "field": "activity",
+      "gold_value": "Optional Erie Canal Museum in the morning and Rosamond Gifford Zoo later on 2022-03-24",
+      "tier": "optional",
+      "evidence": "2022-03-24 attractions: 'Erie Canal Museum, Rosamond Gifford Zoo' (requested day, requested order).",
+      "expected": {
+        "action_status": "satisfied"
+      },
+      "v1": {
+        "pool": "unknown",
+        "grounded": "satisfied"
+      },
+      "why_hard": "The itinerary format has no clock times; day placement and listed order are the available evidence.",
+      "stage": "action",
+      "lesson": "The format has no clock times; the requested day and listed order are the evidence for an order requirement.",
+      "use_as_fewshot": true
+    },
+    {
+      "id": "cal-16",
+      "category": "annotation issue: empty candidate pool",
+      "source": {
+        "model": "claude-sonnet-4.6",
+        "instance_id": "travelplanner_test_0081",
+        "turn_id": 3
+      },
+      "field": "accommodation_rating",
+      "gold_value": 5,
+      "tier": "preferred",
+      "evidence": "Gold turn 3 has no env_feedback search results, so the agent saw an empty pool (rationale: 'No fixed_search_results were supplied') and invented 'Hilton Cleveland Downtown'.",
+      "expected": {
+        "action_status": "violated",
+        "annotation_issue": "gold turn missing search results; report separately from model failure"
+      },
+      "v1": {
+        "pool": "satisfied ('described as 5-star')",
+        "grounded": "unknown"
+      },
+      "why_hard": "Entity absent from the database cannot satisfy an attribute constraint, but the root cause is missing data.",
+      "stage": "action",
+      "lesson": "An entity absent from the records cannot satisfy an attribute constraint; also report an empty candidate pool as an annotation issue.",
+      "use_as_fewshot": true
+    }
+  ],
+  "version": "travelplanner-judge-calibration-v1"
+}

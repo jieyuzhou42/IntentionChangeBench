@@ -1,0 +1,236 @@
+You align an evaluated agent's predicted intent items to gold constraints for a
+multi-turn travel-planning benchmark. Do not judge the itinerary.
+
+For every turn and every predicted item index, decide:
+- gold_field: the exact gold constraint field this item expresses, or null if it
+  expresses no gold constraint. Match semantically; a renamed but clearly
+  equivalent field aligns. An item aligns to at most one gold field. Several
+  items may align to the same gold field when each expresses part of it.
+- value_match: true only if the item's value is semantically correct for that
+  gold constraint's current value (false when gold_field is null). Respect
+  context in fields/values: Day 2 does not satisfy Day 1, a budget ceiling is
+  not an exact spending target, and an exclusion is not an inclusion. A correct
+  part of a multi-part gold value counts as a match if nothing in it conflicts.
+Ignore priority tiers; they are compared separately.
+
+Return exactly:
+{
+  "turns": [
+    {
+      "turn_id": 0,
+      "items": [{"index": 0, "gold_field": "exact gold field or null", "value_match": true}]
+    }
+  ]
+}
+
+Cover every supplied turn and every predicted item index exactly once.
+
+INSTANCE: travelplanner_test_0144
+PAYLOAD:
+[
+  {
+    "turn_id": 0,
+    "user_utterance": "I'd like a solo trip from Moab to two Colorado cities, March 19-23, 2022, on $3,100.",
+    "gold_constraints": {
+      "budget": 3100,
+      "visiting_city_number": 2
+    },
+    "predicted_items": [
+      {
+        "index": 0,
+        "field": "people_number",
+        "value": 1
+      },
+      {
+        "index": 1,
+        "field": "schedule",
+        "value": "2022-03-19 to 2022-03-23"
+      },
+      {
+        "index": 2,
+        "field": "days",
+        "value": 5
+      },
+      {
+        "index": 3,
+        "field": "city_sequence",
+        "value": "Moab -> two Colorado cities -> Moab"
+      },
+      {
+        "index": 4,
+        "field": "visiting_city_number",
+        "value": 2
+      },
+      {
+        "index": 5,
+        "field": "required_cities",
+        "value": "Colorado"
+      },
+      {
+        "index": 6,
+        "field": "budget",
+        "value": 3100
+      }
+    ]
+  },
+  {
+    "turn_id": 1,
+    "user_utterance": "I'd rather just do Denver for now: an apartment rated 4+, just March 19-22. I'll take my own car, passing through Gunnison on the way home on the 23rd. launch there.",
+    "gold_constraints": {
+      "budget": 3100,
+      "visiting_city_number": 1,
+      "room_type": {
+        "Denver": "Entire home/apt"
+      },
+      "accommodation_rating": {
+        "Denver": 4
+      },
+      "transportation": "Own car ",
+      "launch at Gunnison": true
+    },
+    "predicted_items": [
+      {
+        "index": 0,
+        "field": "people_number",
+        "value": 1
+      },
+      {
+        "index": 1,
+        "field": "days",
+        "value": "2022-03-19 to 2022-03-23"
+      },
+      {
+        "index": 2,
+        "field": "budget",
+        "value": 3100
+      },
+      {
+        "index": 3,
+        "field": "city_sequence",
+        "value": [
+          "Moab",
+          "Denver",
+          "Gunnison",
+          "Moab"
+        ]
+      },
+      {
+        "index": 4,
+        "field": "required_cities",
+        "value": [
+          "Denver"
+        ]
+      },
+      {
+        "index": 5,
+        "field": "launch at Gunnison",
+        "value": "2022-03-23, en route home, pass through/depart from Gunnison"
+      },
+      {
+        "index": 6,
+        "field": "accommodation_stay",
+        "value": "Denver, 2022-03-19 to 2022-03-22"
+      },
+      {
+        "index": 7,
+        "field": "room_type",
+        "value": "Entire home/apt"
+      },
+      {
+        "index": 8,
+        "field": "accommodation_rating",
+        "value": ">=4"
+      },
+      {
+        "index": 9,
+        "field": "intercity_transportation",
+        "value": "self-driving (own car) for all legs"
+      },
+      {
+        "index": 10,
+        "field": "local_transportation",
+        "value": "own car"
+      }
+    ]
+  },
+  {
+    "turn_id": 2,
+    "user_utterance": "I do want to visit Gunnison too. Denver March 19-20, Gunnison March 21-22, drive between them on the 21st and home on the 23rd. Just two nights each, apartments rated 4+ in both.",
+    "gold_constraints": {
+      "budget": 3100,
+      "visiting_city_number": 2,
+      "room_type": "Entire home/apt",
+      "accommodation_rating": "4+",
+      "transportation": "Own car ",
+      "schedule": "2 days each city"
+    },
+    "predicted_items": [
+      {
+        "index": 0,
+        "field": "people_number",
+        "value": 1
+      },
+      {
+        "index": 1,
+        "field": "days",
+        "value": "2022-03-19 to 2022-03-23"
+      },
+      {
+        "index": 2,
+        "field": "budget",
+        "value": 3100
+      },
+      {
+        "index": 3,
+        "field": "visiting_city_number",
+        "value": 2
+      },
+      {
+        "index": 4,
+        "field": "required_cities",
+        "value": [
+          "Denver",
+          "Gunnison"
+        ]
+      },
+      {
+        "index": 5,
+        "field": "city_sequence",
+        "value": "Moab -> Denver -> Gunnison -> Moab"
+      },
+      {
+        "index": 6,
+        "field": "accommodation_stay",
+        "value": {
+          "Denver": "2022-03-19 to 2022-03-20 (2 nights)",
+          "Gunnison": "2022-03-21 to 2022-03-22 (2 nights)"
+        }
+      },
+      {
+        "index": 7,
+        "field": "room_type",
+        "value": "apartment (Entire home/apt)"
+      },
+      {
+        "index": 8,
+        "field": "accommodation_rating",
+        "value": "4+"
+      },
+      {
+        "index": 9,
+        "field": "local_transportation",
+        "value": "own car (self-driving) for all legs"
+      },
+      {
+        "index": 10,
+        "field": "intercity_transportation",
+        "value": "self-driving Denver->Gunnison on 03-21; self-driving Gunnison->Moab on 03-23"
+      },
+      {
+        "index": 11,
+        "field": "outbound_transportation",
+        "value": "self-driving Moab->Denver on 03-19"
+      }
+    ]
+  }
+]
