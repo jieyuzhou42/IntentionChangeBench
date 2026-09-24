@@ -1,0 +1,828 @@
+{
+ "source": "frozen baseline annotation_issues (judge openai/gpt-6-luna, rules v2.1)",
+ "count": 98,
+ "issues": [
+  {
+   "instance_id": "travelplanner_test_0003",
+   "turn_id": 5,
+   "issue": "The gold accommodation_rating value of 4 conflicts with the latest user utterance, which says they would accept a lower score; the gold delta also reprioritizes this rating downward.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0003",
+   "turn_id": 6,
+   "issue": "The gold accommodation_rating value of 4 conflicts with the latest user statement preferring an entire home/apt even if it has a lower score.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0006",
+   "turn_id": 3,
+   "issue": "No candidate restaurant has a rating of 4.0 or higher, so the latest meal-rating requirement has no qualifying restaurant in the supplied candidate pool; the reference plan lists a restaurant rated below the threshold.",
+   "tags": [
+    "reference plan / gold plan",
+    "restaurant / meal",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0006",
+   "turn_id": 3,
+   "issue": "The only candidate listing with room type Entire home/apt has a three-night minimum stay, so no supplied entire-home listing accommodates the requested two-night stay.",
+   "tags": [
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0006",
+   "turn_id": 6,
+   "issue": "The candidate transportation records do not include a Billings-to-Phoenix flight for 2022-03-20, although the gold constraints and reference plan specify one; the only return-search record is for 2022-03-21 and reports no flight that day.",
+   "tags": [
+    "reference plan / gold plan",
+    "flight / transport",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0017",
+   "turn_id": 4,
+   "issue": "The accommodation is named “Spacious 1 bedroom in Woodlawn NYC” in the plan and candidate record, while that record's city field says San Francisco; the listing name and city metadata conflict.",
+   "tags": [
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0017",
+   "turn_id": 6,
+   "issue": "The gold restaurant_rating value of 3.4 conflicts with the user's unwithdrawn turn 4 request to keep food at 3.7 or above; turn 6 asks for variety and does not revise that rating request.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0017",
+   "turn_id": 6,
+   "issue": "The reference plan describes its San Francisco accommodation as being in Woodlawn NYC, while the candidate record labels the listing's city San Francisco; the location description is inconsistent.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0023",
+   "turn_id": 0,
+   "issue": "No flight is available in the transportation records from Myrtle Beach to Syracuse on 2022-03-23 or from Syracuse to Myrtle Beach on 2022-03-25.",
+   "tags": [
+    "flight / transport"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0025",
+   "turn_id": 0,
+   "issue": "The candidate records have an empty cities pool.",
+   "tags": [
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0025",
+   "turn_id": 5,
+   "issue": "The gold retains accommodation_rating=4 as preferred, while turn 5 says having the place to oneself is the only part the user cares about, which appears to withdraw the room-rating preference; the gold delta only reprioritizes that rating.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0025",
+   "turn_id": 6,
+   "issue": "The gold retains accommodation_rating = 4, but the user later said, \"Having a place all to myself is the only part I actually care about,\" withdrawing the room-rating preference.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0031",
+   "turn_id": 0,
+   "issue": "The candidate transportation pool for the return query from Las Vegas to Belleville on 2022-03-29 contains no flight.",
+   "tags": [
+    "flight / transport",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0037",
+   "turn_id": 4,
+   "issue": "The gold accommodation_stay makes three nights a must-have, but turn 3 only says the user could pay for a third night if it opens something up; the user did not explicitly require three nights.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0041",
+   "turn_id": 0,
+   "issue": "The candidate records' cities pool is empty.",
+   "tags": [
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0044",
+   "turn_id": 6,
+   "issue": "The gold restaurant_rating value is 3.5, but the user said, \"Keep the food at 4.0 and above too\" in turn 4 and did not withdraw that requirement.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0047",
+   "turn_id": 3,
+   "issue": "The reference plan leaves the venues and costs for March 5 and March 7 meals pending, preventing full verification of meal rating, meal cost, and the Fast Food exclusion.",
+   "tags": [
+    "reference plan / gold plan",
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0049",
+   "turn_id": 1,
+   "issue": "The gold reference plan books 3 accommodation nights (check-out 2022-03-10), conflicting with the latest user request for just the two nights in between and the gold accommodation_stay value of 2 nights on March 7 and 8.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0049",
+   "turn_id": 5,
+   "issue": "The dialogue asks for evening flights on March 7 and 9, then says driving is acceptable if necessary; it does not explicitly direct the traveler to self-drive. The gold outbound and return constraints make self-driving mandatory, turning conditional permission into a firm requirement.",
+   "tags": [
+    "flight / transport"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0049",
+   "turn_id": 6,
+   "issue": "The gold makes self-driving on both legs a must-have, while the user asked to fly on the evening of March 7 and back on the evening of March 9, then said driving was acceptable only conditionally. The gold also retains a preference for flying when the cap allows it.",
+   "tags": [
+    "flight / transport"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0049",
+   "turn_id": 6,
+   "issue": "The gold makes a three-night stay a must-have, whereas the user initially asked for the two nights in between and later said they could pay for a third night if it opened something up; that conditional willingness is stronger in the gold than in the dialogue.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0050",
+   "turn_id": 3,
+   "issue": "The gold reference plan books a Private room even though the current gold room_type is Entire home/apt, reflecting the user's request to have the whole place to themselves.",
+   "tags": [
+    "reference plan / gold plan"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0050",
+   "turn_id": 5,
+   "issue": "The referenced accommodation is labeled as being in Phoenix in the candidate record, but its name and description refer to JFK-Manhattan; this location inconsistency makes its actual location unclear.",
+   "tags": [
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0050",
+   "turn_id": 6,
+   "issue": "The gold restaurant_rating value is 3.5, but the latest user instruction says to keep food at 4.0 and above.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0050",
+   "turn_id": 6,
+   "issue": "The gold makes self-driving in an own car a must-have for both legs, while the dialogue says driving is acceptable if it helps secure the apartment; it does not explicitly require driving.",
+   "tags": [
+    "flight / transport"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0057",
+   "turn_id": 0,
+   "issue": "Several Reno accommodation records have names referring to NYC, Williamsburg, Brooklyn, or Prospect Park despite being labeled as located in Reno; this may indicate candidate-record location data problems.",
+   "tags": [
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0062",
+   "turn_id": 0,
+   "issue": "The transportation candidate records show no flight from Ithaca to Philadelphia on 2022-03-01 and no flight from Philadelphia to Ithaca on 2022-03-03.",
+   "tags": [
+    "flight / transport",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0062",
+   "turn_id": 2,
+   "issue": "The transportation candidate records contain no return self-driving record for Philadelphia to Ithaca on 2022-03-03; the reference plan states a drive duration, but the candidate data cannot independently corroborate it.",
+   "tags": [
+    "reference plan / gold plan",
+    "flight / transport",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0062",
+   "turn_id": 3,
+   "issue": "The gold dining_variety value requires three different restaurants across the three meals on 2022-03-02, while the user's turn 2 wording, \"never the same place three times on the 2nd,\" only rules out using the same place for all three meals and does not clearly require three distinct places.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0062",
+   "turn_id": 3,
+   "issue": "The gold activity value labels the Philadelphia Museum of Art and Liberty Bell visits optional, but turn 3 directs, \"Work the Philadelphia Museum of Art into that morning before the Liberty Bell,\" which states the visits as requirements.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0063",
+   "turn_id": 3,
+   "issue": "The gold reference plan books three accommodation nights (March 26–28) despite the two-night gold accommodation_stay requirement and the user's turn-1 request for two nights.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0063",
+   "turn_id": 6,
+   "issue": "The candidate transportation records have no March 28 Oakland-to-Denver flight; the only return query is for March 29 and reports no flight. The reference plan nevertheless names F3958710 for March 28.",
+   "tags": [
+    "reference plan / gold plan",
+    "flight / transport",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0067",
+   "turn_id": 2,
+   "issue": "No restaurant in the candidate records has a rating of 4.0 or higher, so the latest stated mealtime requirement has no qualifying restaurant candidate.",
+   "tags": [
+    "restaurant / meal",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0068",
+   "turn_id": 0,
+   "issue": "The candidate transportation records contain no return flight from Chicago to Panama City on 2022-03-14, leaving the return-flight candidate pool empty.",
+   "tags": [
+    "flight / transport",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0068",
+   "turn_id": 1,
+   "issue": "The reference plan lists the Chicago accommodation through checkout on 2022-03-15, including accommodation on March 14, although the user says they will drive home on March 14.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 2,
+   "issue": "The dialogue does not explicitly require no sightseeing or no planned restaurant lunch on Day 1. The user's comparative preference for a comfortable departure over maximizing first-day activities and meals does not itself establish either absolute restriction.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 3,
+   "issue": "The latest user request for Chinese food is not represented by a gold constraint.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 3,
+   "issue": "The candidate_records object is empty, so there are no candidate records available for auditing.",
+   "tags": [
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 4,
+   "issue": "The gold constraints require return flight F3623037, which arrives at 10:57, while the must-have requires arrival in Tampa by 10:00. These requirements conflict; the reference plan instead uses F3905043, which arrives at 09:36.",
+   "tags": [
+    "reference plan / gold plan",
+    "flight / transport"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 4,
+   "issue": "The gold_delta_this_turn relaxes budget from 1800 to 2000, but the gold_constraints budget value remains 1800.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 4,
+   "issue": "The user explicitly requested Chinese food in turn 3, but no cuisine requirement appears in the gold constraints.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 5,
+   "issue": "The gold return flight arrives in Tampa at 10:57, contradicting the user's later request to arrive by 10:00.",
+   "tags": [
+    "flight / transport"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 5,
+   "issue": "The user explicitly requested Chinese food in turn 3, but there is no corresponding gold constraint field.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 5,
+   "issue": "The reference plan's Day 2 dinner, Me侓hur 韄z韄elik Aspava, is absent from the candidate restaurant records, preventing verification of its listing attributes.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "restaurant / meal",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0081",
+   "turn_id": 5,
+   "issue": "The candidate attraction records do not include the Cleveland Cultural Gardens, although the reference plan lists it.",
+   "tags": [
+    "reference plan / gold plan",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 0,
+   "issue": "The dialogue states a budget of $2,100, but no budget constraint appears in the gold constraints.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 0,
+   "issue": "The dialogue states travel from Providence to two cities in North Carolina from March 13–17, 2022, but the gold constraints contain no dates, route, or destination-count constraint.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 1,
+   "issue": "The Wilmington accommodation named in the reference plan, \"BEAUTIFUL&BRIGHT 1 bd (E. Village),\" is absent from the Wilmington candidate records.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 1,
+   "issue": "The user said they were traveling solo, and the gold delta adds an accommodation_capacity requirement, but accommodation_capacity is absent from gold_constraints.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 2,
+   "issue": "The gold reference plan books “Luxury 3 bedroom apartment on the Upper East Side” while the itinerary city is Wilmington; that accommodation does not appear in the Wilmington candidate records, preventing verification of its attributes.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 2,
+   "issue": "The user explicitly requested one shared place in each city, but the gold constraints list does not represent that one-listing-per-city requirement.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 3,
+   "issue": "The gold constraints omit the user's explicit city/date itinerary (Wilmington March 13–14, Fayetteville March 15–16, home March 17) and the request to reserve March 13 and 17 for driving and breaks.",
+   "tags": [
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 3,
+   "issue": "The gold constraints omit the user's explicit request to travel by their own car.",
+   "tags": [
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 3,
+   "issue": "The Wilmington accommodation named in the gold reference plan, “Luxury 3 bedroom apartment on the Upper East Side,” has no exact candidate-record match, preventing its capacity, room type, and rating from being established.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 4,
+   "issue": "The dialogue clearly specifies two nights in each city, but the gold constraints omit an accommodation-stay constraint.",
+   "tags": [
+    "accommodation",
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 4,
+   "issue": "The dialogue specifies the city/date sequence (Wilmington March 13–14, Fayetteville March 15–16, home March 17), travel by the user's own car, and driving/break days on March 13 and 17; these requirements are absent from the gold constraints.",
+   "tags": [
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0126",
+   "turn_id": 4,
+   "issue": "The gold reference plan's Wilmington accommodation, Luxury 3 bedroom apartment on the Upper East Side, has no matching Wilmington candidate record, preventing its attributes from being audited.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 1,
+   "issue": "The gold_delta rationale says to keep $5,000, but the dialogue sets a soft $2,500 budget and the latest user turn does not change it.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 2,
+   "issue": "The reference plan's accommodation locations do not match the dialogue's requested sequence: the March 16–17 nights are assigned to a Flagstaff listing, while the March 18–19 nights are assigned to a Phoenix listing.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 2,
+   "issue": "The latest user turn requests one place in each city that can hold all three travelers, and the dialogue specifies the same flights for the three travelers; the gold constraints record the traveler count but omit these listing-capacity and flight-party requirements.",
+   "tags": [
+    "flight / transport",
+    "accommodation",
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 2,
+   "issue": "The candidate accommodation records contain no listing in either city that simultaneously satisfies the private-room, 3+ rating, and capacity-for-three requirements.",
+   "tags": [
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 3,
+   "issue": "The dialogue states that the travelers want private rooms and two nights in each city (turn 1), but the gold constraints omit room type and accommodation stay duration.",
+   "tags": [
+    "accommodation",
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 3,
+   "issue": "The explicit March 17 requirement to prioritize both the Heard Museum and Desert Botanical Garden calls for two attractions that day, conflicting with the gold schedule limit of fewer than two attractions per day.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 4,
+   "issue": "The gold schedule requirement of fewer than 2 attractions per day conflicts with the gold activity requirement to visit two attractions on March 17 and two attractions on March 19.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 4,
+   "issue": "The dialogue explicitly requests private rooms rated 3+ (turn 1), but the gold constraints omit a room-type constraint.",
+   "tags": [
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 4,
+   "issue": "The dialogue explicitly requests just two nights in each city (turn 1), but the gold constraints omit an accommodation-stay constraint.",
+   "tags": [
+    "accommodation",
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 5,
+   "issue": "The user requested just two nights in each city in turn 1, and no later utterance withdraws that request, but the gold constraints omit an accommodation-stay requirement.",
+   "tags": [
+    "accommodation",
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0129",
+   "turn_id": 5,
+   "issue": "The user requested private rooms in turn 1, and no later utterance explicitly withdraws that requirement, but the gold constraints omit a room-type requirement.",
+   "tags": [
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0144",
+   "turn_id": 0,
+   "issue": "The candidate transportation pool reports no flight from Gunnison to Moab on 2022-03-23.",
+   "tags": [
+    "flight / transport",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0144",
+   "turn_id": 1,
+   "issue": "The dialogue explicitly requests an apartment stay only March 19-22, but the gold constraints omit accommodation_stay and the no-unused-nights requirement.",
+   "tags": [
+    "accommodation",
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0144",
+   "turn_id": 1,
+   "issue": "The dialogue specifies the March 23 return through Gunnison, with no overnight or sightseeing visit there and driving/rest breaks only; the gold constraints omit the return-route and schedule requirements.",
+   "tags": [
+    "accommodation",
+    "missing constraint"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0144",
+   "turn_id": 1,
+   "issue": "The reference plan schedules a Denver-to-Gunnison drive on March 21, although the dialogue places Gunnison on the way home on March 23. The reference plan therefore conflicts with the stated timing of the Gunnison passage.",
+   "tags": [
+    "reference plan / gold plan"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0144",
+   "turn_id": 2,
+   "issue": "The latest user turn explicitly specifies the dated city sequence, two nights in each city, the March 21 Denver-to-Gunnison drive, and the March 23 return home, but those specific requirements are absent from gold_constraints.",
+   "tags": [
+    "accommodation"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0144",
+   "turn_id": 2,
+   "issue": "The latest user turn specifies protecting travel/rest time on March 19, 21, and 23 and scheduling main sightseeing on March 20 and 22; gold_constraints records only the less specific schedule value “2 days each city.”",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 0,
+   "issue": "Several reference-plan listings have no matching candidate records, including the accommodation “New York City!! Times Square Home!!!,” meals “Ama Rabsel House” and “Cafe - Hyatt Regency,” and attractions “Charles River Esplanade,” “Old State House,” and “Boston Waterfront.”",
+   "tags": [
+    "accommodation",
+    "restaurant / meal",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 1,
+   "issue": "The gold budget is 3200, matching the latest user utterance, but gold_delta_this_turn records a new budget of 4200.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 2,
+   "issue": "The gold cuisine value retains French and American, although the latest user turn explicitly says to choose any cuisine over French and American variety.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 2,
+   "issue": "The gold activity value says \"2 attractions,\" while the gold delta says the sightseeing limit was overridden to one major attraction per day.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 2,
+   "issue": "The Day 1 reference-plan accommodation, \"New York City!! Times Square Home!!!\", has no exact match in the candidate accommodation records, preventing verification of its attributes and capacity.",
+   "tags": [
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 3,
+   "issue": "The gold budget value is 4000, while the latest user-stated budget is $3,200; the turn's gold delta instead gives a new value of 9200, also inconsistent with the gold constraint.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 3,
+   "issue": "The gold cuisine constraint retains French and American variety, but Turn 2 says to choose any cuisine over that variety, replacing the earlier cuisine preference.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 3,
+   "issue": "The reference plan names Icy Curls, Freshco - The Health Caf愆, Syall Kotian Da Dhaba, GoGourmet, and Ama Rabsel House, none of which appear in the restaurant candidate records.",
+   "tags": [
+    "reference plan / gold plan",
+    "restaurant / meal",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 4,
+   "issue": "The gold cuisine constraint (“French and American”) was withdrawn in turn 2, when the user said to choose any cuisine over French and American variety.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 4,
+   "issue": "The gold activity value “2 attractions” may overstate the user's turn 1 requirement, which was a limit of two nearby attractions per day, not a requirement to schedule exactly two.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 4,
+   "issue": "The gold entity constraint for a vegetarian sister is not stated in the dialogue; the user never identifies a sister or requests vegetarian meals.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 4,
+   "issue": "Turn 4 explicitly adds a meal average-cost limit of under $50 per person, but no corresponding field appears in gold_constraints.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0357",
+   "turn_id": 4,
+   "issue": "gold_delta_this_turn relaxes restaurant_rating from 4 to 3.5, but the turn 4 utterance only adds the meal cost limit and does not change the rating requirement; gold_constraints retains 4.",
+   "tags": [
+    "restaurant / meal"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 0,
+   "issue": "The gold makes transportation = \"no flight\" a must-have, but the user stated only a preference: \"we'd prefer not to travel by flight.\"",
+   "tags": [
+    "flight / transport"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 0,
+   "issue": "The user explicitly specified a 5-day itinerary from March 9 through March 13, 2022, starting in Charlotte, for 2 people, visiting cities in Louisiana. These requirements are not represented in the gold constraints.",
+   "tags": []
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 2,
+   "issue": "The gold_delta_this_turn budget says the new value is 5000, but the dialogue and gold_constraints specify a revised budget of 2000.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 2,
+   "issue": "The candidate transportation results contain no New Orleans-to-Charlotte flight on March 13, 2022; the only result states that there is no flight on that date.",
+   "tags": [
+    "flight / transport",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 3,
+   "issue": "The gold budget is 1500, but the latest user-stated budget is $2000 (turn 2). The turn-3 gold delta also gives a budget override to $4000, which conflicts with both the stated dialogue and the gold constraint.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 3,
+   "issue": "The reference plan books “Harlem Short Term Stay,” but that exact accommodation is absent from the candidate records, preventing verification of its attributes.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 4,
+   "issue": "The gold budget value of $1500 conflicts with the user's later request in turn 2 to raise the budget to $2000; the gold_delta_this_turn rationale also mentions a $4000 budget.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 4,
+   "issue": "The gold reference plan names Harlem Short Term Stay, but that listing is absent from the accommodation candidate records.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 5,
+   "issue": "The gold budget is $1500, but the latest dialogue raises the budget to $2000; the gold value conflicts with the latest utterance.",
+   "tags": [
+    "budget"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 5,
+   "issue": "The reference plan names Harlem Short Term Stay, but no accommodation candidate record has that name, preventing verification of its listing attributes.",
+   "tags": [
+    "reference plan / gold plan",
+    "accommodation",
+    "candidate pool"
+   ]
+  },
+  {
+   "instance_id": "travelplanner_test_0873",
+   "turn_id": 6,
+   "issue": "The gold budget is 1500, but the latest stated budget is 2000 (turn 2); the gold value conflicts with the dialogue.",
+   "tags": [
+    "budget"
+   ]
+  }
+ ]
+}
