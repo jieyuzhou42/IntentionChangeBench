@@ -1147,14 +1147,14 @@ OUT=annotation/reports/travelplanner_v4_agent_eval_gpt6luna_20260923
 .venv/bin/python scripts/report_travelplanner_v4_eval.py $OUT
 ```
 
-judge 的输出按 instance 缓存在 `judgments/` 下，重跑时只会补上缺失的部分。
+judge 的输出按 instance 缓存在 `judgments/` 下，重跑时只会补上缺失的部分。本次的缓存**不在仓库里**（2026-09-24 清理 git 历史时移除，只保存在作者本地）。
 
 | 文件 | 内容 |
 |---|---|
 | `scripts/judge_travelplanner_v4_trajectories.py` | 配对 gold、校验 SHA、调用 judge（Pass A 两种证据、Pass B），输出 scored rows |
 | `scripts/report_travelplanner_v4_eval.py` | 确定性计价、全部指标计算，生成 `metrics.json` 和 `tables.md` |
-| `judgments/*.json` | 286 个 instance 的原始 judge 输出（`pass_a`、`pass_a_grounded`、`pass_a_pool`、`pass_b`） |
-| `scored_rows.json` / `scored_rows_grounded.json` / `scored_rows_pool.json` | 逐轮行：gold、预测、action、证据、judge 输出、main scorer 分数。**未提交到 git**（合计约 120 MB）。可以用 `judgments/` 里的缓存离线重建：用 §9 的三条 judge 命令重跑一遍即可，所有调用都会命中缓存，不会发出 API 请求，但脚本启动时仍要求设置 `OPENROUTER_API_KEY` |
+| `judgments/*.json` | 286 个 instance 的原始 judge 输出（`pass_a`、`pass_a_grounded`、`pass_a_pool`、`pass_b`），**不在仓库里**（2026-09-24 清理 git 历史时移除，只保存在作者本地） |
+| `scored_rows.json` / `scored_rows_grounded.json` / `scored_rows_pool.json` | 逐轮行：gold、预测、action、证据、judge 输出、main scorer 分数。不在仓库里，需要有 judge 缓存才能用上面的命令重建 |
 | `metrics.json` | 五种口径（action、grounded、grounded_det、pool、pool_det）× 11 个模型的全部汇总指标，以及 `grounded_vs_pool` 对照结果 |
 | `tables.md` | 由脚本生成的全部表格 |
 | `prompt_examples/` | `travelplanner_test_0144`（Claude Sonnet 5）在三种 Pass A 口径和 Pass B 下完整拼好的 judge prompt（§2.2） |

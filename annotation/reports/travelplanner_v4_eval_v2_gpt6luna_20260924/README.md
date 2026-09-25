@@ -58,7 +58,7 @@ Python：计价（含餐位覆盖）、酒店门槛、排除范围、Hard Succes
   - 三个 judge 都看不到模型名，prompt 里只有轨迹内容。
 - **每次调用只包含一轮**。v2.1 的每个 judge 都附上了截至这一轮的全部用户对话；v2.2 起 action judge 不再看对话，改为按 baseline 冻结的判定标准来判（§12）。
 - **候选池**：action judge 看到的候选记录，就是 agent 当轮看到的全部搜索结果，与 agent prompt 逐字相同（v1 报告 §5.5）。代码计价用的是完整的数据库记录。
-- **缓存和失败处理**：每次调用单独缓存；输出不合格（缺字段、字段名不对、匹配不是一对一等）最多重试 4 次；仍失败的记入 `errors.jsonl`，不计入模型的成败。本次共有 1 个公共基准、75 个 action、114 个 intention 调用是在重试后才通过校验的，最终全部成功。
+- **缓存和失败处理**：每次调用单独缓存（本次的缓存不在仓库里）；输出不合格（缺字段、字段名不对、匹配不是一对一等）最多重试 4 次；仍失败的记入 `errors.jsonl`，不计入模型的成败。本次共有 1 个公共基准、75 个 action、114 个 intention 调用是在重试后才通过校验的，最终全部成功。运行中还遇到两次失败，都已补齐：一次是 OpenRouter 账户额度用完，2,440 次调用返回 HTTP 402，充值后续跑完成；另一次是 test_0144 t2 的公共基准 judge 自造了字段名，之后在 prompt 里要求照抄 gold 字段名，重跑通过（其余 159 个公共基准生成时还没有这句要求）。
 
 ### 2.1 prompt 组成：和 v1 相比改了什么
 
@@ -316,7 +316,7 @@ v2 拆成了三个 prompt，每个的结构都是"规则 + few-shot + 输出格�
   - test_0081 t4：gold 指定的回程航班 10:57 到达，和用户要求的"10 点前到"冲突；
   - test_0017 t6：gold 的评分下限是 3.4，用户说的是 3.7；
   - test_0144 t1：用户原话是 "launch there"（多半是 "lunch" 的笔误），gold 照原样写成了 "launch at Gunnison"。
-- **gold 审核层**：[`annotation/data/exports/travelplanner_v4/gold_audit_v1.json`](../../../annotation/data/exports/travelplanner_v4/gold_audit_v1.json)。原始 gold 保持不变；只有状态为 `applied` 的条目才会对所有模型统一生效。**目前 3 条都是 `recorded`（只记录、未应用）**：0357 的 cuisine、0873 的 required_cities，以及 0081 t3 的候选池为空。确认修正范围后，把条目改成 `applied` 重跑即可。
+- **gold 审核层**：`annotation/data/exports/travelplanner_v4/gold_audit_v1.json`，**不在仓库里**（2026-09-24 清理 git 历史时移除，只保存在作者本地）。代码支持这个文件：它不存在时，gold 保持原样；需要修正 gold 时，按 `apply_gold_audit` 的格式重新建立即可（条目包含 `instance_id`、`turns`、`status`、`apply.remove_fields` / `apply.set_fields`，只有 `status` 为 `applied` 的条目才会生效）。当时记录的 3 个问题是：0357 的 cuisine、0873 的 required_cities，以及 0081 t3 的候选池为空，另见 `annotation_issues.json`。
 - **gold 行程本身的问题**：139 个有 gold 行程的轮次里，有 55 个在审核范围内违反了某条 Must。这可能是标注时就做不到，也可能是标注本身有误，建议标注侧复核。
 
 ## 11. 复现、文件与花费
@@ -343,12 +343,10 @@ OUT=annotation/reports/travelplanner_v4_eval_v2_gpt6luna_20260924
 | `scripts/mine_travelplanner_judge_cases.py` | 从已有的 judge 结果里挖可能判错的案例，作为校准和 few-shot 的来源 |
 | `tests/test_travelplanner_eval_v2.py` | 8 个单元测试：引文校验、baseline 判定标准校验、团队分住、最低入住、餐位覆盖、few-shot 排除同一 instance、Hard Success 两个分支 |
 | `annotation/data/travelplanner_judge_calibration_v1.json` | 校准集和 few-shot 来源（草稿标签） |
-| `annotation/data/exports/travelplanner_v4/gold_audit_v1.json` | gold 审核层 |
-| `baseline/`、`action/`、`intention/` | 每次 judge 调用的原始输出，包括规则版本和重试次数 |
-| `scored_rows.json`、`metrics.json`、`tables.md` | 逐轮分数、汇总指标（含分子、分母、excluded）、表格。`scored_rows.json`（18 MB）**未提交到 git**，可以用 `summarize` 从 `baseline/`、`action/`、`intention/` 离线重建，不调用 API |
+| `annotation/data/exports/travelplanner_v4/gold_audit_v1.json` | gold 审核层，**不在仓库里**（2026-09-24 清理 git 历史时移除，只保存在作者本地）；代码在它不存在时照常运行 |
+| `baseline/`、`action/`、`intention/` | 每次 judge 调用的原始输出（共 3,680 个文件），**不在仓库里**（2026-09-24 清理 git 历史时移除，只保存在作者本地） |
+| `metrics.json`、`tables.md` | 汇总指标（含分子、分母、excluded）和表格。逐轮的 `scored_rows.json` 不在仓库里，需要有 judge 缓存才能用 `summarize` 重建 |
 | `annotation_issues.json` | 公共基准标出的标注问题 |
-| `errors_402_first_pass.jsonl` | 第一次运行时因账户额度用完而失败的 2,440 次调用（HTTP 402），续跑后已全部补齐 |
-| `errors.jsonl.baseline_first_try` | test_0144 t2 的公共基准第一次失败的记录（judge 自造了字段名）。之后在 prompt 里明确要求照抄 gold 字段名，重跑通过。其余 159 个公共基准生成时还没有这句要求 |
 
 **花费（OpenRouter 实际扣费）**：v2 全部约 $6.10，包括一次因为改规则而作废的试跑。
 
