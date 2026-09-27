@@ -6,17 +6,21 @@ Shared by every evaluated model. `## Baseline rules`, `## Action rules` and
 Change this file only together with a version bump in `RULES_VERSION`
 (`src/eval/travelplanner_eval_v2.py`).
 
+v3.0: World Feasibility is a human annotation; Python applies the Must count
+gate and a capped 2:1 soft ratio against Gold. Budget, hotel and scope rules
+below are unchanged. Disclosures remain diagnostic, not a satisfaction credit.
+
 v2.2 (2026-09-24): the baseline writes frozen per-constraint criteria and the
 action judge no longer sees the dialogue; baseline quotes must be verbatim
 (checked in code). Disclosure is reported per violated Must, budget included.
 
 Open decisions (defaults in force, pending team confirmation):
-- Not-feasible turns: a Must the gold plan also violates may be violated only
-  if the agent explicitly discloses it; any other violated Must fails.
+- Not-feasible turns: Agent must satisfy at least as many in-scope Must
+  constraints as Gold. Matching the exact set of Gold violations is not required.
 - House rules: a requirement to allow X fails only when the listing says "No X";
   "No visitors" does not by itself block "parties".
-- Gold reference plans are `confirmed=false`; they are used as the feasibility
-  and meal-slot reference anyway.
+- Gold reference plans may be `confirmed=false`; they are still used for
+  per-constraint comparison and the unchanged meal-slot reference.
 
 ## Baseline rules
 
@@ -53,8 +57,9 @@ plan (if any) and the candidate records the agents could choose from.
    judge receives.
 5. Gold plan audit. If a gold reference plan is given, judge every in-scope gold
    field except budget against it, with the action rules below: satisfied,
-   violated or unknown, with a short evidence note. This establishes whether the
-   turn's requirements are jointly feasible. Budget, minimum nights and
+   violated or unknown, with a short evidence note. This establishes Gold's
+   satisfied counts, NOT World Feasibility, which comes from human annotation.
+   Budget, minimum nights and
    capacity of the gold plan are computed by code.
 6. Annotation issues. Report conflicts between the gold constraints and the
    dialogue: a constraint the user withdrew, a value contradicting the latest
@@ -157,16 +162,21 @@ atoms. You do not see any itinerary.
 - Hotel gate: any listing booked for fewer consecutive nights than its minimum
   nights, or a night whose listings cannot host every traveler, fails the turn.
 - Out-of-scope fields (baseline rule 3) are removed before scoring and counted.
-- Hard Success, per turn:
-  - feasible (the gold plan satisfies every in-scope Must, including budget and
-    hotel gate) or gold plan missing: every in-scope Must satisfied and the
-    hotel gate passed;
-  - not feasible: every Must the gold plan satisfies is satisfied; a Must the
-    gold plan also violates may be violated only if disclosed; hotel gate
-    passed. An undisclosed violated Must always fails.
-- Preferred / Optional satisfaction is computed only on Hard-Success turns.
+- World Feasibility is read from the human annotation, never inferred from Gold
+  failures. A missing human label with an actual Gold plan is a data error.
+- Must gate: feasible requires Ma=nM; not feasible requires Ma>=Mg. The existing
+  Agent hotel gate remains enforced. Disclosure does not alter satisfaction.
+- Sa=2Pa+Oa; Sg=2Pg+Og; soft=min(1,Sa/Sg), or 1 when Sg=0.
+  Action score = (Must gate AND hotel valid) * soft, averaged over all scored
+  turns including gate-failure zeros. No priority dominance beyond the Must gate.
+- Missing Gold plan means assumed all-satisfied Gold for Ma/Mg and soft counts.
+  Binary success then requires ALL active in-scope constraints satisfied;
+  partial continuous credit remains possible after the gate passes.
+- Unknown is not satisfied. API/schema failures are evaluation errors, not
+  model constraint failures. In-scope fields need exactly one human priority.
+- Preferred / Optional diagnostic rates remain available on Hard-Success turns.
 - Priority accuracy compares matched atoms' tiers in code; tiers never come from
   a judge.
-- Every metric reports numerator, denominator and excluded count; API failures,
-  invalid judge output and missing gold plans are counted separately and never
-  scored as model success or failure.
+- Every metric reports numerator, denominator and excluded count. API failures
+  and invalid judge output are excluded and reported; missing Gold is scored
+  with the explicit perfect-reference assumption above.

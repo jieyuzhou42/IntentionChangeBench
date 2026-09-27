@@ -4,7 +4,8 @@ Three judge calls, all governed by ``rules/travelplanner_v2.md``:
 
 * baseline   once per (instance, turn), shared by every model: gold atoms,
              activity requirements, out-of-scope fields, the gold plan's
-             constraint verdicts (feasibility) and annotation issues;
+             constraint verdicts and annotation issues (human feasibility is
+             loaded separately, never inferred by the judge);
 * action     once per (model, turn): final plan with record mapping, explicit
              revisions, per-constraint verdicts with evidence, disclosures;
 * intention  once per (model, turn): predicted atoms matched one-to-one to the
@@ -18,6 +19,8 @@ from __future__ import annotations
 import copy
 import json
 import re
+from eval.action_scoring import score_action_constraints
+from eval.baseline import constraint_tiers, validate_scoring_priorities
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
@@ -33,7 +36,7 @@ from eval.travelplanner_checks import (
     trip_cost,
 )
 
-RULES_VERSION = "travelplanner-rules-v2.2"
+RULES_VERSION = "travelplanner-rules-v3.0"
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RULES_PATH = Path(__file__).with_name("rules") / "travelplanner_v2.md"
 CALIBRATION_PATH = REPO_ROOT / "annotation" / "data" / "travelplanner_judge_calibration_v1.json"
@@ -96,7 +99,7 @@ def apply_gold_audit(
 
 
 def load_calibration(path: Path = CALIBRATION_PATH) -> List[Dict[str, Any]]:
-    return json.loads(path.read_text(encoding="utf-8"))["cases"]
+    return json.loads(path.read_text(encoding="utf-8"))["cases"] if path.exists() else []
 
 
 def fewshot_block(stage: str, exclude_instance: str, cases: Sequence[Dict[str, Any]]) -> str:
@@ -135,8 +138,7 @@ def gold_constraints(gold: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def gold_tiers(gold: Dict[str, Any]) -> Dict[str, str]:
-    priority = gold.get("priority") or {}
-    return {str(f): GOLD_TIER[level] for level in GOLD_TIER for f in priority.get(level) or []}
+    return constraint_tiers(gold)
 
 
 def dialogue_so_far(turns: Sequence[Dict[str, Any]], turn_index: int) -> List[Dict[str, Any]]:
@@ -244,6 +246,7 @@ def validate_baseline(
     out_of_scope = {str(o.get("field")) for o in raw.get("out_of_scope") or [] if isinstance(o, dict)}
     if out_of_scope - fields:
         raise ValueError(f"baseline: out_of_scope names unknown fields {sorted(out_of_scope - fields)}")
+    validate_scoring_priorities(gold, out_of_scope)
     in_scope = fields - out_of_scope - {"budget"}
     criteria = {str(c.get("gold_field")): c for c in raw.get("constraint_criteria") or [] if isinstance(c, dict)}
     if set(criteria) != in_scope:
@@ -422,10 +425,13 @@ def budget_verdict(itinerary: Any, gold_plan: Any, reference: Any, budget: Any, 
 
 
 def feasibility(baseline: Dict[str, Any], gold: Dict[str, Any]) -> Dict[str, Any]:
-    """Which in-scope Must constraints the gold plan itself violates."""
+    """Human feasibility (default true), with Gold violations as diagnostics."""
     code = baseline.get("gold_plan_code") or {}
-    if not baseline.get("has_gold_plan"):
-        return {"status": "gold_plan_missing", "violated_musts": []}
+    human = baseline.get("world_feasible")
+    if human is None:
+        human = True
+    if type(human) is not bool:
+        raise ValueError("Invalid human World Feasibility; rebuild the baseline")
     tiers = gold_tiers(gold)
     out = set(baseline["out_of_scope_fields"])
     violated = {
@@ -434,7 +440,9 @@ def feasibility(baseline: Dict[str, Any], gold: Dict[str, Any]) -> Dict[str, Any
     }
     if (code.get("budget") or {}).get("status") == "violated" and tiers.get("budget") == "must_have":
         violated.add("budget")
-    return {"status": "not_feasible" if violated else "feasible", "violated_musts": sorted(violated),
+    return {"status": "feasible" if human is True else "not_feasible" if human is False else "unlabeled",
+            "world_feasible": human, "gold_plan_missing": not baseline.get("has_gold_plan"),
+            "violated_musts": sorted(violated),
             "gold_hotel_valid": (code.get("hotel") or {}).get("valid")}
 
 
@@ -451,6 +459,7 @@ def score_action(
     constraints = gold_constraints(gold)
     tiers = gold_tiers(gold)
     out = set(baseline["out_of_scope_fields"])
+    validate_scoring_priorities(gold, out)
     in_scope = [f for f in constraints if f not in out]
     revised = {
         (int(p.get("day")), str(p.get("slot")))
@@ -469,15 +478,15 @@ def score_action(
     undisclosed = [f for f in violated_musts if f not in disclosed]
     feas = feasibility(baseline, gold)
 
-    if feas["status"] == "not_feasible":
-        gold_bad = set(feas["violated_musts"])
-        must_ok = all(
-            status.get(f) == "satisfied" or (f in gold_bad and status.get(f) == "violated" and f in disclosed)
-            for f in musts
-        )
-    else:
-        must_ok = all(status.get(f) == "satisfied" for f in musts)
-    hard_success = must_ok and hotel["valid"]
+    gold_status = None
+    if baseline.get("has_gold_plan"):
+        gold_status = {j["gold_field"]: j["status"] for j in baseline["judge"].get("gold_plan_judgments") or []}
+        gold_budget = (baseline.get("gold_plan_code") or {}).get("budget")
+        if gold_budget is not None:
+            gold_status["budget"] = gold_budget["status"]
+    scored = score_action_constraints(tiers=tiers, agent=status, gold=gold_status,
+        world_feasible=feas["world_feasible"], out_of_scope=out, action_valid=hotel["valid"])
+    hard_success = scored["gate_pass"]
 
     by_tier: Dict[str, Dict[str, int]] = {}
     for f in in_scope:
@@ -485,6 +494,7 @@ def score_action(
         bucket = by_tier.setdefault(tier, {"satisfied": 0, "violated": 0, "unknown": 0})
         bucket[status.get(f, "unknown")] += 1
     return {
+        **scored,
         "hard_success": hard_success,
         "strict_success": all(status.get(f) == "satisfied" for f in musts),
         "feasibility": feas,
@@ -562,10 +572,10 @@ def summarize(rows: Sequence[Dict[str, Any]], shards: Iterable[str]) -> Dict[str
         return {"value": _ratio(sum(values), len(values)), "numerator": sum(values),
                 "denominator": len(values), "excluded": excluded}
 
-    scored = [r for r in rows if r.get("action") and r.get("intention")]
+    scored = [r for r in rows if r.get("action")]
     errors = [r for r in rows if not (r.get("action") and r.get("intention"))]
     action = [r["action"] for r in scored]
-    intent = [r["intention"] for r in scored]
+    intent = [r["intention"] for r in rows if r.get("intention")]
     hard = [r for r in scored if r["action"]["hard_success"]]
 
     def tier_rate(tier: str, turns: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
@@ -586,9 +596,14 @@ def summarize(rows: Sequence[Dict[str, Any]], shards: Iterable[str]) -> Dict[str
         "turns": len(rows),
         "scored_turns": len(scored),
         "judge_errors": len(errors),
-        "gold_plan_missing": feas.count("gold_plan_missing"),
+        "gold_plan_missing": sum(a["gold_assumed_perfect"] for a in action),
+        "action_scored_turns": len(action),
+        "intention_scored_turns": len(intent),
         "not_feasible_turns": feas.count("not_feasible"),
         "action": {
+            "action_score": metric([a["action_score"] for a in action], len(rows) - len(action)),
+            "action_success": metric([float(a["action_success"]) for a in action], len(rows) - len(action)),
+            "must_gate": metric([float(a["must_gate"]) for a in action], len(rows) - len(action)),
             "hard_success": metric([float(a["hard_success"]) for a in action]),
             "strict_success": metric([float(a["strict_success"]) for a in action]),
             "hotel_gate_fail": metric([float(not a["hotel"]["valid"]) for a in action]),

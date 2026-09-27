@@ -55,6 +55,7 @@ def test_fewshot_leaves_out_the_judged_instance():
 def _baseline(violated_by_gold):
     return {
         "has_gold_plan": True,
+        "world_feasible": not bool(violated_by_gold),
         "out_of_scope_fields": [],
         "gold_plan_code": {"budget": None, "hotel": {"valid": True}},
         "judge": {"gold_plan_judgments": [
@@ -76,12 +77,13 @@ def _score(baseline, statuses, disclosed=()):
                            reference=REFERENCE, gold_plan=None, people=1)
 
 
-def test_not_feasible_turn_passes_only_with_disclosed_violation_of_gold_infeasible_must():
+def test_not_feasible_turn_compares_must_counts_and_records_disclosures_separately():
     baseline = _baseline({"rating"})
     assert _score(baseline, {"room_type": "satisfied", "rating": "violated"}, disclosed=["rating"])["hard_success"]
-    assert not _score(baseline, {"room_type": "satisfied", "rating": "violated"})["hard_success"]
-    # A Must the gold plan satisfies may not be traded away, disclosed or not.
-    assert not _score(baseline, {"room_type": "violated", "rating": "satisfied"}, disclosed=["room_type"])["hard_success"]
+    assert _score(baseline, {"room_type": "satisfied", "rating": "violated"})["hard_success"]
+    # Same count is sufficient; matching the exact violated fields is no longer required.
+    assert _score(baseline, {"room_type": "violated", "rating": "satisfied"}, disclosed=["room_type"])["hard_success"]
+    assert not _score(baseline, {"room_type": "violated", "rating": "violated"})["hard_success"]
 
 
 def test_feasible_turn_requires_every_must():
@@ -117,7 +119,8 @@ def _baseline_raw(**overrides):
 
 
 def test_baseline_requires_criteria_and_verbatim_quotes():
-    gold = {"constraints": {"budget": 1800, "lunch": "cheap"}}
+    gold = {"constraints": {"budget": 1800, "lunch": "cheap"},
+            "priority": {"high": ["budget"], "medium": ["lunch"], "low": []}}
     assert V2.validate_baseline(_baseline_raw(), gold, False, DIALOGUE)
     for bad in (
         _baseline_raw(constraint_criteria=[]),

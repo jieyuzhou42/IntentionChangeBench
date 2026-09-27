@@ -29,8 +29,8 @@ for path in (str(REPO_ROOT / "src"), str(REPO_ROOT / "WebShop"), str(REPO_ROOT /
 from common.llm_clients import OpenRouterChatClient
 from eval.human_annotated_pilot import _compact_travel_search_results, atomic_write_json
 from eval import travelplanner_eval_v2 as V2
+from eval.baseline import BASELINE_VERSION, fingerprint, human_world_feasibility, normalize_gold, validate_scoring_priorities
 from eval.travelplanner_checks import hotel_validity
-from run_single_agent_travel_eval_case import flatten_gold_for_entity_scoring
 from mine_travelplanner_judge_cases import db_verdict
 
 DEFAULT_GOLD_DIR = REPO_ROOT / "annotation" / "data" / "exports" / "travelplanner_v4"
@@ -67,13 +67,15 @@ def load_data(run_dir: Path, gold_dir: Path) -> Dict[str, Any]:
             instances[iid] = {"shard": entry["shard_slug"], "world": instance.get("world_state") or {}, "turns": instance["turns"]}
             for index, turn in enumerate(instance["turns"]):
                 turn_id = int(turn.get("turn_id", index))
-                gold = flatten_gold_for_entity_scoring(turn.get("gold_current_intention") or {})
+                gold = normalize_gold(turn.get("gold_current_intention") or {})
                 gold, applied = V2.apply_gold_audit(iid, turn_id, gold, audit)
                 plan = (((turn.get("gold_action") or {}).get("action_payload") or {}).get("plan") or {}).get("itinerary")
                 gold_turns[(iid, turn_id)] = {
                     "instance_id": iid, "turn_id": turn_id, "turn_index": index, "shard": entry["shard_slug"],
                     "gold": gold, "audit_applied": applied, "gold_delta": turn.get("gold_delta") or {},
                     "gold_plan": plan if isinstance(plan, list) and plan else None,
+                    "world_feasible": human_world_feasibility(turn),
+                    "reference_sha256": fingerprint((instance.get("world_state") or {}).get("reference_information")),
                     "pool": _compact_travel_search_results((turn.get("env_feedback") or {}).get("search_results")),
                     "linguistic_style": turn.get("linguistic_style"),
                 }
@@ -103,14 +105,19 @@ class Judge:
 
     def call(self, cache: Path, prompt: str, validate: Callable[[Dict[str, Any]], Dict[str, Any]], meta: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         if cache.exists():
-            return json.loads(cache.read_text(encoding="utf-8"))
+            record = json.loads(cache.read_text(encoding="utf-8"))
+            if (record.get("rules_version") != V2.RULES_VERSION or record.get("prompt_sha256") != fingerprint(prompt)
+                    or record.get("judge_model") != self.model or any(record.get(k) != v for k, v in meta.items())):
+                raise ValueError(f"Stale judge cache {cache}; use a new --out or remove the stale cache")
+            validate(record["judge"])
+            return record
         last = None
         for attempt in range(1, MAX_ATTEMPTS + 1):
             try:
                 raw = self.client.generate_json(prompt)
                 result = validate(raw)
                 record = {**meta, "judge_model": self.model, "rules_version": V2.RULES_VERSION,
-                          "attempts": attempt, "prompt_chars": len(prompt), "judge": result}
+                          "attempts": attempt, "prompt_chars": len(prompt), "prompt_sha256": fingerprint(prompt), "judge": result}
                 atomic_write_json(cache, record)
                 return record
             except Exception as exc:  # noqa: BLE001 - every failure is retried, then logged
@@ -189,12 +196,16 @@ def prepare(args, data, judge: Judge) -> None:
                 baseline_path(args.out, iid, turn_id), prompt,
                 lambda raw, g=g, d=dialogue: V2.validate_baseline(raw, g["gold"], bool(g["gold_plan"]), d),
                 {"stage": "baseline", "instance_id": iid, "turn_id": turn_id,
-                 "has_gold_plan": bool(g["gold_plan"]), "gold_plan_code": code, "audit_applied": g["audit_applied"]},
+                 "has_gold_plan": bool(g["gold_plan"]), "gold_plan_code": code, "audit_applied": g["audit_applied"],
+                 "world_feasible": g["world_feasible"], "baseline_version": BASELINE_VERSION,
+                 "rules_sha256": fingerprint(rules),
+                 "source_sha256": fingerprint(g)},
             )
             if record and "out_of_scope_fields" not in record:
                 record["out_of_scope_fields"] = sorted(
                     {str(o["field"]) for o in record["judge"].get("out_of_scope") or []}
                 )
+                validate_scoring_priorities(g["gold"], record["out_of_scope_fields"])
                 atomic_write_json(baseline_path(args.out, iid, turn_id), record)
 
         jobs.append(job)
@@ -224,6 +235,8 @@ def run(args, data, judge: Judge) -> None:
                 if not base_file.exists():
                     raise SystemExit(f"missing baseline {base_file}; run prepare first")
                 baseline = json.loads(base_file.read_text(encoding="utf-8"))
+                if baseline.get("source_sha256") != fingerprint(g) or baseline.get("rules_sha256") != fingerprint(rules):
+                    raise ValueError(f"{base_file}: source changed; rebuild baseline")
                 if baseline.get("rules_version") != V2.RULES_VERSION:
                     raise SystemExit(
                         f"{base_file} was built with {baseline.get('rules_version')}, not {V2.RULES_VERSION}; "
@@ -262,7 +275,8 @@ def run(args, data, judge: Judge) -> None:
                 }
                 intention_prompt = V2.build_intention_prompt(intention_payload, rules)
                 previous_items = items
-                meta = {"model": model, "shard": entry["shard_slug"], "instance_id": iid, "turn_id": turn_id}
+                meta = {"model": model, "shard": entry["shard_slug"], "instance_id": iid, "turn_id": turn_id,
+                        "input_sha256": fingerprint(turn), "baseline_sha256": fingerprint(baseline)}
                 tag = f"{model}__{iid}__t{turn_id}"
 
                 def action_job(p=action_prompt, f=set(fields), m=meta, t=tag):
@@ -313,20 +327,31 @@ def summarize_cmd(args, data) -> None:
                 base_file = baseline_path(args.out, iid, turn_id)
                 a_file = args.out / f"action{args.tag}" / f"{model}__{iid}__t{turn_id}.json"
                 i_file = args.out / f"intention{args.tag}" / f"{model}__{iid}__t{turn_id}.json"
-                if base_file.exists() and a_file.exists() and i_file.exists():
+                if base_file.exists():
                     baseline = json.loads(base_file.read_text(encoding="utf-8"))
-                    a = json.loads(a_file.read_text(encoding="utf-8"))["judge"]
-                    i = json.loads(i_file.read_text(encoding="utf-8"))["judge"]
-                    row["action"] = V2.score_action(
-                        gold=g["gold"], baseline=baseline, judgment=a,
-                        itinerary=(turn.get("action") or {}).get("itinerary"), reference=reference,
-                        gold_plan=g["gold_plan"], people=people_of(g["gold"], instance["world"]),
-                    )
-                    row["intention"] = V2.score_intention(
-                        gold=g["gold"], gold_delta=g["gold_delta"], baseline=baseline, judgment=i,
-                        items=V2.intent_items(turn.get("agent_intention_prediction")), first_turn=turn is turns[0],
-                    )
-                    row["action_judgment"] = a
+                    if (baseline.get("rules_version") != V2.RULES_VERSION or baseline.get("source_sha256") != fingerprint(g)
+                            or baseline.get("rules_sha256") != fingerprint(V2.load_rules())):
+                        raise ValueError(f"{base_file}: stale baseline; rerun prepare in a new output directory")
+                    for stage, file in (("action", a_file), ("intention", i_file)):
+                        if not file.exists():
+                            continue
+                        record = json.loads(file.read_text(encoding="utf-8"))
+                        if (record.get("rules_version") != V2.RULES_VERSION or record.get("input_sha256") != fingerprint(turn)
+                                or record.get("baseline_sha256") != fingerprint(baseline)):
+                            raise ValueError(f"{file}: stale judgment; rerun run")
+                        if stage == "action":
+                            a = record["judge"]
+                            row["action"] = V2.score_action(
+                                gold=g["gold"], baseline=baseline, judgment=a,
+                                itinerary=(turn.get("action") or {}).get("itinerary"), reference=reference,
+                                gold_plan=g["gold_plan"], people=people_of(g["gold"], instance["world"]),
+                            )
+                            row["action_judgment"] = a
+                        else:
+                            row["intention"] = V2.score_intention(
+                                gold=g["gold"], gold_delta=g["gold_delta"], baseline=baseline, judgment=record["judge"],
+                                items=V2.intent_items(turn.get("agent_intention_prediction")), first_turn=turn is turns[0],
+                            )
                 rows.append(row)
 
     shards = sorted({r["shard"] for r in rows})
@@ -424,6 +449,8 @@ def calibrate(rows: List[Dict[str, Any]], out: Path) -> Dict[str, Any]:
 
 
 def tables(metrics: Dict[str, Any], shards: List[str], calibration: Dict[str, Any], quality: Dict[str, Any]) -> str:
+    for model in metrics:
+        DISPLAY.setdefault(model, model)
     models = [m for m in DISPLAY if m in metrics]
     out = ["### Action level (v2)", "",
            "| 模型 | " + " | ".join(f"{s} Hard Success" for s in shards) + " | Hard Success (turn macro) | Strict (all Must) | Must 满足 | Preferred（仅 Hard Success 轮） | Optional（仅 Hard Success 轮） |",
@@ -465,10 +492,20 @@ def tables(metrics: Dict[str, Any], shards: List[str], calibration: Dict[str, An
             cells.append("–" if not q else
                          f"{q['n']} / {pct(q['unknown'] / q['n'])} / {pct(q['db_agree'] / q['db_checked']) if q['db_checked'] else '–'} ({q['db_checked']})")
         out.append(f"| {field} | " + " | ".join(cells) + " |")
-    return "\n".join(out) + "\n"
+    primary = ["### Action score (human feasibility, gated Gold soft ratio 2:1)", "",
+               "| Model | Mean Action score | Binary success | Must gate | Action coverage | Intention coverage |",
+               "|---|---:|---:|---:|---:|---:|"]
+    for m in models:
+        a, s = metrics[m]["action"], metrics[m]
+        primary.append(f"| {DISPLAY[m]} | {pct(a['action_score']['value'])}% | {pct(a['action_success']['value'])}% | "
+                       f"{pct(a['must_gate']['value'])}% | {s['action_scored_turns']}/{s['turns']} | "
+                       f"{s['intention_scored_turns']}/{s['turns']} |")
+    return "\n".join(primary + [""] + out) + "\n"
 
 
 def main() -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("stage", choices=["prepare", "run", "summarize"])
     parser.add_argument("--run-dir", type=Path, required=True)
