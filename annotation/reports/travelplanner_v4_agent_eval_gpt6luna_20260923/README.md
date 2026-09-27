@@ -23,7 +23,7 @@
 - `origin/main` 当前是 `2c6a0d6`（2026-09-22，"Add annotated travel planner shards 007 and 008"），这个 commit 只新增了两个标注数据文件，没有代码改动。
 - 本分支 `travelplanner-zijian-update` 与 main 的 merge-base 是 `47346d5`：本地领先 3 个 commit，落后 1 个（就是上面那个数据 commit）。
 - 逐文件对比了 `src/` 和 `scripts/` 下 main 跟踪的所有文件：本地工作区与 `origin/main` **完全一致**。唯一的例外是 `src/eval/README.md`，它是本地未提交的文档改动。
-- 本地独有的文件：`src/eval/judge_v2.py`、`score_v2.py`、`pool_evidence.py`（已提交），以及 `src/eval/agent_v2.py`、`scripts/rejudge_saved_eval.py`（未跟踪）。这些都不在 main 的调用链上，本次评测**没有使用**。
+- 当时本地另有一套多票 judge、评分及候选池实现，本次评测**没有使用**；该旧实现及专用入口现已删除。当前规则化评测入口为 `scripts/run_travelplanner_eval_v2.py`。
 - 结论：本次用到的 main 代码，包括 `build_judge_prompt`、`score_judged_turn`、`aggregate_scored_rows`、`flatten_gold_for_entity_scoring` 和 `intent_schema`，都与 main 一致。本次没有做 merge。
 
 ## 2. 评测设置

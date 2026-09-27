@@ -1,0 +1,476 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 0,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "I'd like a solo trip from Moab to two Colorado cities, March 19-23, 2022, on $3,100."
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 3100,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "visiting_city_number",
+      "value": 2,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 - 2022-03-19",
+            "current_city": "Moab to Denver, Colorado",
+            "transportation": "F3811327",
+            "breakfast": "-",
+            "lunch": "-",
+            "dinner": "The Urban Socialite",
+            "attraction": "-",
+            "accommodation": "Peaceful, beautiful home away "
+          },
+          {
+            "day": "Day 2 - 2022-03-20",
+            "current_city": "Denver, Colorado",
+            "transportation": "-",
+            "breakfast": "Nathu's Sweets",
+            "lunch": "TBH - The Big House Cafe",
+            "dinner": "Kloof Street House",
+            "attraction": "Denver Art Museum; Denver Botanic Gardens",
+            "accommodation": "Peaceful, beautiful home away "
+          },
+          {
+            "day": "Day 3 - 2022-03-21",
+            "current_city": "Denver to Gunnison, Colorado",
+            "transportation": "F3827189",
+            "breakfast": "Sweet Sensations",
+            "lunch": "Cafe Diva",
+            "dinner": "SALT",
+            "attraction": "Colorado State Capitol; I.O.O.F. Park",
+            "accommodation": "Full-size loft bed in East Village"
+          },
+          {
+            "day": "Day 4 - 2022-03-22",
+            "current_city": "Gunnison, Colorado",
+            "transportation": "-",
+            "breakfast": "Mocha",
+            "lunch": "Tughlaq",
+            "dinner": "Timboo Cafe",
+            "attraction": "Black Canyon of the Gunnison National Park; Gunnison Valley Observatory",
+            "accommodation": "Full-size loft bed in East Village"
+          },
+          {
+            "day": "Day 5 - 2022-03-23",
+            "current_city": "Gunnison, Colorado",
+            "transportation": "",
+            "breakfast": "Organic German Bakeshop - Brown Bread Bakery",
+            "lunch": "Basil & Thyme",
+            "dinner": "Larry's China - Taj Vivanta",
+            "attraction": "Hartman Rocks; West Tomichi River Park",
+            "accommodation": "-"
+          }
+        ]
+      }
+    },
+    "restoration_source": {
+      "file": "C:\\Users\\jieyu\\intention_shift_benchmark\\IntentionChangeBench\\data\\travelplanner\\travel_planner_v3.json",
+      "instance_id": "travelplanner_test_0144",
+      "turn_id": 0,
+      "field": "agent_action.action_payload.plan",
+      "note": "Original itinerary restored for Gold Action editing. Review against the rewritten current intention before confirming; source plans are copied without adaptation."
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-19",
+        "current_city": "Denver",
+        "transportation": "Flight F3811327 from Moab to Denver, departing 18:16 and arriving 19:28; fare $100",
+        "breakfast": "Packed breakfast brought from Moab",
+        "lunch": "Packed lunch brought from Moab",
+        "dinner": "Sweet Sensations ($14)",
+        "attraction": "Big Blue Bear",
+        "accommodation": "Peaceful, beautiful home away (night 1 of 2, $414 per night)"
+      },
+      {
+        "day": "2022-03-20",
+        "current_city": "Denver",
+        "transportation": "-",
+        "breakfast": "Sweet Sensations ($14)",
+        "lunch": "Nukkadwala ($31)",
+        "dinner": "Al Yousuf ($32)",
+        "attraction": "Denver Art Museum",
+        "accommodation": "Peaceful, beautiful home away (night 2 of 2, $414 per night)"
+      },
+      {
+        "day": "2022-03-21",
+        "current_city": "Gunnison",
+        "transportation": "Flight F3827189 from Denver to Gunnison, departing 13:26 and arriving 14:17; fare $61",
+        "breakfast": "Sweet Sensations in Denver ($14)",
+        "lunch": "Al Yousuf in Denver ($32)",
+        "dinner": "Tughlaq in Gunnison ($18)",
+        "attraction": "I.O.O.F. Park",
+        "accommodation": "Full-size loft bed in East Village (night 1 of 2, $104 per night)"
+      },
+      {
+        "day": "2022-03-22",
+        "current_city": "Gunnison",
+        "transportation": "-",
+        "breakfast": "Shree Bikaner Misthan Bhandar ($15)",
+        "lunch": "Tughlaq ($18)",
+        "dinner": "Mocha ($30)",
+        "attraction": "Hartman Rocks",
+        "accommodation": "Full-size loft bed in East Village (night 2 of 2, $104 per night)"
+      },
+      {
+        "day": "2022-03-23",
+        "current_city": "Gunnison",
+        "transportation": "Return to Moab is infeasible in the available results: no Gunnison-to-Moab flight is available on 2022-03-23, and no supported ground option is provided",
+        "breakfast": "Shree Bikaner Misthan Bhandar ($15)",
+        "lunch": "Tughlaq ($18)",
+        "dinner": "Packed dinner",
+        "attraction": "Jorgensen Park",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "Denver and Gunnison provide two distinct Colorado cities with supported outbound and intercity flights. Both accommodations satisfy solo occupancy and their minimum-night rules. The known subtotal is $1,448: $1,036 lodging, $161 flights, and $251 restaurant meals, below the $3,100 budget. Packed-food costs, attraction admission, and local travel are unpriced and are not counted as free. The unmet requirement is the March 23 return to Moab because the fixed results explicitly show no flight and provide no supported ground alternative."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Denver": [
+      {
+        "Name": "Big Blue Bear",
+        "Latitude": 39.7436238,
+        "Longitude": -104.9952912,
+        "Address": "750-776 14th St, Denver, CO 80202, USA",
+        "Phone": "Unknown",
+        "Website": "http://bluebearstudios.com/",
+        "City": "Denver"
+      },
+      {
+        "Name": "Denver Art Museum",
+        "Latitude": 39.73718780000001,
+        "Longitude": -104.9893451,
+        "Address": "100 W 14th Ave Pkwy, Denver, CO 80204, USA",
+        "Phone": "(720) 865-5000",
+        "Website": "https://denverartmuseum.org/",
+        "City": "Denver"
+      },
+      {
+        "Name": "Denver Botanic Gardens",
+        "Latitude": 39.7320964,
+        "Longitude": -104.9612839,
+        "Address": "1007 York St, Denver, CO 80206, USA",
+        "Phone": "(720) 865-3500",
+        "Website": "https://www.botanicgardens.org/",
+        "City": "Denver"
+      },
+      {
+        "Name": "Colorado State Capitol",
+        "Latitude": 39.73932509999999,
+        "Longitude": -104.9848069,
+        "Address": "200 E Colfax Ave, Denver, CO 80203, USA",
+        "Phone": "(303) 866-2604",
+        "Website": "https://www.colorado.gov/pacific/capitol",
+        "City": "Denver"
+      }
+    ],
+    "Restaurants in Denver": [
+      {
+        "Name": "Sweet Sensations",
+        "Average Cost": 14,
+        "Cuisines": "Tea, Pizza, BBQ, Italian",
+        "Aggregate Rating": 0.0,
+        "City": "Denver"
+      },
+      {
+        "Name": "Nukkadwala",
+        "Average Cost": 31,
+        "Cuisines": "Desserts, Tea, French, BBQ, Seafood",
+        "Aggregate Rating": 0.0,
+        "City": "Denver"
+      },
+      {
+        "Name": "Al Yousuf",
+        "Average Cost": 32,
+        "Cuisines": "Desserts, Tea, Pizza, French, American",
+        "Aggregate Rating": 3.7,
+        "City": "Denver"
+      },
+      {
+        "Name": "The Urban Socialite",
+        "Average Cost": 34,
+        "Cuisines": "Cafe, Indian, Desserts, Italian",
+        "Aggregate Rating": 3.8,
+        "City": "Denver"
+      },
+      {
+        "Name": "Nathu's Sweets",
+        "Average Cost": 12,
+        "Cuisines": "Tea, Bakery, BBQ, Fast Food",
+        "Aggregate Rating": 2.1,
+        "City": "Denver"
+      },
+      {
+        "Name": "TBH - The Big House Cafe",
+        "Average Cost": 22,
+        "Cuisines": "Cafe, Indian, Seafood, Fast Food",
+        "Aggregate Rating": 4.0,
+        "City": "Denver"
+      },
+      {
+        "Name": "Kloof Street House",
+        "Average Cost": 53,
+        "Cuisines": "Pizza, Bakery, BBQ, Fast Food, Mediterranean",
+        "Aggregate Rating": 4.5,
+        "City": "Denver"
+      },
+      {
+        "Name": "Cafe Diva",
+        "Average Cost": 44,
+        "Cuisines": "Chinese, Cafe, Desserts, Fast Food",
+        "Aggregate Rating": 3.8,
+        "City": "Denver"
+      }
+    ],
+    "Accommodations in Denver": [
+      {
+        "NAME": "Peaceful, beautiful home away ",
+        "price": 414.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No smoking & No visitors & No parties",
+        "minimum nights": 2.0,
+        "maximum occupancy": 4,
+        "review rate number": 1.0,
+        "city": "Denver"
+      }
+    ],
+    "Attractions in Gunnison": [
+      {
+        "Name": "I.O.O.F. Park",
+        "Latitude": 38.5456696,
+        "Longitude": -106.9265976,
+        "Address": "124 E Virginia Ave, Gunnison, CO 81230, USA",
+        "Phone": "(970) 641-8060",
+        "Website": "Unknown",
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Hartman Rocks",
+        "Latitude": 38.50053990000001,
+        "Longitude": -106.9501448,
+        "Address": "Gunnison, CO 81230, USA",
+        "Phone": "(970) 642-4940",
+        "Website": "https://www.blm.gov/mountainbike/colorado/hartmanrocks.html",
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Jorgensen Park",
+        "Latitude": 38.5424494,
+        "Longitude": -106.9203665,
+        "Address": "Gunnison, CO 81230, USA",
+        "Phone": "(970) 641-8061",
+        "Website": "https://www.gunnisonco.gov/jorgensen_park/index.php",
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Black Canyon of the Gunnison National Park",
+        "Latitude": 38.5753936,
+        "Longitude": -107.7415961,
+        "Address": "Colorado, USA",
+        "Phone": "(970) 641-2337",
+        "Website": "http://www.nps.gov/blca/index.htm",
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Gunnison Valley Observatory",
+        "Latitude": 38.50965559999999,
+        "Longitude": -106.9402298,
+        "Address": "2804 Co Rd 38, Gunnison, CO 81230, USA",
+        "Phone": "(970) 642-1111",
+        "Website": "http://gunnisonvalleyobservatory.com/",
+        "City": "Gunnison"
+      },
+      {
+        "Name": "West Tomichi River Park",
+        "Latitude": 38.54597649999999,
+        "Longitude": -106.9505876,
+        "Address": "113 Emerald Ln, Gunnison, CO 81230, USA",
+        "Phone": "Unknown",
+        "Website": "Unknown",
+        "City": "Gunnison"
+      }
+    ],
+    "Restaurants in Gunnison": [
+      {
+        "Name": "Tughlaq",
+        "Average Cost": 18,
+        "Cuisines": "French, Pizza, Fast Food",
+        "Aggregate Rating": 3.5,
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Shree Bikaner Misthan Bhandar",
+        "Average Cost": 15,
+        "Cuisines": "Tea, Pizza, Seafood",
+        "Aggregate Rating": 3.1,
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Mocha",
+        "Average Cost": 30,
+        "Cuisines": "Tea, Cafe, Pizza, BBQ",
+        "Aggregate Rating": 4.0,
+        "City": "Gunnison"
+      },
+      {
+        "Name": "SALT",
+        "Average Cost": 44,
+        "Cuisines": "Tea, Chinese, BBQ",
+        "Aggregate Rating": 4.3,
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Timboo Cafe",
+        "Average Cost": 24,
+        "Cuisines": "Fast Food, Cafe, Pizza, Seafood",
+        "Aggregate Rating": 4.2,
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Organic German Bakeshop - Brown Bread Bakery",
+        "Average Cost": 19,
+        "Cuisines": "Desserts, Pizza, BBQ, Cafe, Indian",
+        "Aggregate Rating": 3.2,
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Basil & Thyme",
+        "Average Cost": 22,
+        "Cuisines": "Desserts, Tea, Pizza, BBQ, Chinese",
+        "Aggregate Rating": 3.6,
+        "City": "Gunnison"
+      },
+      {
+        "Name": "Larry's China - Taj Vivanta",
+        "Average Cost": 33,
+        "Cuisines": "Cafe, Bakery, Indian, Italian",
+        "Aggregate Rating": 3.7,
+        "City": "Gunnison"
+      }
+    ],
+    "Accommodations in Gunnison": [
+      {
+        "NAME": "Full-size loft bed in East Village",
+        "price": 104.0,
+        "room type": "Private room",
+        "house_rules": "No visitors & No pets & No parties",
+        "minimum nights": 1.0,
+        "maximum occupancy": 1,
+        "review rate number": 4.0,
+        "city": "Gunnison"
+      }
+    ],
+    "Flight from Moab to Denver on 2022-03-19": [
+      {
+        "Flight Number": "F3811327",
+        "Price": 100,
+        "DepTime": "18:16",
+        "ArrTime": "19:28",
+        "ActualElapsedTime": "1 hours 12 minutes",
+        "FlightDate": "2022-03-19",
+        "OriginCityName": "Moab",
+        "DestCityName": "Denver",
+        "Distance": 283.0
+      }
+    ],
+    "Self-driving from Moab to Denver": "self-driving, from Moab to Denver, duration: 5 hours 23 mins, distance: 570 km, cost: 28",
+    "Taxi from Moab to Denver": "taxi, from Moab to Denver, duration: 5 hours 23 mins, distance: 570 km, cost: 570",
+    "Flight from Denver to Gunnison on 2022-03-21": [
+      {
+        "Flight Number": "F3827189",
+        "Price": 61,
+        "DepTime": "13:26",
+        "ArrTime": "14:17",
+        "ActualElapsedTime": "0 hours 51 minutes",
+        "FlightDate": "2022-03-21",
+        "OriginCityName": "Denver",
+        "DestCityName": "Gunnison",
+        "Distance": 152.0
+      }
+    ],
+    "Self-driving from Denver to Gunnison": "self-driving, from Denver to Gunnison, duration: 3 hours 39 mins, distance: 323 km, cost: 16",
+    "Taxi from Denver to Gunnison": "taxi, from Denver to Gunnison, duration: 3 hours 39 mins, distance: 323 km, cost: 323",
+    "Flight from Gunnison to Moab on 2022-03-23": "There is no flight from Gunnison to Moab on 2022-03-23.",
+    "Self-driving from Gunnison to Moab": "self-driving, from Gunnison to Moab, duration: 4 hours 1 min, distance: 380 km, cost: 19",
+    "Taxi from Gunnison to Moab": "taxi, from Gunnison to Moab, duration: 4 hours 1 min, distance: 380 km, cost: 380"
+  },
+  "background": {
+    "org": "Moab",
+    "dest": "Colorado",
+    "days": 5,
+    "visiting_city_number": 2,
+    "date": [
+      "2022-03-19",
+      "2022-03-20",
+      "2022-03-21",
+      "2022-03-22",
+      "2022-03-23"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 3100,
+    "query": "Could you help me set up a 5-day solitary trip, starting from Moab and heading to two different cities in Colorado, from March 19th to March 23rd, 2022? I have a budget of $3,100 for this trip.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 1448.0,
+        "unpriced": [
+          "breakfast: packed breakfast brought from moab",
+          "lunch: packed lunch brought from moab",
+          "dinner: packed dinner"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 1566.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

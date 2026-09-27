@@ -1,0 +1,455 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 0,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Could you plan Sioux Falls to two cities in Arizona, March 16-20, 2022? I have $2,500. The budget is soft"
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 2500,
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 - 2022-03-16",
+            "current_city": "Sioux Falls to Flagstaff",
+            "transportation": "F4045477",
+            "breakfast": "Communiti",
+            "lunch": "Big Yellow Door",
+            "dinner": "Hungry Heroes",
+            "attraction": "Downtown Flagstaff",
+            "accommodation": "SHARE;SAFE;CHEAPEST;15 MIN TO HEART OF MANHATTAN."
+          },
+          {
+            "day": "Day 2 - 2022-03-17",
+            "current_city": "Flagstaff",
+            "transportation": "-",
+            "breakfast": "Hotel Malabar",
+            "lunch": "Kabab And Tadka",
+            "dinner": "38 Barracks",
+            "attraction": "Museum of Northern Arizona; Lowell Observatory",
+            "accommodation": "SHARE;SAFE;CHEAPEST;15 MIN TO HEART OF MANHATTAN."
+          },
+          {
+            "day": "Day 3 - 2022-03-18",
+            "current_city": "Flagstaff to Phoenix",
+            "transportation": "F3804854",
+            "breakfast": "Tea Nation",
+            "lunch": "Vero Gusto",
+            "dinner": "Spooky Sky",
+            "attraction": "Heard Museum",
+            "accommodation": "1 BR in Carroll Gardens Townhouse"
+          },
+          {
+            "day": "Day 4 - 2022-03-19",
+            "current_city": "Phoenix",
+            "transportation": "-",
+            "breakfast": "Amritsari Naan Hut",
+            "lunch": "Delhi Dairy",
+            "dinner": "Cafe Amigo",
+            "attraction": "Desert Botanical Garden; Hole in the Rock",
+            "accommodation": "1 BR in Carroll Gardens Townhouse"
+          },
+          {
+            "day": "Day 5 - 2022-03-20",
+            "current_city": "Phoenix to Sioux Falls",
+            "transportation": "-",
+            "breakfast": "Subway",
+            "lunch": "Mama Loca",
+            "dinner": "-",
+            "attraction": "The Japanese Friendship Garden of Phoenix",
+            "accommodation": "-"
+          }
+        ],
+        "closest_match_substitutions": [
+          {
+            "constraint": "Transportation from Sioux Falls to the first Arizona city on 2022-03-16",
+            "requested_value": "Sioux Falls to Flagstaff transportation",
+            "selected_value": "-",
+            "evidence_category": "FlightSearch",
+            "reason": "The Notebook states that no flight from Sioux Falls to Flagstaff was available on March 16, 2022, and contains no other real transportation option for this route."
+          },
+          {
+            "constraint": "Transportation between two Arizona cities",
+            "requested_value": "Flagstaff to Phoenix transportation on 2022-03-18",
+            "selected_value": "-",
+            "evidence_category": "FlightSearch",
+            "reason": "The Notebook states that no flight from Flagstaff to Phoenix was available on March 18, 2022, and contains no other real transportation option for this route."
+          },
+          {
+            "constraint": "Return transportation at the end of the trip",
+            "requested_value": "Phoenix to Sioux Falls transportation on 2022-03-20",
+            "selected_value": "-",
+            "evidence_category": "FlightSearch",
+            "reason": "The Notebook states that no flight from Phoenix to Sioux Falls was available on March 20, 2022, and contains no other real transportation option for this route."
+          }
+        ]
+      }
+    },
+    "restoration_source": {
+      "file": "C:\\Users\\jieyu\\intention_shift_benchmark\\IntentionChangeBench\\data\\travelplanner\\travel_planner_v3.json",
+      "instance_id": "travelplanner_test_0129",
+      "turn_id": 0,
+      "field": "agent_action.action_payload.plan",
+      "note": "Original itinerary restored for Gold Action editing. Review against the rewritten current intention before confirming; source plans are copied without adaptation."
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-16",
+        "current_city": "Flagstaff",
+        "transportation": "Infeasible: the search results provide no flight from Sioux Falls to Flagstaff on 2022-03-16 and no supported alternative transport.",
+        "breakfast": "Communiti",
+        "lunch": "Communiti",
+        "dinner": "Communiti",
+        "attraction": "Downtown Flagstaff",
+        "accommodation": "SHARE;SAFE;CHEAPEST;15 MIN TO HEART OF MANHATTAN."
+      },
+      {
+        "day": "2022-03-17",
+        "current_city": "Flagstaff",
+        "transportation": "Local transportation not available in the supported results.",
+        "breakfast": "Communiti",
+        "lunch": "Communiti",
+        "dinner": "Communiti",
+        "attraction": "Lowell Observatory",
+        "accommodation": "SHARE;SAFE;CHEAPEST;15 MIN TO HEART OF MANHATTAN."
+      },
+      {
+        "day": "2022-03-18",
+        "current_city": "Phoenix",
+        "transportation": "Infeasible: the search results provide no flight from Flagstaff to Phoenix on 2022-03-18 and no supported alternative transport.",
+        "breakfast": "Communiti",
+        "lunch": "Mama Loca",
+        "dinner": "Mama Loca",
+        "attraction": "Heard Museum",
+        "accommodation": "Twin Cabin with a Window One"
+      },
+      {
+        "day": "2022-03-19",
+        "current_city": "Phoenix",
+        "transportation": "Local transportation not available in the supported results.",
+        "breakfast": "Mama Loca",
+        "lunch": "Mama Loca",
+        "dinner": "Mama Loca",
+        "attraction": "Desert Botanical Garden",
+        "accommodation": "Twin Cabin with a Window One"
+      },
+      {
+        "day": "2022-03-20",
+        "current_city": "Phoenix",
+        "transportation": "Infeasible: the search results provide no flight from Phoenix to Sioux Falls on 2022-03-20 and no supported alternative transport.",
+        "breakfast": "Mama Loca",
+        "lunch": "Mama Loca",
+        "dinner": "Mama Loca",
+        "attraction": "Hole in the Rock",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "Flagstaff and Phoenix satisfy the two-Arizona-city request. The selected rooms satisfy their minimum-night rules but each accommodates at most one traveler. Two Flagstaff nights cost $1,102 and two Phoenix nights cost $468; listed meal averages total $328, for $1,898 in known costs. Attraction admission and local transportation are unpriced. The itinerary is not executable because all three required intercity journeys lack any supported transport option, including the return to Sioux Falls."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Phoenix": [
+      {
+        "Name": "Heard Museum",
+        "Latitude": 33.4725814,
+        "Longitude": -112.0722331,
+        "Address": "2301 N Central Ave, Phoenix, AZ 85004, USA",
+        "Phone": "(602) 252-8840",
+        "Website": "https://heard.org/",
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Desert Botanical Garden",
+        "Latitude": 33.4616795,
+        "Longitude": -111.944926,
+        "Address": "1201 N Galvin Pkwy, Phoenix, AZ 85008, USA",
+        "Phone": "(480) 941-1225",
+        "Website": "https://www.dbg.org/",
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Hole in the Rock",
+        "Latitude": 33.4564869,
+        "Longitude": -111.9452606,
+        "Address": "625 N Galvin Pkwy, Phoenix, AZ 85008, USA",
+        "Phone": "(602) 495-5458",
+        "Website": "https://www.phoenix.gov/parks/trails/locations/papago-park",
+        "City": "Phoenix"
+      },
+      {
+        "Name": "The Japanese Friendship Garden of Phoenix",
+        "Latitude": 33.4609597,
+        "Longitude": -112.0765703,
+        "Address": "1125 N 3rd Ave, Phoenix, AZ 85003, USA",
+        "Phone": "(602) 274-8700",
+        "Website": "http://www.japanesefriendshipgarden.org/?utm_source=google&utm_medium=wix_google_business_profile&utm_campaign=1646036250481864746",
+        "City": "Phoenix"
+      }
+    ],
+    "Restaurants in Phoenix": [
+      {
+        "Name": "Mama Loca",
+        "Average Cost": 27,
+        "Cuisines": "Desserts, Pizza, Italian, Bakery, Fast Food",
+        "Aggregate Rating": 4.2,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Vero Gusto",
+        "Average Cost": 13,
+        "Cuisines": "Desserts, Indian, BBQ",
+        "Aggregate Rating": 4.1,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Spooky Sky",
+        "Average Cost": 15,
+        "Cuisines": "Tea, Pizza, Fast Food, Cafe, Indian",
+        "Aggregate Rating": 3.4,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Amritsari Naan Hut",
+        "Average Cost": 21,
+        "Cuisines": "Tea, Cafe, BBQ, Fast Food, Chinese",
+        "Aggregate Rating": 0.0,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Delhi Dairy",
+        "Average Cost": 23,
+        "Cuisines": "Seafood, Cafe, Fast Food",
+        "Aggregate Rating": 3.2,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Cafe Amigo",
+        "Average Cost": 24,
+        "Cuisines": "Tea, Desserts, Italian",
+        "Aggregate Rating": 3.0,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Subway",
+        "Average Cost": 25,
+        "Cuisines": "Cafe, Chinese, Seafood, Fast Food",
+        "Aggregate Rating": 3.3,
+        "City": "Phoenix"
+      }
+    ],
+    "Accommodations in Phoenix": [
+      {
+        "NAME": "Twin Cabin with a Window One",
+        "price": 234.0,
+        "room type": "Private room",
+        "house_rules": "No parties",
+        "minimum nights": 1.0,
+        "maximum occupancy": 1,
+        "review rate number": 2.0,
+        "city": "Phoenix"
+      },
+      {
+        "NAME": "1 BR in Carroll Gardens Townhouse",
+        "price": 397.0,
+        "room type": "Private room",
+        "house_rules": "No visitors & No smoking",
+        "minimum nights": 2.0,
+        "maximum occupancy": 1,
+        "review rate number": 4.0,
+        "city": "Phoenix"
+      }
+    ],
+    "Attractions in Flagstaff": [
+      {
+        "Name": "Downtown Flagstaff",
+        "Latitude": 35.1987337,
+        "Longitude": -111.6483259,
+        "Address": "6 E Aspen Ave # 200, Flagstaff, AZ 86001, USA",
+        "Phone": "(928) 275-2655",
+        "Website": "https://downtownflagstaff.org/",
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Lowell Observatory",
+        "Latitude": 35.2028951,
+        "Longitude": -111.6646428,
+        "Address": "1400 W Mars Hill Rd, Flagstaff, AZ 86001, USA",
+        "Phone": "(928) 774-3358",
+        "Website": "https://lowell.edu/welcomeback",
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Museum of Northern Arizona",
+        "Latitude": 35.234499,
+        "Longitude": -111.66562,
+        "Address": "3101 N Fort Valley Rd, Flagstaff, AZ 86001, USA",
+        "Phone": "(928) 774-5213",
+        "Website": "https://musnaz.org/",
+        "City": "Flagstaff"
+      }
+    ],
+    "Restaurants in Flagstaff": [
+      {
+        "Name": "Communiti",
+        "Average Cost": 16,
+        "Cuisines": "Tea, Mexican, Indian, BBQ",
+        "Aggregate Rating": 4.2,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Big Yellow Door",
+        "Average Cost": 22,
+        "Cuisines": "Tea, Cafe, BBQ, Desserts",
+        "Aggregate Rating": 4.2,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Hungry Heroes",
+        "Average Cost": 25,
+        "Cuisines": "Chinese, BBQ, Desserts",
+        "Aggregate Rating": 3.8,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Hotel Malabar",
+        "Average Cost": 13,
+        "Cuisines": "Tea, Indian, Desserts, Fast Food",
+        "Aggregate Rating": 3.0,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Kabab And Tadka",
+        "Average Cost": 27,
+        "Cuisines": "Cafe, Desserts, Fast Food",
+        "Aggregate Rating": 2.5,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "38 Barracks",
+        "Average Cost": 35,
+        "Cuisines": "Tea, Chinese, Mediterranean, Desserts",
+        "Aggregate Rating": 4.4,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Tea Nation",
+        "Average Cost": 26,
+        "Cuisines": "Bakery, Indian, Desserts",
+        "Aggregate Rating": 0.0,
+        "City": "Flagstaff"
+      }
+    ],
+    "Accommodations in Flagstaff": [
+      {
+        "NAME": "SHARE;SAFE;CHEAPEST;15 MIN TO HEART OF MANHATTAN.",
+        "price": 551.0,
+        "room type": "Shared room",
+        "house_rules": "No pets",
+        "minimum nights": 1.0,
+        "maximum occupancy": 1,
+        "review rate number": 2.0,
+        "city": "Flagstaff"
+      }
+    ],
+    "Flight from Sioux Falls to Phoenix on 2022-03-16": [
+      {
+        "Flight Number": "F4045477",
+        "Price": 410,
+        "DepTime": "18:40",
+        "ArrTime": "19:26",
+        "ActualElapsedTime": "2 hours 46 minutes",
+        "FlightDate": "2022-03-16",
+        "OriginCityName": "Sioux Falls",
+        "DestCityName": "Phoenix",
+        "Distance": 1081.0
+      }
+    ],
+    "Self-driving from Sioux Falls to Phoenix": "self-driving, from Sioux Falls to Phoenix, duration: 21 hours 58 mins, distance: 2,279 km, cost: 113",
+    "Taxi from Sioux Falls to Phoenix": "taxi, from Sioux Falls to Phoenix, duration: 21 hours 58 mins, distance: 2,279 km, cost: 2279",
+    "Flight from Phoenix to Flagstaff on 2022-03-18": [
+      {
+        "Flight Number": "F3804854",
+        "Price": 42,
+        "DepTime": "08:49",
+        "ArrTime": "09:47",
+        "ActualElapsedTime": "0 hours 58 minutes",
+        "FlightDate": "2022-03-18",
+        "OriginCityName": "Phoenix",
+        "DestCityName": "Flagstaff",
+        "Distance": 119.0
+      }
+    ],
+    "Self-driving from Phoenix to Flagstaff": "self-driving, from Phoenix to Flagstaff, duration: 2 hours 15 mins, distance: 232 km, cost: 11",
+    "Taxi from Phoenix to Flagstaff": "taxi, from Phoenix to Flagstaff, duration: 2 hours 15 mins, distance: 232 km, cost: 232",
+    "Flight from Flagstaff to Sioux Falls on 2022-03-20": "There is no flight from Flagstaff to Sioux Falls on 2022-03-20.",
+    "Self-driving from Flagstaff to Sioux Falls": "self-driving, from Flagstaff to Sioux Falls, duration: 19 hours 57 mins, distance: 2,086 km, cost: 104",
+    "Taxi from Flagstaff to Sioux Falls": "taxi, from Flagstaff to Sioux Falls, duration: 19 hours 57 mins, distance: 2,086 km, cost: 2086"
+  },
+  "background": {
+    "org": "Sioux Falls",
+    "dest": "Arizona",
+    "days": 5,
+    "visiting_city_number": 2,
+    "date": [
+      "2022-03-16",
+      "2022-03-17",
+      "2022-03-18",
+      "2022-03-19",
+      "2022-03-20"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 5000,
+    "query": "Can you help me create a 5-day travel plan from Sioux Falls to visit 2 cities in Arizona? The travel dates will be from March 16th to March 20th, 2022, and the budget for the trip is $5,000.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 1898.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 2660.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

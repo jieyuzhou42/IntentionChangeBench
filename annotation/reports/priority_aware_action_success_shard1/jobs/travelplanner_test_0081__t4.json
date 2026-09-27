@@ -1,0 +1,405 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 4,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Can you help put together a travel plan for a single passenger leaving Tampa towards Cleveland for a duration of 3 days, starting from March 2nd up until March 4th, 2022? Please make sure the budget does not exceed $1,800.",
+    "I don't want the flight to be so early. Comfortable departure matters more to me than maximizing first-day activities and meals.",
+    "I want a rating 5 hotel",
+    "I want chinese food",
+    "I need to arrive Tampa by 10:00"
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 1800,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "days",
+      "value": 3,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "people_number",
+      "value": 1,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "outbound_transportation",
+      "value": "Flight F3915073 from Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "schedule",
+      "value": "Keep Day 1 for arrival and rest, use Day 2 for sightseeing, and reserve early Day 3 for checkout and the airport transfer",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "activity",
+      "value": "Keep the Cleveland Cultural Gardens and other priority sightseeing on Day 2; drop Edgewater Park, the Cleveland Script Sign, and all Day 3 sightseeing",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "lunch",
+      "value": "No planned restaurant lunch on Days 1 or 3",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation",
+      "value": "Richmond Hill 3 Bedroom apartment in Private home!",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "room_type",
+      "value": "Entire home/apt",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation_rating",
+      "value": 5,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "return_transportation",
+      "value": "Flight F3623037 from Cleveland to Tampa on 2022-03-04, departing 08:40 and arriving 10:57",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "breakfast",
+      "value": "No planned restaurant breakfast on Day 3",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "day_1",
+      "value": "No sightseeing",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "day_1_lunch",
+      "value": "No planned restaurant lunch on Day 1",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "arrive Tampa by 10:00",
+      "value": true,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 — March 2, 2022",
+            "current_city": "Tampa to Cleveland",
+            "transportation": "Flight F3915073 from Tampa to Cleveland, departing 10:37 and arriving 12:59; price: $326. Transfer to accommodation after arrival.",
+            "breakfast": "-",
+            "lunch": "-",
+            "dinner": "Me Kong Bowl — average cost: $19; cuisines: Cafe, BBQ, Seafood; rating: 4.0.",
+            "attraction": "-",
+            "accommodation": "Richmond Hill 3 Bedroom apartment in Private home! — Entire home/apt; listed price: $565 per night; rating: 5.0; minimum stay: 1 night; maximum occupancy: 4; house rule: No visitors."
+          },
+          {
+            "day": "Day 2 — March 3, 2022",
+            "current_city": "Cleveland",
+            "transportation": "-",
+            "breakfast": "Bikanerwala — average cost: $10; cuisines: Tea, Bakery, BBQ, Fast Food; rating: 3.2.",
+            "lunch": "Makhan Fish and Chicken Corner — average cost: $25; cuisines: Pizza, French, Fast Food, Chinese, Seafood; rating: 3.4.",
+            "dinner": "Big Chicken — average cost: $27; cuisines: Cafe, Pizza, Bakery, Italian; rating: 3.5.",
+            "attraction": "Cleveland Cultural Gardens; The Cleveland Museum of Art; Cleveland Botanical Garden; Cleveland History Center",
+            "accommodation": "Richmond Hill 3 Bedroom apartment in Private home! — Entire home/apt; listed price: $565 per night; rating: 5.0; minimum stay: 1 night; maximum occupancy: 4; house rule: No visitors."
+          },
+          {
+            "day": "Day 3 — March 4, 2022",
+            "current_city": "Cleveland to Tampa",
+            "transportation": "F3905043",
+            "breakfast": "-",
+            "lunch": "-",
+            "dinner": "-",
+            "attraction": "-",
+            "accommodation": "-"
+          }
+        ]
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-02",
+        "current_city": "Tampa → Cleveland",
+        "transportation": "Flight F3915073 from Tampa to Cleveland, departing 10:37 and arriving 12:59; fare $326",
+        "breakfast": "Packed breakfast in Tampa before departure (cost unpriced)",
+        "lunch": "Packed lunch carried from Tampa (cost unpriced)",
+        "dinner": "Makhan Fish and Chicken Corner — Chinese cuisine, average cost $25",
+        "attraction": "The Cleveland Museum of Art",
+        "accommodation": "Richmond Hill 3 Bedroom apartment in Private home! — rating 5, first of 2 nights at $565 per night"
+      },
+      {
+        "day": "2022-03-03",
+        "current_city": "Cleveland",
+        "transportation": "No intercity journey; remain in Cleveland, with local transfers unpriced",
+        "breakfast": "Self-catered packed breakfast at the accommodation (cost unpriced)",
+        "lunch": "Self-catered packed lunch (cost unpriced)",
+        "dinner": "Self-catered packed dinner (cost unpriced)",
+        "attraction": "Rock & Roll Hall of Fame",
+        "accommodation": "Richmond Hill 3 Bedroom apartment in Private home! — rating 5, second of 2 nights at $565 per night"
+      },
+      {
+        "day": "2022-03-04",
+        "current_city": "Cleveland → Tampa",
+        "transportation": "Flight F3905043 from Cleveland to Tampa, departing 07:19 and arriving 09:36; fare $336",
+        "breakfast": "Packed breakfast before the flight (cost unpriced)",
+        "lunch": "Packed lunch in Tampa (cost unpriced)",
+        "dinner": "Packed dinner in Tampa (cost unpriced)",
+        "attraction": "-",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "This selects the latest supported outbound flight while preserving the required return to Tampa before 10:00, and uses the least expensive feasible rating-5 accommodation for both Cleveland nights. Known costs are $662 for flights, $1,130 for lodging, and $25 for the Chinese dinner, totaling $1,817. Therefore, the $1,800 cap is unavoidably exceeded by at least $17, even before unpriced packed food, local transfers, and attraction admission. No attraction is scheduled on March 4 because the 07:19 return flight is required to reach Tampa by 10:00; no lodging is needed after the trip ends."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Cleveland": [
+      {
+        "Name": "The Cleveland Museum of Art",
+        "Latitude": 41.5079261,
+        "Longitude": -81.61197229999999,
+        "Address": "11150 East Blvd, Cleveland, OH 44106, USA",
+        "Phone": "(216) 421-7350",
+        "Website": "https://www.clevelandart.org/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Rock & Roll Hall of Fame",
+        "Latitude": 41.5085414,
+        "Longitude": -81.6953685,
+        "Address": "1100 E 9th St, Cleveland, OH 44114, USA",
+        "Phone": "(216) 781-7625",
+        "Website": "https://www.rockhall.com/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Cleveland Botanical Garden",
+        "Latitude": 41.5111392,
+        "Longitude": -81.6095981,
+        "Address": "11030 East Blvd, Cleveland, OH 44106, USA",
+        "Phone": "(216) 721-1600",
+        "Website": "https://holdenfg.org/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Cleveland Cultural Gardens",
+        "Latitude": 41.51899359999999,
+        "Longitude": -81.6181879,
+        "Address": "10823 Magnolia Dr, Cleveland, OH 44106, USA",
+        "Phone": "(216) 220-3075",
+        "Website": "http://www.culturalgardens.org/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Cleveland History Center",
+        "Latitude": 41.5130284,
+        "Longitude": -81.61162399999999,
+        "Address": "10825 East Blvd, Cleveland, OH 44106, USA",
+        "Phone": "(216) 721-5722",
+        "Website": "https://www.wrhs.org/plan-your-visit/",
+        "City": "Cleveland"
+      }
+    ],
+    "Restaurants in Cleveland": [
+      {
+        "Name": "Makhan Fish and Chicken Corner",
+        "Average Cost": 25,
+        "Cuisines": "Pizza, French, Fast Food, Chinese, Seafood",
+        "Aggregate Rating": 3.4,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Me Kong Bowl",
+        "Average Cost": 19,
+        "Cuisines": "Cafe, BBQ, Seafood",
+        "Aggregate Rating": 4.0,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Bikanerwala",
+        "Average Cost": 10,
+        "Cuisines": "Tea, Bakery, BBQ, Fast Food",
+        "Aggregate Rating": 3.2,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Big Chicken",
+        "Average Cost": 27,
+        "Cuisines": "Cafe, Pizza, Bakery, Italian",
+        "Aggregate Rating": 3.5,
+        "City": "Cleveland"
+      }
+    ],
+    "Accommodations in Cleveland": [
+      {
+        "NAME": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "price": 565.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No visitors",
+        "minimum nights": 1.0,
+        "maximum occupancy": 4,
+        "review rate number": 5.0,
+        "city": "Cleveland"
+      }
+    ],
+    "Flight from Tampa to Cleveland on 2022-03-02": [
+      {
+        "Flight Number": "F3915073",
+        "Price": 326,
+        "DepTime": "10:37",
+        "ArrTime": "12:59",
+        "ActualElapsedTime": "2 hours 22 minutes",
+        "FlightDate": "2022-03-02",
+        "OriginCityName": "Tampa",
+        "DestCityName": "Cleveland",
+        "Distance": 927.0
+      }
+    ],
+    "Self-driving from Tampa to Cleveland": "self-driving, from Tampa to Cleveland, duration: 16 hours 15 mins, distance: 1,760 km, cost: 88",
+    "Taxi from Tampa to Cleveland": "taxi, from Tampa to Cleveland, duration: 16 hours 15 mins, distance: 1,760 km, cost: 1760",
+    "Flight from Cleveland to Tampa on 2022-03-04": [
+      {
+        "Flight Number": "F3905043",
+        "Price": 336,
+        "DepTime": "07:19",
+        "ArrTime": "09:36",
+        "ActualElapsedTime": "2 hours 17 minutes",
+        "FlightDate": "2022-03-04",
+        "OriginCityName": "Cleveland",
+        "DestCityName": "Tampa",
+        "Distance": 927.0
+      }
+    ],
+    "Self-driving from Cleveland to Tampa": "self-driving, from Cleveland to Tampa, duration: 16 hours 12 mins, distance: 1,758 km, cost: 87",
+    "Taxi from Cleveland to Tampa": "taxi, from Cleveland to Tampa, duration: 16 hours 12 mins, distance: 1,758 km, cost: 1758"
+  },
+  "background": {
+    "org": "Tampa",
+    "dest": "Cleveland",
+    "days": 3,
+    "visiting_city_number": 1,
+    "date": [
+      "2022-03-02",
+      "2022-03-03",
+      "2022-03-04"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 1800,
+    "query": "Can you help put together a travel plan for a single passenger leaving Tampa towards Cleveland for a duration of 3 days, starting from March 2nd up until March 4th, 2022? Please make sure the budget does not exceed $1,800.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 1817.0,
+        "unpriced": [
+          "breakfast: packed breakfast in tampa before departure (cost unpriced)",
+          "lunch: packed lunch carried from tampa (cost unpriced)",
+          "breakfast: self-catered packed breakfast at the accommodation (cost unp",
+          "lunch: self-catered packed lunch (cost unpriced)",
+          "dinner: self-catered packed dinner (cost unpriced)",
+          "breakfast: packed breakfast before the flight (cost unpriced)",
+          "lunch: packed lunch in tampa (cost unpriced)",
+          "dinner: packed dinner in tampa (cost unpriced)"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 1873.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

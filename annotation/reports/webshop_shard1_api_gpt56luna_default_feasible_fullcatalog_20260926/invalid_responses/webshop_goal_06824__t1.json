@@ -1,0 +1,269 @@
+[
+  {
+    "error": "baseline criteria must cover every field exactly once",
+    "response": {
+      "gold_atoms": [
+        {
+          "atom_id": "g1",
+          "source_field": "constraints.category",
+          "value": "floor lamps"
+        },
+        {
+          "atom_id": "g2",
+          "source_field": "constraints.budget_max",
+          "value": "price at most 180"
+        },
+        {
+          "atom_id": "g3",
+          "source_field": "constraints.color",
+          "value": "bronze finish"
+        },
+        {
+          "atom_id": "g4",
+          "source_field": "constraints.living_room",
+          "value": "suitable for a living room"
+        },
+        {
+          "atom_id": "g5",
+          "source_field": "gold_delta.style",
+          "value": "arc floor lamp with drum shade"
+        }
+      ],
+      "constraint_criteria": [
+        {
+          "gold_field": "category",
+          "criteria": "The selected product must be a floor lamp, supported by its product category or product description.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "budget_max",
+          "criteria": "The selected product price must be at most $180.",
+          "quote": "And lower the price range"
+        },
+        {
+          "gold_field": "color",
+          "criteria": "The selected product or selected variant must explicitly have a bronze finish.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "living_room",
+          "criteria": "The selected product must be explicitly identified as suitable for or intended for a living room.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "style",
+          "criteria": "The selected product must be an arc or arched floor lamp and must have a drum shade.",
+          "quote": "I'd like an arc floor lamp with a drum shade."
+        }
+      ],
+      "gold_plan_judgments": [
+        {
+          "gold_field": "category",
+          "status": "satisfied",
+          "evidence": "Product field product_category: \"Tools & Home Improvement › Lighting & Ceiling Fans › Lamps & Shades › Floor Lamps\"; bullet point: \"Contemporary modern arc floor lamp\"."
+        },
+        {
+          "gold_field": "budget_max",
+          "status": "satisfied",
+          "evidence": "Selected product price is $129.99, which is at most $180."
+        },
+        {
+          "gold_field": "color",
+          "status": "violated",
+          "evidence": "Product field color is \"black\"; bullet point states \"Black finish over metal construction.\" No evidence supports a bronze finish."
+        },
+        {
+          "gold_field": "living_room",
+          "status": "satisfied",
+          "evidence": "Product attributes include \"living room\"; title states \"for Living Room Reading House Bedroom Home Office\"."
+        },
+        {
+          "gold_field": "style",
+          "status": "satisfied",
+          "evidence": "Title states \"Arched Lamp\"; bullet point states \"Contemporary modern arc floor lamp\" and \"White linen fabric drum shade.\""
+        }
+      ],
+      "annotation_issues": [
+        "The gold_product field category is \"garden\", which conflicts with the product_category field identifying the item as a floor lamp. The floor-lamp product_category and supporting bullet evidence were used for the category judgment."
+      ]
+    }
+  },
+  {
+    "error": "baseline criteria must cover every field exactly once",
+    "response": {
+      "gold_atoms": [
+        {
+          "atom_id": "g1",
+          "source_field": "constraints.category",
+          "value": "floor lamps"
+        },
+        {
+          "atom_id": "g2",
+          "source_field": "constraints.budget_max",
+          "value": "price no greater than 180"
+        },
+        {
+          "atom_id": "g3",
+          "source_field": "constraints.color",
+          "value": "bronze finish"
+        },
+        {
+          "atom_id": "g4",
+          "source_field": "constraints.living_room",
+          "value": "suitable for a living room"
+        },
+        {
+          "atom_id": "g5",
+          "source_field": "gold_delta.style",
+          "value": "arc floor lamp with drum shade"
+        }
+      ],
+      "constraint_criteria": [
+        {
+          "gold_field": "constraints.category",
+          "criteria": "The selected product must be a floor lamp.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "constraints.budget_max",
+          "criteria": "The selected product price must be no greater than 180.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "constraints.color",
+          "criteria": "The selected product or selected option must have a bronze finish.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "constraints.living_room",
+          "criteria": "The product must be identified as suitable for or intended for a living room.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "gold_delta.style",
+          "criteria": "The selected product must be an arc floor lamp and must have a drum shade.",
+          "quote": "I'd like an arc floor lamp with a drum shade. And lower the price range"
+        }
+      ],
+      "gold_plan_judgments": [
+        {
+          "gold_field": "constraints.category",
+          "status": "satisfied",
+          "evidence": "Product category: Tools & Home Improvement › Lighting & Ceiling Fans › Lamps & Shades › Floor Lamps; title: \"Cora Modern Style Arched Lamp Floor Standing\"; bullet: \"Contemporary modern arc floor lamp\"."
+        },
+        {
+          "gold_field": "constraints.budget_max",
+          "status": "satisfied",
+          "evidence": "Selected product price is 129.99, which is no greater than 180."
+        },
+        {
+          "gold_field": "constraints.color",
+          "status": "violated",
+          "evidence": "Selected product color is \"black\"; bullet states \"Black finish over metal construction.\" The available options are black, gold, and silver, and no bronze option is selected."
+        },
+        {
+          "gold_field": "constraints.living_room",
+          "status": "satisfied",
+          "evidence": "Product attributes include \"living room\"; title also states \"for Living Room Reading House Bedroom Home Office\"."
+        },
+        {
+          "gold_field": "gold_delta.style",
+          "status": "satisfied",
+          "evidence": "Title states \"Arched Lamp\"; bullet states \"Contemporary modern arc floor lamp\" and \"White linen fabric drum shade.\""
+        }
+      ],
+      "annotation_issues": [
+        "The product's generic category field is \"garden,\" which conflicts with the product_category field and product evidence identifying it as a floor lamp."
+      ]
+    }
+  },
+  {
+    "error": "baseline criteria must cover every field exactly once",
+    "response": {
+      "gold_atoms": [
+        {
+          "atom_id": "g1",
+          "source_field": "category",
+          "value": "floor lamps"
+        },
+        {
+          "atom_id": "g2",
+          "source_field": "budget_max",
+          "value": "price no higher than 180"
+        },
+        {
+          "atom_id": "g3",
+          "source_field": "color",
+          "value": "bronze finish"
+        },
+        {
+          "atom_id": "g4",
+          "source_field": "living_room",
+          "value": "suitable for a living room"
+        },
+        {
+          "atom_id": "g5",
+          "source_field": "style",
+          "value": "arc floor lamp with a drum shade"
+        }
+      ],
+      "constraint_criteria": [
+        {
+          "gold_field": "category",
+          "criteria": "The selected product must be a floor lamp, supported by the product category, title, or description.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "budget_max",
+          "criteria": "The selected product price must be no higher than 180.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "color",
+          "criteria": "The selected product or selected option must explicitly have a bronze finish.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "living_room",
+          "criteria": "The product must have evidence that it is intended for or suitable for a living room.",
+          "quote": "Find me floor lamps with bronze finish for living room, and price lower than 280.00 dollars"
+        },
+        {
+          "gold_field": "style",
+          "criteria": "The selected product must be an arc floor lamp and must have a drum shade.",
+          "quote": "I'd like an arc floor lamp with a drum shade. And lower the price range"
+        }
+      ],
+      "gold_plan_judgments": [
+        {
+          "gold_field": "category",
+          "status": "satisfied",
+          "evidence": "The product_category is \"Tools & Home Improvement › Lighting & Ceiling Fans › Lamps & Shades › Floor Lamps\" and the title says \"Arched Lamp Floor Standing\"."
+        },
+        {
+          "gold_field": "budget_max",
+          "status": "satisfied",
+          "evidence": "The selected product price is 129.99, which is no higher than 180."
+        },
+        {
+          "gold_field": "color",
+          "status": "violated",
+          "evidence": "The selected product color is \"black\" and the bullet point says \"Black finish over metal construction.\" No selected bronze finish is evidenced."
+        },
+        {
+          "gold_field": "living_room",
+          "status": "satisfied",
+          "evidence": "The product attributes include \"living room,\" and the title includes \"for Living Room.\""
+        },
+        {
+          "gold_field": "style",
+          "status": "satisfied",
+          "evidence": "The title says \"Arched Lamp\" and \"White Linen Drum Shade\"; a bullet point explicitly says \"Contemporary modern arc floor lamp\" and another says \"White linen fabric drum shade.\""
+        }
+      ],
+      "annotation_issues": [
+        "The product's generic category field is \"garden,\" which conflicts with the product_category, title, and floor-lamp evidence. This conflict is reported without repairing the annotation."
+      ]
+    }
+  }
+]

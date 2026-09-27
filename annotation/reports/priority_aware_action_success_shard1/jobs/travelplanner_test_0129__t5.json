@@ -1,0 +1,705 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0129",
+  "turn_id": 5,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Could you plan Sioux Falls to two cities in Arizona, March 16-20, 2022? I have $2,500. The budget is soft",
+    "One-way, ending in Flagstaff on the 20th. Fly into Phoenix by 9pm on the 16th, then Flagstaff by noon on the 18th. Private rooms rated 3+, just two nights in each city.",
+    "Two adult friends are coming too. Same flights and one place big enough for all three in each city. We have $5,000 total.",
+    "Let's prioritize the Heard Museum and Desert Botanical Garden and drop Hole in the Rock so there's enough time for transit and sit-down meals. Keep March 16 mainly for arrival and protect the March 18 transfer to Flagstaff. A relaxed pace at preferred attractions matters more than squeezing in extra stops; the one-way visit still ends in Flagstaff on March 20.",
+    "A relaxed pace matters more than fitting in every Flagstaff stop: on March 19, drop Riordan Mansion and take direct taxis or rideshares between the lodging, Museum of Northern Arizona, and Lowell Observatory to preserve meal breaks. Keep only the Heard Museum and Desert Botanical Garden in Phoenix on March 17.",
+    "Please include at least one Chinese meal in both Phoenix and Flagstaff while keeping each meal under $50."
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 5000,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "people_number",
+      "value": 3,
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation_rating",
+      "value": "3+",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "outbound_transportation",
+      "value": "Fly Sioux Falls to Phoenix on March 16; arrive by 21:00.",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "intercity_transportation",
+      "value": "Fly Phoenix to Flagstaff on March 18; arrive by 12:00.",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "return_transportation",
+      "value": "One-way visit ends in Flagstaff March 20; no return journey belongs to this itinerary",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "activity",
+      "value": "March 17 Phoenix: Heard Museum and Desert Botanical Garden only; exclude Hole in the Rock. March 19 Flagstaff: Museum of Northern Arizona and Lowell Observatory only; exclude Riordan Mansion State Historic Park.",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "schedule",
+      "value": "relax pace (<2 attractions per day)",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "local_transportation",
+      "value": "On March 19 in Flagstaff, use direct taxis or rideshares between the lodging, Museum of Northern Arizona and Lowell Observatory; preserve meal breaks.",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "cuisine",
+      "value": [
+        "Chinese"
+      ],
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "cuisine_coverage",
+      "value": "At least one meal with a Chinese cuisine label in each of Phoenix and Flagstaff.",
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "dining_budget",
+      "value": "Each planned restaurant meal must have listed Average Cost below $50 per person.",
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "activity 2",
+      "value": "no Hole in the Rock",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "2022-03-16",
+            "current_city": "Sioux Falls to Phoenix",
+            "transportation": "F4045477",
+            "breakfast": "",
+            "lunch": "Domino's Pizza",
+            "dinner": "Vero Gusto",
+            "attraction": "-",
+            "accommodation": "1,100 sq. ft. apt. Penthouse with private deck!"
+          },
+          {
+            "day": "2022-03-17",
+            "current_city": "Phoenix",
+            "transportation": "-",
+            "breakfast": "Vero Gusto",
+            "lunch": "Vero Gusto",
+            "dinner": "Pizza Hut",
+            "attraction": "Heard Museum; Desert Botanical Garden",
+            "accommodation": "1,100 sq. ft. apt. Penthouse with private deck!"
+          },
+          {
+            "day": "2022-03-18",
+            "current_city": "Phoenix to Flagstaff",
+            "transportation": "F3804854",
+            "breakfast": "Vero Gusto",
+            "lunch": "Hotel Malabar",
+            "dinner": "Hotel Malabar",
+            "attraction": "-",
+            "accommodation": "Stylish apartment in the heart of New York"
+          },
+          {
+            "day": "2022-03-19",
+            "current_city": "Flagstaff",
+            "transportation": "Direct taxis or rideshares between Flagstaff lodging, Museum of Northern Arizona and Lowell Observatory; quote pending",
+            "breakfast": "Hotel Malabar",
+            "lunch": "Hotel Malabar",
+            "dinner": "Hungry Heroes",
+            "attraction": "Museum of Northern Arizona; Lowell Observatory",
+            "accommodation": "Stylish apartment in the heart of New York"
+          },
+          {
+            "day": "2022-03-20",
+            "current_city": "Flagstaff",
+            "transportation": "-",
+            "breakfast": "Hotel Malabar",
+            "lunch": "Hungry Heroes",
+            "dinner": "Hotel Malabar",
+            "attraction": "-",
+            "accommodation": "-"
+          }
+        ],
+        "review_notes": [
+          "延续当前标注：三人，Phoenix 3月16–17日，Flagstaff 3月18–19日，3月20日在 Flagstaff 结束；每城同住一套可容纳三人的房源。",
+          "已知机票、住宿和目的地餐食小计 $4540。出发前餐食、机场转场及当地交通仍待报价；餐厅营业时间、堂食条件和房源可订状态待确认。",
+          "3月19日直达出租车／网约车需求已保留；当前 case 没有这条当地路线的报价，不填造费用。"
+        ],
+        "known_subtotal": 4540,
+        "people_number": 3,
+        "source_checks": {
+          "hotels": {
+            "Phoenix": {
+              "NAME": "1,100 sq. ft. apt. Penthouse with private deck!",
+              "price": 209,
+              "room type": "Entire home/apt",
+              "house_rules": "No visitors & No pets",
+              "minimum nights": 1,
+              "maximum occupancy": 3,
+              "review rate number": 5,
+              "city": "Phoenix"
+            },
+            "Flagstaff": {
+              "NAME": "Stylish apartment in the heart of New York",
+              "price": 1086,
+              "room type": "Entire home/apt",
+              "house_rules": "No smoking",
+              "minimum nights": 2,
+              "maximum occupancy": 8,
+              "review rate number": 3,
+              "city": "Flagstaff"
+            }
+          },
+          "flights": [
+            {
+              "Flight Number": "F4045477",
+              "Price": 410,
+              "DepTime": "18:40",
+              "ArrTime": "19:26",
+              "ActualElapsedTime": "2 hours 46 minutes",
+              "FlightDate": "2022-03-16",
+              "OriginCityName": "Sioux Falls",
+              "DestCityName": "Phoenix",
+              "Distance": 1081
+            },
+            {
+              "Flight Number": "F3804854",
+              "Price": 42,
+              "DepTime": "08:49",
+              "ArrTime": "09:47",
+              "ActualElapsedTime": "0 hours 58 minutes",
+              "FlightDate": "2022-03-18",
+              "OriginCityName": "Phoenix",
+              "DestCityName": "Flagstaff",
+              "Distance": 119
+            }
+          ],
+          "meals": [
+            {
+              "date": "2022-03-16",
+              "field": "dinner",
+              "city": "Phoenix",
+              "record": {
+                "Name": "Vero Gusto",
+                "Average Cost": 13,
+                "Cuisines": "Desserts, Indian, BBQ",
+                "Aggregate Rating": 4.1,
+                "City": "Phoenix"
+              }
+            },
+            {
+              "date": "2022-03-17",
+              "field": "breakfast",
+              "city": "Phoenix",
+              "record": {
+                "Name": "Vero Gusto",
+                "Average Cost": 13,
+                "Cuisines": "Desserts, Indian, BBQ",
+                "Aggregate Rating": 4.1,
+                "City": "Phoenix"
+              }
+            },
+            {
+              "date": "2022-03-17",
+              "field": "lunch",
+              "city": "Phoenix",
+              "record": {
+                "Name": "Vero Gusto",
+                "Average Cost": 13,
+                "Cuisines": "Desserts, Indian, BBQ",
+                "Aggregate Rating": 4.1,
+                "City": "Phoenix"
+              }
+            },
+            {
+              "date": "2022-03-17",
+              "field": "dinner",
+              "city": "Phoenix",
+              "record": {
+                "Name": "Pizza Hut",
+                "Average Cost": 30,
+                "Cuisines": "Tea, Chinese, Desserts, Seafood",
+                "Aggregate Rating": 4.4,
+                "City": "Phoenix"
+              }
+            },
+            {
+              "date": "2022-03-18",
+              "field": "breakfast",
+              "city": "Phoenix",
+              "record": {
+                "Name": "Vero Gusto",
+                "Average Cost": 13,
+                "Cuisines": "Desserts, Indian, BBQ",
+                "Aggregate Rating": 4.1,
+                "City": "Phoenix"
+              }
+            },
+            {
+              "date": "2022-03-18",
+              "field": "lunch",
+              "city": "Flagstaff",
+              "record": {
+                "Name": "Hotel Malabar",
+                "Average Cost": 13,
+                "Cuisines": "Tea, Indian, Desserts, Fast Food",
+                "Aggregate Rating": 3,
+                "City": "Flagstaff"
+              }
+            },
+            {
+              "date": "2022-03-18",
+              "field": "dinner",
+              "city": "Flagstaff",
+              "record": {
+                "Name": "Hotel Malabar",
+                "Average Cost": 13,
+                "Cuisines": "Tea, Indian, Desserts, Fast Food",
+                "Aggregate Rating": 3,
+                "City": "Flagstaff"
+              }
+            },
+            {
+              "date": "2022-03-19",
+              "field": "breakfast",
+              "city": "Flagstaff",
+              "record": {
+                "Name": "Hotel Malabar",
+                "Average Cost": 13,
+                "Cuisines": "Tea, Indian, Desserts, Fast Food",
+                "Aggregate Rating": 3,
+                "City": "Flagstaff"
+              }
+            },
+            {
+              "date": "2022-03-19",
+              "field": "lunch",
+              "city": "Flagstaff",
+              "record": {
+                "Name": "Hotel Malabar",
+                "Average Cost": 13,
+                "Cuisines": "Tea, Indian, Desserts, Fast Food",
+                "Aggregate Rating": 3,
+                "City": "Flagstaff"
+              }
+            },
+            {
+              "date": "2022-03-19",
+              "field": "dinner",
+              "city": "Flagstaff",
+              "record": {
+                "Name": "Hungry Heroes",
+                "Average Cost": 25,
+                "Cuisines": "Chinese, BBQ, Desserts",
+                "Aggregate Rating": 3.8,
+                "City": "Flagstaff"
+              }
+            },
+            {
+              "date": "2022-03-20",
+              "field": "breakfast",
+              "city": "Flagstaff",
+              "record": {
+                "Name": "Hotel Malabar",
+                "Average Cost": 13,
+                "Cuisines": "Tea, Indian, Desserts, Fast Food",
+                "Aggregate Rating": 3,
+                "City": "Flagstaff"
+              }
+            },
+            {
+              "date": "2022-03-20",
+              "field": "lunch",
+              "city": "Flagstaff",
+              "record": {
+                "Name": "Hotel Malabar",
+                "Average Cost": 13,
+                "Cuisines": "Tea, Indian, Desserts, Fast Food",
+                "Aggregate Rating": 3,
+                "City": "Flagstaff"
+              }
+            },
+            {
+              "date": "2022-03-20",
+              "field": "dinner",
+              "city": "Flagstaff",
+              "record": {
+                "Name": "Hotel Malabar",
+                "Average Cost": 13,
+                "Cuisines": "Tea, Indian, Desserts, Fast Food",
+                "Aggregate Rating": 3,
+                "City": "Flagstaff"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-16",
+        "current_city": "Sioux Falls → Phoenix",
+        "transportation": "Flight F4045477 for all three travelers, departing Sioux Falls at 18:40 and arriving Phoenix at 19:26; taxi/rideshare to lodging",
+        "breakfast": "Packed breakfast",
+        "lunch": "Packed lunch",
+        "dinner": "Pizza Hut — Chinese-listed cuisine, average cost $30 per traveler",
+        "attraction": "-",
+        "accommodation": "1,100 sq. ft. apt. Penthouse with private deck! — entire home, rating 5, capacity 3 (night 1 of 2)"
+      },
+      {
+        "day": "2022-03-17",
+        "current_city": "Phoenix",
+        "transportation": "Taxi/rideshare from lodging to Heard Museum, then to lunch, Desert Botanical Garden, dinner, and lodging",
+        "breakfast": "Spooky Sky — average cost $15 per traveler",
+        "lunch": "Amritsari Naan Hut — average cost $21 per traveler",
+        "dinner": "Mama Loca — average cost $27 per traveler",
+        "attraction": "Relaxed visits to Heard Museum and Desert Botanical Garden only",
+        "accommodation": "1,100 sq. ft. apt. Penthouse with private deck! — entire home, rating 5, capacity 3 (night 2 of 2)"
+      },
+      {
+        "day": "2022-03-18",
+        "current_city": "Phoenix → Flagstaff",
+        "transportation": "Flight F3804854 for all three travelers, departing Phoenix at 08:49 and arriving Flagstaff at 09:47; taxi/rideshare to lodging",
+        "breakfast": "Spooky Sky — average cost $15 per traveler",
+        "lunch": "Communiti — average cost $16 per traveler",
+        "dinner": "Communiti — average cost $16 per traveler",
+        "attraction": "-",
+        "accommodation": "Stylish apartment in the heart of New York — entire home, rating 3, capacity 8 (night 1 of 2)"
+      },
+      {
+        "day": "2022-03-19",
+        "current_city": "Flagstaff",
+        "transportation": "Direct taxi/rideshare from lodging to Museum of Northern Arizona, then for the lunch break, onward to Lowell Observatory, dinner, and back to lodging",
+        "breakfast": "Communiti — average cost $16 per traveler",
+        "lunch": "Communiti — average cost $16 per traveler",
+        "dinner": "38 Barracks — Chinese cuisine, average cost $35 per traveler",
+        "attraction": "Museum of Northern Arizona and Lowell Observatory; Riordan Mansion omitted",
+        "accommodation": "Stylish apartment in the heart of New York — entire home, rating 3, capacity 8 (night 2 of 2)"
+      },
+      {
+        "day": "2022-03-20",
+        "current_city": "Flagstaff",
+        "transportation": "Local taxi/rideshare to Downtown Flagstaff; trip ends in Flagstaff with no return journey",
+        "breakfast": "Communiti — average cost $16 per traveler",
+        "lunch": "Communiti — average cost $16 per traveler",
+        "dinner": "Communiti — average cost $16 per traveler",
+        "attraction": "Relaxed visit to Downtown Flagstaff",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "F4045477 arrives before 21:00, and F3804854 reaches Flagstaff before noon. The plan preserves two nights in each city, the requested attractions, direct March 19 taxis/rideshares, meal breaks, and Chinese meals with every listed per-traveler average below $50. Known costs are $1,356 for flights, $2,590 for four lodging nights, and approximately $765 for meals for three travelers, totaling $4,711. Taxi/rideshare fares, attraction admission, and packed-food costs are unpriced, so a final total under the soft $5,000 budget cannot be verified. No supported private-room listing in either city accommodates all three people; the selected entire-home listings sacrifice the private-room requirement while preserving one lodging, adequate occupancy, ratings of at least 3, and exactly two nights per city."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Phoenix": [
+      {
+        "Name": "Desert Botanical Garden",
+        "Latitude": 33.4616795,
+        "Longitude": -111.944926,
+        "Address": "1201 N Galvin Pkwy, Phoenix, AZ 85008, USA",
+        "Phone": "(480) 941-1225",
+        "Website": "https://www.dbg.org/",
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Heard Museum",
+        "Latitude": 33.4725814,
+        "Longitude": -112.0722331,
+        "Address": "2301 N Central Ave, Phoenix, AZ 85004, USA",
+        "Phone": "(602) 252-8840",
+        "Website": "https://heard.org/",
+        "City": "Phoenix"
+      }
+    ],
+    "Restaurants in Phoenix": [
+      {
+        "Name": "Pizza Hut",
+        "Average Cost": 30,
+        "Cuisines": "Tea, Chinese, Desserts, Seafood",
+        "Aggregate Rating": 4.4,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Spooky Sky",
+        "Average Cost": 15,
+        "Cuisines": "Tea, Pizza, Fast Food, Cafe, Indian",
+        "Aggregate Rating": 3.4,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Amritsari Naan Hut",
+        "Average Cost": 21,
+        "Cuisines": "Tea, Cafe, BBQ, Fast Food, Chinese",
+        "Aggregate Rating": 0.0,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Mama Loca",
+        "Average Cost": 27,
+        "Cuisines": "Desserts, Pizza, Italian, Bakery, Fast Food",
+        "Aggregate Rating": 4.2,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Domino's Pizza",
+        "Average Cost": 96,
+        "Cuisines": "Cafe, Mexican, Fast Food, Chinese, Seafood",
+        "Aggregate Rating": 2.8,
+        "City": "Phoenix"
+      },
+      {
+        "Name": "Vero Gusto",
+        "Average Cost": 13,
+        "Cuisines": "Desserts, Indian, BBQ",
+        "Aggregate Rating": 4.1,
+        "City": "Phoenix"
+      }
+    ],
+    "Accommodations in Phoenix": [
+      {
+        "NAME": "1,100 sq. ft. apt. Penthouse with private deck!",
+        "price": 209.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No visitors & No pets",
+        "minimum nights": 1.0,
+        "maximum occupancy": 3,
+        "review rate number": 5.0,
+        "city": "Phoenix"
+      }
+    ],
+    "Attractions in Flagstaff": [
+      {
+        "Name": "Museum of Northern Arizona",
+        "Latitude": 35.234499,
+        "Longitude": -111.66562,
+        "Address": "3101 N Fort Valley Rd, Flagstaff, AZ 86001, USA",
+        "Phone": "(928) 774-5213",
+        "Website": "https://musnaz.org/",
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Lowell Observatory",
+        "Latitude": 35.2028951,
+        "Longitude": -111.6646428,
+        "Address": "1400 W Mars Hill Rd, Flagstaff, AZ 86001, USA",
+        "Phone": "(928) 774-3358",
+        "Website": "https://lowell.edu/welcomeback",
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Downtown Flagstaff",
+        "Latitude": 35.1987337,
+        "Longitude": -111.6483259,
+        "Address": "6 E Aspen Ave # 200, Flagstaff, AZ 86001, USA",
+        "Phone": "(928) 275-2655",
+        "Website": "https://downtownflagstaff.org/",
+        "City": "Flagstaff"
+      }
+    ],
+    "Restaurants in Flagstaff": [
+      {
+        "Name": "Communiti",
+        "Average Cost": 16,
+        "Cuisines": "Tea, Mexican, Indian, BBQ",
+        "Aggregate Rating": 4.2,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "38 Barracks",
+        "Average Cost": 35,
+        "Cuisines": "Tea, Chinese, Mediterranean, Desserts",
+        "Aggregate Rating": 4.4,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Hotel Malabar",
+        "Average Cost": 13,
+        "Cuisines": "Tea, Indian, Desserts, Fast Food",
+        "Aggregate Rating": 3.0,
+        "City": "Flagstaff"
+      },
+      {
+        "Name": "Hungry Heroes",
+        "Average Cost": 25,
+        "Cuisines": "Chinese, BBQ, Desserts",
+        "Aggregate Rating": 3.8,
+        "City": "Flagstaff"
+      }
+    ],
+    "Accommodations in Flagstaff": [
+      {
+        "NAME": "Stylish apartment in the heart of New York",
+        "price": 1086.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No smoking",
+        "minimum nights": 2.0,
+        "maximum occupancy": 8,
+        "review rate number": 3.0,
+        "city": "Flagstaff"
+      }
+    ],
+    "Flight from Sioux Falls to Phoenix on 2022-03-16": [
+      {
+        "Flight Number": "F4045477",
+        "Price": 410,
+        "DepTime": "18:40",
+        "ArrTime": "19:26",
+        "ActualElapsedTime": "2 hours 46 minutes",
+        "FlightDate": "2022-03-16",
+        "OriginCityName": "Sioux Falls",
+        "DestCityName": "Phoenix",
+        "Distance": 1081.0
+      }
+    ],
+    "Self-driving from Sioux Falls to Phoenix": "self-driving, from Sioux Falls to Phoenix, duration: 21 hours 58 mins, distance: 2,279 km, cost: 113",
+    "Taxi from Sioux Falls to Phoenix": "taxi, from Sioux Falls to Phoenix, duration: 21 hours 58 mins, distance: 2,279 km, cost: 2279",
+    "Flight from Phoenix to Flagstaff on 2022-03-18": [
+      {
+        "Flight Number": "F3804854",
+        "Price": 42,
+        "DepTime": "08:49",
+        "ArrTime": "09:47",
+        "ActualElapsedTime": "0 hours 58 minutes",
+        "FlightDate": "2022-03-18",
+        "OriginCityName": "Phoenix",
+        "DestCityName": "Flagstaff",
+        "Distance": 119.0
+      }
+    ],
+    "Self-driving from Phoenix to Flagstaff": "self-driving, from Phoenix to Flagstaff, duration: 2 hours 15 mins, distance: 232 km, cost: 11",
+    "Taxi from Phoenix to Flagstaff": "taxi, from Phoenix to Flagstaff, duration: 2 hours 15 mins, distance: 232 km, cost: 232",
+    "Flight from Flagstaff to Sioux Falls on 2022-03-20": "There is no flight from Flagstaff to Sioux Falls on 2022-03-20.",
+    "Self-driving from Flagstaff to Sioux Falls": "self-driving, from Flagstaff to Sioux Falls, duration: 19 hours 57 mins, distance: 2,086 km, cost: 104",
+    "Taxi from Flagstaff to Sioux Falls": "taxi, from Flagstaff to Sioux Falls, duration: 19 hours 57 mins, distance: 2,086 km, cost: 2086"
+  },
+  "background": {
+    "org": "Sioux Falls",
+    "dest": "Arizona",
+    "days": 5,
+    "visiting_city_number": 2,
+    "date": [
+      "2022-03-16",
+      "2022-03-17",
+      "2022-03-18",
+      "2022-03-19",
+      "2022-03-20"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 5000,
+    "query": "Can you help me create a 5-day travel plan from Sioux Falls to visit 2 cities in Arizona? The travel dates will be from March 16th to March 20th, 2022, and the budget for the trip is $5,000.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 4711.0,
+        "unpriced": [
+          "breakfast: packed breakfast",
+          "lunch: packed lunch",
+          "taxi: taxi/rideshare from lodging to heard museum, then to lunch, ",
+          "taxi: direct taxi/rideshare from lodging to museum of northern ari",
+          "taxi: local taxi/rideshare to downtown flagstaff; trip ends in fla"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 4864.0,
+        "unpriced": [
+          "taxi: direct taxis or rideshares between flagstaff lodging, museum"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

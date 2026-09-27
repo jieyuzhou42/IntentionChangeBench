@@ -1,0 +1,122 @@
+[
+  {
+    "error": "Invalid Gold atoms",
+    "response": {
+      "gold_atoms": [
+        {
+          "atom_id": "g1",
+          "source_field": "category",
+          "value": "protein chips or crisps"
+        },
+        {
+          "atom_id": "g2",
+          "source_field": "budget_max",
+          "value": "price lower than 40.00 dollars"
+        },
+        {
+          "atom_id": "g3",
+          "source_field": "dietary_claims",
+          "value": "grain free"
+        },
+        {
+          "atom_id": "g4",
+          "source_field": "dietary_claims",
+          "value": "non-GMO"
+        },
+        {
+          "atom_id": "g5",
+          "source_field": "dietary_claims",
+          "value": "gluten free"
+        },
+        {
+          "atom_id": "g6",
+          "source_field": "dietary_claims",
+          "value": "low carb"
+        },
+        {
+          "atom_id": "g7",
+          "source_field": "dietary_claims",
+          "value": "high protein"
+        },
+        {
+          "atom_id": "g8",
+          "source_field": "dietary_claims",
+          "value": "low calorie"
+        },
+        {
+          "atom_id": "g9",
+          "source_field": "dietary_claims",
+          "value": "no artificial ingredients"
+        },
+        {
+          "atom_id": "g10",
+          "source_field": "flavor_name",
+          "value": "sour cream & onion"
+        }
+      ],
+      "constraint_criteria": [
+        {
+          "gold_field": "category",
+          "criteria": "The selected product must be a protein chip or crisp.",
+          "quote": "protein chips or crisps are okay too."
+        },
+        {
+          "gold_field": "budget_max",
+          "criteria": "The selected product or selected pack must have a price strictly less than $40.00.",
+          "quote": "price lower than 40.00 dollars"
+        },
+        {
+          "gold_field": "dietary_claims",
+          "criteria": "The selected product must explicitly support every listed dietary claim: grain free, non-GMO, gluten free, low carb, high protein, low calorie, and no artificial ingredients.",
+          "quote": "Please make sure they explicitly say grain free, non-GMO, gluten free, low carb, high protein, low calorie, and no artificial ingredients."
+        },
+        {
+          "gold_field": "flavor_name",
+          "criteria": "The selected product must explicitly have sour cream & onion flavor.",
+          "quote": "I really want sour cream & onion flavor."
+        },
+        {
+          "gold_field": "grain_free",
+          "criteria": "The selected product must explicitly be grain free.",
+          "quote": "Please make sure they explicitly say grain free"
+        },
+        {
+          "gold_field": "artificial_ingredients",
+          "criteria": "The selected product must explicitly state that it has no artificial ingredients.",
+          "quote": "no artificial ingredients"
+        },
+        {
+          "gold_field": "low_calorie",
+          "criteria": "The selected product must explicitly be low calorie.",
+          "quote": "Please make sure they explicitly say ... low calorie"
+        },
+        {
+          "gold_field": "high_protein",
+          "criteria": "The selected product must explicitly be high protein.",
+          "quote": "Please make sure they explicitly say ... high protein"
+        },
+        {
+          "gold_field": "low_carb",
+          "criteria": "The selected product must explicitly be low carb.",
+          "quote": "Please make sure they explicitly say ... low carb"
+        },
+        {
+          "gold_field": "non_gmo",
+          "criteria": "The selected product must explicitly be non-GMO.",
+          "quote": "Please make sure they explicitly say ... non-GMO"
+        },
+        {
+          "gold_field": "gluten_free",
+          "criteria": "The selected product must explicitly be gluten free.",
+          "quote": "Please make sure they explicitly say ... gluten free"
+        }
+      ],
+      "gold_plan_judgments": [],
+      "annotation_issues": [
+        "dietary_claims duplicates the individual constraints grain_free, artificial_ingredients, low_calorie, high_protein, low_carb, non_gmo, and gluten_free.",
+        "The initial request says \"artificial ingredients,\" while the later clarification says \"no artificial ingredients\"; the later explicit clarification is used for the criterion, but the field artificial_ingredients=true is semantically ambiguous.",
+        "The flavor requirement was initially described as flexible, then explicitly changed to the must-have flavor \"sour cream & onion\"; the later turn is treated as controlling."
+      ]
+    }
+  }
+]

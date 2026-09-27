@@ -90,7 +90,7 @@ v2 拆成了三个 prompt，每个的结构都是"规则 + few-shot + 输出格�
 - budget 不再交给 judge 判；
 - v1 里针对 WebShop 的 `no_match` 和 `human_gold_action` 说明。
 
-三个 prompt 的完整样例在 `prompt_examples/` 目录下（test_0144 的三轮），规则原文见 [`src/eval/rules/travelplanner_v2.md`](../../../src/eval/rules/travelplanner_v2.md)。
+本报告运行时的 v2.1 prompt 示例已删除，避免与当前 v2.2 混淆。当前规则见 [`src/eval/rules/travelplanner_v2.md`](../../../src/eval/rules/travelplanner_v2.md)，完整 prompt 可通过 `--dump-prompts DIR` 导出。
 
 ## 3. 规则
 
@@ -331,7 +331,7 @@ OUT=annotation/reports/travelplanner_v4_eval_v2_gpt6luna_20260924
     --compare-v1 annotation/reports/travelplanner_v4_agent_eval_gpt6luna_20260923/scored_rows_pool.json
 ```
 
-- **加 `--dump-prompts DIR`**：只写出拼好的 prompt，不调用 API。本目录下的 `prompt_examples/`，就是 Claude Sonnet 5 在 test_0144 三轮中三个 judge 各自的完整 prompt。
+- **加 `--dump-prompts DIR`**：只写出当前代码拼好的 prompt，不调用 API。`prepare` 可导出 baseline prompt；`run` 导出 action/intention prompt 前，需要在 `--out` 目录中准备好当前规则版本的 baseline。导出 baseline prompt 本身不会生成 baseline 判定结果。
 - **重复运行**：加 `--tag _r2`，缓存会写到另一个目录，可以用来测 judge 的自身稳定性。本次还没有做重复运行。
 
 | 文件 | 内容 |

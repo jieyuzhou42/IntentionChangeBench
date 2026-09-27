@@ -1,0 +1,371 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 4,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Help me draft a 3-day itinerary for 4 people traveling from Buffalo to Boston, spanning from March 4th to March 6th, 2022. Our budget is set at $2,400 and we are open to any sorts of accommodations. We'd ideally like to experience both French and American cuisines while we're there.",
+    "My mother has limited mobility and needs door-to-door transportation and regular seated breaks, so please keep us together with rideshares and limit each day to two nearby attractions. replan at a slower pace. Raise my budget to 3200",
+    "Let’s prioritize well-reviewed restaurants over French and American variety or extra sightseeing: choose any cuisine, with one sit-down meal rated at least 4.0 each day and simple, inexpensive food otherwise. ",
+    "Please book one entire home or apartment at a single property that fits all four of us. ",
+    "keep our meal under $50/person on average. "
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 4000,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "days",
+      "value": 3,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "people_number",
+      "value": 4,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "activity",
+      "value": "2 attractions",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "room_type",
+      "value": "Entire home/apt",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation",
+      "value": "One property with capacity for all four travelers.",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "restaurant_rating",
+      "value": 4,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "dining_style 2",
+      "value": "inexpensive",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "cuisine",
+      "value": " French and American",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "entity_2.mobility",
+      "value": "Limited walking; needs door-to-door transportation and regular seated breaks.",
+      "priority": "unlabeled",
+      "annotated_priorities": [],
+      "entity_reference": "my mother"
+    },
+    {
+      "id": "entity_3.dining_style",
+      "value": "Vegetarian meals only, with a confirmed vegetarian entree at the shared sit-down restaurant each day.",
+      "priority": "unlabeled",
+      "annotated_priorities": [],
+      "entity_reference": "my sister"
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 — 2022-03-04",
+            "current_city": "Boston",
+            "transportation": "F3754877",
+            "breakfast": "-",
+            "lunch": "Icy Curls",
+            "dinner": "Cafe - Hyatt Regency",
+            "attraction": "Museum of Fine Arts, Boston",
+            "accommodation": "Delight in Your Home Away from Home in NYC!"
+          },
+          {
+            "day": "Day 2 — 2022-03-05",
+            "current_city": "Boston",
+            "transportation": "-",
+            "breakfast": "Irish Democrat",
+            "lunch": "Jamavar - The Leela Palace",
+            "dinner": "Manohar Cakes & Bikaneri",
+            "attraction": "Museum of Science",
+            "accommodation": "Delight in Your Home Away from Home in NYC!"
+          },
+          {
+            "day": "Day 3 — 2022-03-06",
+            "current_city": "Boston",
+            "transportation": "F3757097",
+            "breakfast": "Irish Democrat",
+            "lunch": "Punjab Restaurant",
+            "dinner": "Icy Curls",
+            "attraction": "New England Aquarium",
+            "accommodation": "-"
+          }
+        ]
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-04",
+        "current_city": "Buffalo → Boston",
+        "transportation": "Door-to-door rideshare for all four from the Buffalo origin to the airport; flight F3754877 from Buffalo at 08:04 to Boston at 09:30; one door-to-door rideshare for all four to the accommodation and later to Boston Common",
+        "breakfast": "Self-catered oatmeal and fruit before leaving Buffalo",
+        "lunch": "Packed sandwiches",
+        "dinner": "Sit-down meal at Irish Democrat (rating 4.4; average cost $18 per person)",
+        "attraction": "Boston Common, followed by a seated rest; no second attraction",
+        "accommodation": "Delight in Your Home Away from Home in NYC! — entire home/apartment, maximum occupancy 5, first of 2 nights"
+      },
+      {
+        "day": "2022-03-05",
+        "current_city": "Boston",
+        "transportation": "Door-to-door rideshares carrying all four travelers together between the accommodation, New England Aquarium, Irish Democrat, and the accommodation",
+        "breakfast": "Self-catered oatmeal and fruit at the apartment",
+        "lunch": "Packed sandwiches",
+        "dinner": "Sit-down meal at Irish Democrat (rating 4.4; average cost $18 per person)",
+        "attraction": "New England Aquarium at a slow pace, with seated breaks at least hourly; no second attraction",
+        "accommodation": "Delight in Your Home Away from Home in NYC! — entire home/apartment, maximum occupancy 5, second of 2 nights"
+      },
+      {
+        "day": "2022-03-06",
+        "current_city": "Boston → Buffalo",
+        "transportation": "Door-to-door rideshares carrying all four travelers together from the accommodation to the Museum of Fine Arts, then to Irish Democrat and Boston airport; flight F3757097 from Boston at 21:44 to Buffalo at 23:34; door-to-door rideshare for all four from the Buffalo airport to the trip endpoint",
+        "breakfast": "Self-catered oatmeal and fruit at the apartment",
+        "lunch": "Sit-down meal at Irish Democrat (rating 4.4; average cost $18 per person)",
+        "dinner": "Packed sandwiches before the flight",
+        "attraction": "Museum of Fine Arts, Boston at a slow pace, with seated breaks at least hourly; no second attraction",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "This is the only listed entire home/apartment that both permits a 2-night stay and accommodates all four travelers. Lodging is $1,744 for two nights, flights are $1,220 for four round trips, and the three priced Irish Democrat meals total $216, producing a known subtotal of $3,180. Groceries, rideshares, and attraction admission are unpriced, so the $3,200 total budget cannot be met or verified and will likely be exceeded. The full meal average also cannot be verified because self-catered food is unpriced, although every priced restaurant meal is $18 per person. Each day includes one 4.4-rated sit-down meal, no more than one attraction, seated breaks, and door-to-door group rideshares."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Boston": [
+      {
+        "Name": "Boston Common",
+        "Latitude": 42.3550897,
+        "Longitude": -71.0657256,
+        "Address": "139 Tremont St, Boston, MA 02111, USA",
+        "Phone": "(617) 635-4505",
+        "Website": "https://www.boston.gov/departments/parks-and-recreation",
+        "City": "Boston"
+      },
+      {
+        "Name": "New England Aquarium",
+        "Latitude": 42.3592478,
+        "Longitude": -71.0491475,
+        "Address": "1 Central Wharf, Boston, MA 02110, USA",
+        "Phone": "(617) 973-5200",
+        "Website": "https://www.neaq.org/",
+        "City": "Boston"
+      },
+      {
+        "Name": "Museum of Fine Arts, Boston",
+        "Latitude": 42.339381,
+        "Longitude": -71.094048,
+        "Address": "465 Huntington Ave, Boston, MA 02115, USA",
+        "Phone": "(617) 267-9300",
+        "Website": "https://www.mfa.org/",
+        "City": "Boston"
+      },
+      {
+        "Name": "Museum of Science",
+        "Latitude": 42.367714,
+        "Longitude": -71.0709771,
+        "Address": "Museum Of Science Driveway, Boston, MA 02114, USA",
+        "Phone": "(617) 723-2500",
+        "Website": "https://www.mos.org/",
+        "City": "Boston"
+      }
+    ],
+    "Restaurants in Boston": [
+      {
+        "Name": "Irish Democrat",
+        "Average Cost": 18,
+        "Cuisines": "Tea, Cafe, Bakery, Fast Food",
+        "Aggregate Rating": 4.4,
+        "City": "Boston"
+      },
+      {
+        "Name": "Icy Curls",
+        "Average Cost": 20,
+        "Cuisines": "Desserts, Pizza, French, Fast Food, Cafe, Mediterranean",
+        "Aggregate Rating": 3.7,
+        "City": "Boston"
+      },
+      {
+        "Name": "Cafe - Hyatt Regency",
+        "Average Cost": 45,
+        "Cuisines": "French, BBQ, Desserts, Seafood",
+        "Aggregate Rating": 3.6,
+        "City": "Boston"
+      },
+      {
+        "Name": "Jamavar - The Leela Palace",
+        "Average Cost": 38,
+        "Cuisines": "Cafe, Pizza",
+        "Aggregate Rating": 3.9,
+        "City": "Boston"
+      },
+      {
+        "Name": "Manohar Cakes & Bikaneri",
+        "Average Cost": 34,
+        "Cuisines": "Tea, Cafe, Pizza, Bakery",
+        "Aggregate Rating": 3.5,
+        "City": "Boston"
+      },
+      {
+        "Name": "Punjab Restaurant",
+        "Average Cost": 26,
+        "Cuisines": "Desserts, Pizza, French, BBQ, Cafe",
+        "Aggregate Rating": 3.8,
+        "City": "Boston"
+      }
+    ],
+    "Accommodations in Boston": [
+      {
+        "NAME": "Delight in Your Home Away from Home in NYC!",
+        "price": 872.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No pets & No smoking",
+        "minimum nights": 2.0,
+        "maximum occupancy": 5,
+        "review rate number": 3.0,
+        "city": "Boston"
+      }
+    ],
+    "Flight from Buffalo to Boston on 2022-03-04": [
+      {
+        "Flight Number": "F3754877",
+        "Price": 136,
+        "DepTime": "08:04",
+        "ArrTime": "09:30",
+        "ActualElapsedTime": "1 hours 26 minutes",
+        "FlightDate": "2022-03-04",
+        "OriginCityName": "Buffalo",
+        "DestCityName": "Boston",
+        "Distance": 395.0
+      }
+    ],
+    "Self-driving from Buffalo to Boston": "self-driving, from Buffalo to Boston, duration: 6 hours 50 mins, distance: 737 km, cost: 36",
+    "Taxi from Buffalo to Boston": "taxi, from Buffalo to Boston, duration: 6 hours 50 mins, distance: 737 km, cost: 737",
+    "Flight from Boston to Buffalo on 2022-03-06": [
+      {
+        "Flight Number": "F3757097",
+        "Price": 169,
+        "DepTime": "21:44",
+        "ArrTime": "23:34",
+        "ActualElapsedTime": "1 hours 50 minutes",
+        "FlightDate": "2022-03-06",
+        "OriginCityName": "Boston",
+        "DestCityName": "Buffalo",
+        "Distance": 395.0
+      }
+    ],
+    "Self-driving from Boston to Buffalo": "self-driving, from Boston to Buffalo, duration: 6 hours 50 mins, distance: 733 km, cost: 36",
+    "Taxi from Boston to Buffalo": "taxi, from Boston to Buffalo, duration: 6 hours 50 mins, distance: 733 km, cost: 733"
+  },
+  "background": {
+    "org": "Buffalo",
+    "dest": "Boston",
+    "days": 3,
+    "visiting_city_number": 1,
+    "date": [
+      "2022-03-04",
+      "2022-03-05",
+      "2022-03-06"
+    ],
+    "people_number": 4,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": [
+        "American",
+        "French"
+      ],
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 2400,
+    "query": "Help me draft a 3-day itinerary for 4 people traveling from Buffalo to Boston, spanning from March 4th to March 6th, 2022. Our budget is set at $2,400 and we are open to any sorts of accommodations. We'd ideally like to experience both French and American cuisines while we're there.",
+    "level": "medium"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 3180.0,
+        "unpriced": [
+          "breakfast: self-catered oatmeal and fruit before leaving buffalo",
+          "lunch: packed sandwiches",
+          "breakfast: self-catered oatmeal and fruit at the apartment",
+          "lunch: packed sandwiches",
+          "breakfast: self-catered oatmeal and fruit at the apartment",
+          "dinner: packed sandwiches before the flight"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 3840.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

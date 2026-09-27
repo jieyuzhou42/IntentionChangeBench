@@ -1,0 +1,391 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0357",
+  "turn_id": 0,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Help me draft a 3-day itinerary for 4 people traveling from Buffalo to Boston, spanning from March 4th to March 6th, 2022. Our budget is set at $2,400 and we are open to any sorts of accommodations. We'd ideally like to experience both French and American cuisines while we're there."
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 2400,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "days",
+      "value": 3,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "people_number",
+      "value": 4,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "cuisine",
+      "value": [
+        "American",
+        "French"
+      ],
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 — March 4, 2022",
+            "current_city": "Buffalo to Boston",
+            "transportation": "F3754877",
+            "breakfast": "Ama Rabsel House",
+            "lunch": "Apni Rasoi",
+            "dinner": "Cafe - Hyatt Regency",
+            "attraction": "Boston Common; Public Garden",
+            "accommodation": "New York City!! Times Square Home!!!"
+          },
+          {
+            "day": "Day 2 — March 5, 2022",
+            "current_city": "Boston",
+            "transportation": "-",
+            "breakfast": "Ama Rabsel House",
+            "lunch": "Irish Democrat",
+            "dinner": "Bablu Chinese Food",
+            "attraction": "Museum of Fine Arts, Boston; Museum of Science; Charles River Esplanade",
+            "accommodation": "New York City!! Times Square Home!!!"
+          },
+          {
+            "day": "Day 3 — March 6, 2022",
+            "current_city": "Boston to Buffalo",
+            "transportation": "F3757097",
+            "breakfast": "Ama Rabsel House",
+            "lunch": "Bablu Chinese Food",
+            "dinner": "Bablu Chinese Food",
+            "attraction": "Faneuil Hall Marketplace; Old State House; Boston Tea Party Ships & Museum; Boston Waterfront",
+            "accommodation": "-"
+          }
+        ]
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-04",
+        "current_city": "Buffalo to Boston",
+        "transportation": "Flight F3754877 from Buffalo to Boston, departing 08:04 and arriving 09:30; four fares at $136 each",
+        "breakfast": "Packed bagels and fruit before the flight",
+        "lunch": "Packed sandwiches and fruit",
+        "dinner": "Cake Factory — French cuisine; average cost $43 per person",
+        "attraction": "Boston Common and Public Garden",
+        "accommodation": "Travelers 1–3: Sunlight + Space on Eastern Parkway; Traveler 4: Luxury apartment in New York City"
+      },
+      {
+        "day": "2022-03-05",
+        "current_city": "Boston",
+        "transportation": "Walking between the selected Boston sites",
+        "breakfast": "Self-catered oatmeal and fruit",
+        "lunch": "Apni Rasoi — American cuisine; average cost $28 per person",
+        "dinner": "Packed sandwiches and fruit",
+        "attraction": "Museum of Fine Arts, Boston and Fenway Park",
+        "accommodation": "Travelers 1–3: Sunlight + Space on Eastern Parkway; Traveler 4: Luxury apartment in New York City"
+      },
+      {
+        "day": "2022-03-06",
+        "current_city": "Boston, ending in Buffalo",
+        "transportation": "Walking locally, then flight F3757097 from Boston to Buffalo, departing 21:44 and arriving 23:34; four fares at $169 each",
+        "breakfast": "Self-catered oatmeal and fruit",
+        "lunch": "Packed sandwiches and fruit",
+        "dinner": "Packed sandwiches and fruit before the flight",
+        "attraction": "Faneuil Hall Marketplace and Boston Tea Party Ships & Museum",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "This is the least-cost feasible lodging arrangement in the supplied results: Sunlight + Space accommodates three people for its two-night minimum ($692), while Luxury apartment accommodates the fourth traveler for two nights ($906). Flights total $1,220 for four travelers. The two selected restaurant meals provide both preferred cuisines and total $284 for the party, producing a known total of $3,102. This exceeds the $2,400 must-have budget by at least $702. Packed/self-catered food, local walking, and attraction admission are unpriced in the available results and are not treated as free. No supported accommodation arrangement with adequate occupancy and minimum-night compliance can bring even flights plus lodging within budget."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Boston": [
+      {
+        "Name": "Public Garden",
+        "Latitude": 42.35406389999999,
+        "Longitude": -71.0700921,
+        "Address": "Boston, MA 02116, USA",
+        "Phone": "(617) 635-4505",
+        "Website": "https://www.boston.gov/parks/public-garden",
+        "City": "Boston"
+      },
+      {
+        "Name": "Boston Common",
+        "Latitude": 42.3550897,
+        "Longitude": -71.0657256,
+        "Address": "139 Tremont St, Boston, MA 02111, USA",
+        "Phone": "(617) 635-4505",
+        "Website": "https://www.boston.gov/departments/parks-and-recreation",
+        "City": "Boston"
+      },
+      {
+        "Name": "Museum of Fine Arts, Boston",
+        "Latitude": 42.339381,
+        "Longitude": -71.094048,
+        "Address": "465 Huntington Ave, Boston, MA 02115, USA",
+        "Phone": "(617) 267-9300",
+        "Website": "https://www.mfa.org/",
+        "City": "Boston"
+      },
+      {
+        "Name": "Fenway Park",
+        "Latitude": 42.3466764,
+        "Longitude": -71.0972178,
+        "Address": "4 Jersey St, Boston, MA 02215, USA",
+        "Phone": "(877) 733-7699",
+        "Website": "https://www.mlb.com/redsox/ballpark",
+        "City": "Boston"
+      },
+      {
+        "Name": "Boston Tea Party Ships & Museum",
+        "Latitude": 42.35218209999999,
+        "Longitude": -71.0512911,
+        "Address": "306 Congress St, Boston, MA 02210, USA",
+        "Phone": "(617) 338-1773",
+        "Website": "https://www.bostonteapartyship.com/",
+        "City": "Boston"
+      },
+      {
+        "Name": "Faneuil Hall Marketplace",
+        "Latitude": 42.360189,
+        "Longitude": -71.0551145,
+        "Address": "Boston, MA 02109, USA",
+        "Phone": "(617) 523-1300",
+        "Website": "https://faneuilhallmarketplace.com/",
+        "City": "Boston"
+      },
+      {
+        "Name": "Museum of Science",
+        "Latitude": 42.367714,
+        "Longitude": -71.0709771,
+        "Address": "Museum Of Science Driveway, Boston, MA 02114, USA",
+        "Phone": "(617) 723-2500",
+        "Website": "https://www.mos.org/",
+        "City": "Boston"
+      },
+      {
+        "Name": "Charles River Esplanade",
+        "Latitude": 42.3556187,
+        "Longitude": -71.0788876,
+        "Address": "Charles River, Esplanade, Boston, MA 02116, USA",
+        "Phone": "(617) 227-0365",
+        "Website": "http://esplanade.org/",
+        "City": "Boston"
+      },
+      {
+        "Name": "Old State House",
+        "Latitude": 42.3587352,
+        "Longitude": -71.05745399999999,
+        "Address": "206 Washington St, Boston, MA 02109, USA",
+        "Phone": "(617) 720-1713",
+        "Website": "https://www.revolutionaryspaces.org/",
+        "City": "Boston"
+      },
+      {
+        "Name": "Boston Waterfront",
+        "Latitude": 42.354529,
+        "Longitude": -71.043897,
+        "Address": "1 Marina Park Drive, Boston, MA 02210, USA",
+        "Phone": "Unknown",
+        "Website": "Unknown",
+        "City": "Boston"
+      }
+    ],
+    "Restaurants in Boston": [
+      {
+        "Name": "Cake Factory",
+        "Average Cost": 43,
+        "Cuisines": "Tea, French, Seafood",
+        "Aggregate Rating": 3.3,
+        "City": "Boston"
+      },
+      {
+        "Name": "Apni Rasoi",
+        "Average Cost": 28,
+        "Cuisines": "Bakery, BBQ, Fast Food, American, Mediterranean, Seafood",
+        "Aggregate Rating": 0.0,
+        "City": "Boston"
+      },
+      {
+        "Name": "Ama Rabsel House",
+        "Average Cost": 18,
+        "Cuisines": "Tea, Cafe, Desserts",
+        "Aggregate Rating": 3.0,
+        "City": "Boston"
+      },
+      {
+        "Name": "Cafe - Hyatt Regency",
+        "Average Cost": 45,
+        "Cuisines": "French, BBQ, Desserts, Seafood",
+        "Aggregate Rating": 3.6,
+        "City": "Boston"
+      },
+      {
+        "Name": "Irish Democrat",
+        "Average Cost": 18,
+        "Cuisines": "Tea, Cafe, Bakery, Fast Food",
+        "Aggregate Rating": 4.4,
+        "City": "Boston"
+      },
+      {
+        "Name": "Bablu Chinese Food",
+        "Average Cost": 14,
+        "Cuisines": "Pizza, BBQ",
+        "Aggregate Rating": 0.0,
+        "City": "Boston"
+      }
+    ],
+    "Accommodations in Boston": [
+      {
+        "NAME": "Sunlight + Space on Eastern Parkway",
+        "price": 346.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No visitors & No pets",
+        "minimum nights": 2.0,
+        "maximum occupancy": 3,
+        "review rate number": 2.0,
+        "city": "Boston"
+      },
+      {
+        "NAME": "Luxury apartment in New York City",
+        "price": 453.0,
+        "room type": "Private room",
+        "house_rules": "No children under 10 & No pets",
+        "minimum nights": 1.0,
+        "maximum occupancy": 1,
+        "review rate number": 3.0,
+        "city": "Boston"
+      },
+      {
+        "NAME": "New York City!! Times Square Home!!!",
+        "price": 102.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No pets & No visitors",
+        "minimum nights": 3.0,
+        "maximum occupancy": 3,
+        "review rate number": 2.0,
+        "city": "Boston"
+      }
+    ],
+    "Flight from Buffalo to Boston on 2022-03-04": [
+      {
+        "Flight Number": "F3754877",
+        "Price": 136,
+        "DepTime": "08:04",
+        "ArrTime": "09:30",
+        "ActualElapsedTime": "1 hours 26 minutes",
+        "FlightDate": "2022-03-04",
+        "OriginCityName": "Buffalo",
+        "DestCityName": "Boston",
+        "Distance": 395.0
+      }
+    ],
+    "Self-driving from Buffalo to Boston": "self-driving, from Buffalo to Boston, duration: 6 hours 50 mins, distance: 737 km, cost: 36",
+    "Taxi from Buffalo to Boston": "taxi, from Buffalo to Boston, duration: 6 hours 50 mins, distance: 737 km, cost: 737",
+    "Flight from Boston to Buffalo on 2022-03-06": [
+      {
+        "Flight Number": "F3757097",
+        "Price": 169,
+        "DepTime": "21:44",
+        "ArrTime": "23:34",
+        "ActualElapsedTime": "1 hours 50 minutes",
+        "FlightDate": "2022-03-06",
+        "OriginCityName": "Boston",
+        "DestCityName": "Buffalo",
+        "Distance": 395.0
+      }
+    ],
+    "Self-driving from Boston to Buffalo": "self-driving, from Boston to Buffalo, duration: 6 hours 50 mins, distance: 733 km, cost: 36",
+    "Taxi from Boston to Buffalo": "taxi, from Boston to Buffalo, duration: 6 hours 50 mins, distance: 733 km, cost: 733"
+  },
+  "background": {
+    "org": "Buffalo",
+    "dest": "Boston",
+    "days": 3,
+    "visiting_city_number": 1,
+    "date": [
+      "2022-03-04",
+      "2022-03-05",
+      "2022-03-06"
+    ],
+    "people_number": 4,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": [
+        "American",
+        "French"
+      ],
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 2400,
+    "query": "Help me draft a 3-day itinerary for 4 people traveling from Buffalo to Boston, spanning from March 4th to March 6th, 2022. Our budget is set at $2,400 and we are open to any sorts of accommodations. We'd ideally like to experience both French and American cuisines while we're there.",
+    "level": "medium"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 3102.0,
+        "unpriced": [
+          "breakfast: packed bagels and fruit before the flight",
+          "lunch: packed sandwiches and fruit",
+          "breakfast: self-catered oatmeal and fruit",
+          "dinner: packed sandwiches and fruit",
+          "breakfast: self-catered oatmeal and fruit",
+          "lunch: packed sandwiches and fruit",
+          "dinner: packed sandwiches and fruit before the flight"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 2376.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": false,
+        "minimum_nights": [
+          "New York City!! Times Square Home!!!: 2 consecutive night(s) booked, minimum 3"
+        ],
+        "capacity": [
+          "day 1 New York City!! Times Square Home!!!: 4 travelers, maximum occupancy 3",
+          "day 2 New York City!! Times Square Home!!!: 4 travelers, maximum occupancy 3"
+        ]
+      }
+    }
+  }
+}

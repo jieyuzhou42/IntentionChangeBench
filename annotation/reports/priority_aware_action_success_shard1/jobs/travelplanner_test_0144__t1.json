@@ -1,0 +1,450 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0144",
+  "turn_id": 1,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "I'd like a solo trip from Moab to two Colorado cities, March 19-23, 2022, on $3,100.",
+    "I'd rather just do Denver for now: an apartment rated 4+, just March 19-22. I'll take my own car, passing through Gunnison on the way home on the 23rd. launch there."
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 3100,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "visiting_city_number",
+      "value": 1,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "room_type",
+      "value": {
+        "Denver": "Entire home/apt"
+      },
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation_rating",
+      "value": {
+        "Denver": 4
+      },
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "transportation",
+      "value": "Own car ",
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "launch at Gunnison",
+      "value": true,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 - 2022-03-19",
+            "current_city": "Moab to Denver",
+            "transportation": "self-driving, from Moab to Denver, duration: 5 hours 23 mins, distance: 570 km, cost: 28",
+            "breakfast": "-",
+            "lunch": "-",
+            "dinner": "Sweet Sensations",
+            "attraction": "-",
+            "accommodation": "Harlem cozy nights"
+          },
+          {
+            "day": "Day 2 - 2022-03-20",
+            "current_city": "Denver",
+            "transportation": "-",
+            "breakfast": "Nathu's Sweets",
+            "lunch": "TBH - The Big House Cafe",
+            "dinner": "The Urban Socialite",
+            "attraction": "Denver Art Museum",
+            "accommodation": "Harlem cozy nights"
+          },
+          {
+            "day": "Day 3 - 2022-03-21",
+            "current_city": "Denver",
+            "transportation": "-self-driving, from Denver to Gunnison, duration: 3 hours 39 mins, distance: 323 km, cost: 16",
+            "breakfast": "Radhika Sweets",
+            "lunch": "Nukkadwala",
+            "dinner": "Al Yousuf",
+            "attraction": "Denver Botanic Gardens",
+            "accommodation": "Harlem cozy nights"
+          },
+          {
+            "day": "Day 4 - 2022-03-22",
+            "current_city": "Denver",
+            "transportation": "-",
+            "breakfast": "Starve Stalkers",
+            "lunch": "Cafe Diva",
+            "dinner": "Yakooz",
+            "attraction": "Denver Museum of Nature & Science",
+            "accommodation": "Harlem cozy nights"
+          },
+          {
+            "day": "Day 5 - 2022-03-23",
+            "current_city": "Denver to Gunnison to Moab",
+            "transportation": "self-driving, from Gunnison to Moab, duration: 4 hours 1 min, distance: 380 km, cost: 19",
+            "breakfast": "Kloof Street House",
+            "lunch": "Breaktym",
+            "dinner": "Kebab Gali",
+            "attraction": "-",
+            "accommodation": "-"
+          }
+        ]
+      }
+    },
+    "restoration_source": {
+      "file": "C:\\Users\\jieyu\\intention_shift_benchmark\\IntentionChangeBench\\data\\travelplanner\\travel_planner_v3.json",
+      "instance_id": "travelplanner_test_0144",
+      "turn_id": 1,
+      "field": "agent_action.action_payload.plan",
+      "note": "Original itinerary restored for Gold Action editing. Review against the rewritten current intention before confirming; source plans are copied without adaptation."
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-19",
+        "current_city": "Moab → Denver",
+        "transportation": "Drive own car from Moab to Denver; 5 hours 23 minutes, 570 km, estimated cost $28",
+        "breakfast": "Packed breakfast from home",
+        "lunch": "Packed lunch from home",
+        "dinner": "Sweet Sensations, Denver — $14",
+        "attraction": "Big Blue Bear",
+        "accommodation": "Harlem cozy nights, Denver — Entire home/apt, rating 4, night 1 of 4"
+      },
+      {
+        "day": "2022-03-20",
+        "current_city": "Denver",
+        "transportation": "Own car for local transportation",
+        "breakfast": "Nathu's Sweets — $12",
+        "lunch": "The Urban Socialite — $34",
+        "dinner": "Al Yousuf — $32",
+        "attraction": "Denver Botanic Gardens and Molly Brown House Museum",
+        "accommodation": "Harlem cozy nights, Denver — Entire home/apt, rating 4, night 2 of 4"
+      },
+      {
+        "day": "2022-03-21",
+        "current_city": "Denver",
+        "transportation": "Own car for local transportation",
+        "breakfast": "Sweet Sensations — $14",
+        "lunch": "Nukkadwala — $31",
+        "dinner": "Yakooz — $52",
+        "attraction": "Denver Zoo and Denver Museum of Nature & Science",
+        "accommodation": "Harlem cozy nights, Denver — Entire home/apt, rating 4, night 3 of 4"
+      },
+      {
+        "day": "2022-03-22",
+        "current_city": "Denver",
+        "transportation": "Own car for local transportation",
+        "breakfast": "Nathu's Sweets — $12",
+        "lunch": "Starve Stalkers — $31",
+        "dinner": "The Urban Socialite — $34",
+        "attraction": "Denver Art Museum and Colorado State Capitol",
+        "accommodation": "Harlem cozy nights, Denver — Entire home/apt, rating 4, night 4 of 4"
+      },
+      {
+        "day": "2022-03-23",
+        "current_city": "Denver → Gunnison → Moab",
+        "transportation": "Drive own car from Denver to Gunnison; 3 hours 39 minutes, estimated cost $16. Continue from Gunnison to Moab; 4 hours 1 minute, estimated cost $19",
+        "breakfast": "Sweet Sensations, Denver — $14",
+        "lunch": "Tughlaq, Gunnison — $18",
+        "dinner": "Packed dinner eaten during the return journey",
+        "attraction": "I.O.O.F. Park, Gunnison",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "Harlem cozy nights is the supported Denver option satisfying an entire apartment, rating 4+, solo occupancy, and the required four-night minimum. Lodging is $1,828 for four billed nights, listed meals total $298, and intercity driving totals $63, producing a known total of $2,189. Attraction admission, local driving, and packed-food costs are unpriced, leaving $911 within the $3,100 budget for those components; therefore the final all-in total cannot be independently verified."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Denver": [
+      {
+        "Name": "Big Blue Bear",
+        "Latitude": 39.7436238,
+        "Longitude": -104.9952912,
+        "Address": "750-776 14th St, Denver, CO 80202, USA",
+        "Phone": "Unknown",
+        "Website": "http://bluebearstudios.com/",
+        "City": "Denver"
+      },
+      {
+        "Name": "Molly Brown House Museum",
+        "Latitude": 39.7374933,
+        "Longitude": -104.9807338,
+        "Address": "1340 Pennsylvania St, Denver, CO 80203, USA",
+        "Phone": "(303) 832-4092",
+        "Website": "https://mollybrown.org/",
+        "City": "Denver"
+      },
+      {
+        "Name": "Denver Botanic Gardens",
+        "Latitude": 39.7320964,
+        "Longitude": -104.9612839,
+        "Address": "1007 York St, Denver, CO 80206, USA",
+        "Phone": "(720) 865-3500",
+        "Website": "https://www.botanicgardens.org/",
+        "City": "Denver"
+      },
+      {
+        "Name": "Denver Museum of Nature & Science",
+        "Latitude": 39.74752609999999,
+        "Longitude": -104.9428078,
+        "Address": "2001 Colorado Blvd, Denver, CO 80205, USA",
+        "Phone": "(303) 370-6000",
+        "Website": "https://www.dmns.org/",
+        "City": "Denver"
+      },
+      {
+        "Name": "Denver Zoo",
+        "Latitude": 39.74959609999999,
+        "Longitude": -104.9508519,
+        "Address": "2300 Steele St, Denver, CO 80205, USA",
+        "Phone": "(720) 337-1400",
+        "Website": "https://denverzoo.org/",
+        "City": "Denver"
+      },
+      {
+        "Name": "Colorado State Capitol",
+        "Latitude": 39.73932509999999,
+        "Longitude": -104.9848069,
+        "Address": "200 E Colfax Ave, Denver, CO 80203, USA",
+        "Phone": "(303) 866-2604",
+        "Website": "https://www.colorado.gov/pacific/capitol",
+        "City": "Denver"
+      },
+      {
+        "Name": "Denver Art Museum",
+        "Latitude": 39.73718780000001,
+        "Longitude": -104.9893451,
+        "Address": "100 W 14th Ave Pkwy, Denver, CO 80204, USA",
+        "Phone": "(720) 865-5000",
+        "Website": "https://denverartmuseum.org/",
+        "City": "Denver"
+      }
+    ],
+    "Restaurants in Denver": [
+      {
+        "Name": "Sweet Sensations",
+        "Average Cost": 14,
+        "Cuisines": "Tea, Pizza, BBQ, Italian",
+        "Aggregate Rating": 0.0,
+        "City": "Denver"
+      },
+      {
+        "Name": "Nathu's Sweets",
+        "Average Cost": 12,
+        "Cuisines": "Tea, Bakery, BBQ, Fast Food",
+        "Aggregate Rating": 2.1,
+        "City": "Denver"
+      },
+      {
+        "Name": "The Urban Socialite",
+        "Average Cost": 34,
+        "Cuisines": "Cafe, Indian, Desserts, Italian",
+        "Aggregate Rating": 3.8,
+        "City": "Denver"
+      },
+      {
+        "Name": "Al Yousuf",
+        "Average Cost": 32,
+        "Cuisines": "Desserts, Tea, Pizza, French, American",
+        "Aggregate Rating": 3.7,
+        "City": "Denver"
+      },
+      {
+        "Name": "Nukkadwala",
+        "Average Cost": 31,
+        "Cuisines": "Desserts, Tea, French, BBQ, Seafood",
+        "Aggregate Rating": 0.0,
+        "City": "Denver"
+      },
+      {
+        "Name": "Yakooz",
+        "Average Cost": 52,
+        "Cuisines": "Pizza, Bakery, Fast Food, Cafe, American",
+        "Aggregate Rating": 3.1,
+        "City": "Denver"
+      },
+      {
+        "Name": "Starve Stalkers",
+        "Average Cost": 31,
+        "Cuisines": "Fast Food, Indian, BBQ, Seafood",
+        "Aggregate Rating": 0.0,
+        "City": "Denver"
+      },
+      {
+        "Name": "TBH - The Big House Cafe",
+        "Average Cost": 22,
+        "Cuisines": "Cafe, Indian, Seafood, Fast Food",
+        "Aggregate Rating": 4.0,
+        "City": "Denver"
+      },
+      {
+        "Name": "Radhika Sweets",
+        "Average Cost": 26,
+        "Cuisines": "Tea, Fast Food, Cafe, Mediterranean, Seafood",
+        "Aggregate Rating": 2.9,
+        "City": "Denver"
+      },
+      {
+        "Name": "Cafe Diva",
+        "Average Cost": 44,
+        "Cuisines": "Chinese, Cafe, Desserts, Fast Food",
+        "Aggregate Rating": 3.8,
+        "City": "Denver"
+      },
+      {
+        "Name": "Kloof Street House",
+        "Average Cost": 53,
+        "Cuisines": "Pizza, Bakery, BBQ, Fast Food, Mediterranean",
+        "Aggregate Rating": 4.5,
+        "City": "Denver"
+      },
+      {
+        "Name": "Breaktym",
+        "Average Cost": 59,
+        "Cuisines": "Tea, Mexican, Pizza",
+        "Aggregate Rating": 3.2,
+        "City": "Denver"
+      },
+      {
+        "Name": "Kebab Gali",
+        "Average Cost": 63,
+        "Cuisines": "Tea, Bakery, BBQ, Italian",
+        "Aggregate Rating": 3.9,
+        "City": "Denver"
+      }
+    ],
+    "Accommodations in Denver": [
+      {
+        "NAME": "Harlem cozy nights",
+        "price": 457.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No visitors",
+        "minimum nights": 4.0,
+        "maximum occupancy": 3,
+        "review rate number": 4.0,
+        "city": "Denver"
+      }
+    ],
+    "Attractions in Gunnison": [
+      {
+        "Name": "I.O.O.F. Park",
+        "Latitude": 38.5456696,
+        "Longitude": -106.9265976,
+        "Address": "124 E Virginia Ave, Gunnison, CO 81230, USA",
+        "Phone": "(970) 641-8060",
+        "Website": "Unknown",
+        "City": "Gunnison"
+      }
+    ],
+    "Restaurants in Gunnison": [
+      {
+        "Name": "Tughlaq",
+        "Average Cost": 18,
+        "Cuisines": "French, Pizza, Fast Food",
+        "Aggregate Rating": 3.5,
+        "City": "Gunnison"
+      }
+    ],
+    "Accommodations in Gunnison": [],
+    "Flight from Moab to Denver on 2022-03-19": [],
+    "Self-driving from Moab to Denver": "self-driving, from Moab to Denver, duration: 5 hours 23 mins, distance: 570 km, cost: 28",
+    "Taxi from Moab to Denver": "taxi, from Moab to Denver, duration: 5 hours 23 mins, distance: 570 km, cost: 570",
+    "Flight from Denver to Gunnison on 2022-03-21": [],
+    "Self-driving from Denver to Gunnison": "self-driving, from Denver to Gunnison, duration: 3 hours 39 mins, distance: 323 km, cost: 16",
+    "Taxi from Denver to Gunnison": "taxi, from Denver to Gunnison, duration: 3 hours 39 mins, distance: 323 km, cost: 323",
+    "Flight from Gunnison to Moab on 2022-03-23": "There is no flight from Gunnison to Moab on 2022-03-23.",
+    "Self-driving from Gunnison to Moab": "self-driving, from Gunnison to Moab, duration: 4 hours 1 min, distance: 380 km, cost: 19",
+    "Taxi from Gunnison to Moab": "taxi, from Gunnison to Moab, duration: 4 hours 1 min, distance: 380 km, cost: 380"
+  },
+  "background": {
+    "org": "Moab",
+    "dest": "Colorado",
+    "days": 5,
+    "visiting_city_number": 2,
+    "date": [
+      "2022-03-19",
+      "2022-03-20",
+      "2022-03-21",
+      "2022-03-22",
+      "2022-03-23"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 3100,
+    "query": "Could you help me set up a 5-day solitary trip, starting from Moab and heading to two different cities in Colorado, from March 19th to March 23rd, 2022? I have a budget of $3,100 for this trip.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 2170.0,
+        "unpriced": [
+          "breakfast: packed breakfast from home",
+          "lunch: packed lunch from home",
+          "dinner: packed dinner eaten during the return journey"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 2329.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

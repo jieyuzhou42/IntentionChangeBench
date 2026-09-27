@@ -1,0 +1,212 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 3,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Can you help put together a travel plan for a single passenger leaving Tampa towards Cleveland for a duration of 3 days, starting from March 2nd up until March 4th, 2022? Please make sure the budget does not exceed $1,800.",
+    "I don't want the flight to be so early. Comfortable departure matters more to me than maximizing first-day activities and meals.",
+    "I want a rating 5 hotel",
+    "I want chinese food"
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 1800,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "days",
+      "value": 3,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "people_number",
+      "value": 1,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "outbound_transportation",
+      "value": "Flight F3915073 from Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation",
+      "value": "Richmond Hill 3 Bedroom apartment in Private home!",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "room_type",
+      "value": "Entire home/apt",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation_rating",
+      "value": 5,
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "day_1",
+      "value": "No sightseeing",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "day_1_lunch",
+      "value": "No planned restaurant lunch on Day 1",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": []
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-02",
+        "current_city": "Tampa / Cleveland",
+        "transportation": "Unavailable: no supported Tampa-to-Cleveland option was provided",
+        "breakfast": "Unavailable: no supported meal option was provided",
+        "lunch": "Unavailable: no supported Chinese restaurant was provided",
+        "dinner": "Unavailable: no supported Chinese restaurant was provided",
+        "attraction": "-",
+        "accommodation": "Unavailable: no supported 5-rated Cleveland hotel was provided"
+      },
+      {
+        "day": "2022-03-03",
+        "current_city": "Cleveland",
+        "transportation": "Unavailable: no supported local transportation option was provided",
+        "breakfast": "Unavailable: no supported meal option was provided",
+        "lunch": "Unavailable: no supported Chinese restaurant was provided",
+        "dinner": "Unavailable: no supported Chinese restaurant was provided",
+        "attraction": "Unavailable: no supported Cleveland attraction was provided",
+        "accommodation": "Unavailable: no supported 5-rated Cleveland hotel was provided"
+      },
+      {
+        "day": "2022-03-04",
+        "current_city": "Cleveland / Tampa",
+        "transportation": "Unavailable: no supported Cleveland-to-Tampa option was provided",
+        "breakfast": "Unavailable: no supported meal option was provided",
+        "lunch": "Unavailable: no supported Chinese restaurant was provided",
+        "dinner": "Unavailable: no supported Chinese restaurant was provided",
+        "attraction": "-",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "No fixed search results are available, so there are no supported flights, hotels, restaurants, attractions, or prices from which to create a bookable itinerary. Inventing options would violate the grounding requirement. Consequently, the requested transportation, 5-rated accommodation, Chinese meals, and verified $1,800 budget cannot be satisfied or priced; this is an explicit infeasibility rather than a successful plan."
+  },
+  "gold_present": false,
+  "reference_records": {
+    "Attractions in Cleveland": [],
+    "Restaurants in Cleveland": [],
+    "Accommodations in Cleveland": [],
+    "Flight from Tampa to Cleveland on 2022-03-02": [],
+    "Self-driving from Tampa to Cleveland": "self-driving, from Tampa to Cleveland, duration: 16 hours 15 mins, distance: 1,760 km, cost: 88",
+    "Taxi from Tampa to Cleveland": "taxi, from Tampa to Cleveland, duration: 16 hours 15 mins, distance: 1,760 km, cost: 1760",
+    "Flight from Cleveland to Tampa on 2022-03-04": [],
+    "Self-driving from Cleveland to Tampa": "self-driving, from Cleveland to Tampa, duration: 16 hours 12 mins, distance: 1,758 km, cost: 87",
+    "Taxi from Cleveland to Tampa": "taxi, from Cleveland to Tampa, duration: 16 hours 12 mins, distance: 1,758 km, cost: 1758"
+  },
+  "background": {
+    "org": "Tampa",
+    "dest": "Cleveland",
+    "days": 3,
+    "visiting_city_number": 1,
+    "date": [
+      "2022-03-02",
+      "2022-03-03",
+      "2022-03-04"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 1800,
+    "query": "Can you help put together a travel plan for a single passenger leaving Tampa towards Cleveland for a duration of 3 days, starting from March 2nd up until March 4th, 2022? Please make sure the budget does not exceed $1,800.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 0.0,
+        "unpriced": [
+          "breakfast: unavailable: no supported meal option was provided",
+          "lunch: unavailable: no supported chinese restaurant was provided",
+          "dinner: unavailable: no supported chinese restaurant was provided",
+          "accommodation: unavailable: no supported 5-rated cleveland hotel was provid",
+          "breakfast: unavailable: no supported meal option was provided",
+          "lunch: unavailable: no supported chinese restaurant was provided",
+          "dinner: unavailable: no supported chinese restaurant was provided",
+          "accommodation: unavailable: no supported 5-rated cleveland hotel was provid",
+          "breakfast: unavailable: no supported meal option was provided",
+          "lunch: unavailable: no supported chinese restaurant was provided",
+          "dinner: unavailable: no supported chinese restaurant was provided"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 0.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

@@ -1,0 +1,347 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 0,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Can you help put together a travel plan for a single passenger leaving Tampa towards Cleveland for a duration of 3 days, starting from March 2nd up until March 4th, 2022? Please make sure the budget does not exceed $1,800."
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 1800,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "days",
+      "value": 3,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "people_number",
+      "value": 1,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 - 2022-03-02",
+            "current_city": "Cleveland",
+            "transportation": "Flight F3612664 from Tampa to Cleveland; departure 05:44, arrival 08:13; duration 2 hours 29 minutes; price $347",
+            "breakfast": "Bikanerwala — average cost $10",
+            "lunch": "Me Kong Bowl — average cost $19",
+            "dinner": "Big Chicken — average cost $27",
+            "attraction": "Cleveland Cultural Gardens",
+            "accommodation": "Gorgeous 1-2 BDR apartment in the Lower East Side — Entire home/apt; $107 per night, 2 nights ($214 total); maximum occupancy 2; house rules: No children under 10 and no pets"
+          },
+          {
+            "day": "Day 2 - 2022-03-03",
+            "current_city": "Cleveland",
+            "transportation": "-",
+            "breakfast": "Nineties — average cost $31",
+            "lunch": "Keventers — average cost $54",
+            "dinner": "Gullu's — average cost $38",
+            "attraction": "Edgewater Park; Cleveland Script Sign - Edgewater Park; Cleveland Harbor West Pierhead Lighthouse",
+            "accommodation": "Gorgeous 1-2 BDR apartment in the Lower East Side — Entire home/apt; included in the 2-night, $214 booking; maximum occupancy 2; house rules: No children under 10 and no pets"
+          },
+          {
+            "day": "Day 3 - 2022-03-04",
+            "current_city": "Cleveland, returning to Tampa",
+            "transportation": "Flight F3559247 from Cleveland to Tampa; departure 21:20, arrival 23:34; duration 2 hours 14 minutes; price $198",
+            "breakfast": "Southern Santushti Cafe — average cost $20",
+            "lunch": "Me侓hur 韄z韄elik Aspava — average cost $34",
+            "dinner": "Makhan Fish and Chicken Corner — average cost $25",
+            "attraction": "Mill Creek Falls; Washington Reservation",
+            "accommodation": "-"
+          }
+        ]
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-02",
+        "current_city": "Tampa → Cleveland",
+        "transportation": "Flight F3612664 from Tampa to Cleveland, departing 05:44 and arriving 08:13; $347",
+        "breakfast": "Bikanerwala; average cost $10",
+        "lunch": "Bikanerwala; average cost $10",
+        "dinner": "Bikanerwala; average cost $10",
+        "attraction": "Mill Creek Falls",
+        "accommodation": "Richmond Hill 3 Bedroom apartment in Private home!"
+      },
+      {
+        "day": "2022-03-03",
+        "current_city": "Cleveland",
+        "transportation": "Local sightseeing on foot",
+        "breakfast": "Bikanerwala; average cost $10",
+        "lunch": "Bikanerwala; average cost $10",
+        "dinner": "Bikanerwala; average cost $10",
+        "attraction": "The Cleveland Museum of Art",
+        "accommodation": "Richmond Hill 3 Bedroom apartment in Private home!"
+      },
+      {
+        "day": "2022-03-04",
+        "current_city": "Cleveland → Tampa",
+        "transportation": "Local sightseeing on foot, then flight F3559247 from Cleveland to Tampa, departing 21:20 and arriving 23:34; $198",
+        "breakfast": "Bikanerwala; average cost $10",
+        "lunch": "Bikanerwala; average cost $10",
+        "dinner": "Bikanerwala; average cost $10",
+        "attraction": "Edgewater Park",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "The selected flights cost $545, two accommodation nights cost $1,130, and nine meals cost $90, producing a known total of $1,765 for one traveler. The accommodation permits a one-night minimum and supports up to four occupants. The priced components leave $35 under the $1,800 cap; attraction admission and airport/local transfers were not priced in the supplied results, so the absolute all-in total cannot be verified."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Cleveland": [
+      {
+        "Name": "Mill Creek Falls",
+        "Latitude": 41.4450479,
+        "Longitude": -81.6253258,
+        "Address": "Mill Creek Trail, Cleveland, OH 44105, USA",
+        "Phone": "(216) 635-3200",
+        "Website": "https://clevelandmetroparks.com/parks/visit/parks/garfield-park-reservation/mill-creek-falls-overlook",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "The Cleveland Museum of Art",
+        "Latitude": 41.5079261,
+        "Longitude": -81.61197229999999,
+        "Address": "11150 East Blvd, Cleveland, OH 44106, USA",
+        "Phone": "(216) 421-7350",
+        "Website": "https://www.clevelandart.org/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Edgewater Park",
+        "Latitude": 41.4902896,
+        "Longitude": -81.73545519999999,
+        "Address": "Cleveland, OH 44102, USA",
+        "Phone": "(216) 635-3200",
+        "Website": "https://clevelandmetroparks.com/parks/visit/parks/lakefront-reservation/edgewater-park",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Cleveland Cultural Gardens",
+        "Latitude": 41.51899359999999,
+        "Longitude": -81.6181879,
+        "Address": "10823 Magnolia Dr, Cleveland, OH 44106, USA",
+        "Phone": "(216) 220-3075",
+        "Website": "http://www.culturalgardens.org/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Cleveland Harbor West Pierhead Lighthouse",
+        "Latitude": 41.5090078,
+        "Longitude": -81.71769929999999,
+        "Address": "2800 Whiskey Island Dr, Cleveland, OH 44102, USA",
+        "Phone": "Unknown",
+        "Website": "Unknown",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Cleveland Script Sign - Edgewater Park",
+        "Latitude": 41.4875796,
+        "Longitude": -81.74927579999999,
+        "Address": "Cleveland Memorial Shoreway, Cleveland, OH 44102, USA",
+        "Phone": "(800) 321-1001",
+        "Website": "https://www.thisiscleveland.com/locations/cleveland-script-sign-edgewater-park",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Washington Reservation",
+        "Latitude": 41.4559597,
+        "Longitude": -81.6603073,
+        "Address": "4408 Pallister Dr, Cleveland, OH 44105, USA",
+        "Phone": "Unknown",
+        "Website": "https://www.clevelandmetroparks.com/parks/visit/parks/washington-reservation",
+        "City": "Cleveland"
+      }
+    ],
+    "Restaurants in Cleveland": [
+      {
+        "Name": "Bikanerwala",
+        "Average Cost": 10,
+        "Cuisines": "Tea, Bakery, BBQ, Fast Food",
+        "Aggregate Rating": 3.2,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Me Kong Bowl",
+        "Average Cost": 19,
+        "Cuisines": "Cafe, BBQ, Seafood",
+        "Aggregate Rating": 4.0,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Big Chicken",
+        "Average Cost": 27,
+        "Cuisines": "Cafe, Pizza, Bakery, Italian",
+        "Aggregate Rating": 3.5,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Nineties",
+        "Average Cost": 31,
+        "Cuisines": "Cafe, Pizza, Desserts",
+        "Aggregate Rating": 3.9,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Keventers",
+        "Average Cost": 54,
+        "Cuisines": "Pizza, American, Desserts, Fast Food",
+        "Aggregate Rating": 3.8,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Gullu's",
+        "Average Cost": 38,
+        "Cuisines": "Mexican, Pizza, Indian, Seafood",
+        "Aggregate Rating": 3.1,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Southern Santushti Cafe",
+        "Average Cost": 20,
+        "Cuisines": "Seafood, Pizza, BBQ, Fast Food",
+        "Aggregate Rating": 0.0,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Me侓hur 韄z韄elik Aspava",
+        "Average Cost": 34,
+        "Cuisines": "Chinese, Pizza, Mediterranean, Seafood",
+        "Aggregate Rating": 4.6,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Makhan Fish and Chicken Corner",
+        "Average Cost": 25,
+        "Cuisines": "Pizza, French, Fast Food, Chinese, Seafood",
+        "Aggregate Rating": 3.4,
+        "City": "Cleveland"
+      }
+    ],
+    "Accommodations in Cleveland": [
+      {
+        "NAME": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "price": 565.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No visitors",
+        "minimum nights": 1.0,
+        "maximum occupancy": 4,
+        "review rate number": 5.0,
+        "city": "Cleveland"
+      },
+      {
+        "NAME": "Gorgeous 1-2 BDR apartment in the Lower East Side",
+        "price": 107.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No children under 10 & No pets",
+        "minimum nights": 1.0,
+        "maximum occupancy": 2,
+        "review rate number": 4.0,
+        "city": "Cleveland"
+      }
+    ],
+    "Flight from Tampa to Cleveland on 2022-03-02": [
+      {
+        "Flight Number": "F3612664",
+        "Price": 347,
+        "DepTime": "05:44",
+        "ArrTime": "08:13",
+        "ActualElapsedTime": "2 hours 29 minutes",
+        "FlightDate": "2022-03-02",
+        "OriginCityName": "Tampa",
+        "DestCityName": "Cleveland",
+        "Distance": 927.0
+      }
+    ],
+    "Self-driving from Tampa to Cleveland": "self-driving, from Tampa to Cleveland, duration: 16 hours 15 mins, distance: 1,760 km, cost: 88",
+    "Taxi from Tampa to Cleveland": "taxi, from Tampa to Cleveland, duration: 16 hours 15 mins, distance: 1,760 km, cost: 1760",
+    "Flight from Cleveland to Tampa on 2022-03-04": [
+      {
+        "Flight Number": "F3559247",
+        "Price": 198,
+        "DepTime": "21:20",
+        "ArrTime": "23:34",
+        "ActualElapsedTime": "2 hours 14 minutes",
+        "FlightDate": "2022-03-04",
+        "OriginCityName": "Cleveland",
+        "DestCityName": "Tampa",
+        "Distance": 927.0
+      }
+    ],
+    "Self-driving from Cleveland to Tampa": "self-driving, from Cleveland to Tampa, duration: 16 hours 12 mins, distance: 1,758 km, cost: 87",
+    "Taxi from Cleveland to Tampa": "taxi, from Cleveland to Tampa, duration: 16 hours 12 mins, distance: 1,758 km, cost: 1758"
+  },
+  "background": {
+    "org": "Tampa",
+    "dest": "Cleveland",
+    "days": 3,
+    "visiting_city_number": 1,
+    "date": [
+      "2022-03-02",
+      "2022-03-03",
+      "2022-03-04"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 1800,
+    "query": "Can you help put together a travel plan for a single passenger leaving Tampa towards Cleveland for a duration of 3 days, starting from March 2nd up until March 4th, 2022? Please make sure the budget does not exceed $1,800.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 1765.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 1017.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

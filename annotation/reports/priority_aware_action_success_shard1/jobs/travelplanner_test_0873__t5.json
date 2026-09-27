@@ -1,0 +1,434 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 5,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Could you recommend a 5-day travel itinerary for 2 people starting in Charlotte and visiting 2 different cities in Louisiana from March 9th to March 13th, 2022? Our budget is $1500. We require accommodations that allow parties and offer private rooms, and we'd prefer not to travel by flight.",
+    "The other person traveling with me can’t comfortably manage an intercity transfer and needs to stay with me, so please change the trip from two cities to one, base us only in New Orleans, and switch from a private room to an entire apartment. Keeping us together matters more than visiting two cities or having party-friendly lodging, so I’m willing to give up the parties requirement and replan the trip around New Orleans.",
+    "Let’s relax the no-flight preference: we’ll drive together from Charlotte to New Orleans on March 9, fly back together on March 13, raise the budget from $1500 to $2000, and reserve that final day for the airport instead of sightseeing, including Mardi Gras World. Getting us home reliably now matters more than avoiding flights or keeping the last attraction.",
+    "Since the return flight isn’t available, let’s drive together to Charlotte on March 13 in the same car, checking out early and skipping all sightseeing that day, including Mardi Gras World. ",
+    "Let’s make simple breakfasts at the apartment and choose sit-down restaurants for lunch and dinner instead of fast food.",
+    "My travel companion needs less walking and a seated break between major attractions, so their comfort matters more than fitting in every sight. Limit full sightseeing days to two substantial stops, dropping The Cabildo and The Singing Oak first."
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 1500,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "visiting_city_number",
+      "value": 1,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "room_type",
+      "value": "Entire home/apt",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "schedule",
+      "value": "Keep March 13 free of sightseeing",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "dining_style",
+      "value": "Have simple self-catered breakfasts at the apartment and choose sit-down restaurants rather than fast-food options for lunch and dinner.",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "activity",
+      "value": "Schedule no more than two substantial attractions on each full sightseeing day; treat The Cabildo and The Singing Oak as the first stops to drop.",
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "transportation",
+      "value": "Self-drive",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "entity_2.mobility",
+      "value": "Cannot comfortably manage an intercity transfer during this short trip and should remain in the same accommodation with me.",
+      "priority": "unlabeled",
+      "annotated_priorities": [],
+      "entity_reference": "my travel companion"
+    },
+    {
+      "id": "entity_2.accessibility",
+      "value": "Needs a low-walking itinerary with a seated rest break between major attractions.",
+      "priority": "unlabeled",
+      "annotated_priorities": [],
+      "entity_reference": "my travel companion"
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 - March 9, 2022",
+            "current_city": "Charlotte → New Orleans",
+            "transportation": "Self-drive together from Charlotte to New Orleans in the same car; 10 hours 28 minutes, 1,149 km, estimated cost $57.",
+            "breakfast": "-",
+            "lunch": "-",
+            "dinner": "Shenanigan's Irish Pub",
+            "attraction": "-",
+            "accommodation": "Harlem Short Term Stay"
+          },
+          {
+            "day": "Day 2 - March 10, 2022",
+            "current_city": "New Orleans",
+            "transportation": "",
+            "breakfast": "Simple self-catered breakfast at the apartment.",
+            "lunch": "The Fish House",
+            "dinner": "Town Table Restaurant",
+            "attraction": "Audubon Aquarium",
+            "accommodation": "Harlem Short Term Stay"
+          },
+          {
+            "day": "Day 3 - March 11, 2022",
+            "current_city": "New Orleans",
+            "transportation": "Use the same car for direct transportation; return to the apartment after the attraction.",
+            "breakfast": "Simple self-catered breakfast at the apartment.",
+            "lunch": "Jimmy's Pancake House",
+            "dinner": "Sage",
+            "attraction": "Steamboat NATCHEZ - Official Site",
+            "accommodation": "Harlem Short Term Stay"
+          },
+          {
+            "day": "Day 4 - March 12, 2022",
+            "current_city": "New Orleans",
+            "transportation": "Use the same car for direct transportation to and from the museum to minimize walking.",
+            "breakfast": "Simple self-catered breakfast at the apartment.",
+            "lunch": "Def Col Social",
+            "dinner": "Yeti - The Himalayan Kitchen",
+            "attraction": "New Orleans Museum of Art",
+            "accommodation": "Harlem Short Term Stay"
+          },
+          {
+            "day": "Day 5 - March 13, 2022",
+            "current_city": "New Orleans -> Charlotte",
+            "transportation": "self-driving, from New Orleans to Charlotte, duration: 10 hours 27 mins, distance: 1,148 km, cost: 57",
+            "breakfast": "Simple self-catered breakfast at the apartment before early checkout.",
+            "lunch": "-",
+            "dinner": "-",
+            "attraction": "-",
+            "accommodation": "-"
+          }
+        ]
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-09",
+        "current_city": "Charlotte → New Orleans",
+        "transportation": "Drive together in the same car from Charlotte to New Orleans; supported route duration 10 hours 28 minutes, distance 1,149 km, listed cost $57",
+        "breakfast": "Home-prepared oatmeal in Charlotte",
+        "lunch": "Sit-down meal at The Fish House after arrival",
+        "dinner": "Sit-down meal at New Sukh Sagar",
+        "attraction": "-",
+        "accommodation": "Lovely One bedroom apartment 20 min to Manhattan"
+      },
+      {
+        "day": "2022-03-10",
+        "current_city": "New Orleans",
+        "transportation": "Use the same car for local travel, minimizing walking between the apartment, attractions, and restaurant",
+        "breakfast": "Eggs and toast prepared at the apartment",
+        "lunch": "Seated lunch and extended rest at The Fish House between the two attractions",
+        "dinner": "Sit-down meal at New Sukh Sagar",
+        "attraction": "New Orleans Museum of Art; seated lunch break; New Orleans City Park, with the visit kept short to limit walking",
+        "accommodation": "Lovely One bedroom apartment 20 min to Manhattan"
+      },
+      {
+        "day": "2022-03-11",
+        "current_city": "New Orleans",
+        "transportation": "Use the same car for local travel and return to the apartment after dinner",
+        "breakfast": "Oatmeal and fruit prepared at the apartment",
+        "lunch": "Seated lunch and extended rest at The Fish House between the two attractions",
+        "dinner": "Sit-down meal at New Sukh Sagar",
+        "attraction": "The National WWII Museum; seated lunch break; Audubon Aquarium",
+        "accommodation": "Lovely One bedroom apartment 20 min to Manhattan"
+      },
+      {
+        "day": "2022-03-12",
+        "current_city": "New Orleans",
+        "transportation": "Use the same car for local travel, with drop-offs as close as practical to each stop",
+        "breakfast": "Eggs and toast prepared at the apartment",
+        "lunch": "Seated lunch and extended rest at The Fish House between the two attractions",
+        "dinner": "Sit-down meal at New Sukh Sagar",
+        "attraction": "Jackson Square for a limited visit; seated lunch break; Vue Orleans",
+        "accommodation": "Lovely One bedroom apartment 20 min to Manhattan"
+      },
+      {
+        "day": "2022-03-13",
+        "current_city": "New Orleans → Charlotte",
+        "transportation": "Check out early and drive together in the same car from New Orleans to Charlotte; supported route duration 10 hours 27 minutes, distance 1,148 km, listed cost $57",
+        "breakfast": "Cereal and fruit prepared at the apartment before checkout",
+        "lunch": "Sit-down meal at The Fish House before beginning the return drive",
+        "dinner": "Home-prepared pasta after arriving in Charlotte",
+        "attraction": "-",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "The selected entire apartment accommodates two guests and meets its four-night minimum: $186 × 4 = $744. Round-trip self-driving costs $114. Treating each restaurant average as per person, the nine selected restaurant meals cost approximately $448 for two, producing a known subtotal of $1,306. Breakfast groceries, the final home-prepared dinner, attraction admission, and local fuel/parking are unpriced, so a verified all-in total under $2,000 cannot be claimed. Each full sightseeing day has no more than two substantial stops and includes a seated lunch break; The Cabildo, The Singing Oak, Mardi Gras World, and all final-day sightseeing are omitted. The only unmet active dining condition is the sit-down-restaurant dinner on March 13: no supported Charlotte or en-route restaurant is available, so a concrete home-prepared dinner is chosen instead."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in New Orleans": [
+      {
+        "Name": "New Orleans Museum of Art",
+        "Latitude": 29.9864722,
+        "Longitude": -90.09345,
+        "Address": "1 Collins Diboll Cir, New Orleans, LA 70124, USA",
+        "Phone": "(504) 658-4100",
+        "Website": "https://noma.org/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "New Orleans City Park",
+        "Latitude": 30.00339929999999,
+        "Longitude": -90.0924294,
+        "Address": "New Orleans, LA, USA",
+        "Phone": "(504) 482-4888",
+        "Website": "https://neworleanscitypark.org/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "The National WWII Museum",
+        "Latitude": 29.9430711,
+        "Longitude": -90.07053169999999,
+        "Address": "945 Magazine St, New Orleans, LA 70130, USA",
+        "Phone": "(504) 528-1944",
+        "Website": "https://www.nationalww2museum.org/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Audubon Aquarium",
+        "Latitude": 29.9504543,
+        "Longitude": -90.06292119999999,
+        "Address": "1 Canal St, New Orleans, LA 70130, USA",
+        "Phone": "(504) 565-3033",
+        "Website": "https://audubonnatureinstitute.org/aquarium",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Jackson Square",
+        "Latitude": 29.9574024,
+        "Longitude": -90.0629495,
+        "Address": "New Orleans, LA 70116, USA",
+        "Phone": "(504) 658-3200",
+        "Website": "https://nola.gov/parks-and-parkways/parks-squares/jackson-square/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Vue Orleans",
+        "Latitude": 29.9489518,
+        "Longitude": -90.063531,
+        "Address": "2 Canal St, New Orleans, LA 70130, USA",
+        "Phone": "(504) 285-3600",
+        "Website": "https://vueorleans.com/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Steamboat NATCHEZ - Official Site",
+        "Latitude": 29.9552704,
+        "Longitude": -90.0627252,
+        "Address": "400 Toulouse St, New Orleans, LA 70130, USA",
+        "Phone": "(504) 569-1401",
+        "Website": "https://www.steamboatnatchez.com/",
+        "City": "New Orleans"
+      }
+    ],
+    "Restaurants in New Orleans": [
+      {
+        "Name": "The Fish House",
+        "Average Cost": 20,
+        "Cuisines": "Desserts, Tea, BBQ, Bakery, Mediterranean",
+        "Aggregate Rating": 4.0,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "New Sukh Sagar",
+        "Average Cost": 31,
+        "Cuisines": "Tea, Bakery, BBQ, American, Seafood",
+        "Aggregate Rating": 3.2,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Shenanigan's Irish Pub",
+        "Average Cost": 43,
+        "Cuisines": "Tea, Chinese, Bakery, Desserts",
+        "Aggregate Rating": 4.1,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Town Table Restaurant",
+        "Average Cost": 100,
+        "Cuisines": "Tea, Cafe, Indian, American",
+        "Aggregate Rating": 3.9,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Jimmy's Pancake House",
+        "Average Cost": 50,
+        "Cuisines": "Pizza, Indian, Desserts",
+        "Aggregate Rating": 4.0,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Sage",
+        "Average Cost": 87,
+        "Cuisines": "Mediterranean, Desserts, Seafood",
+        "Aggregate Rating": 3.5,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Def Col Social",
+        "Average Cost": 52,
+        "Cuisines": "Tea, Italian, Bakery, Indian, Seafood",
+        "Aggregate Rating": 3.9,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Yeti - The Himalayan Kitchen",
+        "Average Cost": 95,
+        "Cuisines": "Tea, Mediterranean, Seafood",
+        "Aggregate Rating": 3.7,
+        "City": "New Orleans"
+      }
+    ],
+    "Accommodations in New Orleans": [
+      {
+        "NAME": "Lovely One bedroom apartment 20 min to Manhattan",
+        "price": 186.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No parties",
+        "minimum nights": 4.0,
+        "maximum occupancy": 2,
+        "review rate number": 3.0,
+        "city": "New Orleans"
+      },
+      {
+        "NAME": "Harlem Short Term Stay",
+        "price": 318.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No pets & No smoking",
+        "minimum nights": 4.0,
+        "maximum occupancy": 2,
+        "review rate number": 5.0,
+        "city": "New Orleans"
+      }
+    ],
+    "Attractions in Baton Rouge": [],
+    "Restaurants in Baton Rouge": [],
+    "Accommodations in Baton Rouge": [],
+    "Flight from Charlotte to New Orleans on 2022-03-09": [],
+    "Self-driving from Charlotte to New Orleans": "self-driving, from Charlotte to New Orleans, duration: 10 hours 28 mins, distance: 1,149 km, cost: 57",
+    "Taxi from Charlotte to New Orleans": "taxi, from Charlotte to New Orleans, duration: 10 hours 28 mins, distance: 1,149 km, cost: 1149",
+    "Flight from New Orleans to Baton Rouge on 2022-03-11": "There is no flight from New Orleans to Baton Rouge on 2022-03-11.",
+    "Self-driving from New Orleans to Baton Rouge": "self-driving, from New Orleans to Baton Rouge, duration: 1 hour 17 mins, distance: 131 km, cost: 6",
+    "Taxi from New Orleans to Baton Rouge": "taxi, from New Orleans to Baton Rouge, duration: 1 hour 17 mins, distance: 131 km, cost: 131",
+    "Flight from Baton Rouge to Charlotte on 2022-03-13": [],
+    "Self-driving from Baton Rouge to Charlotte": "self-driving, from Baton Rouge to Charlotte, duration: 11 hours 14 mins, distance: 1,241 km, cost: 62",
+    "Taxi from Baton Rouge to Charlotte": "taxi, from Baton Rouge to Charlotte, duration: 11 hours 14 mins, distance: 1,241 km, cost: 1241",
+    "Self-driving from Charlotte to Baton Rouge": "self-driving, from Charlotte to Baton Rouge, duration: 11 hours 13 mins, distance: 1,239 km, cost: 61",
+    "Self-driving from Baton Rouge to New Orleans": "self-driving, from Baton Rouge to New Orleans, duration: 1 hour 17 mins, distance: 131 km, cost: 6",
+    "Self-driving from New Orleans to Charlotte": "self-driving, from New Orleans to Charlotte, duration: 10 hours 27 mins, distance: 1,148 km, cost: 57"
+  },
+  "background": {
+    "org": "Charlotte",
+    "dest": "Louisiana",
+    "days": 5,
+    "visiting_city_number": 2,
+    "date": [
+      "2022-03-09",
+      "2022-03-10",
+      "2022-03-11",
+      "2022-03-12",
+      "2022-03-13"
+    ],
+    "people_number": 2,
+    "local_constraint": {
+      "house rule": "parties",
+      "cuisine": null,
+      "room type": "private room",
+      "transportation": "no flight"
+    },
+    "budget": 4000,
+    "query": "Could you recommend a 5-day travel itinerary for 2 people starting in Charlotte and visiting 2 different cities in Louisiana from March 9th to March 13th, 2022? Our budget is $4,000. We require accommodations that allow parties and offer private rooms, and we'd prefer not to travel by flight.",
+    "level": "hard"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 1306.0,
+        "unpriced": [
+          "breakfast: home-prepared oatmeal in charlotte",
+          "breakfast: eggs and toast prepared at the apartment",
+          "breakfast: oatmeal and fruit prepared at the apartment",
+          "breakfast: eggs and toast prepared at the apartment",
+          "breakfast: cereal and fruit prepared at the apartment before checkout",
+          "dinner: home-prepared pasta after arriving in charlotte"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 2280.0,
+        "unpriced": [
+          "breakfast: simple self-catered breakfast at the apartment.",
+          "breakfast: simple self-catered breakfast at the apartment.",
+          "breakfast: simple self-catered breakfast at the apartment.",
+          "breakfast: simple self-catered breakfast at the apartment before early "
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

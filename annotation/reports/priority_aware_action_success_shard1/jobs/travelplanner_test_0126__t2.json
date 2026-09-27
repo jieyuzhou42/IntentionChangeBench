@@ -1,0 +1,462 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0126",
+  "turn_id": 2,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "I'm traveling solo from Providence to two cities in North Carolina, March 13-17, 2022. My budget is $2,100.",
+    "I'll take my own car: Wilmington March 13-14, Fayetteville March 15-16, home on the 17th. Private rooms rated 4+. just two nights each. Keep the 13th and 17th for driving and breaks.",
+    "An adult friend's joining the whole trip. We need one place to share in each city, still $2,100 for both of us."
+  ],
+  "constraints": [
+    {
+      "id": "people_number",
+      "value": 2,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "room_type",
+      "value": "private room",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation_rating",
+      "value": "4+",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "budget",
+      "value": 2100,
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "2022-03-13",
+            "current_city": "Providence to Wilmington",
+            "transportation": "self-driving, from Providence to Wilmington, duration: 11 hours 59 mins, distance: 1,247 km, cost: 62",
+            "attraction": "-",
+            "accommodation": "Luxury 3 bedroom apartment on the Upper East Side",
+            "breakfast": "Pending quote: meal before departure or on the road",
+            "lunch": "Pending quote: meal before departure or on the road",
+            "dinner": "Dunkin' Donuts"
+          },
+          {
+            "day": "2022-03-14",
+            "current_city": "Wilmington",
+            "transportation": "-",
+            "attraction": "Bellamy Mansion Museum; Cape Fear Museum of History and Science",
+            "accommodation": "Luxury 3 bedroom apartment on the Upper East Side",
+            "breakfast": "Dunkin' Donuts",
+            "lunch": "Dunkin' Donuts",
+            "dinner": "Dunkin' Donuts"
+          },
+          {
+            "day": "2022-03-15",
+            "current_city": "Wilmington to Fayetteville",
+            "transportation": "self-driving, from Wilmington to Fayetteville, duration: 1 hour 43 mins, distance: 149 km, cost: 7",
+            "attraction": "-",
+            "accommodation": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+            "breakfast": "Dunkin' Donuts",
+            "lunch": "Chatorey Chacha",
+            "dinner": "Chatorey Chacha"
+          },
+          {
+            "day": "2022-03-16",
+            "current_city": "Fayetteville",
+            "transportation": "-",
+            "attraction": "The Fayetteville Area Transportation and Local History Museum; Museum of the Cape Fear",
+            "accommodation": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+            "breakfast": "Chatorey Chacha",
+            "lunch": "Chatorey Chacha",
+            "dinner": "Chatorey Chacha"
+          },
+          {
+            "day": "2022-03-17",
+            "current_city": "Fayetteville to Providence",
+            "transportation": "self-driving, from Fayetteville to Providence, duration: 11 hours 10 mins, distance: 1,163 km, cost: 58",
+            "attraction": "-",
+            "accommodation": "-",
+            "breakfast": "Chatorey Chacha",
+            "lunch": "Pending quote: meal before departure or on the road",
+            "dinner": "Pending quote: meal before departure or on the road"
+          }
+        ],
+        "review_notes": [
+          "自有车辆路线：3月13日 Providence → Wilmington $62；3月15日 Wilmington → Fayetteville $7；3月17日 Fayetteville → Providence $58。合计 $127，按一辆车计，不乘旅客人数。",
+          "已列报价小计 $3267；未报价的途中餐食等未按免费处理。住宿和餐厅来自当前 case 的搜索结果，仍需确认可订状态和营业时间。"
+        ],
+        "source_checks": [
+          {
+            "city": "Wilmington",
+            "nights": [
+              "2022-03-13",
+              "2022-03-14"
+            ],
+            "party": 2,
+            "allowed": [
+              "private room"
+            ],
+            "rating": 4,
+            "candidate_count": 1,
+            "selected": {
+              "NAME": "#1 PRIVATE STUDIO IN BX,15MINS NYC.",
+              "price": 1128,
+              "room type": "Private room",
+              "house_rules": "No parties & No visitors",
+              "minimum nights": 2,
+              "maximum occupancy": 2,
+              "review rate number": 4,
+              "city": "Wilmington"
+            }
+          },
+          {
+            "city": "Fayetteville",
+            "nights": [
+              "2022-03-15",
+              "2022-03-16"
+            ],
+            "party": 2,
+            "allowed": [
+              "private room"
+            ],
+            "rating": 4,
+            "candidate_count": 1,
+            "selected": {
+              "NAME": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+              "price": 251,
+              "room type": "Private room",
+              "house_rules": "No visitors & No parties & No children under 10",
+              "minimum nights": 1,
+              "maximum occupancy": 2,
+              "review rate number": 4,
+              "city": "Fayetteville"
+            }
+          }
+        ],
+        "transport_total": 127,
+        "known_subtotal": 3267,
+        "unpriced_items": [
+          {
+            "date": "2022-03-13",
+            "field": "breakfast"
+          },
+          {
+            "date": "2022-03-13",
+            "field": "lunch"
+          },
+          {
+            "date": "2022-03-17",
+            "field": "lunch"
+          },
+          {
+            "date": "2022-03-17",
+            "field": "dinner"
+          }
+        ],
+        "status": "unconfirmed_proposal"
+      }
+    },
+    "restoration_source": {
+      "file": "current saved annotation world_state.reference_information",
+      "note": "0126 corrected against saved current intention; no original-route copying"
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-13",
+        "current_city": "Wilmington",
+        "transportation": "Drive own car from Providence to Wilmington (11 hours 59 minutes, 1,247 km, listed cost $62), with rest breaks",
+        "breakfast": "Packed fruit and breakfast sandwiches",
+        "lunch": "Packed sandwiches and snacks during a driving break",
+        "dinner": "Packed cold meal after arrival",
+        "attraction": "-",
+        "accommodation": "Private room. 1 bed, 2 guests, 3333 Broadway"
+      },
+      {
+        "day": "2022-03-14",
+        "current_city": "Wilmington",
+        "transportation": "Own car for local travel",
+        "breakfast": "Packed cereal, fruit, and coffee",
+        "lunch": "Packed sandwiches and fruit",
+        "dinner": "Packed wraps and snacks",
+        "attraction": "Wilmington Riverwalk and Bellamy Mansion Museum",
+        "accommodation": "Private room. 1 bed, 2 guests, 3333 Broadway"
+      },
+      {
+        "day": "2022-03-15",
+        "current_city": "Fayetteville",
+        "transportation": "Drive own car from Wilmington to Fayetteville (1 hour 43 minutes, 149 km, listed cost $7)",
+        "breakfast": "Packed cereal and fruit in Wilmington",
+        "lunch": "Packed sandwiches after arriving in Fayetteville",
+        "dinner": "Packed pasta salad and fruit",
+        "attraction": "Airborne & Special Operations Museum Foundation and North Carolina Veterans Park",
+        "accommodation": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1"
+      },
+      {
+        "day": "2022-03-16",
+        "current_city": "Fayetteville",
+        "transportation": "Own car for local travel",
+        "breakfast": "Packed breakfast bars, fruit, and coffee",
+        "lunch": "Packed sandwiches and snacks",
+        "dinner": "Packed wraps and fruit",
+        "attraction": "Cape Fear Botanical Garden and Festival Park",
+        "accommodation": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1"
+      },
+      {
+        "day": "2022-03-17",
+        "current_city": "Providence",
+        "transportation": "Drive own car from Fayetteville to Providence (11 hours 10 minutes, 1,163 km, listed cost $58), with rest breaks",
+        "breakfast": "Packed breakfast sandwiches and fruit",
+        "lunch": "Packed sandwiches during a driving break",
+        "dinner": "Packed cold meal during the return journey",
+        "attraction": "-",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "The selected rooms both accommodate two adults and permit the required two occupied nights. Wilmington lodging is $705 per night ($1,410), Fayetteville lodging is $251 per night ($502), and listed driving costs total $127, producing a known subtotal of $2,039. Packed meals were concretely selected to minimize expense, but their cost and attraction admission prices are not provided, so compliance with the $2,100 cap cannot be verified. The Wilmington room is rated 3 rather than the required 4+: the only two-night, two-person private-room result rated 4 is #1 PRIVATE STUDIO IN BX,15MINS NYC. at $1,128 per night, which would exceed the entire budget for Wilmington lodging alone. Thus the plan sacrifices the Wilmington rating requirement while preserving the dates, route, shared-private-room arrangement, two-night stays, and driving-only first and last days."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Wilmington": [
+      {
+        "Name": "Bellamy Mansion Museum",
+        "Latitude": 34.2361477,
+        "Longitude": -77.9430101,
+        "Address": "503 Market St, Wilmington, NC 28401, USA",
+        "Phone": "(910) 251-3700",
+        "Website": "http://www.bellamymansion.org/",
+        "City": "Wilmington"
+      },
+      {
+        "Name": "Wilmington Riverwalk",
+        "Latitude": 34.2352196,
+        "Longitude": -77.9499727,
+        "Address": "Wilmington Downtown Riverwalk, Wilmington, NC 28401, USA",
+        "Phone": "Unknown",
+        "Website": "https://www.wilmingtonnc.gov/visitors/riverwalk",
+        "City": "Wilmington"
+      },
+      {
+        "Name": "Cape Fear Museum of History and Science",
+        "Latitude": 34.2358178,
+        "Longitude": -77.9383561,
+        "Address": "814 Market St, Wilmington, NC 28401, USA",
+        "Phone": "(910) 798-4370",
+        "Website": "https://www.nhcgov.com/548/Cape-Fear-Museum",
+        "City": "Wilmington"
+      }
+    ],
+    "Restaurants in Wilmington": [
+      {
+        "Name": "Dunkin' Donuts",
+        "Average Cost": 25,
+        "Cuisines": "Desserts, Tea, Pizza, Italian, French",
+        "Aggregate Rating": 3.7,
+        "City": "Wilmington"
+      }
+    ],
+    "Accommodations in Wilmington": [
+      {
+        "NAME": "Private room. 1 bed, 2 guests, 3333 Broadway",
+        "price": 705.0,
+        "room type": "Private room",
+        "house_rules": "No children under 10 & No smoking",
+        "minimum nights": 1.0,
+        "maximum occupancy": 2,
+        "review rate number": 3.0,
+        "city": "Wilmington"
+      },
+      {
+        "NAME": "Luxury 3 bedroom apartment on the Upper East Side",
+        "price": 481.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No children under 10 & No smoking",
+        "minimum nights": 2.0,
+        "maximum occupancy": 3,
+        "review rate number": 5.0,
+        "city": "Wilmington"
+      }
+    ],
+    "Attractions in Fayetteville": [
+      {
+        "Name": "Airborne & Special Operations Museum Foundation",
+        "Latitude": 35.05584119999999,
+        "Longitude": -78.8850004,
+        "Address": "100 Bragg Blvd, Fayetteville, NC 28301, USA",
+        "Phone": "(910) 643-2778",
+        "Website": "http://www.asomf.org/",
+        "City": "Fayetteville"
+      },
+      {
+        "Name": "North Carolina Veterans Park",
+        "Latitude": 35.05783669999999,
+        "Longitude": -78.8851689,
+        "Address": "300 Bragg Blvd, Fayetteville, NC 28301, USA",
+        "Phone": "(910) 433-1457",
+        "Website": "Unknown",
+        "City": "Fayetteville"
+      },
+      {
+        "Name": "Cape Fear Botanical Garden",
+        "Latitude": 35.0558546,
+        "Longitude": -78.85918699999999,
+        "Address": "536 N Eastern Blvd, Fayetteville, NC 28301, USA",
+        "Phone": "(910) 486-0221",
+        "Website": "http://www.capefearbg.org/",
+        "City": "Fayetteville"
+      },
+      {
+        "Name": "Festival Park",
+        "Latitude": 35.0585031,
+        "Longitude": -78.88230829999999,
+        "Address": "335 Ray Ave, Fayetteville, NC 28301, USA",
+        "Phone": "(910) 433-1547",
+        "Website": "Unknown",
+        "City": "Fayetteville"
+      },
+      {
+        "Name": "The Fayetteville Area Transportation and Local History Museum",
+        "Latitude": 35.0520812,
+        "Longitude": -78.8821703,
+        "Address": "325 Franklin St, Fayetteville, NC 28301, USA",
+        "Phone": "(910) 433-1457",
+        "Website": "https://www.fcpr.us/facilities/museums/fayetteville-area-transportation-and-local-history-museum",
+        "City": "Fayetteville"
+      },
+      {
+        "Name": "Museum of the Cape Fear",
+        "Latitude": 35.0545079,
+        "Longitude": -78.8926565,
+        "Address": "801 Arsenal Ave, Fayetteville, NC 28305, USA",
+        "Phone": "(910) 500-4240",
+        "Website": "https://museumofthecapefear.ncdcr.gov/",
+        "City": "Fayetteville"
+      }
+    ],
+    "Restaurants in Fayetteville": [
+      {
+        "Name": "Chatorey Chacha",
+        "Average Cost": 11,
+        "Cuisines": "Tea, American, BBQ, Italian",
+        "Aggregate Rating": 3.3,
+        "City": "Fayetteville"
+      }
+    ],
+    "Accommodations in Fayetteville": [
+      {
+        "NAME": "TRANQUIL HAVEN W/PRIVATE BATH-8 MINS TO JFK RM.#1",
+        "price": 251.0,
+        "room type": "Private room",
+        "house_rules": "No visitors & No parties & No children under 10",
+        "minimum nights": 1.0,
+        "maximum occupancy": 2,
+        "review rate number": 4.0,
+        "city": "Fayetteville"
+      }
+    ],
+    "Flight from Providence to Wilmington on 2022-03-13": "There is no flight from Providence to Wilmington on 2022-03-13.",
+    "Self-driving from Providence to Wilmington": "self-driving, from Providence to Wilmington, duration: 11 hours 59 mins, distance: 1,247 km, cost: 62",
+    "Taxi from Providence to Wilmington": "taxi, from Providence to Wilmington, duration: 11 hours 59 mins, distance: 1,247 km, cost: 1247",
+    "Flight from Wilmington to Fayetteville on 2022-03-15": "There is no flight from Wilmington to Fayetteville on 2022-03-15.",
+    "Self-driving from Wilmington to Fayetteville": "self-driving, from Wilmington to Fayetteville, duration: 1 hour 43 mins, distance: 149 km, cost: 7",
+    "Taxi from Wilmington to Fayetteville": "taxi, from Wilmington to Fayetteville, duration: 1 hour 43 mins, distance: 149 km, cost: 149",
+    "Flight from Fayetteville to Providence on 2022-03-17": "There is no flight from Fayetteville to Providence on 2022-03-17.",
+    "Self-driving from Fayetteville to Providence": "self-driving, from Fayetteville to Providence, duration: 11 hours 10 mins, distance: 1,163 km, cost: 58",
+    "Taxi from Fayetteville to Providence": "taxi, from Fayetteville to Providence, duration: 11 hours 10 mins, distance: 1,163 km, cost: 1163"
+  },
+  "background": {
+    "org": "Providence",
+    "dest": "North Carolina",
+    "days": 5,
+    "visiting_city_number": 2,
+    "date": [
+      "2022-03-13",
+      "2022-03-14",
+      "2022-03-15",
+      "2022-03-16",
+      "2022-03-17"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 2100,
+    "query": "Could you assist in creating a 5-day travel plan starting in Providence and covering 2 cities in North Carolina from March 13th to March 17th, 2022? The trip is for one person, with an allocated budget of $2,100.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 2039.0,
+        "unpriced": [
+          "breakfast: packed fruit and breakfast sandwiches",
+          "lunch: packed sandwiches and snacks during a driving break",
+          "dinner: packed cold meal after arrival",
+          "breakfast: packed cereal, fruit, and coffee",
+          "lunch: packed sandwiches and fruit",
+          "dinner: packed wraps and snacks",
+          "breakfast: packed cereal and fruit in wilmington",
+          "lunch: packed sandwiches after arriving in fayetteville",
+          "dinner: packed pasta salad and fruit",
+          "breakfast: packed breakfast bars, fruit, and coffee",
+          "lunch: packed sandwiches and snacks",
+          "dinner: packed wraps and fruit",
+          "breakfast: packed breakfast sandwiches and fruit",
+          "lunch: packed sandwiches during a driving break",
+          "dinner: packed cold meal during the return journey"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 1973.0,
+        "unpriced": [
+          "breakfast: pending quote: meal before departure or on the road",
+          "lunch: pending quote: meal before departure or on the road",
+          "lunch: pending quote: meal before departure or on the road",
+          "dinner: pending quote: meal before departure or on the road"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

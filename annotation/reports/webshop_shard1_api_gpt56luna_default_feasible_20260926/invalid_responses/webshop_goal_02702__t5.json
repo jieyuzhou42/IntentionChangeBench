@@ -1,0 +1,107 @@
+[
+  {
+    "error": "baseline criteria must cover every field exactly once",
+    "response": {
+      "gold_atoms": [
+        {
+          "atom_id": "g1",
+          "source_field": "category",
+          "value": "protein chips or crisps"
+        },
+        {
+          "atom_id": "g2",
+          "source_field": "ingredient_exclusions",
+          "value": "egg-based chips"
+        },
+        {
+          "atom_id": "g3",
+          "source_field": "ingredient_exclusions",
+          "value": "egg whites"
+        },
+        {
+          "atom_id": "g4",
+          "source_field": "dietary_claims",
+          "value": "gluten free"
+        },
+        {
+          "atom_id": "g5",
+          "source_field": "dietary_claims",
+          "value": "low carb"
+        },
+        {
+          "atom_id": "g6",
+          "source_field": "dietary_claims",
+          "value": "high protein"
+        },
+        {
+          "atom_id": "g7",
+          "source_field": "flavor_name",
+          "value": "sour cream & onion"
+        },
+        {
+          "atom_id": "g8",
+          "source_field": "budget_max",
+          "value": "price lower than 40.00 dollars"
+        }
+      ],
+      "constraint_criteria": [
+        {
+          "gold_field": "category",
+          "criteria": "The selected product must be explicitly identified as protein chips or protein crisps.",
+          "quote": "Puffed snacks don't look great, so protein chips or crisps are okay too."
+        },
+        {
+          "gold_field": "ingredient_exclusions",
+          "criteria": "The selected product must provide evidence that it is neither egg-based nor made with egg whites.",
+          "quote": "Also, please avoid egg-based chips or anything made with egg whites."
+        },
+        {
+          "gold_field": "dietary_claims",
+          "criteria": "The selected product must explicitly claim all three properties: gluten free, low carb, and high protein.",
+          "quote": "Drop the grain-free, non-GMO, low-calorie, and no-artificial-ingredients requirements. Just keep gluten-free, low-carb, and high-protein."
+        },
+        {
+          "gold_field": "flavor_name",
+          "criteria": "The selected product must have sour cream and onion flavor.",
+          "quote": "I really want sour cream & onion flavor."
+        },
+        {
+          "gold_field": "budget_max",
+          "criteria": "The selected product price must be strictly lower than $40.00.",
+          "quote": "Find me grain free, artificial ingredients, low calorie, high protein, low carb, non gmo, gluten free puffed snacks with flavor name: sour cream & onion, and price lower than 40.00 dollars"
+        }
+      ],
+      "gold_plan_judgments": [
+        {
+          "gold_field": "category",
+          "status": "violated",
+          "evidence": "The title identifies the product as \"Potato Chips,\" and the product category is potato chips. No product field or supporting text identifies it as protein chips or protein crisps."
+        },
+        {
+          "gold_field": "ingredient_exclusions",
+          "status": "satisfied",
+          "evidence": "The description states that \"popchips are simply potatoes,\" which supports that the selected chips are not egg-based and are not made with egg whites."
+        },
+        {
+          "gold_field": "dietary_claims",
+          "status": "violated",
+          "evidence": "Gluten-free is explicitly supported by the bullet \"Gluten free.\" However, the selected product provides no explicit low-carb or high-protein claim."
+        },
+        {
+          "gold_field": "flavor_name",
+          "status": "satisfied",
+          "evidence": "The title is \"Popchips Sour Cream & Onion Potato Chips 5 oz Bags (Pack of 5),\" and the bullet states \"sour cream & onion popchips.\""
+        },
+        {
+          "gold_field": "budget_max",
+          "status": "satisfied",
+          "evidence": "The selected product price is $26.91, which is strictly lower than $40.00."
+        }
+      ],
+      "annotation_issues": [
+        "The gold constraints retain grain_free, artificial_ingredients, low_calorie, and non_gmo even though turn 4 explicitly drops those requirements. They are stale and are not active constraints for the final turn.",
+        "The original dietary_claims list also contains dropped properties; only gluten free, low carb, and high protein remain active after turn 4."
+      ]
+    }
+  }
+]

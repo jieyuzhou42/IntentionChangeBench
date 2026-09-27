@@ -1,0 +1,253 @@
+[
+  {
+    "error": "baseline criteria must cover every field exactly once",
+    "response": {
+      "gold_atoms": [
+        {
+          "atom_id": "g1",
+          "source_field": "category",
+          "value": "protein chips or crisps"
+        },
+        {
+          "atom_id": "g2",
+          "source_field": "budget_max",
+          "value": "price lower than 40.00 dollars"
+        },
+        {
+          "atom_id": "g3",
+          "source_field": "dietary_claims",
+          "value": "gluten free"
+        },
+        {
+          "atom_id": "g4",
+          "source_field": "dietary_claims",
+          "value": "low carb"
+        },
+        {
+          "atom_id": "g5",
+          "source_field": "dietary_claims",
+          "value": "high protein"
+        },
+        {
+          "atom_id": "g6",
+          "source_field": "flavor_name",
+          "value": "sour cream & onion"
+        }
+      ],
+      "constraint_criteria": [
+        {
+          "gold_field": "category",
+          "criteria": "The selected product must be a protein chip or protein crisp; evidence must explicitly identify it as protein chips or crisps.",
+          "quote": "protein chips or crisps are okay too"
+        },
+        {
+          "gold_field": "budget_max",
+          "criteria": "The selected product or selected pack must have a price strictly lower than $40.00.",
+          "quote": "price lower than 40.00 dollars"
+        },
+        {
+          "gold_field": "dietary_claims",
+          "criteria": "The selected product must explicitly claim all three requirements: gluten free, low carb, and high protein. Evidence for one claim does not establish the others.",
+          "quote": "Just keep gluten-free, low-carb, and high-protein."
+        },
+        {
+          "gold_field": "flavor_name",
+          "criteria": "The selected product must explicitly have sour cream & onion flavor.",
+          "quote": "I really want sour cream & onion flavor."
+        }
+      ],
+      "gold_plan_judgments": [
+        {
+          "gold_field": "category",
+          "status": "violated",
+          "evidence": "The selected product is titled \"Popchips Sour Cream & Onion Potato Chips\" and is categorized as potato chips, but the title, description, and bullet points do not identify it as protein chips or protein crisps."
+        },
+        {
+          "gold_field": "budget_max",
+          "status": "satisfied",
+          "evidence": "The selected product price is $26.91, which is strictly lower than $40.00."
+        },
+        {
+          "gold_field": "dietary_claims",
+          "status": "violated",
+          "evidence": "The bullet point explicitly states \"Gluten free,\" but the product evidence does not explicitly state low carb or high protein."
+        },
+        {
+          "gold_field": "flavor_name",
+          "status": "satisfied",
+          "evidence": "The title states \"Popchips Sour Cream & Onion Potato Chips,\" and the bullet point states \"sour cream & onion popchips.\""
+        }
+      ],
+      "annotation_issues": [
+        "The gold.constraints object retains previously relaxed fields such as grain_free, non_gmo, low_calorie, and artificial_ingredients, while gold_delta and the latest user turn remove them. This baseline treats the latest relaxed state as authoritative and scores only category, budget_max, dietary_claims (gluten free, low carb, high protein), and flavor_name."
+      ]
+    }
+  },
+  {
+    "error": "baseline criteria must cover every field exactly once",
+    "response": {
+      "gold_atoms": [
+        {
+          "atom_id": "g1",
+          "source_field": "category",
+          "value": "protein chips or crisps"
+        },
+        {
+          "atom_id": "g2",
+          "source_field": "budget_max",
+          "value": "price lower than 40.00 dollars"
+        },
+        {
+          "atom_id": "g3",
+          "source_field": "dietary_claims",
+          "value": "gluten free"
+        },
+        {
+          "atom_id": "g4",
+          "source_field": "dietary_claims",
+          "value": "low carb"
+        },
+        {
+          "atom_id": "g5",
+          "source_field": "dietary_claims",
+          "value": "high protein"
+        },
+        {
+          "atom_id": "g6",
+          "source_field": "flavor_name",
+          "value": "sour cream & onion"
+        }
+      ],
+      "constraint_criteria": [
+        {
+          "gold_field": "category",
+          "criteria": "The selected product must be explicitly identified as protein chips or crisps.",
+          "quote": "protein chips or crisps are okay too."
+        },
+        {
+          "gold_field": "budget_max",
+          "criteria": "The selected product price must be strictly less than $40.00.",
+          "quote": "price lower than 40.00 dollars"
+        },
+        {
+          "gold_field": "dietary_claims",
+          "criteria": "The selected product must explicitly support all three retained dietary claims: gluten free, low carb, and high protein.",
+          "quote": "Just keep gluten-free, low-carb, and high-protein."
+        },
+        {
+          "gold_field": "flavor_name",
+          "criteria": "The selected product must explicitly have sour cream & onion flavor.",
+          "quote": "I really want sour cream & onion flavor."
+        }
+      ],
+      "gold_plan_judgments": [
+        {
+          "gold_field": "category",
+          "status": "violated",
+          "evidence": "The title and product category identify the item as potato chips: \"Popchips Sour Cream & Onion Potato Chips\" and \"Chips & Crisps › Potato\". There is no evidence that it is a protein chip or crisp."
+        },
+        {
+          "gold_field": "budget_max",
+          "status": "satisfied",
+          "evidence": "The selected product price is $26.91, which is strictly below $40.00."
+        },
+        {
+          "gold_field": "dietary_claims",
+          "status": "violated",
+          "evidence": "The bullet point explicitly states \"Gluten free.\" The product evidence contains no explicit low-carb or high-protein claim, so the AND requirement is not fully supported."
+        },
+        {
+          "gold_field": "flavor_name",
+          "status": "satisfied",
+          "evidence": "The title states \"Sour Cream & Onion Potato Chips,\" and the bullet point states \"sour cream & onion popchips.\""
+        }
+      ],
+      "annotation_issues": []
+    }
+  },
+  {
+    "error": "baseline criteria must cover every field exactly once",
+    "response": {
+      "gold_atoms": [
+        {
+          "atom_id": "g1",
+          "source_field": "category",
+          "value": "protein chips or crisps"
+        },
+        {
+          "atom_id": "g2",
+          "source_field": "budget_max",
+          "value": "price lower than 40.00 dollars"
+        },
+        {
+          "atom_id": "g3",
+          "source_field": "dietary_claims",
+          "value": "gluten free"
+        },
+        {
+          "atom_id": "g4",
+          "source_field": "dietary_claims",
+          "value": "low carb"
+        },
+        {
+          "atom_id": "g5",
+          "source_field": "dietary_claims",
+          "value": "high protein"
+        },
+        {
+          "atom_id": "g6",
+          "source_field": "flavor_name",
+          "value": "sour cream & onion"
+        }
+      ],
+      "constraint_criteria": [
+        {
+          "gold_field": "category",
+          "criteria": "The selected product must be explicitly supported as a protein chip or crisp.",
+          "quote": "Puffed snacks don't look great, so protein chips or crisps are okay too."
+        },
+        {
+          "gold_field": "budget_max",
+          "criteria": "The selected product price must be strictly lower than $40.00.",
+          "quote": "Find me grain free, artificial ingredients, low calorie, high protein, low carb, non gmo, gluten free puffed snacks with flavor name: sour cream & onion, and price lower than 40.00 dollars"
+        },
+        {
+          "gold_field": "dietary_claims",
+          "criteria": "The selected product must explicitly support all three claims: gluten free, low carb, and high protein.",
+          "quote": "Drop the grain-free, non-GMO, low-calorie, and no-artificial-ingredients requirements. Just keep gluten-free, low-carb, and high-protein."
+        },
+        {
+          "gold_field": "flavor_name",
+          "criteria": "The selected product must explicitly have sour cream and onion flavor.",
+          "quote": "I really want sour cream & onion flavor."
+        }
+      ],
+      "gold_plan_judgments": [
+        {
+          "gold_field": "category",
+          "status": "violated",
+          "evidence": "The title and product category identify the item as potato chips/chips and crisps, but no selected-product text supports that it is a protein chip or crisp. Missing evidence for the required protein-chip/crisp category."
+        },
+        {
+          "gold_field": "budget_max",
+          "status": "satisfied",
+          "evidence": "Selected product price is $26.91, which is strictly lower than $40.00."
+        },
+        {
+          "gold_field": "dietary_claims",
+          "status": "violated",
+          "evidence": "The bullet point explicitly states 'Gluten free.' No selected-product description, bullet, or attribute explicitly supports 'low carb' or 'high protein'; those claims therefore lack required evidence."
+        },
+        {
+          "gold_field": "flavor_name",
+          "status": "satisfied",
+          "evidence": "The title is 'Popchips Sour Cream & Onion Potato Chips 5 oz Bags (Pack of 5),' and the bullet point states 'sour cream & onion popchips.'"
+        }
+      ],
+      "annotation_issues": [
+        "The gold constraints retain grain_free, artificial_ingredients, low_calorie, and non_gmo even though the final user turn explicitly drops those requirements; they are stale relative to the active constraints.",
+        "The dietary_claims requirements gluten free, low carb, and high protein are duplicated by the corresponding top-level boolean fields in gold.constraints. The active final-turn interpretation treats them as one dietary_claims constraint with all three components."
+      ]
+    }
+  }
+]

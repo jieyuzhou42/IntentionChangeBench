@@ -1,0 +1,349 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0081",
+  "turn_id": 2,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Can you help put together a travel plan for a single passenger leaving Tampa towards Cleveland for a duration of 3 days, starting from March 2nd up until March 4th, 2022? Please make sure the budget does not exceed $1,800.",
+    "I don't want the flight to be so early. Comfortable departure matters more to me than maximizing first-day activities and meals.",
+    "I want a rating 5 hotel"
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 1800,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "days",
+      "value": 3,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "people_number",
+      "value": 1,
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "outbound_transportation",
+      "value": "Flight F3915073 from Tampa to Cleveland on 2022-03-02, departing 10:37 and arriving 12:59",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation",
+      "value": "Richmond Hill 3 Bedroom apartment in Private home!",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "room_type",
+      "value": "Entire home/apt",
+      "priority": "optional",
+      "annotated_priorities": [
+        "optional"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "accommodation_rating",
+      "value": 5,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "day_1",
+      "value": "No sightseeing",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "day_1_lunch",
+      "value": "No planned restaurant lunch on Day 1",
+      "priority": "preferred",
+      "annotated_priorities": [
+        "preferred"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 — 2022-03-02",
+            "current_city": "Tampa → Cleveland",
+            "transportation": "Flight F3915073 from Tampa to Cleveland, departing 10:37 and arriving 12:59; duration 2 hours 22 minutes; price $326. Complete airport transfer after arrival, then check in.",
+            "breakfast": "-",
+            "lunch": "-",
+            "dinner": "Bikanerwala — Tea, Bakery, BBQ, Fast Food; average cost $10.",
+            "attraction": "-",
+            "accommodation": "Richmond Hill 3 Bedroom apartment in Private home! — Entire home/apt, listed price $565, rating 5.0, maximum occupancy 4, minimum stay 1 night, house rule: No visitors."
+          },
+          {
+            "day": "Day 2 — 2022-03-03",
+            "current_city": "Cleveland",
+            "transportation": "-",
+            "breakfast": "Me Kong Bowl — Cafe, BBQ, Seafood; average cost $19.",
+            "lunch": "Southern Santushti Cafe — Seafood, Pizza, BBQ, Fast Food; average cost $20.",
+            "dinner": "Makhan Fish and Chicken Corner — Pizza, French, Fast Food, Chinese, Seafood; average cost $25.",
+            "attraction": "Cleveland Cultural Gardens; Washington Reservation",
+            "accommodation": "Richmond Hill 3 Bedroom apartment in Private home! — Entire home/apt, listed price $565, rating 5.0, maximum occupancy 4, minimum stay 1 night, house rule: No visitors."
+          },
+          {
+            "day": "Day 3 — 2022-03-04",
+            "current_city": "Cleveland → Tampa",
+            "transportation": "Check out, complete airport transfer, then take Flight F3559247 from Cleveland to Tampa, departing 21:20 and arriving 23:34; duration 2 hours 14 minutes; price $198.",
+            "breakfast": "Big Chicken — Cafe, Pizza, Bakery, Italian; average cost $27.",
+            "lunch": "Bikanerwala — Tea, Bakery, BBQ, Fast Food; average cost $10.",
+            "dinner": "-",
+            "attraction": "Edgewater Park",
+            "accommodation": "Check out from Richmond Hill 3 Bedroom apartment in Private home! — Entire home/apt, rating 5.0, house rule: No visitors; no overnight stay."
+          }
+        ]
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-02",
+        "current_city": "Tampa / Cleveland",
+        "transportation": "Flight F3915073 from Tampa to Cleveland, departing 10:37 and arriving 12:59; fare $326",
+        "breakfast": "Packed breakfast before departure",
+        "lunch": "Bikanerwala, average cost $10",
+        "dinner": "Bikanerwala, average cost $10",
+        "attraction": "-",
+        "accommodation": "Richmond Hill 3 Bedroom apartment in Private home! — night 1 of 2 at $565 per night"
+      },
+      {
+        "day": "2022-03-03",
+        "current_city": "Cleveland",
+        "transportation": "- (no intercity journey)",
+        "breakfast": "Bikanerwala, average cost $10",
+        "lunch": "Bikanerwala, average cost $10",
+        "dinner": "Bikanerwala, average cost $10",
+        "attraction": "The Cleveland Museum of Art",
+        "accommodation": "Richmond Hill 3 Bedroom apartment in Private home! — night 2 of 2 at $565 per night"
+      },
+      {
+        "day": "2022-03-04",
+        "current_city": "Cleveland / Tampa",
+        "transportation": "Flight F3559247 from Cleveland to Tampa, departing 21:20 and arriving 23:34; fare $198",
+        "breakfast": "Bikanerwala, average cost $10",
+        "lunch": "Bikanerwala, average cost $10",
+        "dinner": "Bikanerwala, average cost $10",
+        "attraction": "Rock & Roll Hall of Fame",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "The 10:37 outbound flight avoids the early-morning options and intentionally leaves day 1 without an attraction. Known costs are $524 for flights, $1,130 for two billed accommodation nights, and $80 for listed restaurant meals, totaling $1,734 for one traveler. Packed-breakfast, attraction-admission, and local-transfer costs are not provided, so the $1,800 ceiling cannot be fully verified. The selected accommodation has a review rating of 5, supports one guest, and permits a two-night stay, but it is an apartment rather than a hotel; no supported rating-5 property explicitly identified as a hotel is available."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in Cleveland": [
+      {
+        "Name": "The Cleveland Museum of Art",
+        "Latitude": 41.5079261,
+        "Longitude": -81.61197229999999,
+        "Address": "11150 East Blvd, Cleveland, OH 44106, USA",
+        "Phone": "(216) 421-7350",
+        "Website": "https://www.clevelandart.org/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Rock & Roll Hall of Fame",
+        "Latitude": 41.5085414,
+        "Longitude": -81.6953685,
+        "Address": "1100 E 9th St, Cleveland, OH 44114, USA",
+        "Phone": "(216) 781-7625",
+        "Website": "https://www.rockhall.com/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Cleveland Cultural Gardens",
+        "Latitude": 41.51899359999999,
+        "Longitude": -81.6181879,
+        "Address": "10823 Magnolia Dr, Cleveland, OH 44106, USA",
+        "Phone": "(216) 220-3075",
+        "Website": "http://www.culturalgardens.org/",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Washington Reservation",
+        "Latitude": 41.4559597,
+        "Longitude": -81.6603073,
+        "Address": "4408 Pallister Dr, Cleveland, OH 44105, USA",
+        "Phone": "Unknown",
+        "Website": "https://www.clevelandmetroparks.com/parks/visit/parks/washington-reservation",
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Edgewater Park",
+        "Latitude": 41.4902896,
+        "Longitude": -81.73545519999999,
+        "Address": "Cleveland, OH 44102, USA",
+        "Phone": "(216) 635-3200",
+        "Website": "https://clevelandmetroparks.com/parks/visit/parks/lakefront-reservation/edgewater-park",
+        "City": "Cleveland"
+      }
+    ],
+    "Restaurants in Cleveland": [
+      {
+        "Name": "Bikanerwala",
+        "Average Cost": 10,
+        "Cuisines": "Tea, Bakery, BBQ, Fast Food",
+        "Aggregate Rating": 3.2,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Me Kong Bowl",
+        "Average Cost": 19,
+        "Cuisines": "Cafe, BBQ, Seafood",
+        "Aggregate Rating": 4.0,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Southern Santushti Cafe",
+        "Average Cost": 20,
+        "Cuisines": "Seafood, Pizza, BBQ, Fast Food",
+        "Aggregate Rating": 0.0,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Makhan Fish and Chicken Corner",
+        "Average Cost": 25,
+        "Cuisines": "Pizza, French, Fast Food, Chinese, Seafood",
+        "Aggregate Rating": 3.4,
+        "City": "Cleveland"
+      },
+      {
+        "Name": "Big Chicken",
+        "Average Cost": 27,
+        "Cuisines": "Cafe, Pizza, Bakery, Italian",
+        "Aggregate Rating": 3.5,
+        "City": "Cleveland"
+      }
+    ],
+    "Accommodations in Cleveland": [
+      {
+        "NAME": "Richmond Hill 3 Bedroom apartment in Private home!",
+        "price": 565.0,
+        "room type": "Entire home/apt",
+        "house_rules": "No visitors",
+        "minimum nights": 1.0,
+        "maximum occupancy": 4,
+        "review rate number": 5.0,
+        "city": "Cleveland"
+      }
+    ],
+    "Flight from Tampa to Cleveland on 2022-03-02": [
+      {
+        "Flight Number": "F3915073",
+        "Price": 326,
+        "DepTime": "10:37",
+        "ArrTime": "12:59",
+        "ActualElapsedTime": "2 hours 22 minutes",
+        "FlightDate": "2022-03-02",
+        "OriginCityName": "Tampa",
+        "DestCityName": "Cleveland",
+        "Distance": 927.0
+      }
+    ],
+    "Self-driving from Tampa to Cleveland": "self-driving, from Tampa to Cleveland, duration: 16 hours 15 mins, distance: 1,760 km, cost: 88",
+    "Taxi from Tampa to Cleveland": "taxi, from Tampa to Cleveland, duration: 16 hours 15 mins, distance: 1,760 km, cost: 1760",
+    "Flight from Cleveland to Tampa on 2022-03-04": [
+      {
+        "Flight Number": "F3559247",
+        "Price": 198,
+        "DepTime": "21:20",
+        "ArrTime": "23:34",
+        "ActualElapsedTime": "2 hours 14 minutes",
+        "FlightDate": "2022-03-04",
+        "OriginCityName": "Cleveland",
+        "DestCityName": "Tampa",
+        "Distance": 927.0
+      }
+    ],
+    "Self-driving from Cleveland to Tampa": "self-driving, from Cleveland to Tampa, duration: 16 hours 12 mins, distance: 1,758 km, cost: 87",
+    "Taxi from Cleveland to Tampa": "taxi, from Cleveland to Tampa, duration: 16 hours 12 mins, distance: 1,758 km, cost: 1758"
+  },
+  "background": {
+    "org": "Tampa",
+    "dest": "Cleveland",
+    "days": 3,
+    "visiting_city_number": 1,
+    "date": [
+      "2022-03-02",
+      "2022-03-03",
+      "2022-03-04"
+    ],
+    "people_number": 1,
+    "local_constraint": {
+      "house rule": null,
+      "cuisine": null,
+      "room type": null,
+      "transportation": null
+    },
+    "budget": 1800,
+    "query": "Can you help put together a travel plan for a single passenger leaving Tampa towards Cleveland for a duration of 3 days, starting from March 2nd up until March 4th, 2022? Please make sure the budget does not exceed $1,800.",
+    "level": "easy"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 1734.0,
+        "unpriced": [
+          "breakfast: packed breakfast before departure"
+        ]
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 2330.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": true,
+        "minimum_nights": [],
+        "capacity": []
+      }
+    }
+  }
+}

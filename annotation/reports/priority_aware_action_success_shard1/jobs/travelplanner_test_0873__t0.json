@@ -1,0 +1,457 @@
+{
+  "version": "priority-aware-action-success-v1",
+  "domain": "travelplanner",
+  "instance_id": "travelplanner_test_0873",
+  "turn_id": 0,
+  "source": "annotation\\data\\travelplanner_output\\gpt-5.6-sol__shard1.json",
+  "dialogue": [
+    "Could you recommend a 5-day travel itinerary for 2 people starting in Charlotte and visiting 2 different cities in Louisiana from March 9th to March 13th, 2022? Our budget is $1500. We require accommodations that allow parties and offer private rooms, and we'd prefer not to travel by flight."
+  ],
+  "constraints": [
+    {
+      "id": "budget",
+      "value": 1500,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "visiting_city_number",
+      "value": 2,
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "room_type",
+      "value": "private room",
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "house_rule",
+      "value": "parties",
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    },
+    {
+      "id": "transportation",
+      "value": "no flight",
+      "priority": "must_have",
+      "annotated_priorities": [
+        "must_have"
+      ],
+      "entity_reference": null
+    }
+  ],
+  "gold_action": {
+    "action_type": "Planner",
+    "confirmed": false,
+    "action_payload": {
+      "plan": {
+        "itinerary": [
+          {
+            "day": "Day 1 - 2022-03-09",
+            "current_city": "Charlotte → Baton Rouge",
+            "transportation": "self-driving, from Charlotte to Baton Rouge, duration: 11 hours 13 mins, distance: 1,239 km, cost: 61",
+            "breakfast": "-",
+            "lunch": "-",
+            "dinner": "Sahib潴籹 Barbeque by Ohri潴籹",
+            "attraction": "-",
+            "accommodation": "Spectacular apartment in Astoria near everywhere"
+          },
+          {
+            "day": "Day 2 - 2022-03-10",
+            "current_city": "Baton Rouge → New Orleans",
+            "transportation": "self-driving, from Baton Rouge to New Orleans, duration: 1 hour 17 mins, distance: 131 km, cost: 6",
+            "breakfast": "Fifth Street Bagelry",
+            "lunch": "Jimmy Jack's Rib Shack",
+            "dinner": "Gupha",
+            "attraction": "Louisiana's Old State Capitol",
+            "accommodation": "Spectacular apartment in Astoria near everywhere"
+          },
+          {
+            "day": "Day 3 - 2022-03-11",
+            "current_city": "New Orleans",
+            "transportation": "-",
+            "breakfast": "Cakes and Bakes",
+            "lunch": "PKay",
+            "dinner": "Twenty Four Seven",
+            "attraction": "Jackson Square; St. Louis Cathedral",
+            "accommodation": "Conveniently located private room in Brooklyn"
+          },
+          {
+            "day": "Day 4 - 2022-03-12",
+            "current_city": "New Orleans",
+            "transportation": "-",
+            "breakfast": "Aggarwal Bikaner Sweets",
+            "lunch": "The Fish House",
+            "dinner": "Shenanigan's Irish Pub",
+            "attraction": "New Orleans City Park; The Singing Oak",
+            "accommodation": "Conveniently located private room in Brooklyn"
+          },
+          {
+            "day": "Day 5 - 2022-03-13",
+            "current_city": "New Orleans → Charlotte",
+            "transportation": "self-driving, from New Orleans to Charlotte, duration: 10 hours 27 mins, distance: 1,148 km, cost: 57",
+            "breakfast": "The Night Owl",
+            "lunch": "Bhashi Caterers",
+            "dinner": "-",
+            "attraction": "Jackson Square",
+            "accommodation": "-"
+          }
+        ]
+      }
+    }
+  },
+  "gold_confirmed": false,
+  "gold_source": "git HEAD:annotation/data/exports/travelplanner_v4/shard1_jieyu.json",
+  "agent_action": {
+    "action_type": "plan",
+    "itinerary": [
+      {
+        "day": "2022-03-09",
+        "current_city": "Baton Rouge",
+        "transportation": "Self-driving from Charlotte to Baton Rouge; 11 hours 13 minutes, 1,239 km, $61",
+        "breakfast": "Packed breakfast for the drive",
+        "lunch": "Packed lunch for the drive",
+        "dinner": "Fifth Street Bagelry",
+        "attraction": "Riverfront Plaza & City Dock",
+        "accommodation": "One private room at Artist Loft East Williamsburg and one private room at Spectacular apartment in Astoria near everywhere"
+      },
+      {
+        "day": "2022-03-10",
+        "current_city": "New Orleans",
+        "transportation": "Self-driving from Baton Rouge to New Orleans; 1 hour 17 minutes, 131 km, $6",
+        "breakfast": "Fifth Street Bagelry",
+        "lunch": "Jimmy Jack's Rib Shack",
+        "dinner": "Gupha",
+        "attraction": "USS KIDD Veterans Museum",
+        "accommodation": "Nice Clean Official Cozy Suite 2 In Brooklyn"
+      },
+      {
+        "day": "2022-03-11",
+        "current_city": "New Orleans",
+        "transportation": "-",
+        "breakfast": "Gupha",
+        "lunch": "The Fish House",
+        "dinner": "PKay",
+        "attraction": "Jackson Square and St. Louis Cathedral",
+        "accommodation": "Nice Clean Official Cozy Suite 2 In Brooklyn"
+      },
+      {
+        "day": "2022-03-12",
+        "current_city": "New Orleans",
+        "transportation": "-",
+        "breakfast": "Gupha",
+        "lunch": "The Fish House",
+        "dinner": "PKay",
+        "attraction": "The National WWII Museum",
+        "accommodation": "Nice Clean Official Cozy Suite 2 In Brooklyn"
+      },
+      {
+        "day": "2022-03-13",
+        "current_city": "New Orleans",
+        "transportation": "Self-driving from New Orleans to Charlotte; 10 hours 27 minutes, 1,148 km, $57",
+        "breakfast": "Gupha",
+        "lunch": "Packed lunch for the drive",
+        "dinner": "Packed dinner for the drive",
+        "attraction": "-",
+        "accommodation": "-"
+      }
+    ],
+    "rationale": "This visits Baton Rouge and New Orleans and uses only supported self-driving routes. In Baton Rouge, two distinct private rooms are needed because each selected listing accommodates only one person; Artist Loft is billed for one night ($979) and Spectacular apartment is billed for its two-night minimum ($220). The New Orleans private room accommodates two but requires three nights ($1,239). None of these listings states a No-parties rule. Lodging is therefore $2,438, transport is $124, and listed restaurant meals are approximately $320 for two, producing a known total of $2,882. The $1,500 budget is not met by $1,382, and packed-food costs, attraction admission, and local movement remain unpriced. The final day intentionally omits an attraction and lodging because it is devoted to the supported 10-hour-27-minute return drive to Charlotte."
+  },
+  "gold_present": true,
+  "reference_records": {
+    "Attractions in New Orleans": [
+      {
+        "Name": "St. Louis Cathedral",
+        "Latitude": 29.9579735,
+        "Longitude": -90.06372809999999,
+        "Address": "615 Pere Antoine Alley, New Orleans, LA 70116, USA",
+        "Phone": "(504) 525-9585",
+        "Website": "http://www.stlouiscathedral.org/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Jackson Square",
+        "Latitude": 29.9574024,
+        "Longitude": -90.0629495,
+        "Address": "New Orleans, LA 70116, USA",
+        "Phone": "(504) 658-3200",
+        "Website": "https://nola.gov/parks-and-parkways/parks-squares/jackson-square/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "The National WWII Museum",
+        "Latitude": 29.9430711,
+        "Longitude": -90.07053169999999,
+        "Address": "945 Magazine St, New Orleans, LA 70130, USA",
+        "Phone": "(504) 528-1944",
+        "Website": "https://www.nationalww2museum.org/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "New Orleans City Park",
+        "Latitude": 30.00339929999999,
+        "Longitude": -90.0924294,
+        "Address": "New Orleans, LA, USA",
+        "Phone": "(504) 482-4888",
+        "Website": "https://neworleanscitypark.org/",
+        "City": "New Orleans"
+      },
+      {
+        "Name": "The Singing Oak",
+        "Latitude": 29.9858767,
+        "Longitude": -90.0902154,
+        "Address": "New Orleans, LA 70124, USA",
+        "Phone": "(707) 689-2985",
+        "Website": "Unknown",
+        "City": "New Orleans"
+      }
+    ],
+    "Restaurants in New Orleans": [
+      {
+        "Name": "Gupha",
+        "Average Cost": 11,
+        "Cuisines": "Tea, Cafe, Bakery, Chinese, American",
+        "Aggregate Rating": 2.9,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "The Fish House",
+        "Average Cost": 20,
+        "Cuisines": "Desserts, Tea, BBQ, Bakery, Mediterranean",
+        "Aggregate Rating": 4.0,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "PKay",
+        "Average Cost": 22,
+        "Cuisines": "Tea, Bakery, Fast Food",
+        "Aggregate Rating": 3.7,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Cakes and Bakes",
+        "Average Cost": 17,
+        "Cuisines": "Chinese, Seafood, Cafe, Fast Food",
+        "Aggregate Rating": 3.2,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Twenty Four Seven",
+        "Average Cost": 18,
+        "Cuisines": "Pizza, BBQ, Desserts, Italian",
+        "Aggregate Rating": 3.0,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Aggarwal Bikaner Sweets",
+        "Average Cost": 20,
+        "Cuisines": "Desserts, Bakery, Chinese, Mediterranean, Seafood",
+        "Aggregate Rating": 0.0,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Shenanigan's Irish Pub",
+        "Average Cost": 43,
+        "Cuisines": "Tea, Chinese, Bakery, Desserts",
+        "Aggregate Rating": 4.1,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "The Night Owl",
+        "Average Cost": 22,
+        "Cuisines": "Tea, Cafe, Bakery, BBQ",
+        "Aggregate Rating": 2.8,
+        "City": "New Orleans"
+      },
+      {
+        "Name": "Bhashi Caterers",
+        "Average Cost": 16,
+        "Cuisines": "Tea, BBQ",
+        "Aggregate Rating": 0.0,
+        "City": "New Orleans"
+      }
+    ],
+    "Accommodations in New Orleans": [
+      {
+        "NAME": "Nice Clean Official Cozy Suite 2 In Brooklyn",
+        "price": 413.0,
+        "room type": "Private room",
+        "house_rules": "No pets",
+        "minimum nights": 3.0,
+        "maximum occupancy": 2,
+        "review rate number": 4.0,
+        "city": "New Orleans"
+      },
+      {
+        "NAME": "Conveniently located private room in Brooklyn",
+        "price": 172.0,
+        "room type": "Private room",
+        "house_rules": "No visitors",
+        "minimum nights": 1.0,
+        "maximum occupancy": 1,
+        "review rate number": 1.0,
+        "city": "New Orleans"
+      }
+    ],
+    "Attractions in Baton Rouge": [
+      {
+        "Name": "Riverfront Plaza & City Dock",
+        "Latitude": 30.445301,
+        "Longitude": -91.1906815,
+        "Address": "300 S River Rd, Baton Rouge, LA 70802, USA",
+        "Phone": "Unknown",
+        "Website": "Unknown",
+        "City": "Baton Rouge"
+      },
+      {
+        "Name": "USS KIDD Veterans Museum",
+        "Latitude": 30.44359949999999,
+        "Longitude": -91.1901607,
+        "Address": "305 S River Rd, Baton Rouge, LA 70802, USA",
+        "Phone": "(225) 342-1942",
+        "Website": "http://www.usskidd.com/",
+        "City": "Baton Rouge"
+      },
+      {
+        "Name": "Louisiana's Old State Capitol",
+        "Latitude": 30.446593,
+        "Longitude": -91.1890443,
+        "Address": "100 North Blvd, Baton Rouge, LA 70801, USA",
+        "Phone": "(225) 342-0500",
+        "Website": "http://www.louisianaoldstatecapitol.org/",
+        "City": "Baton Rouge"
+      }
+    ],
+    "Restaurants in Baton Rouge": [
+      {
+        "Name": "Fifth Street Bagelry",
+        "Average Cost": 10,
+        "Cuisines": "Cafe, Mexican, Pizza, Desserts",
+        "Aggregate Rating": 3.8,
+        "City": "Baton Rouge"
+      },
+      {
+        "Name": "Jimmy Jack's Rib Shack",
+        "Average Cost": 12,
+        "Cuisines": "Tea, American, BBQ, Fast Food",
+        "Aggregate Rating": 4.2,
+        "City": "Baton Rouge"
+      },
+      {
+        "Name": "Sahib潴籹 Barbeque by Ohri潴籹",
+        "Average Cost": 11,
+        "Cuisines": "Chinese, Pizza, Bakery, BBQ",
+        "Aggregate Rating": 4.1,
+        "City": "Baton Rouge"
+      }
+    ],
+    "Accommodations in Baton Rouge": [
+      {
+        "NAME": "Spectacular apartment in Astoria near everywhere",
+        "price": 110.0,
+        "room type": "Private room",
+        "house_rules": "No visitors",
+        "minimum nights": 2.0,
+        "maximum occupancy": 1,
+        "review rate number": 3.0,
+        "city": "Baton Rouge"
+      },
+      {
+        "NAME": "Artist Loft East Williamsburg",
+        "price": 979.0,
+        "room type": "Private room",
+        "house_rules": "No children under 10 & No visitors & No pets",
+        "minimum nights": 1.0,
+        "maximum occupancy": 1,
+        "review rate number": 3.0,
+        "city": "Baton Rouge"
+      }
+    ],
+    "Flight from Charlotte to New Orleans on 2022-03-09": [],
+    "Self-driving from Charlotte to New Orleans": "self-driving, from Charlotte to New Orleans, duration: 10 hours 28 mins, distance: 1,149 km, cost: 57",
+    "Taxi from Charlotte to New Orleans": "taxi, from Charlotte to New Orleans, duration: 10 hours 28 mins, distance: 1,149 km, cost: 1149",
+    "Flight from New Orleans to Baton Rouge on 2022-03-11": "There is no flight from New Orleans to Baton Rouge on 2022-03-11.",
+    "Self-driving from New Orleans to Baton Rouge": "self-driving, from New Orleans to Baton Rouge, duration: 1 hour 17 mins, distance: 131 km, cost: 6",
+    "Taxi from New Orleans to Baton Rouge": "taxi, from New Orleans to Baton Rouge, duration: 1 hour 17 mins, distance: 131 km, cost: 131",
+    "Flight from Baton Rouge to Charlotte on 2022-03-13": [],
+    "Self-driving from Baton Rouge to Charlotte": "self-driving, from Baton Rouge to Charlotte, duration: 11 hours 14 mins, distance: 1,241 km, cost: 62",
+    "Taxi from Baton Rouge to Charlotte": "taxi, from Baton Rouge to Charlotte, duration: 11 hours 14 mins, distance: 1,241 km, cost: 1241",
+    "Self-driving from Charlotte to Baton Rouge": "self-driving, from Charlotte to Baton Rouge, duration: 11 hours 13 mins, distance: 1,239 km, cost: 61",
+    "Self-driving from Baton Rouge to New Orleans": "self-driving, from Baton Rouge to New Orleans, duration: 1 hour 17 mins, distance: 131 km, cost: 6",
+    "Self-driving from New Orleans to Charlotte": "self-driving, from New Orleans to Charlotte, duration: 10 hours 27 mins, distance: 1,148 km, cost: 57"
+  },
+  "background": {
+    "org": "Charlotte",
+    "dest": "Louisiana",
+    "days": 5,
+    "visiting_city_number": 2,
+    "date": [
+      "2022-03-09",
+      "2022-03-10",
+      "2022-03-11",
+      "2022-03-12",
+      "2022-03-13"
+    ],
+    "people_number": 2,
+    "local_constraint": {
+      "house rule": "parties",
+      "cuisine": null,
+      "room type": "private room",
+      "transportation": "no flight"
+    },
+    "budget": 4000,
+    "query": "Could you recommend a 5-day travel itinerary for 2 people starting in Charlotte and visiting 2 different cities in Louisiana from March 9th to March 13th, 2022? Our budget is $4,000. We require accommodations that allow parties and offer private rooms, and we'd prefer not to travel by flight.",
+    "level": "hard"
+  },
+  "deterministic": {
+    "agent": {
+      "cost": {
+        "total": 2772.0,
+        "unpriced": [
+          "breakfast: packed breakfast for the drive",
+          "lunch: packed lunch for the drive",
+          "lunch: packed lunch for the drive",
+          "dinner: packed dinner for the drive"
+        ]
+      },
+      "hotel": {
+        "valid": false,
+        "minimum_nights": [
+          "Spectacular apartment in Astoria near everywhere: 1 consecutive night(s) booked, minimum 2"
+        ],
+        "capacity": []
+      }
+    },
+    "gold": {
+      "cost": {
+        "total": 1696.0,
+        "unpriced": []
+      },
+      "hotel": {
+        "valid": false,
+        "minimum_nights": [],
+        "capacity": [
+          "day 1 Spectacular apartment in Astoria near everywhere: 2 travelers, maximum occupancy 1",
+          "day 2 Spectacular apartment in Astoria near everywhere: 2 travelers, maximum occupancy 1",
+          "day 3 Conveniently located private room in Brooklyn: 2 travelers, maximum occupancy 1",
+          "day 4 Conveniently located private room in Brooklyn: 2 travelers, maximum occupancy 1"
+        ]
+      }
+    }
+  }
+}
