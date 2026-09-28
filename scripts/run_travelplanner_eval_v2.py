@@ -269,9 +269,9 @@ def run(args, data, judge: Judge) -> None:
                     "turn_id": turn_id,
                     "dialogue_so_far": dialogue,
                     "gold_atoms": [{"atom_id": a["atom_id"], "field": a["source_field"], "value": a["value"]} for a in gold_atoms],
-                    "predicted_items": [{"index": i, "field": it.get("field"), "value": it.get("value")} for i, it in enumerate(items)],
+                    "predicted_items": V2.prediction_for_judge(items, indexed=True),
                     "previous_turn_predicted_items": None if previous_items is None else
-                        [{"field": it.get("field"), "value": it.get("value")} for it in previous_items],
+                        V2.prediction_for_judge(previous_items),
                 }
                 intention_prompt = V2.build_intention_prompt(intention_payload, rules)
                 previous_items = items
@@ -363,9 +363,11 @@ def summarize_cmd(args, data) -> None:
     quality = {"v2": judge_quality(quality_records_v2(rows, data))}
     if args.compare_v1:
         quality["v1"] = judge_quality(quality_records_v1(args.compare_v1, data))
-    atomic_write_json(args.out / f"scored_rows{args.tag}.json", {"rules_version": V2.RULES_VERSION, "rows": rows})
+    atomic_write_json(args.out / f"scored_rows{args.tag}.json", {"rules_version": V2.RULES_VERSION,
+                      "intention_scoring_version": V2.INTENTION_SCORING_VERSION, "rows": rows})
     atomic_write_json(args.out / f"metrics{args.tag}.json",
-                      {"rules_version": V2.RULES_VERSION, "models": metrics, "calibration": calibration, "judge_quality": quality})
+                      {"rules_version": V2.RULES_VERSION, "intention_scoring_version": V2.INTENTION_SCORING_VERSION,
+                       "models": metrics, "calibration": calibration, "judge_quality": quality})
     text = tables(metrics, shards, calibration, quality)
     (args.out / f"tables{args.tag}.md").write_text(text, encoding="utf-8")
     print(text)
@@ -468,15 +470,8 @@ def tables(metrics: Dict[str, Any], shards: List[str], calibration: Dict[str, An
         out.append(f"| {DISPLAY[m]} | {frac(a['hotel_gate_fail'])} | {frac(a['min_nights_fail'])} | {frac(a['capacity_fail'])} | "
                    f"{frac(a['budget_satisfied'])} | {frac(a['budget_coverage_gap'])} | {frac(a['must_violation_disclosure'])} | {frac(a['budget_violation_disclosure'])} | "
                    f"{frac(a['undisclosed_must_violation'])} | {s['not_feasible_turns']} | {s['gold_plan_missing']} | {s['judge_errors']} |")
-    out += ["", "### Intention level (v2, atoms, turn macro)", "",
-            "| 模型 | Overall P / R / F1 | micro P / R | Change P / R / F1 | Turn Exact | Priority Accuracy | Priority Turn Exact |",
-            "|---|---|---|---|---:|---:|---:|"]
-    for m in models:
-        i = metrics[m]["intention"]
-        out.append(f"| {DISPLAY[m]} | {pct(i['precision']['value'])} / {pct(i['recall']['value'])} / {pct(i['f1']['value'])} | "
-                   f"{pct(i['micro_precision'])} / {pct(i['micro_recall'])} | "
-                   f"{pct(i['change_precision']['value'])} / {pct(i['change_recall']['value'])} / {pct(i['change_f1']['value'])} "
-                   f"(n={i['change_recall']['denominator']}) | {frac(i['turn_exact'])} | {frac(i['priority_accuracy'])} | {frac(i['priority_turn_exact'])} |")
+    from eval.summarize import intention_table
+    out += ["", intention_table(metrics)]
     out += ["", f"### Calibration (draft labels): {calibration['correct']}/{calibration['total']}", "",
             "| case | category | expected | v2 |", "|---|---|---|---|"]
     for c in calibration["cases"]:

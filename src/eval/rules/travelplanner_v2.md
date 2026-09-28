@@ -144,11 +144,26 @@ atoms. You do not see any itinerary.
 3. value_match is true only if the atom's value is semantically correct for the
    gold atom's current value: Day 2 does not satisfy Day 1, a budget ceiling is
    not an exact spending target, an exclusion is not an inclusion.
+   Also return scope_match as an explicit boolean. It is true only when the
+   entity, traveler, city, day/time and applicability scope match the Gold atom.
+   Same value for a different entity/scope is not a correct constraint.
+   For unscoped requirements with no conflicting scope, return true when the
+   Gold atom is matched; unmatched predictions must have scope_match=false.
+   Never borrow a Gold entity/scope absent from the prediction unless the
+   reference is unambiguously resolved by the supplied dialogue.
 4. change_vs_previous compares each atom with the agent's own previous-turn
    prediction: unchanged if a previous item expresses the same requirement with
    the same value (renaming or rephrasing is not a change), changed if it
    expresses the same requirement with a different value, new if absent before.
    At the first turn every atom is new.
+5. priority_change_vs_previous compares the priority of the same predicted
+   requirement (including its entity/scope) to the agent's previous prediction:
+   unchanged when the tier is identical, changed when it differs, new when no
+   previous matching requirement exists. A value change alone does not imply a
+   priority change. At the first turn every atom is new. Missing priority stays
+   missing; never infer or fill in a tier from dialogue, Gold or importance.
+   Match content without using priority to choose the Gold atom. Priority
+   correctness is calculated in code from the original predicted item.
 
 ## Enforced in code
 
@@ -163,7 +178,7 @@ atoms. You do not see any itinerary.
   nights, or a night whose listings cannot host every traveler, fails the turn.
 - Out-of-scope fields (baseline rule 3) are removed before scoring and counted.
 - World Feasibility is read from the human annotation, never inferred from Gold
-  failures. A missing human label with an actual Gold plan is a data error.
+  failures. Missing/null human labels default to feasible=true.
 - Must gate: feasible requires Ma=nM; not feasible requires Ma>=Mg. The existing
   Agent hotel gate remains enforced. Disclosure does not alter satisfaction.
 - Sa=2Pa+Oa; Sg=2Pg+Og; soft=min(1,Sa/Sg), or 1 when Sg=0.
@@ -175,8 +190,25 @@ atoms. You do not see any itinerary.
 - Unknown is not satisfied. API/schema failures are evaluation errors, not
   model constraint failures. In-scope fields need exactly one human priority.
 - Preferred / Optional diagnostic rates remain available on Hard-Success turns.
-- Priority accuracy compares matched atoms' tiers in code; tiers never come from
-  a judge.
+- All Intention metrics are computed per turn, then averaged with equal turn
+  weights. Micro metrics and the former pooled Priority Accuracy are removed.
+- Content correct requires a one-to-one Gold match, value_match=true and
+  scope_match=true. Conditional Priority Accuracy counts jointly correct
+  content/scope/priority divided by content/scope-correct predictions. A turn
+  with no correct content has an undefined conditional score and is excluded
+  only from that metric, with coverage reported.
+- Priority-aware Precision/Recall/F1 use jointly correct predictions as TP,
+  all predicted atoms as the precision denominator and all current Gold atoms
+  as the recall denominator. Missing/invalid predicted tiers cannot earn TP.
+  Compute F1 per turn, not from the averaged Precision and Recall.
+- Content Change uses add/override/relax. Delta Priority-aware metrics also
+  include reprioritize and scope_correction. Expand old/new priority maps to
+  affected current Gold fields; Gold current values and tiers are authoritative.
+  First turns and turns without applicable current Gold changes are excluded
+  with coverage. Removed/absent Gold constraints are not invented as targets.
+  Include predictions linked to changed Gold even if unchanged by the agent;
+  add spurious predicted content/priority changes to the precision denominator.
+  Correct restatements of unchanged Gold requirements are not false positives.
 - Every metric reports numerator, denominator and excluded count. API failures
   and invalid judge output are excluded and reported; missing Gold is scored
   with the explicit perfect-reference assumption above.

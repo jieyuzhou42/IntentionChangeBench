@@ -83,6 +83,6 @@ TravelPlanner 9 轮：
 - `jobs/`：原始约束、方案及相关环境记录；保留源文件位置。
 - `judgments/`：本会话直接判定的逐轮记录，judge 标为 `assistant-direct-review`。
 - `manifest.json`：输入文件哈希及范围核对。
-- `scripts/record_shard1_direct_review.py`：可重放的直接评定决定；没有任何外部模型调用。
+- 历史直接评定脚本 `scripts/record_shard1_direct_review.py` 已退役；当时未调用外部模型，判定结果仍保留在本报告数据中。
 
 词典序、不可补偿的 Must、披露/有效性门槛、缺 Gold、未知项区间及共同未标层级抵消，共 7 项逻辑检查已通过。当前 Python 环境没有 pytest，因此以直接执行测试函数的方式运行。

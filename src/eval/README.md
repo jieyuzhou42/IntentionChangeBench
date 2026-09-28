@@ -77,6 +77,52 @@ Extra agent predictions retain the existing Intention precision treatment and
 never become additional Action requirements. Baseline field coverage remains
 strictly validated; missing Gold fields are not silently discarded.
 
+### Intention metrics: equal-weight turn macro
+
+Each scored turn first computes Precision, Recall and F1; aggregation averages
+those turn scores. Micro Precision/Recall and the former pooled
+`priority_accuracy` are removed. The same turn weighting applies to Action
+score, binary success and Must gate pass rate.
+
+Content correctness requires a unique Gold atom match, `value_match=true`, and
+`scope_match=true` (correct entity, traveler, city, day/time and applicability).
+Priority correctness compares the original prediction tier to the current Gold
+tier; the judge cannot invent priorities.
+
+- `conditional_priority_accuracy`: jointly correct content/scope/priority
+  divided by content/scope-correct predictions, calculated separately per turn.
+  Zero correct content gives null, not zero. Such turns are excluded only from
+  this conditional metric and its coverage is reported. This conditional
+  accuracy can exceed Recall by design.
+- `priority_precision`, `priority_recall`, `priority_f1`: joint TP divided by
+  all predicted atoms / all Gold atoms, followed by per-turn F1. A missed Gold,
+  extra prediction, wrong value, wrong scope, or wrong priority cannot earn TP.
+  Priority-aware F1 is the primary overall priority metric. These three metrics
+  use the same scored turns as content P/R/F1; priority-aware Recall/F1 cannot
+  exceed their corresponding content metrics on that same population.
+- `change_precision/recall/f1`: content changes (add, override, relax).
+- `priority_change_precision/recall/f1`: Delta Priority-aware metrics include
+  those operations plus reprioritize and scope_correction. Priority map deltas
+  select affected current Gold fields by comparing their old tiers to current
+  Gold tiers. Delta cannot create Gold fields or change scoring values/tiers.
+  Predictions targeting changed Gold enter the denominator even if the agent
+  failed to update them; spurious predicted changes are false positives.
+  First turns/no-target turns are null and excluded; these Delta metrics can
+  have a different population from content Change because they include pure
+  reprioritizations. Deletions absent from current Gold remain out of scope.
+
+All aggregates report the sum of turn scores, number of defined turns, and
+excluded count relative to all expected turns. Priority-aware F1 is not
+computed from aggregate P/R. Empty predictions on a scored turn yield zero
+P/R/F1, but null Conditional Priority Accuracy.
+
+Current Intention scores carry `intention-turn-macro-priority-v1`. New judge
+responses require explicit `scope_match` and `priority_change_vs_previous`;
+current and previous predictions include scope and priority in judge inputs.
+Older scores/caches cannot be silently reused: rejudge Intention and rescore
+in a new output directory. Historical reports remain historical and are not
+relabeled as results under the new definitions.
+
 ### TravelPlanner commands
 
 The existing manifest-based loader and flags are retained:

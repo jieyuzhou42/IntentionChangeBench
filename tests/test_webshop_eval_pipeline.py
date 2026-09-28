@@ -111,6 +111,37 @@ class WebShopPipelineTests(unittest.TestCase):
             missing['constraint_criteria'].pop()
             with self.assertRaises(ValueError):W.validate_baseline(missing,payload)
 
+    def test_pipeline_outputs_turn_priority_scores(self):
+        class PriorityLLM(FakeLLM):
+            def generate_json(self,prompt):
+                if 'PAYLOAD:' not in prompt:
+                    return super().generate_json(prompt)
+                payload=json.loads(prompt.split('PAYLOAD:\n',1)[1])
+                assert payload['predicted_items'][0]['priority']=='must_have'
+                return {'pred_atoms':[
+                    {'source_index':0,'gold_atom_id':'gcategory','value_match':True,'scope_match':True,
+                     'change_vs_previous':'new','priority_change_vs_previous':'new'},
+                    {'source_index':1,'gold_atom_id':'gcolor','value_match':False,'scope_match':True,
+                     'change_vs_previous':'new','priority_change_vs_previous':'new'}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            args=self.fixture(Path(tmp))
+            trajectory=runner.read(Path(tmp)/'agent.json')
+            trajectory['trajectories'][0]['turns'][0]['agent_intention_prediction']={'intent':[
+                {'field':'category','value':'cape','priority':'must_have'},
+                {'field':'color','value':'blue','priority':'optional'}]}
+            runner.write(Path(tmp)/'agent.json',trajectory)
+            def init(obj,args):obj.args=args;obj.client=PriorityLLM()
+            with patch.object(runner.Judge,'__init__',init):
+                for stage in ('prepare','run','summarize'):
+                    args.stage=stage;runner.run_webshop(args)
+            metrics=runner.read(args.out/'metrics.json')
+            self.assertEqual(metrics['intention_scoring_version'],runner.I.INTENTION_SCORING_VERSION)
+            result=metrics['models']['test']['intention']
+            self.assertEqual(result['conditional_priority_accuracy']['value'],1)
+            self.assertEqual(result['priority_f1']['value'],.5)
+            self.assertEqual(result['priority_recall']['value'],.5)
+            self.assertNotIn('micro_precision',result)
+
     def test_baseline_is_model_independent_and_missing_evidence_rule(self):
         with tempfile.TemporaryDirectory() as tmp:
             args=self.fixture(Path(tmp));case=runner.read(args.gold)[0];catalog=runner.catalog_records(runner.read(args.catalog))

@@ -157,10 +157,10 @@ def run_webshop(args):
                 ip = {"turn_id": tid, "dialogue_so_far": payload["dialogue"],
                     "gold_atoms": [{"atom_id": a["atom_id"], "field": a["source_field"], "value": a["value"]}
                                    for a in baseline["judge"]["gold_atoms"]],
-                    "predicted_items": [{"index": n, "field": v.get("field"), "value": v.get("value")} for n, v in enumerate(items)],
+                    "predicted_items": I.prediction_for_judge(items, indexed=True),
                     "previous_turn_predicted_items": previous}
                 first = len(payload["dialogue"]) == 1
-                previous = [{"field": v.get("field"), "value": v.get("value")} for v in items]
+                previous = I.prediction_for_judge(items)
                 meta = {"model": model, "instance_id": iid, "turn_id": tid,
                         "input_sha256": fingerprint(turn), "baseline_sha256": fingerprint(baseline),
                         "intention_rules_sha256": fingerprint(I.load_rules()["Intention rules"])}
@@ -197,8 +197,10 @@ def run_webshop(args):
                                  "turn_id": tid, "action": None, "intention": None,
                                  "errors": {"trajectory": "missing tested turn"}})
         metrics = summarize(rows)
-        write(args.out / "scored_rows.json", {"scoring_version": SCORING_VERSION, "rows": rows})
-        write(args.out / "metrics.json", {"scoring_version": SCORING_VERSION, "models": metrics})
+        write(args.out / "scored_rows.json", {"scoring_version": SCORING_VERSION,
+            "intention_scoring_version": I.INTENTION_SCORING_VERSION, "rows": rows})
+        write(args.out / "metrics.json", {"scoring_version": SCORING_VERSION,
+            "intention_scoring_version": I.INTENTION_SCORING_VERSION, "models": metrics})
         (args.out / "tables.md").write_text(tables(metrics), encoding="utf-8")
         print(tables(metrics))
     else:

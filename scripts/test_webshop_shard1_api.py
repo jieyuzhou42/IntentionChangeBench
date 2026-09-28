@@ -13,7 +13,7 @@ sys.path[:0] = [str(ROOT / 'src'), str(ROOT / 'scripts')]
 import run_eval as R
 from common.llm_clients import OpenAIResponsesClient
 
-OUT = ROOT / 'annotation/reports/webshop_shard1_api_gpt56luna_gold_authority_20260927'
+OUT = ROOT / 'annotation/reports/webshop_shard1_api_gpt56luna_turn_priority_20260927'
 
 
 def product_records(turn):
@@ -47,7 +47,7 @@ def main():
     model = os.environ['OPENAI_MODEL']
     if 'luna' not in model.lower():
         raise ValueError('Expected configured Luna judge')
-    with zipfile.ZipFile(ROOT / 'annotation/data/webshop_shard1_5_reviewed.zip') as z:
+    with zipfile.ZipFile(ROOT / 'annotation/data/webshop/webshop_shard1_5_reviewed.zip') as z:
         gold = json.loads(z.read('shard1_5/shard_001_human_annotated.json'))
     ids = {c['instance_id'] for c in gold}
     catalog, trajectories, sources = {}, {}, []
@@ -100,7 +100,7 @@ def main():
                 jobs.append((row, payload, turn, items, previous))
             except Exception as exc:
                 row['errors']['data'] = str(exc)
-            previous = [{'field': v.get('field'), 'value': v.get('value')} for v in items]
+            previous = R.I.prediction_for_judge(items)
     if cli.turn:
         requested = set(cli.turn)
         def wanted(row):
@@ -112,7 +112,8 @@ def main():
     R.write(OUT / 'preflight_errors.json', [r for r in rows if r['errors']])
     R.write(OUT / 'run_manifest.json', dict(judge_model=model, tested_model='gpt-5.6-sol',
         sources=sorted(set(sources)), eligible_turns=len(jobs), total_turns=len(rows),
-        scoring_version=R.SCORING_VERSION, gold_source='annotation/data/webshop_shard1_5_reviewed.zip::shard1_5/shard_001_human_annotated.json'))
+        scoring_version=R.SCORING_VERSION, intention_scoring_version=R.I.INTENTION_SCORING_VERSION,
+        gold_source='annotation/data/webshop/webshop_shard1_5_reviewed.zip::shard1_5/shard_001_human_annotated.json'))
     print(f'Judge={model}; eligible={len(jobs)}/{len(rows)}', flush=True)
 
     def evaluate(job):
@@ -142,7 +143,7 @@ def main():
         first = len(payload['dialogue']) == 1
         ip = {'turn_id': row['turn_id'], 'dialogue_so_far': payload['dialogue'],
               'gold_atoms': [{'atom_id': a['atom_id'], 'field': a['source_field'], 'value': a['value']} for a in baseline['judge']['gold_atoms']],
-              'predicted_items': [{'index': n, 'field': v.get('field'), 'value': v.get('value')} for n, v in enumerate(items)],
+              'predicted_items': R.I.prediction_for_judge(items, indexed=True),
               'previous_turn_predicted_items': previous}
         for stage in ('action', 'intention'):
             try:
@@ -163,9 +164,11 @@ def main():
         for future in as_completed([pool.submit(evaluate, j) for j in jobs]):
             row = future.result()
             print(row['instance_id'], row['turn_id'], 'errors=' + str(row['errors']), flush=True)
-            R.write(OUT / 'scored_rows.json', {'scoring_version': R.SCORING_VERSION, 'rows': rows})
+            R.write(OUT / 'scored_rows.json', {'scoring_version': R.SCORING_VERSION,
+                'intention_scoring_version': R.I.INTENTION_SCORING_VERSION, 'rows': rows})
     metrics = R.summarize(rows)
-    R.write(OUT / 'metrics.json', {'scoring_version': R.SCORING_VERSION, 'models': metrics})
+    R.write(OUT / 'metrics.json', {'scoring_version': R.SCORING_VERSION,
+        'intention_scoring_version': R.I.INTENTION_SCORING_VERSION, 'models': metrics})
     R.write(OUT / 'run_errors.json', [r for r in rows if r['errors']])
     (OUT / 'tables.md').write_text(R.tables(metrics), encoding='utf-8')
     print(R.tables(metrics), flush=True)

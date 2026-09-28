@@ -36,7 +36,8 @@ from eval.travelplanner_checks import (
     trip_cost,
 )
 
-RULES_VERSION = "travelplanner-rules-v3.0"
+RULES_VERSION = "travelplanner-rules-v3.1"
+INTENTION_SCORING_VERSION = "intention-turn-macro-priority-v1"
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RULES_PATH = Path(__file__).with_name("rules") / "travelplanner_v2.md"
 CALIBRATION_PATH = REPO_ROOT / "annotation" / "data" / "travelplanner_judge_calibration_v1.json"
@@ -47,6 +48,7 @@ TIERS = ("must_have", "preferred", "optional")
 ACTION_STATUSES = {"satisfied", "violated", "unknown"}
 CHANGE_STATUSES = {"new", "changed", "unchanged"}
 VALUE_CHANGE_OPS = {"add", "override", "relax"}
+PRIORITY_CHANGE_OPS = VALUE_CHANGE_OPS | {"reprioritize", "scope_correction"}
 PLAN_SLOTS = ("transportation",) + MEALS + ("accommodation",)
 
 
@@ -357,11 +359,20 @@ def final_itinerary(itinerary: Any, final_plan: Sequence[Dict[str, Any]], revise
 # --------------------------------------------------------------------------- intention
 
 
+def prediction_for_judge(items, indexed=False):
+    """Preserve explicit scope and priority for semantic/change judgments."""
+    keys = ("field", "value", "priority", "entity", "entity_id", "scope", "reference")
+    return [{**({"index": n} if indexed else {}),
+             **{k: item[k] for k in keys if k in item}}
+            for n, item in enumerate(items)]
+
+
 def build_intention_prompt(payload: Dict[str, Any], rules: Dict[str, str]) -> str:
     schema = {
         "pred_atoms": [{"source_index": 0, "field": "...", "value": "one requirement",
-                        "gold_atom_id": "g1 or null", "value_match": True,
-                        "change_vs_previous": "new | changed | unchanged"}]
+                        "gold_atom_id": "g1 or null", "value_match": True, "scope_match": True,
+                        "change_vs_previous": "new | changed | unchanged",
+                        "priority_change_vs_previous": "new | changed | unchanged"}]
     }
     return "\n\n".join(
         (
@@ -393,13 +404,22 @@ def validate_intention(raw: Dict[str, Any], n_items: int, gold_ids: Set[str], fi
             if gid in used:
                 raise ValueError(f"intention: gold atom {gid} matched twice")
             used.add(gid)
+            atom["gold_atom_id"] = gid
         if atom.get("change_vs_previous") not in CHANGE_STATUSES:
             raise ValueError(f"intention: bad change status {atom.get('change_vs_previous')}")
+        if atom.get("priority_change_vs_previous") not in CHANGE_STATUSES:
+            raise ValueError("intention: missing/invalid priority change status; rejudge with current rules")
+        for key in ("value_match", "scope_match"):
+            if type(atom.get(key)) is not bool:
+                raise ValueError("intention: missing/invalid " + key + "; rejudge with current rules")
+        if atom["gold_atom_id"] is None and atom["scope_match"]:
+            raise ValueError("intention: unmatched atom cannot have scope_match=true")
     if sources != set(range(n_items)):
         raise ValueError(f"intention: atoms cover items {sorted(sources)}, expected {n_items}")
     if first_turn:
         for atom in atoms:
             atom["change_vs_previous"] = "new"
+            atom["priority_change_vs_previous"] = "new"
     return raw
 
 
@@ -511,6 +531,52 @@ def score_action(
     }
 
 
+def changed_gold_fields(gold, gold_delta, include_priority=False):
+    """Select current Gold fields; delta never supplies scoring values/tiers."""
+    fields, tiers = set(gold_constraints(gold)), gold_tiers(gold)
+    selected = set()
+
+    def visit(delta, prefix=""):
+        for name, change in (delta or {}).items():
+            if not isinstance(change, dict):
+                continue
+            if name == "entities":
+                for eid, entity_delta in change.items():
+                    visit(entity_delta, "entities." + str(eid) + ".constraints.")
+                continue
+            if name == "constraints" and "op" not in change:
+                visit(change, prefix)
+                continue
+            op = change.get("op")
+            is_priority_map = name == "priority" or name.endswith(".priority")
+            if include_priority and is_priority_map and op == "reprioritize":
+                priority_prefix = prefix
+                if name.endswith(".priority"):
+                    priority_prefix = name[:-len("priority")] + "constraints."
+                old = change.get("old") or {}
+                new = change.get("new") or {}
+                if not isinstance(old, dict) or not isinstance(new, dict):
+                    raise ValueError("reprioritize priority map must contain old/new tier mappings")
+                old_tiers = {}
+                candidates = set()
+                for mapping in (old, new):
+                    for tier, names in mapping.items():
+                        tier = GOLD_TIER.get(tier, tier)
+                        for field in names:
+                            field = priority_prefix + re.sub(r"^constraints\.", "", str(field))
+                            candidates.add(field)
+                            if mapping is old:
+                                old_tiers[field] = tier
+                selected.update(f for f in candidates if f in fields and old_tiers.get(f) != tiers.get(f))
+            elif op in (PRIORITY_CHANGE_OPS if include_priority else VALUE_CHANGE_OPS):
+                field = prefix + re.sub(r"^constraints\.", "", name)
+                if field in fields:
+                    selected.add(field)
+
+    visit(gold_delta)
+    return selected
+
+
 def score_intention(
     *,
     gold: Dict[str, Any],
@@ -522,8 +588,12 @@ def score_intention(
 ) -> Dict[str, Any]:
     tiers = gold_tiers(gold)
     gold_atoms = {str(a["atom_id"]): a for a in baseline["judge"]["gold_atoms"]}
-    atoms = judgment["pred_atoms"]
-    correct = [a for a in atoms if a.get("gold_atom_id") is not None and a.get("value_match")]
+    atoms = validate_intention(judgment, len(items), set(gold_atoms), first_turn)["pred_atoms"]
+    if any(tiers.get(str(a["source_field"])) not in TIERS for a in gold_atoms.values()):
+        raise ValueError("Every Intention Gold atom requires a valid priority")
+    def content_correct(atom):
+        return atom.get("gold_atom_id") is not None and atom["value_match"] and atom["scope_match"]
+    correct = [a for a in atoms if content_correct(a)]
     precision = _ratio(len(correct), len(atoms)) or 0.0
     recall = _ratio(len(correct), len(gold_atoms)) or 0.0
 
@@ -531,28 +601,38 @@ def score_intention(
         index = int(atom["source_index"])
         return items[index].get("priority") if index < len(items) else None
 
-    matched = {str(a["gold_atom_id"]): a for a in atoms if a.get("gold_atom_id") is not None}
-    tiered = [gid for gid, g in gold_atoms.items() if tiers.get(str(g["source_field"])) in TIERS]
-    tier_pairs = [(tiers[str(gold_atoms[gid]["source_field"])], tier_of(matched[gid])) for gid in tiered if gid in matched]
+    def jointly_correct(atom):
+        return content_correct(atom) and tier_of(atom) == tiers[str(gold_atoms[str(atom['gold_atom_id'])]['source_field'])]
 
-    changed_fields = {f for f, d in (gold_delta or {}).items() if isinstance(d, dict) and d.get("op") in VALUE_CHANGE_OPS}
-    changed_gold = {gid for gid, g in gold_atoms.items() if str(g["source_field"]) in changed_fields}
-    change = None
-    if not first_turn and changed_gold:
-        claimed = []
+    joint = sum(jointly_correct(a) for a in atoms)
+    pp = _ratio(joint, len(atoms)) or 0.0
+    pr = _ratio(joint, len(gold_atoms)) or 0.0
+
+    def change_score(with_priority):
+        changed_fields = changed_gold_fields(gold, gold_delta, with_priority)
+        targets = {gid for gid, g in gold_atoms.items() if str(g["source_field"]) in changed_fields}
+        if first_turn or not targets:
+            return None
+        predictions = []
         for atom in atoms:
-            if atom.get("change_vs_previous") == "unchanged":
-                continue
             gid = atom.get("gold_atom_id")
-            if gid is not None and str(gid) not in changed_gold and atom.get("value_match"):
-                continue  # correct restatement of an unchanged requirement
-            claimed.append(gid is not None and str(gid) in changed_gold and bool(atom.get("value_match")))
-        caught = sum(1 for gid in changed_gold if gid in matched and matched[gid].get("value_match"))
-        p = _ratio(sum(claimed), len(claimed)) or 0.0
-        r = caught / len(changed_gold)
-        change = {"gold": len(changed_gold), "caught": caught, "claimed": len(claimed),
-                  "claimed_correct": sum(claimed), "precision": p, "recall": r, "f1": _f1(p, r)}
+            changed = atom["change_vs_previous"] != "unchanged"
+            if with_priority:
+                changed = changed or atom["priority_change_vs_previous"] != "unchanged"
+            # Include current predictions for changed Gold even if the agent failed
+            # to update them. Include spurious predicted changes as false positives.
+            if gid in targets or (changed and not content_correct(atom)):
+                predictions.append(atom)
+            elif with_priority and changed and not jointly_correct(atom):
+                predictions.append(atom)
+        test = jointly_correct if with_priority else content_correct
+        tp = sum(a.get("gold_atom_id") in targets and test(a) for a in predictions)
+        p = _ratio(tp, len(predictions)) or 0.0
+        r = tp / len(targets)
+        return {"gold": len(targets), "predicted": len(predictions), "correct": tp,
+                "precision": p, "recall": r, "f1": _f1(p, r)}
     return {
+        "scoring_version": INTENTION_SCORING_VERSION,
         "atoms_gold": len(gold_atoms),
         "atoms_pred": len(atoms),
         "correct": len(correct),
@@ -560,9 +640,14 @@ def score_intention(
         "recall": recall,
         "f1": _f1(precision, recall),
         "turn_exact": len(correct) == len(atoms) == len(gold_atoms),
-        "tier_pairs": tier_pairs,
-        "priority_turn_exact": len(tier_pairs) == len(tiered) and all(g == p for g, p in tier_pairs),
-        "change": change,
+        "conditional_priority_accuracy": _ratio(joint, len(correct)),
+        "priority_correct": joint,
+        "priority_precision": pp,
+        "priority_recall": pr,
+        "priority_f1": _f1(pp, pr),
+        "priority_turn_exact": joint == len(atoms) == len(gold_atoms),
+        "change": change_score(False),
+        "priority_change": change_score(True),
     }
 
 
@@ -589,8 +674,11 @@ def summarize(rows: Sequence[Dict[str, Any]], shards: Iterable[str]) -> Dict[str
                 skipped += 1
         return metric(rates, skipped)
 
+    if any(i.get("scoring_version") != INTENTION_SCORING_VERSION for i in intent):
+        raise ValueError("Stale Intention scores; rejudge/rescore with current scope and priority rules")
     changes = [i["change"] for i in intent if i["change"]]
-    pairs = [p for i in intent for p in i["tier_pairs"]]
+    priority_changes = [i["priority_change"] for i in intent if i["priority_change"] is not None]
+    conditional = [i["conditional_priority_accuracy"] for i in intent if i["conditional_priority_accuracy"] is not None]
     feas = [a["feasibility"]["status"] for a in action]
     return {
         "turns": len(rows),
@@ -610,13 +698,10 @@ def summarize(rows: Sequence[Dict[str, Any]], shards: Iterable[str]) -> Dict[str
             "min_nights_fail": metric([float(bool(a["hotel"]["minimum_nights"])) for a in action]),
             "capacity_fail": metric([float(bool(a["hotel"]["capacity"])) for a in action]),
             "undisclosed_must_violation": metric([float(bool(a["undisclosed_violated_musts"])) for a in action]),
-            "must_violation_disclosure": {
-                "value": _ratio(sum(len(set(a["violated_musts"]) & set(a["disclosed"])) for a in action),
-                                sum(len(a["violated_musts"]) for a in action)),
-                "numerator": sum(len(set(a["violated_musts"]) & set(a["disclosed"])) for a in action),
-                "denominator": sum(len(a["violated_musts"]) for a in action),
-                "excluded": 0,
-            },
+            "must_violation_disclosure": metric(
+                [len(set(a["violated_musts"]) & set(a["disclosed"])) / len(a["violated_musts"])
+                 for a in action if a["violated_musts"]],
+                len(rows) - sum(bool(a["violated_musts"]) for a in action)),
             "budget_violation_disclosure": {
                 "value": _ratio(sum("budget" in a["violated_musts"] and "budget" in a["disclosed"] for a in action),
                                 sum("budget" in a["violated_musts"] for a in action)),
@@ -640,17 +725,15 @@ def summarize(rows: Sequence[Dict[str, Any]], shards: Iterable[str]) -> Dict[str
             },
         },
         "intention": {
-            "precision": metric([i["precision"] for i in intent]),
-            "recall": metric([i["recall"] for i in intent]),
-            "f1": metric([i["f1"] for i in intent]),
-            "micro_precision": _ratio(sum(i["correct"] for i in intent), sum(i["atoms_pred"] for i in intent)),
-            "micro_recall": _ratio(sum(i["correct"] for i in intent), sum(i["atoms_gold"] for i in intent)),
-            "turn_exact": metric([float(i["turn_exact"]) for i in intent]),
-            "change_precision": metric([c["precision"] for c in changes], len(intent) - len(changes)),
-            "change_recall": metric([c["recall"] for c in changes], len(intent) - len(changes)),
-            "change_f1": metric([c["f1"] for c in changes], len(intent) - len(changes)),
-            "priority_accuracy": {"value": _ratio(sum(g == p for g, p in pairs), len(pairs)),
-                                  "numerator": sum(g == p for g, p in pairs), "denominator": len(pairs), "excluded": 0},
-            "priority_turn_exact": metric([float(i["priority_turn_exact"]) for i in intent]),
+            "scoring_version": INTENTION_SCORING_VERSION,
+            **{k: metric([i[k] for i in intent], len(rows) - len(intent))
+               for k in ("precision", "recall", "f1", "priority_precision", "priority_recall", "priority_f1")},
+            "turn_exact": metric([float(i["turn_exact"]) for i in intent], len(rows) - len(intent)),
+            **{"change_" + k: metric([c[k] for c in changes], len(rows) - len(changes))
+               for k in ("precision", "recall", "f1")},
+            "conditional_priority_accuracy": metric(conditional, len(rows) - len(conditional)),
+            **{"priority_change_" + k: metric([c[k] for c in priority_changes], len(rows) - len(priority_changes))
+               for k in ("precision", "recall", "f1")},
+            "priority_turn_exact": metric([float(i["priority_turn_exact"]) for i in intent], len(rows) - len(intent)),
         },
     }

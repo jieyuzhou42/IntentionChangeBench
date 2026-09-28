@@ -69,5 +69,5 @@ t 为0-based turn_id；各向量顺序均为 **(Must, Preferred, Optional)**。�
 | webshop_goal_06824 | 3 | (4, 1, 2) | (4, 1, 2) | success | lexicographic_at_least_gold |
 | webshop_goal_06824 | 4 | (2, 1, 2) | (2, 3, 2) | failure | undisclosed_must_violation |
 
-逐约束状态、证据、差值上下界及旧结果见 `results.json`；可复现逻辑及本会话 Optional 判定见 `scripts/eval_webshop_three_tier_direct_review.py`。
+逐约束状态、证据、差值上下界及旧结果见 `results.json`。当时使用的 `scripts/eval_webshop_three_tier_direct_review.py` 已随旧评分规则退役；本报告保留为历史结果，当前评估入口见 `scripts/run_eval.py`。
 02449 t5 的钢材属性虽未知，但双方是同一47.5英寸商品，材质真值相同，故该未知项可抵消；没有将“metal”擅自判成“steel”。
