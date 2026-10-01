@@ -1,0 +1,96 @@
+rules_version = '2';
+
+// Third-party evaluation site. Deploy to its OWN Firebase project: rules are per project, so
+// deploying this file to the WebShop annotation project would replace that site's rules.
+//
+// Collections:
+//   eval_admins/{uid}           a browser that entered the admin key (adminKey below)
+//   eval_evaluators/{code}      one evaluator code: domain, assigned item_ids, current uid
+//   eval_progress/{code}        consent and tutorial status
+//   eval_judgments/{code}__{item_id}   one evaluator's answers for one trajectory
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // The admin key stays out of git: set_admin_key.py copies this file to the git-ignored
+    // firestore.deploy.rules with the key filled in, and `firebase deploy` uploads that copy.
+    // Rules are never sent to browsers. Until a key is filled in, nobody can become an admin.
+    function adminKey() {
+      return '__ADMIN_KEY__';
+    }
+
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(database)/documents/eval_admins/$(request.auth.uid));
+    }
+
+    function evaluator(code) {
+      return get(/databases/$(database)/documents/eval_evaluators/$(code)).data;
+    }
+
+    // The code is the credential: the browser that last entered it owns its records.
+    function ownsCode(code) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/eval_evaluators/$(code))
+        && evaluator(code).get('uid', '') == request.auth.uid
+        && evaluator(code).get('disabled', false) != true;
+    }
+
+    // Judgment ids are "<code>__<item_id>".
+    function codeOf(docId) {
+      return docId.split('__')[0];
+    }
+
+    match /eval_admins/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['key', 'created_at'])
+        && !adminKey().matches('__.*__')
+        && request.resource.data.key == adminKey();
+      allow list, update, delete: if false;
+    }
+
+    match /eval_evaluators/{code} {
+      // A get needs the exact code; only admins can list, so codes cannot be enumerated.
+      allow get: if signedIn();
+      allow list: if isAdmin();
+      allow create: if isAdmin() && request.resource.data.code == code;
+      allow update: if isAdmin()
+        || (signedIn()
+          && resource.data.get('disabled', false) != true
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uid', 'claimed_at', 'last_seen_at'])
+          && request.resource.data.uid == request.auth.uid);
+      allow delete: if false;
+    }
+
+    match /eval_progress/{code} {
+      allow get: if isAdmin() || ownsCode(code);
+      allow list: if isAdmin();
+      allow create, update: if ownsCode(code)
+        && request.resource.data.keys().hasOnly([
+          'code', 'uid', 'consent_at', 'tutorial_passed_at', 'tutorial_attempts', 'tutorial_version', 'updated_at'
+        ])
+        && request.resource.data.code == code
+        && request.resource.data.uid == request.auth.uid;
+      allow delete: if false;
+    }
+
+    match /eval_judgments/{docId} {
+      allow get: if isAdmin() || ownsCode(codeOf(docId));
+      allow list: if isAdmin();
+      allow create, update: if ownsCode(codeOf(docId))
+        && request.resource.data.keys().hasOnly([
+          'code', 'item_id', 'domain', 'uid', 'pool_version', 'rubric_version', 'guide_version', 'status',
+          'turns_done', 'turns_total', 'answers_json', 'active_ms', 'started_at', 'updated_at', 'completed_at'
+        ])
+        && request.resource.data.code == codeOf(docId)
+        && docId == request.resource.data.code + '__' + request.resource.data.item_id
+        && request.resource.data.item_id in evaluator(codeOf(docId)).item_ids
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.answers_json is string
+        && request.resource.data.answers_json.size() <= 500000;
+      allow delete: if false;
+    }
+  }
+}
