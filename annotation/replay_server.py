@@ -21,6 +21,9 @@ DEFAULT_CACHE_PATH = ANNOTATION_DATA_DIR / "replay_image_cache.json"
 DEFAULT_ITEM_CACHE_PATH = ANNOTATION_DATA_DIR / "replay_item_cache.json"
 ITEM_CACHE_VERSION = 2
 TRAVELPLANNER_CONTEXT_FIELDS = {
+    "days",
+    "num_people",
+    "people_number",
     "org",
     "dest",
     "start_date",
@@ -720,16 +723,9 @@ HTML = r"""
       renderPriorityBoard();
     }
     function renderConstraints() {
-      const vocab = state.constraint_vocabulary || [];
-      const known = new Set(vocab);
-      constraints.innerHTML = `<datalist id="constraint-vocab">${
-        vocab.map(name => `<option value="${esc(name)}"></option>`).join("")
-      }</datalist>` + constraintDraft.map((row, index) => `
+      constraints.innerHTML = constraintDraft.map((row, index) => `
         <div class="constraint-row" data-key="${esc(row.key)}">
-          <input data-role="key" data-index="${index}" value="${esc(row.key)}" placeholder="constraint"
-                 list="constraint-vocab"${row.key && !known.has(row.key)
-                   ? ' style="border-color:#d97706;background:#fffbeb" title="数据集里没有这个字段名，确认不是手误"'
-                   : ''}>
+          <input data-role="key" data-index="${index}" value="${esc(row.key)}" placeholder="constraint">
           <input data-role="value" data-index="${index}" value="${esc(row.valueText)}" placeholder="value, JSON allowed">
           <button class="danger" data-role="remove" data-index="${index}" title="Remove">Remove</button>
         </div>
@@ -800,135 +796,24 @@ HTML = r"""
         }).join("")}</div>
         <label class="gold-confirm"><input type="checkbox" data-gold-role="confirmed" ${goldActionDraft.confirmed ? "checked" : ""}> I confirm this is the gold product and these are the exact options.</label>`;
     }
-    // Candidate pool for the current turn, so gold entries can be picked instead
-    // of transcribed by hand. Hand-typed strings silently break the downstream
-    // parsers when a field like "minimum stay" is omitted or reworded.
-    function travelPool(kind) {
-      const inst = state.instances[activeInstanceIndex] || {};
-      const turn = (inst.turns || [])[activeTurnIndex] || {};
-      const results = ((turn.env_feedback || {}).search_results) || {};
-      const out = [];
-      for (const page of (results[kind] || [])) {
-        for (const item of (page.items || [])) {
-          if (item && typeof item === "object") out.push(item);
-        }
-      }
-      return out;
-    }
-    function nightsInPlan() {
-      const days = (((goldActionDraft.action_payload || {}).plan || {}).itinerary || []);
-      return Math.max(1, days.length - 1);
-    }
-    function renderAccommodationText(item) {
-      const nights = nightsInPlan();
-      const price = Number(item.price || 0);
-      const days = (((goldActionDraft.action_payload || {}).plan || {}).itinerary || []);
-      const checkin = (days[0] || {}).day || "";
-      const checkout = (days[days.length - 1] || {}).day || "";
-      return `${item.NAME}; ${item["room type"]}; rating ${item["review rate number"]}; ` +
-             `$${price.toFixed(0)}/night × ${nights} nights = $${(price * nights).toFixed(0)} for one unit; ` +
-             `minimum stay ${item["minimum nights"]} nights; maximum occupancy ${item["maximum occupancy"]}; ` +
-             `check in ${checkin}, check out ${checkout}; house rules: ${item.house_rules}`;
-    }
-    function renderMealText(item) {
-      const people = Math.max(1, Math.floor(draftConstraintNumber(["people_number", "party_size"], 1)));
-      return `${item.Name}; rating ${item["Aggregate Rating"]}; ` +
-             `listed Average Cost $${item["Average Cost"]} per person × ${people}; Cuisines: ${item.Cuisines}`;
-    }
-    function travelOptions(field) {
-      if (field === "accommodation") {
-        return travelPool("accommodations").map(item => ({
-          label: `$${Number(item.price || 0).toFixed(0)}/晚 · ${item["room type"]} · r${item["review rate number"]} · min${item["minimum nights"]} · ${String(item.NAME).slice(0, 28)}`,
-          text: renderAccommodationText(item),
-        }));
-      }
-      if (["breakfast", "lunch", "dinner"].includes(field)) {
-        return travelPool("restaurants").map(item => ({
-          label: `$${item["Average Cost"]} · r${item["Aggregate Rating"]} · ${String(item.Name).slice(0, 26)}`,
-          text: renderMealText(item),
-        }));
-      }
-      if (field === "attraction") {
-        return travelPool("attractions").map(item => ({
-          label: String(item.Name || item.name || JSON.stringify(item)).slice(0, 40),
-          text: String(item.Name || item.name || ""),
-        }));
-      }
-      if (field === "transportation") {
-        return travelPool("transportation").map(item => ({
-          label: String(item.value || JSON.stringify(item)).slice(0, 60),
-          text: String(item.value || ""),
-        }));
-      }
-      return [];
-    }
-    function travelPicker(field, dayIndex) {
-      const options = travelOptions(field);
-      if (!options.length) return "";
-      return `<select data-gold-role="travel-pick" data-day-index="${dayIndex}" data-field="${field}" class="travel-pick">
-        <option value="">— 从候选池选 (${options.length}) —</option>
-        <option value="__dash__">— 该日不安排 (-)</option>
-        ${options.map((o, i) => `<option value="${i}">${esc(o.label)}</option>`).join("")}
-      </select>`;
-    }
-    // A turn whose pool cannot satisfy every constraint still gets a real,
-    // bookable itinerary; what makes it honest is this block, which says so and
-    // lists every minimal sacrifice the pool allows. Without it the plan below
-    // reads as if gold met everything.
-    function renderWorldFeasibility() {
-      const wf = goldActionDraft.world_feasibility
-        || (goldActionDraft.world_feasibility = { feasible: true, explanation: null,
-                                                  minimum_sacrifice: 0, acceptable_sacrifices: [] });
-      const feasible = wf.feasible !== false;
-      const options = (wf.acceptable_sacrifices || []).map((item, index) => {
-        const give = (item.give_up || []).join(", ") || "-";
-        const taken = index === 0 ? ' <span class="pill warn">itinerary 用的是这个</span>' : "";
-        return `<li><code>${esc(give)}</code> &middot; $${esc(String(Math.round(item.cost || 0)))}${taken}
-                <span class="details">${esc((item.plan || {}).accommodation || "")}</span></li>`;
-      }).join("");
-      return `
-        <div class="travel-card" style="margin-bottom:12px;">
-          <div class="editor-head">
-            <strong>World feasibility</strong>
-            <label class="gold-confirm" style="margin:0;">
-              <input type="checkbox" data-gold-role="wf-feasible" ${feasible ? "checked" : ""}>
-              这一轮的候选池能同时满足所有 must-have
-            </label>
-          </div>
-          <div style="margin-top:8px;">
-            <label>做不到的话，说明是什么挡住了</label>
-            <textarea data-gold-role="wf-explanation" rows="4"
-              placeholder="No feasible option: ..." ${feasible ? "disabled" : ""}>${esc(wf.explanation || "")}</textarea>
-          </div>
-          ${feasible ? "" : `<div style="margin-top:8px;">
-            <label>池子允许的最小牺牲（下限 ${esc(String(wf.minimum_sacrifice ?? "?"))} 条 must-have）</label>
-            <ul class="details" style="margin:4px 0 0 18px;">${options || "<li>（未计算）</li>"}</ul>
-            <div class="details" style="margin-top:6px;">用 annotation/tools/second_best.py 重算</div>
-          </div>`}
-        </div>`;
-    }
     function renderTravelGoldAction() {
       const payload = goldActionDraft.action_payload || (goldActionDraft.action_payload = {});
       const plan = payload.plan || (payload.plan = {});
       const days = plan.itinerary || (plan.itinerary = []);
-      // Rendering never rewrites the stored annotation. A previous version ran every
-      // field through travelSelectionName here and forced middle-day transportation to
-      // "-" on each render. Both mutated goldActionDraft, so merely opening a turn --
-      // or touching any control that re-renders -- persisted the rewrite on the next
-      // save: inter-city flights on multi-city trips were dropped, attraction names the
-      // matcher did not recognize were discarded, and hand-written notes were truncated
-      // at the first em dash. The picker writes the full candidate text and every day
-      // stays editable, so no field is normalized behind the annotator's back.
-      // travelSelectionName is left defined but is no longer called from any path.
+      days.forEach((day, index) => {
+        for (const field of ["transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"]) {
+          day[field] = travelSelectionName(field, day[field], day);
+        }
+      });
       const fields = ["day", "current_city", "transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
       const costFields = ["transportation", "breakfast", "lunch", "dinner", "attraction", "accommodation"];
       goldActionEditor.innerHTML = `
-        ${renderWorldFeasibility()}
         <div id="travelCostSummary"></div>
+        ${(plan.review_notes || []).map(note => `<div class="rationale">${esc(note)}</div>`).join("")}
         <div class="day-list">${days.map((day, dayIndex) => `
           <article class="day-card">
             <div class="day-head editor-head"><strong>${esc(day.day || `Day ${dayIndex + 1}`)}</strong><button class="danger" data-gold-role="remove-day" data-day-index="${dayIndex}">Remove day</button></div>
-            <div class="day-grid">${fields.map(field => `<div class="day-field"><label><span>${esc(prettyKey(field))}</span>${costFields.includes(field) ? `<span class="field-cost" data-cost-day="${dayIndex}" data-cost-field="${field}"></span>` : ""}</label>${travelPicker(field, dayIndex)}<input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
+            <div class="day-grid">${fields.map(field => `<div class="day-field"><label><span>${esc(prettyKey(field))}</span>${costFields.includes(field) ? `<span class="field-cost" data-cost-day="${dayIndex}" data-cost-field="${field}"></span>` : ""}</label><input data-gold-role="travel-field" data-day-index="${dayIndex}" data-field="${field}" value="${esc(day[field] ?? "")}" placeholder="Exact ${esc(prettyKey(field).toLowerCase())}"></div>`).join("")}</div>
             <div class="day-cost-footer"><span>Day subtotal</span><strong data-day-subtotal="${dayIndex}">$0.00</strong></div>
           </article>`).join("")}</div>
         ${days.length ? "" : `<div class="empty">No proposed days. Add a day to define the gold itinerary.</div>`}
@@ -937,35 +822,6 @@ HTML = r"""
         <label class="gold-confirm"><input type="checkbox" data-gold-role="confirmed" ${goldActionDraft.confirmed ? "checked" : ""}> I confirm every day's exact transportation, restaurants, attraction, and hotel.</label>`;
       renderTravelCostSummary();
     }
-    goldActionEditor.addEventListener("change", event => {
-      const feasible = event.target.closest('[data-gold-role="wf-feasible"]');
-      if (feasible) {
-        const wf = goldActionDraft.world_feasibility || (goldActionDraft.world_feasibility = {});
-        wf.feasible = Boolean(feasible.checked);
-        if (wf.feasible) { wf.explanation = null; wf.minimum_sacrifice = 0; wf.acceptable_sacrifices = []; }
-        markDirty();
-        renderTravelGoldAction();
-        return;
-      }
-      const select = event.target.closest('[data-gold-role="travel-pick"]');
-      if (!select) return;
-      const dayIndex = Number(select.dataset.dayIndex);
-      const field = select.dataset.field;
-      const days = (((goldActionDraft.action_payload || {}).plan || {}).itinerary || []);
-      if (!days[dayIndex]) return;
-      if (select.value === "") return;
-      days[dayIndex][field] = select.value === "__dash__"
-        ? "-"
-        : (travelOptions(field)[Number(select.value)] || {}).text || "";
-      renderTravelGoldAction();
-    });
-    goldActionEditor.addEventListener("input", event => {
-      const box = event.target.closest('[data-gold-role="wf-explanation"]');
-      if (!box) return;
-      const wf = goldActionDraft.world_feasibility || (goldActionDraft.world_feasibility = {});
-      wf.explanation = box.value.trim() || null;
-      markDirty();
-    });
     function draftConstraintNumber(keys, fallback) {
       for (const key of keys) {
         const row = constraintDraft.find(item => item.key.trim() === key);
@@ -975,12 +831,6 @@ HTML = r"""
         if (Number.isFinite(number)) return number;
       }
       return fallback;
-    }
-    function isUnbookedSlot(text) {
-      // "no feasible option" no longer appears in an itinerary slot -- it lives in
-      // gold_action.world_feasibility and the plan below it is always a real
-      // booking. The placeholder rows are all that is left to skip.
-      return /^\s*(not applicable|unknown\b)/i.test(text);
     }
     function travelSelectionName(field, value, day) {
       if (Array.isArray(value)) return value.map(item => travelSelectionName(field, item, day)).join("; ");
@@ -1068,7 +918,6 @@ HTML = r"""
         }
       }
       const text = valueToText(value ?? "");
-      if (isUnbookedSlot(text)) return null;
       const match = text.match(/(?:average cost|listed price|cost|price)\s*[:=]?\s*\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)/i)
         || text.match(/\$\s*([0-9][0-9,]*(?:\.[0-9]+)?)/);
       return match ? Number(match[1].replaceAll(",", "")) : null;
@@ -1083,9 +932,54 @@ HTML = r"""
       const match = valueToText(value ?? "").match(/maximum occupancy\s*:?\s*([0-9]+)/i);
       return match ? Number(match[1]) : null;
     }
+    function travelGroundMode(value) {
+      const text = valueToText(value ?? "").trim().toLowerCase();
+      if (/\btaxi\b/.test(text)) return "taxi";
+      if (/\bself[- ]driving\b/.test(text) || /^(?:own\s+car|car)\b/.test(text)) return "self-driving";
+      return null;
+    }
+    function lookupTravelGroundPrice(value, day, mode) {
+      const normalize = value => String(value ?? "").normalize("NFKC").toLowerCase().replace(/\s+/g, " ").trim();
+      const route = (value, cityOnly = false) => {
+        const text = normalize(value);
+        const match = text.match(/\bfrom\s+(.+?)\s+to\s+([^,;]+)(?:[,;]|$)/)
+          || (cityOnly ? text.match(/^(.+?)\s+(?:to|→|->)\s+([^,;]+)(?:[,;]|$)/) : null);
+        return match ? [match[1].trim(), match[2].trim()] : null;
+      };
+      const selectedRoute = route(valueToText(value)) || route(day.current_city, true);
+      const explicitCost = extractTravelUnitCost(value);
+      if (!selectedRoute) {
+        return explicitCost !== null ? { record: { cost: explicitCost } }
+          : { error: "Enter from City A to City B, or cost: amount" };
+      }
+      const costs = new Set();
+      function collect(node, label = "") {
+        if (node === null || node === undefined) return;
+        if (Array.isArray(node)) { node.forEach(item => collect(item, label)); return; }
+        const text = typeof node === "object" ? valueToText(node.value ?? "") : String(node);
+        const candidateRoute = route(text) || route(label);
+        if ((travelGroundMode(text) || travelGroundMode(label)) === mode && candidateRoute
+            && candidateRoute.every((city, index) => city === selectedRoute[index])) {
+          const cost = extractTravelUnitCost(node);
+          if (cost !== null) costs.add(cost);
+        }
+        if (typeof node === "object") {
+          for (const [key, child] of Object.entries(node)) collect(child, node.query || key || label);
+        }
+      }
+      const instance = state.instances[activeInstanceIndex];
+      collect((instance.world_state || {}).reference_information);
+      instance.turns.slice(0, activeTurnIndex + 1).forEach(turn => collect(((turn.env_feedback || {}).search_results || {}).transportation));
+      if (costs.size > 1) return { error: "Multiple route prices: check reference/search records" };
+      if (costs.size === 1) return { record: { cost: [...costs][0] } };
+      return explicitCost !== null ? { record: { cost: explicitCost } }
+        : { error: "No matching route price: enter cost: amount" };
+    }
     function lookupTravelPrice(field, value, day) {
       const normalize = value => String(value ?? "").normalize("NFKC").toLowerCase().replace(/\s+/g, " ").trim();
       const text = normalize(value);
+      const groundMode = field === "transportation" ? travelGroundMode(value) : null;
+      if (groundMode && !/\bf\d+\b/.test(text)) return lookupTravelGroundPrice(value, day, groundMode);
       const instance = state.instances[activeInstanceIndex];
       const records = [];
       function collect(node) {
@@ -1135,11 +1029,11 @@ HTML = r"""
       }
       let multiplier = people;
       let unitLabel = `${people} traveler${people === 1 ? "" : "s"}`;
-      const lower = text.toLowerCase();
-      if (field === "transportation" && lower.includes("taxi")) {
+      const groundMode = field === "transportation" ? travelGroundMode(value) : null;
+      if (groundMode === "taxi") {
         multiplier = Math.ceil(people / 4);
         unitLabel = `${multiplier} taxi${multiplier === 1 ? "" : "s"} (4 travelers each)`;
-      } else if (field === "transportation" && (lower.includes("self-driving") || lower.includes("self driving"))) {
+      } else if (groundMode === "self-driving") {
         multiplier = Math.ceil(people / 5);
         unitLabel = `${multiplier} car${multiplier === 1 ? "" : "s"} (5 travelers each)`;
       } else if (field === "accommodation") {
@@ -1188,7 +1082,7 @@ HTML = r"""
         <div class="travel-cost-total ${hasBudget && difference < 0 ? "over-budget" : ""}">
           <div class="cost-summary-row"><strong>${unavailableCount ? "Known costs only" : "Total trip cost"}</strong><strong>${esc(money(total))}</strong></div>
           ${hasBudget ? `<div class="cost-summary-row"><span>Budget: ${esc(money(budget))}</span><span>${unavailableCount ? "Remaining budget unknown" : `${difference >= 0 ? "Remaining" : "Over budget"}: ${esc(money(Math.abs(difference)))}`}</span></div>` : ""}
-          <div class="travel-cost-note">Enter a flight number, restaurant name or hotel name to look up prices from this case's reference/search records. Lodging is charged once per listed night using room occupancy; flights and meals are per traveler. Attractions are not costed by the benchmark.${unavailableCount ? ` ${unavailableCount} items could not be priced; the full total and remaining budget are not yet known.` : ""}</div>
+          <div class="travel-cost-note">Enter a flight number, restaurant name or hotel name to look up prices from this case's reference/search records. For self-driving (own car/car) or taxi, specify from City A to City B in Transportation or Current city to look up the route price; enter cost: amount to supply a missing price. Lodging is charged once per listed night using room occupancy; flights and meals are per traveler. Attractions are not costed by the benchmark.${unavailableCount ? ` ${unavailableCount} items could not be priced; the full total and remaining budget are not yet known.` : ""}</div>
         </div>
       </section>`;
     }
@@ -1364,6 +1258,7 @@ HTML = r"""
       meta.innerHTML = [
         pill(state.domain),
         pill(inst.instance_id),
+        state.loaded_from ? pill(`read → ${state.loaded_from}`, "") : "",
         state.annotation_output ? pill(`save → ${state.annotation_output}`, "good") : "",
         pill(`turn ${turn.turn_id ?? turnIndex}`),
         turn.shift_condition?.type ? pill(turn.shift_condition.type, "warn") : "",
@@ -2241,8 +2136,37 @@ def rationales_for_turn(turn: Dict[str, Any]) -> List[str]:
     return rationales
 
 
+def fixed_travelplanner_context_fields(instance: Dict[str, Any]) -> set:
+    """Only parameters unchanged throughout the trajectory are unscored context."""
+    turns = instance.get("turns") or []
+    initial = ((turns[0].get("gold_current_intention") or {}).get("constraints") or {}) if turns else {}
+    return {
+        field for field in TRAVELPLANNER_CONTEXT_FIELDS if field in initial
+        and all(
+            field in (turn.get("gold_current_intention") or {}).get("constraints", {})
+            and turn["gold_current_intention"]["constraints"][field] == initial[field]
+            for turn in turns[1:]
+        )
+    }
+
+
+def strip_context_priority_copies(value: Any, excluded: set) -> None:
+    """Keep serialized priority deltas and change metadata consistent with gold."""
+    if isinstance(value, dict):
+        levels = ("high", "medium", "low")
+        if set(value) == set(levels) and all(isinstance(value[level], list) for level in levels):
+            for level in levels:
+                value[level] = [field for field in value[level] if field not in excluded]
+        else:
+            for child in value.values():
+                strip_context_priority_copies(child, excluded)
+    elif isinstance(value, list):
+        for child in value:
+            strip_context_priority_copies(child, excluded)
+
+
 def strip_travelplanner_context_constraints(instances: List[Dict[str, Any]]) -> int:
-    """Keep itinerary context out of editable constraints and priority."""
+    """Keep fixed context out of scoring, while retaining changed parameters."""
     removed = 0
     for instance in instances:
         world_state = instance.get("world_state") or {}
@@ -2251,11 +2175,12 @@ def strip_travelplanner_context_constraints(instances: List[Dict[str, Any]]) -> 
         domain = str(world_state.get("domain") or first_gold.get("domain") or "").lower()
         if domain != "travelplanner":
             continue
+        excluded = fixed_travelplanner_context_fields(instance)
         for turn in turns:
             gold = turn.get("gold_current_intention") or {}
             constraints = gold.get("constraints") or {}
             if isinstance(constraints, dict):
-                for field in TRAVELPLANNER_CONTEXT_FIELDS:
+                for field in excluded:
                     if field in constraints:
                         constraints.pop(field)
                         removed += 1
@@ -2266,17 +2191,19 @@ def strip_travelplanner_context_constraints(instances: List[Dict[str, Any]]) -> 
                     if isinstance(values, list):
                         priority[level] = [
                             value for value in values
-                            if str(value) not in TRAVELPLANNER_CONTEXT_FIELDS
+                            if str(value) not in excluded
                         ]
             elif isinstance(priority, list):
                 gold["priority"] = [
                     value for value in priority
-                    if str(value) not in TRAVELPLANNER_CONTEXT_FIELDS
+                    if str(value) not in excluded
                 ]
             delta = turn.get("gold_delta")
             if isinstance(delta, dict):
-                for field in TRAVELPLANNER_CONTEXT_FIELDS:
+                for field in excluded:
                     delta.pop(field, None)
+            for key in ("gold_delta", "shift_condition", "trigger_evidence"):
+                strip_context_priority_copies(turn.get(key), excluded)
     return removed
 
 
@@ -2589,26 +2516,7 @@ def prepare_state(
         "no_image_url": "/static-webshop/images/no-image-available.png",
         "source_dataset": str(source_path) if source_path else "",
         "annotation_output": str(annotation_path) if annotation_path else "",
-        "constraint_vocabulary": constraint_vocabulary(instances),
     }
-
-
-def constraint_vocabulary(instances: List[Dict[str, Any]]) -> List[str]:
-    """Field names already used in this dataset, most common first.
-
-    Annotators otherwise have no way to see which names exist, so a typo like
-    accommodation_date vs accommodation_stay silently creates a new field that
-    the scorer and the gold-action checker both miss.
-    """
-    counts: Dict[str, int] = {}
-    for instance in instances:
-        for turn in instance.get("turns") or []:
-            gold = turn.get("gold_current_intention") or {}
-            for field in (gold.get("constraints") or {}):
-                name = str(field).strip()
-                if name:
-                    counts[name] = counts.get(name, 0) + 1
-    return [name for name, _ in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
 
 
 def normalize_priority_payload(priority: Any, constraint_keys: List[str]) -> Dict[str, List[str]]:
@@ -2668,66 +2576,6 @@ def annotation_turn_for_storage(turn: Dict[str, Any]) -> Dict[str, Any]:
     return stored
 
 
-def _field_tiers(gold_intention: Any) -> Dict[str, str]:
-    priority = (gold_intention or {}).get("priority")
-    if not isinstance(priority, dict):
-        return {}
-    return {str(f): level
-            for level in ("high", "medium", "low")
-            for f in priority.get(level) or []}
-
-
-def _same_constraint_value(left: Any, right: Any) -> bool:
-    """4 and 4.0 are the same bound; everything else compares as squashed text."""
-    if isinstance(left, bool) or isinstance(right, bool):
-        return left is right
-    try:
-        return float(left) == float(right)
-    except (TypeError, ValueError):
-        pass
-    return " ".join(str(left).split()) == " ".join(str(right).split())
-
-
-def recompute_gold_delta(turns: List[Dict[str, Any]], index: int) -> None:
-    """Rewrite turn `index`'s gold_delta from its own and the previous turn's intention.
-
-    gold_delta is derived, not authored: it is the difference between turn k-1 and
-    turn k. The editor only ever writes user_utterance, constraints, priority and
-    gold_action, so without this the two drift apart on every save -- and the panel
-    that renders gold_delta is hidden unless an instance has two or more entities,
-    so the drift is invisible. score_v2 reads gold_delta as the ground truth of
-    "what changed this turn", which is where the drift turns into wrong scores.
-
-    Mirrors annotation/tools/recompute_deltas.py; that one rebuilds a whole file.
-    """
-    if index <= 0 or index >= len(turns):
-        return
-    prev = turns[index - 1].get("gold_current_intention") or {}
-    cur = turns[index].get("gold_current_intention") or {}
-    prev_c = prev.get("constraints") or {}
-    cur_c = cur.get("constraints") or {}
-    prev_t, cur_t = _field_tiers(prev), _field_tiers(cur)
-
-    record: Dict[str, Any] = {}
-    for field, value in cur_c.items():
-        if field not in prev_c:
-            record[field] = {"op": "add", "old": None, "new": value}
-        elif not _same_constraint_value(prev_c[field], value):
-            record[field] = {"op": "override", "old": prev_c[field], "new": value}
-    for field, value in prev_c.items():
-        if field not in cur_c:
-            record[field] = {"op": "remove", "old": value, "new": None}
-    # A tier move with no value change is how a tradeoff is expressed; record it or
-    # the turn reads as a no-op.
-    for field in cur_c:
-        if field in record or field not in prev_c:
-            continue
-        before, after = prev_t.get(field), cur_t.get(field)
-        if before is not None and after is not None and before != after:
-            record[field] = {"op": "reprioritize", "old": before, "new": after}
-    turns[index]["gold_delta"] = record
-
-
 def validate_gold_action(gold_action: Any, domain: str) -> Optional[str]:
     if not isinstance(gold_action, dict):
         return "gold_action must be an object"
@@ -2752,13 +2600,6 @@ def validate_gold_action(gold_action: Any, domain: str) -> Optional[str]:
                 return f"Gold itinerary day {index + 1} is missing: {', '.join(missing)}"
     elif not str(payload.get("selected_asin") or "").strip():
         return "A confirmed WebShop gold action must select a product ASIN"
-    feasibility = gold_action.get("world_feasibility")
-    if isinstance(feasibility, dict) and feasibility.get("feasible") is False \
-            and not str(feasibility.get("explanation") or "").strip():
-        # The itinerary below always looks like a complete plan, so an unticked
-        # feasibility box with no explanation would silently assert that gold met
-        # everything when it did not.
-        return "world_feasibility is marked not feasible but has no explanation"
     return None
 
 
@@ -2768,10 +2609,11 @@ def create_app(
     annotation_path: Path,
     catalog_items: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> Flask:
-    # The annotation is shown and saved exactly as stored. Normalizing here rewrote the
-    # editable copy before the annotator ever saw it, which is how multi-city flights and
-    # unmatched attraction names disappeared.
+    strip_travelplanner_context_constraints(instances)
+    strip_travelplanner_context_constraints(state.get("instances") or [])
     attraction_names = collect_travel_attraction_names(instances)
+    normalize_stored_gold_action_attractions(instances, attraction_names)
+    normalize_replay_action_attractions(state.get("instances") or [], attraction_names)
     app = Flask(__name__)
     replay_catalog_items = catalog_items or {}
 
@@ -2792,9 +2634,6 @@ def create_app(
 
     @app.route("/api/state")
     def api_state():
-        # Recompute on every read so a field name added in this session shows up
-        # in the autocomplete immediately, without needing a server restart.
-        state["constraint_vocabulary"] = constraint_vocabulary(state.get("instances") or [])
         return jsonify(state)
 
     @app.route("/api/shard_status")
@@ -2871,6 +2710,8 @@ def create_app(
                 launcher_arguments.append("-SkipConstraintEnrichment")
             if state.get("skip_full_catalog"):
                 launcher_arguments.append("-SkipFullCatalog")
+            if state.get("load_source"):
+                launcher_arguments.append("-LoadSource")
         creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
         subprocess.Popen(
             launcher_arguments,
@@ -2913,20 +2754,30 @@ def create_app(
         instance_domain = str(
             (instances[instance_index].get("world_state") or {}).get("domain") or "webshop"
         ).lower()
-        # Every submitted constraint is stored. Dropping itinerary-context fields here
-        # also invalidated their gold_delta entries, which is exactly the signal this
-        # benchmark measures.
+        excluded_context = set()
+        if instance_domain == "travelplanner":
+            candidate = copy.deepcopy(instances[instance_index])
+            candidate["turns"][turn_index].setdefault("gold_current_intention", {})["constraints"] = constraints_payload
+            excluded_context = fixed_travelplanner_context_fields(candidate)
         constraints_clean = {
             str(key).strip(): value
             for key, value in constraints_payload.items()
             if str(key).strip()
+            and not (
+                instance_domain == "travelplanner"
+                and str(key).strip() in excluded_context
+            )
         }
         priority_clean = normalize_priority_payload(payload.get("priority"), list(constraints_clean.keys()))
         has_gold_action = "gold_action" in payload
         gold_action = payload.get("gold_action")
         if has_gold_action:
-            # Save what the annotator entered; do not renormalize on the way to disk.
-            gold_action = copy.deepcopy(gold_action)
+            gold_action_holder = [{
+                "world_state": {"domain": instance_domain},
+                "turns": [{"gold_action": copy.deepcopy(gold_action)}],
+            }]
+            normalize_stored_gold_action_attractions(gold_action_holder, attraction_names)
+            gold_action = gold_action_holder[0]["turns"][0]["gold_action"]
             gold_action_error = validate_gold_action(gold_action, instance_domain)
             if gold_action_error:
                 return jsonify({"ok": False, "error": gold_action_error}), 400
@@ -2945,15 +2796,6 @@ def create_app(
         if has_gold_action:
             turn["gold_action"] = copy.deepcopy(gold_action)
             state_turn["gold_action"] = copy.deepcopy(gold_action)
-
-        # Editing turn k moves both its own delta and the next turn's `old` values,
-        # so both have to be rebuilt -- otherwise gold_delta drifts away from the
-        # constraints it is supposed to describe and score_v2 reads a stale change.
-        for target in (turn_index, turn_index + 1):
-            recompute_gold_delta(turns, target)
-            if 0 <= target < len(state["instances"][instance_index]["turns"]):
-                state["instances"][instance_index]["turns"][target]["gold_delta"] = \
-                    copy.deepcopy(turns[target].get("gold_delta") or {})
 
         save_json(annotation_path, instances)
         return jsonify({"ok": True, "turn": state_turn})
@@ -3028,7 +2870,8 @@ def create_app(
             "world_state": {"domain": domain},
             "turns": copy.deepcopy(submitted_turns),
         }
-        # Saved verbatim: normalizing here silently edited the annotator's own input.
+        strip_travelplanner_context_constraints([sanitized_instance])
+        normalize_stored_gold_action_attractions([sanitized_instance], attraction_names)
         sanitized_turns = sanitized_instance["turns"]
         for turn_index, turn in enumerate(sanitized_turns):
             gold_action = turn.get("gold_action")
@@ -3091,10 +2934,15 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Writable annotation JSON. Defaults to "
             "annotation/data/<dataset_stem>_annotated.json. "
-            "If it already exists, annotation resumes from that file."
+            "If it already exists, annotation resumes from that file unless --load_source is set."
         ),
     )
     parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument(
+        "--load_source",
+        action="store_true",
+        help="Load --dataset even when --output exists; save annotation edits only to --output.",
+    )
     parser.add_argument("--port", type=int, default=7860)
     parser.add_argument("--cache", type=Path, default=DEFAULT_CACHE_PATH)
     parser.add_argument("--item_cache", type=Path, default=DEFAULT_ITEM_CACHE_PATH)
@@ -3115,10 +2963,10 @@ def default_annotation_path(dataset_path: Path) -> Path:
     return ANNOTATION_DATA_DIR / f"{dataset_path.stem}_annotated{dataset_path.suffix}"
 
 
-def annotation_input_path(dataset_path: Path, annotation_path: Path) -> Path:
+def annotation_input_path(dataset_path: Path, annotation_path: Path, *, load_source: bool = False) -> Path:
     if dataset_path.resolve() == annotation_path.resolve():
         raise ValueError("--output must differ from --dataset so the source rollout remains unchanged")
-    return annotation_path if annotation_path.is_file() else dataset_path
+    return annotation_path if not load_source and annotation_path.is_file() else dataset_path
 
 
 def infer_shard_context(dataset_path: Path) -> Tuple[Optional[int], Optional[int]]:
@@ -3137,17 +2985,14 @@ def infer_shard_context(dataset_path: Path) -> Tuple[Optional[int], Optional[int
 def main() -> None:
     args = parse_args()
     annotation_path = args.output or default_annotation_path(args.dataset)
-    input_path = annotation_input_path(args.dataset, annotation_path)
+    input_path = annotation_input_path(args.dataset, annotation_path, load_source=args.load_source)
     instances = load_json(input_path)
     if not isinstance(instances, list):
         raise ValueError(f"Expected dataset JSON list in {input_path}, got {type(instances).__name__}")
-    # Startup must not rewrite the annotation. This previously stripped itinerary-context
-    # constraints and renormalized stored attractions, then saved -- so merely launching
-    # the server dropped gold_delta entries whose constraint had just been removed and
-    # discarded attraction names the matcher did not recognize, before anyone opened a
-    # page. Both helpers remain available for explicit tooling in annotation/tools/.
-    removed_travel_context = 0
-    normalized_attractions = 0
+    removed_travel_context = strip_travelplanner_context_constraints(instances)
+    normalized_attractions = normalize_stored_gold_action_attractions(instances)
+    if not args.load_source and (removed_travel_context or normalized_attractions):
+        save_json(annotation_path, instances)
     enriched_constraints = 0
     if not args.skip_constraint_enrichment:
         enriched_constraints = enrich_webshop_constraints_from_metadata(instances)
@@ -3185,8 +3030,11 @@ def main() -> None:
     state["server_port"] = args.port
     state["skip_constraint_enrichment"] = args.skip_constraint_enrichment
     state["skip_full_catalog"] = args.skip_full_catalog
+    state["load_source"] = args.load_source
+    state["loaded_from"] = str(input_path.resolve())
     app = create_app(state, instances, annotation_path, catalog_items=catalog_items)
     print(f"Source dataset (read-only): {args.dataset.resolve()}")
+    print(f"Loaded for rendering: {input_path.resolve()}")
     print(f"Annotation output: {annotation_path.resolve()}")
     if enriched_constraints:
         print(f"Restored {enriched_constraints} WebShop constraints from selection metadata.")
